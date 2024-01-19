@@ -11,6 +11,18 @@ class Counter:
 
 
 
+def reverseIf(E,cond):
+    return (E[1],E[0]) if cond else E
+
+
+def limrange(start,end,step,limit):
+    if step>0:
+        end=max(end,limit)
+    else:
+        end=min(end,limit)
+    return range(start,end,limit)
+
+
 
 class VisionOctant:
     def __init__(self):
@@ -68,9 +80,12 @@ def testVisionOctant(R):
     for i,e in enumerate(M):
         vis=VL.step(e,i+1)
         print(i+1,VL.lines,vis)
+        if not VL.lines:
+            print("END HERE")
 
 
 def main():
+    print(reverseIf((0,1),0==1),reverseIf((0,1),1==1))
     testVisionOctant("0100|0010|1001|00000")
     testVisionOctant("1000|0010|0001")
     return
