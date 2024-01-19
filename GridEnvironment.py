@@ -1,7 +1,6 @@
 import interfaces
 import util
 
-counter = util.Counter()
 
 
 class PlaneTile:
@@ -29,10 +28,15 @@ class PlaneTile:
                 decision = value
         return decision
 
+counter = util.Counter()
 
 class PlaneEnvironment(interfaces.iEnvironment):
+    dir_up=counter.use()
+    dir_down=counter.use()
+    dir_left=counter.use()
+    dir_right=counter.use()
     def __init__(self, sAA, scale, shapes=None, agents=None):
-        super().__init__(sAA)
+        super().__init__()
         if agents is None:
             agents = dict()
         if shapes is None:
@@ -48,9 +52,15 @@ class PlaneEnvironment(interfaces.iEnvironment):
                 self.grid[x2][y] = 1
         return
 
-    def view_direction(self,direction):
+    def get_line(self,axis,i):
+        if axis==0:
+            return [] if i not in range(len(self.grid)) else self.grid[i]
+
+
+
+    def view_direction(self,position,direction):
         distance=1
-        upper_limit
+        (axis,)
 
     def text_display(self, guide):
         return "\n".join(["".join([guide[e] for e in E]) for E in self.grid])

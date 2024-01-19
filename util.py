@@ -34,37 +34,45 @@ class VisionOctant:
         for i,taken in enumerate(L):
             curOffset=(i*2+1)/frontDis
             if not lastBlock:
-                lastOffset=i/(frontDis+2)
+                lastOffset=(i*2-1)/(frontDis+2)
             while self.lines:
                 if self.lines[0][1]>=lastOffset:
                     break
                 newLines.append(self.lines.popleft())
             else:
                 break
-            
             if self.lines[0][0]>=curOffset:
                 visible.append(False)
             else:
-                E=self.lines.popleft()
-                if E[0]>=lastOffset:
-                    lastOffset=E[0]
-                else:
-                    newLines.append((E[0],lastOffset))
-
+                visible.append(True)
+                if taken:
+                    E=self.lines.popleft()
+                    if E[0]<lastOffset:
+                        newLines.append((E[0],lastOffset))
+                    if E[1]>curOffset:
+                        self.lines.appendleft((curOffset,E[1]))
             lastOffset=curOffset
             lastBlock=taken
+        newLines.extend(self.lines)
+        self.lines=newLines
+        return visible
 
 
 
 
 
-def testVisionLine():
-    VL = VisionLine()
-    for i in range(1, 6):
-        print(i, i * 2 - 1)
+def testVisionOctant(R):
+    VL = VisionOctant()
+    print(R)
+    M=[[e=="1" for e in E]for E in R.split("|")]
+    for i,e in enumerate(M):
+        vis=VL.step(e,i+1)
+        print(i+1,VL.lines,vis)
 
 
 def main():
+    testVisionOctant("0100|0010|1001|00000")
+    testVisionOctant("1000|0010|0001")
     return
 
 
