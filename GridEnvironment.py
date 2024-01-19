@@ -89,6 +89,7 @@ class PlaneEnvironment(interfaces.iEnvironment):
         VO_dec = util.VisionOctant()
         distance = 0
         used_any = True
+        RES=dict()
         while used_any:
             distance += 1
             start = Tadd(position, util.reverseIf((distance * direction, 0), axis == 1))
@@ -113,6 +114,10 @@ class PlaneEnvironment(interfaces.iEnvironment):
                     L.append((temp,val))
                 vis_inc = VO_inc.step([e[1] in opaque for e in L], distance)
                 print(temp,"".join([str(el[1]) for el in L]),vis_inc)
+                for i in range(len(vis_inc)):
+                    RES[L[i][0]]=vis_inc[i]
+                for i in range(len(vis_inc),len(L)):
+                    RES[L[i][0]]=False
             if VO_dec.lines:
                 used_any = True
                 L = [(start,scheck)]
@@ -129,8 +134,13 @@ class PlaneEnvironment(interfaces.iEnvironment):
                     L.append((temp,val))
                 vis_dec = VO_dec.step([e[1] in opaque for e in L], distance)
                 print(temp,"".join([str(el[1]) for el in L]),vis_dec)
+                for i in range(len(vis_dec)):
+                    RES[L[i][0]]=vis_dec[i]
+                for i in range(len(vis_dec),len(L)):
+                    RES[L[i][0]]=False
             print(VO_dec.lines,VO_inc.lines)
-            print()
+        print(position in RES)
+
 
     def text_display(self, guide):
         res=[]
@@ -168,7 +178,7 @@ def main():
     guide={e:1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     X = PlaneEnvironment(False, [20, 20], {"rects": R})
     print(X.text_display(guide))
-    print(X.view_direction((10, 10), PlaneEnvironment.dir_up))
+    print(X.view_direction((15,10), PlaneEnvironment.dir_up))
     return
 
 
