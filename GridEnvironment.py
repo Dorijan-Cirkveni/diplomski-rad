@@ -2,17 +2,17 @@ import interfaces
 import util
 from TupleDotOperations import Toper, Tadd, Tdiv, Tmul, Tsub, Tfdiv
 
-counter = util.Counter()
+tile_counter = util.Counter()
 
 
 class PlaneTile:
-    accessible = counter.use()
-    glass = counter.use()
-    wall = counter.use()
-    curtain = counter.use()
-    lethal = counter.use()
-    lethalwall = counter.use()
-    goal = counter.use()
+    accessible = tile_counter.use()
+    glass = tile_counter.use()
+    wall = tile_counter.use()
+    curtain = tile_counter.use()
+    lethal = tile_counter.use()
+    lethalwall = tile_counter.use()
+    goal = tile_counter.use()
     """
     A class describing a plane tile and how it reacts to agents
     (whether it allows agents to enter its space unharmed, destroys them, or prevents them from moving)
@@ -40,7 +40,7 @@ defaultTileTypes = [
     PlaneTile(PlaneTile.goal),
     PlaneTile(PlaneTile.wall),
     PlaneTile(PlaneTile.glass),
-    PlaneTile(PlaneTile.lethal)
+    PlaneTile(PlaneTile.lethal),
     PlaneTile(PlaneTile.accessible, [("blue", PlaneTile.goal)])
 ]
 
@@ -82,7 +82,7 @@ class PlaneEnvironment(interfaces.iEnvironment):
 
     def view_direction(self, position, direction, opaque=None):
         if opaque is None:
-            opaque = {PlaneTile.wall,PlaneTile.curtain}
+            opaque = default_opaque
         (axis, direction) = global_directions[direction]
         data = {}
         VO_inc = util.VisionOctant()
@@ -93,13 +93,14 @@ class PlaneEnvironment(interfaces.iEnvironment):
             distance += 1
             start = Tadd(position, util.reverseIf((distance * direction, 0), axis == 1))
             scheck = self.get_tile(start)
+            print(start,scheck)
             if scheck is None:
                 break
-            sval = scheck in opaque
             used_any = False
             if VO_inc.lines:
                 used_any = True
-                L = [sval]
+                L = [(start,scheck)]
+                temp=None
                 for i in range(1, distance):
                     diff = (
                         i * axis,
@@ -109,12 +110,13 @@ class PlaneEnvironment(interfaces.iEnvironment):
                     val = self.get_tile(temp)
                     if val is None:
                         break
-                    L.append(val in opaque)
-                vis_inc = VO_inc.step(L, distance)
-                print(L,vis_inc,end="|")
+                    L.append((temp,val))
+                vis_inc = VO_inc.step([e[1] in opaque for e in L], distance)
+                print(temp,"".join([str(el[1]) for el in L]),vis_inc)
             if VO_dec.lines:
                 used_any = True
-                L = [sval]
+                L = [(start,scheck)]
+                temp=None
                 for i in range(1, distance):
                     diff = (
                         i * axis,
@@ -124,13 +126,21 @@ class PlaneEnvironment(interfaces.iEnvironment):
                     val = self.get_tile(temp)
                     if val is None:
                         break
-                    L.append(val in opaque)
-                vis_dec = VO_dec.step(L, distance)
-                print(L,vis_dec,end="|")
+                    L.append((temp,val))
+                vis_dec = VO_dec.step([e[1] in opaque for e in L], distance)
+                print(temp,"".join([str(el[1]) for el in L]),vis_dec)
+            print(VO_dec.lines,VO_inc.lines)
             print()
 
     def text_display(self, guide):
-        return "\n".join(["".join([guide[e] for e in E]) for E in self.grid])
+        res=[]
+        for E in self.grid:
+            s=""
+            for e in E:
+                val=guide[e]
+                s+=str(val)
+            res.append(s)
+        return "\n".join(res)
 
     def getEnvData(self, agentID=None):
         agent = self.agents.get(agentID)
@@ -142,20 +152,23 @@ class PlaneEnvironment(interfaces.iEnvironment):
 
 
 global_directions = {
-    PlaneEnvironment.dir_up: (1, -1),
-    PlaneEnvironment.dir_down: (1, 1),
-    PlaneEnvironment.dir_left: (0, -1),
-    PlaneEnvironment.dir_right: (0, 1),
+    PlaneEnvironment.dir_up: (0, -1),
+    PlaneEnvironment.dir_down: (0, 1),
+    PlaneEnvironment.dir_left: (1, -1),
+    PlaneEnvironment.dir_right: (1, 1),
 }
+default_opaque={PlaneTile.wall,PlaneTile.curtain,PlaneTile.lethalwall}
 
 
 def main():
     R = [
-        (0, 0, 19, 19, 1)
+        (0, 0, 19, 19, PlaneTile.wall),
+        (2, 2, 4, 4, PlaneTile.wall)
     ]
+    guide={e:1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     X = PlaneEnvironment(False, [20, 20], {"rects": R})
-    print(X.text_display("01"))
-    print(X.view_direction((3, 5), PlaneEnvironment.dir_up))
+    print(X.text_display(guide))
+    print(X.view_direction((10, 10), PlaneEnvironment.dir_up))
     return
 
 
