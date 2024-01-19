@@ -1,3 +1,6 @@
+from collections import deque
+
+
 class Counter:
     def __init__(self, value: float = 0):
         self.value = value - 1
@@ -7,27 +10,40 @@ class Counter:
         return self.value
 
 
-class VisionLine:
+class VisionOctant:
     def __init__(self):
-        self.lines=[(-1,1)]
-    def check_overlap(self,L):
-        start=-1
-        size=2/(len(L)-1)
+        self.lines = deque()
+        self.lines.append((0,1))
+
+    def step(self, L, distance: int):
+        newLines=deque()
+        frontDis=distance*2-1
+        i2=0
+        lastOffset=0
+        lastBlock=False
+        for i,e in enumerate(L):
+            while self.lines:
+                if self.lines[0][1]>=lastOffset:
+                    break
+                newLines.append(self.lines.popleft())
+            else:
+                break
+            curOffset=(i+1)/frontDis
+            if not lastBlock:
+                lastOffset=i/(frontDis+2)
+            lastOffset=curOffset
+
+
+
+
+
+def testVisionLine():
+    VL = VisionLine()
+    for i in range(1, 6):
+        print(i, i * 2 - 1)
 
 
 def main():
-    X = Counter(0)
-    for i in range(10):
-        v = X.use()
-        if v != i:
-            raise Exception("ERROR:{} received instead of {}".format(v, i))
-    offset = 3.141592654
-    X = Counter(offset)
-    for i in range(10):
-        v = X.use() - offset
-        if v != i:
-            raise Exception("ERROR:{} received instead of {}".format(v, i))
-    print("Success!")
     return
 
 
