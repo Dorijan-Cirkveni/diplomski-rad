@@ -48,7 +48,7 @@ class PlaneEnvironment(interfaces.iEnvironment):
                 self.grid[x2][y] = 1
         return
 
-    def view_direction(self,):
+    def view_direction(self,direction):
         distance=1
         upper_limit
 
