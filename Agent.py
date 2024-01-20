@@ -12,7 +12,6 @@ class BoxAgent(interfaces.iAgent):
         return None
 
 
-
 class MirrorAgent(interfaces.iAgent):
     def __init__(self, mirroredAgent, actionMirrors: dict):
         super().__init__()
@@ -29,7 +28,6 @@ class MirrorAgent(interfaces.iAgent):
     def performAction(self, actions):
         return actions.get(self.actionMirrors.get(self.agent_data, self.agent_data), None)
 
-def initMirrorAgent()
 
 class RecordedActionsAgent(interfaces.iAgent):
     def __init__(self, actions):
@@ -45,6 +43,13 @@ class RecordedActionsAgent(interfaces.iAgent):
         if self.i == len(self.actions):
             self.i = 0
         return cur
+
+
+def initRAAFactory(translation):
+    def initRAA(s):
+        actions = [translation[int(e)] for e in "0213210321"]
+        return RecordedActionsAgent(actions)
+    return initRAA
 
 
 def main():

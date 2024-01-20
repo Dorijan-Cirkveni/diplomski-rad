@@ -255,33 +255,40 @@ class PlaneEnvironment(itf.iEnvironment):
             self.moveDirection(V, global_directions[e])
         return
 
-def readPlaneEnvironment(lines,agentDict):
-    scale=(20,20)
-    shapes=dict()
-    agents=[]
-    entities=[]
-    for e in lines:
-        E=[f for f in e.split(" ") if f!=""]
-        if E[0]=="scale":
-            scale=(int(E[1]),int(E[2]))
-        elif E[0]=="shape":
-            shapetype=E[1]
-            shapedata=tuple([int(e) for e in E[2:]])
-        elif E[0]=="agent":
+
+def readPlaneEnvironment(raw, agentDict):
+    scale = (20, 20)
+    shapes = dict()
+    agents = []
+    entities = []
+    for e in raw.split("\n"):
+        E = [f for f in e.split(" ") if f != ""]
+        print(E)
+        if len(E)==0:
+            continue
+        if E[0] == "scale":
+            scale = (int(E[1]), int(E[2]))
+        elif E[0] == "shape":
+            shapetype = E[1]
+            shapedata = tuple([int(e) for e in E[2:]])
+            L=shapes.get(shapetype,[])
+            shapes[shapetype]=L
+            L.append(shapedata)
+        elif E[0] == "agent":
             agents.append(agentDict[E[1]](E[2:]))
-        elif E[0]=="entity":
-            data:dict=json.load(E[4])
-            data[itf.Entity.LOCATION]=
-            entity=itf.Entity(agents[int(E[1])],)
+        elif E[0] == "entity":
+            data: dict = json.loads(E[4])
+            data[itf.Entity.LOCATION] = (int(E[2]), int(E[3]))
+            entity = itf.Entity(agents[int(E[1])], )
             entities.append(entity)
-        elif E[0]=="data":
+        elif E[0] == "data":
             pass
-    RES=PlaneEnvironment(
+    RES = PlaneEnvironment(
         scale=scale,
         shapes=shapes,
         entities=entities
     )
-    return
+    return RES
 
 
 global_actions = [PlaneEnvironment.dir_up, PlaneEnvironment.dir_down, PlaneEnvironment.dir_left,
@@ -294,15 +301,16 @@ global_directions = {
 }
 default_opaque = {PlaneTile.wall, PlaneTile.curtain, PlaneTile.lethalwall}
 default_movable = {PlaneTile.goal, PlaneTile.curtain, PlaneTile.lethal, PlaneTile.accessible}
-keys={
-    "wall":PlaneTile.wall,
-    "curt":PlaneTile.curtain,
-    "leth":PlaneTile.lethal,
-    "lewa":PlaneTile.lethalwall,
-    "goal":PlaneTile.goal,
-    "acce":PlaneTile.accessible
+keys = {
+    "wall": PlaneTile.wall,
+    "curt": PlaneTile.curtain,
+    "leth": PlaneTile.lethal,
+    "lewa": PlaneTile.lethalwall,
+    "goal": PlaneTile.goal,
+    "acce": PlaneTile.accessible
 
 }
+
 
 def main():
     R = [
@@ -313,12 +321,13 @@ def main():
     test_agent_1 = Agent.RecordedActionsAgent([global_actions[int(e)] for e in "0213210321"])
     test_entity_1 = itf.Entity(test_agent_1, {itf.Entity.LOCATION: (15, 5)})
     X = PlaneEnvironment(scale=[20, 20], shapes={"rect": R}, entities=[test_entity_1])
-    TXR='''scale 20 20
+    TXR = '''scale 20 20
     shape rect 0 0 19 19 2
     shape rect 2 2 4 4 2
     agent RAA 0213210321
-    entity 
+    entity 0 15 5 {}
     '''
+    TX = readPlaneEnvironment(TXR,{"RAA":Agent.initRAAFactory(global_actions)})
     print(PlaneTile.wall)
     print(X.text_display(guide))
     # print(X.view_direction((15, 10), PlaneEnvironment.dir_up))
