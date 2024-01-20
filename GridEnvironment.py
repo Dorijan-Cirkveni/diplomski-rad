@@ -14,8 +14,8 @@ class PlaneTile:
     lethalwall = tile_counter.use()
     goal = tile_counter.use()
     """
-    A class describing a plane tile and how it reacts to agents
-    (whether it allows agents to enter its space unharmed, destroys them, or prevents them from moving)
+    A class describing a plane tile and how it reacts to entities
+    (whether it allows entities to enter its space unharmed, destroys them, prevents them from moving in...)
     """
 
     def __init__(self, defaultState, agentExceptions=None):
@@ -53,16 +53,19 @@ class PlaneEnvironment(interfaces.iEnvironment):
     dir_left = counter.use()
     dir_right = counter.use()
 
-    def __init__(self, sAA, scale, shapes=None, agents=None, tileTypes=None):
+    def __init__(self, sAA, scale, shapes=None, entities=None, tileTypes=None):
         super().__init__()
         if tileTypes is None:
             tileTypes = defaultTileTypes
-        if agents is None:
-            agents = dict()
+        if entities is None:
+            entities = dict()
         if shapes is None:
             shapes = dict()
+        self.entities=entities
+        self.taken=dict()
         self.scale = scale
         self.grid = [[0 for i in range(scale[1])] for j in range(scale[0])]
+        self.gridContents=dict()
         rects = shapes.get("rects", [])
         for (x1, y1, x2, y2, ID) in rects:
             for x in range(x1, x2 + 1):
@@ -71,6 +74,8 @@ class PlaneEnvironment(interfaces.iEnvironment):
             for y in range(y1, y2 + 1):
                 self.grid[x1][y] = ID
                 self.grid[x2][y] = ID
+        for entity in entities:
+            
         return
 
     def get_tile(self, i, j=None):
@@ -89,19 +94,19 @@ class PlaneEnvironment(interfaces.iEnvironment):
         VO_dec = util.VisionOctant()
         distance = 0
         used_any = True
-        RES=dict()
+        RES = dict()
         while used_any:
             distance += 1
             start = Tadd(position, util.reverseIf((distance * direction, 0), axis == 1))
             scheck = self.get_tile(start)
-            print(start,scheck)
+            print(start, scheck)
             if scheck is None:
                 break
             used_any = False
             if VO_inc.lines:
                 used_any = True
-                L = [(start,scheck)]
-                temp=None
+                L = [(start, scheck)]
+                temp = None
                 for i in range(1, distance):
                     diff = (
                         i * axis,
@@ -111,17 +116,17 @@ class PlaneEnvironment(interfaces.iEnvironment):
                     val = self.get_tile(temp)
                     if val is None:
                         break
-                    L.append((temp,val))
+                    L.append((temp, val))
                 vis_inc = VO_inc.step([e[1] in opaque for e in L], distance)
-                print(temp,"".join([str(el[1]) for el in L]),vis_inc)
+                print(temp, "".join([str(el[1]) for el in L]), vis_inc)
                 for i in range(len(vis_inc)):
-                    RES[L[i][0]]=vis_inc[i]
-                for i in range(len(vis_inc),len(L)):
-                    RES[L[i][0]]=False
+                    RES[L[i][0]] = vis_inc[i]
+                for i in range(len(vis_inc), len(L)):
+                    RES[L[i][0]] = False
             if VO_dec.lines:
                 used_any = True
-                L = [(start,scheck)]
-                temp=None
+                L = [(start, scheck)]
+                temp = None
                 for i in range(1, distance):
                     diff = (
                         i * axis,
@@ -131,34 +136,36 @@ class PlaneEnvironment(interfaces.iEnvironment):
                     val = self.get_tile(temp)
                     if val is None:
                         break
-                    L.append((temp,val))
+                    L.append((temp, val))
                 vis_dec = VO_dec.step([e[1] in opaque for e in L], distance)
-                print(temp,"".join([str(el[1]) for el in L]),vis_dec)
+                print(temp, "".join([str(el[1]) for el in L]), vis_dec)
                 for i in range(len(vis_dec)):
-                    RES[L[i][0]]=vis_dec[i]
-                for i in range(len(vis_dec),len(L)):
-                    RES[L[i][0]]=False
-            print(VO_dec.lines,VO_inc.lines)
+                    RES[L[i][0]] = vis_dec[i]
+                for i in range(len(vis_dec), len(L)):
+                    RES[L[i][0]] = False
+            print(VO_dec.lines, VO_inc.lines)
         print(position in RES)
 
-
     def text_display(self, guide):
-        res=[]
+        res = []
         for E in self.grid:
-            s=""
+            s = ""
             for e in E:
-                val=guide[e]
-                s+=str(val)
+                val = guide[e]
+                s += str(val)
             res.append(s)
         return "\n".join(res)
 
     def getEnvData(self, agentID=None):
-        agent = self.agents.get(agentID)
+        agent = self.entities.get(agentID)
 
         pass
 
     def getMoves(self, agentID=None):
         pass
+
+    def runChanges(self):
+
 
 
 global_directions = {
@@ -167,7 +174,7 @@ global_directions = {
     PlaneEnvironment.dir_left: (1, -1),
     PlaneEnvironment.dir_right: (1, 1),
 }
-default_opaque={PlaneTile.wall,PlaneTile.curtain,PlaneTile.lethalwall}
+default_opaque = {PlaneTile.wall, PlaneTile.curtain, PlaneTile.lethalwall}
 
 
 def main():
@@ -175,10 +182,10 @@ def main():
         (0, 0, 19, 19, PlaneTile.wall),
         (2, 2, 4, 4, PlaneTile.wall)
     ]
-    guide={e:1 if e in default_opaque else 0 for e in range(tile_counter.value)}
+    guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     X = PlaneEnvironment(False, [20, 20], {"rects": R})
     print(X.text_display(guide))
-    print(X.view_direction((15,10), PlaneEnvironment.dir_up))
+    print(X.view_direction((15, 10), PlaneEnvironment.dir_up))
     return
 
 
