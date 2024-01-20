@@ -183,7 +183,9 @@ class PlaneEnvironment(itf.iEnvironment):
                     continue
                 D=self.view_direction(location,global_directions[direction])
                 data.update(D)
-        for 
+        for _,otherID in self.entityPriority:
+            otherent=self.entities[otherID]
+            otherloc=
         if entity.get(entity.S_view_self,False):
             D[entityID]=entity.properties
         return
