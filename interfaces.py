@@ -68,17 +68,24 @@ class iEnvironment:
         self.data['agent_current_action'] = D
         cur_prio=0
         cur_D=dict()
-        for agent_prio,agentID in self.entityPriority:
-            agent=self.entities[agentID]
-            agent: Entity
-            if agent_prio>cur_prio:
+        for ent_prio,entityID in self.entityPriority:
+            entity=self.entities[entityID]
+            entity: Entity
+            if ent_prio>cur_prio:
                 D.update(cur_D)
                 cur_D=dict()
-                cur_prio=agent_prio
-            agent.receiveEnvironmentData(self.getEnvData(agentID))
-            cur_D[agentID] = agent.performAction(self.getMoves(agentID))
+                cur_prio=ent_prio
+            envData=self.getEnvData(entityID)
+            if envData is None:
+                raise Exception("HEY!")
+            entity.receiveEnvironmentData(envData)
+            move=self.getMoves(entityID)
+            print(move)
+            chosenAction=entity.performAction(move)
+            cur_D[entityID] = chosenAction
         D.update(cur_D)
         self.data['agent_last_action'] = D
+        self.runChanges(D)
 
 
 def main():

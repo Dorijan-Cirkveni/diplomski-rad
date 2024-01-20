@@ -58,6 +58,7 @@ class PlaneEnvironment(itf.iEnvironment):
         super().__init__()
         if tileTypes is None:
             tileTypes = defaultTileTypes
+        self.tileTypes=tileTypes
         if entities is None:
             entities = []
         if shapes is None:
@@ -178,7 +179,7 @@ class PlaneEnvironment(itf.iEnvironment):
                 for j in range(self.scale[1]):
                     data[(i, j)] = self.get_tile(i, j)
         else:
-            for i, direction in enumerate(actions):
+            for i, direction in enumerate(global_actions):
                 if not entity.get(entity.view_directions[i], False):
                     continue
                 D = self.view_direction(location, global_directions[direction])
@@ -193,20 +194,34 @@ class PlaneEnvironment(itf.iEnvironment):
             data[otherID] = otherent.properties
         if entity.get(entity.S_view_self, False):
             data[entityID] = entity.properties
-        return
+        return data
 
-    def getMoves(self, agentID=None):
-        pass
+    def getMoves(self, entityID=None):
+        entity:itf.Entity=self.entities[entityID]
+        location=entity.get(entity.LOCATION,None)
+        goodMoves=[]
+        for move in global_actions:
+            direction=global_directions[move]
+            neigh_loc=Tadd(location,direction)
+            neigh_tile:PlaneTile=self.tileTypes[self.get_tile(neigh_loc)]
+            values=neigh_tile.checkAgainst(entity.properties)
+            goodMoves.append(move)
+        return goodMoves
+
+
 
     def moveDirection(self, movingAgents):
         return
 
-    def runChanges(self, moves):
+    def runChanges(self, moves:dict):
         print(moves)
+        moveTypes=set(moves.values())
+        for entityID,moveID in moves.items():
+            print(entityID,moveID)
         return
 
 
-actions = [PlaneEnvironment.dir_up, PlaneEnvironment.dir_down, PlaneEnvironment.dir_left, PlaneEnvironment.dir_right]
+global_actions = [PlaneEnvironment.dir_up, PlaneEnvironment.dir_down, PlaneEnvironment.dir_left, PlaneEnvironment.dir_right]
 global_directions = {
     PlaneEnvironment.dir_up: (0, -1),
     PlaneEnvironment.dir_down: (0, 1),
@@ -222,7 +237,7 @@ def main():
         (2, 2, 4, 4, PlaneTile.wall)
     ]
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
-    test_agent_1 = Agent.RecordedActionsAgent([actions[int(e)] for e in "0213210321"])
+    test_agent_1 = Agent.RecordedActionsAgent([global_actions[int(e)] for e in "0213210321"])
     test_entity_1 = itf.Entity(test_agent_1, {itf.Entity.LOCATION: (15, 5)})
     X = PlaneEnvironment(False, [20, 20], {"rects": R}, entities=[test_entity_1])
     print(X.text_display(guide))
