@@ -1,7 +1,9 @@
+import json
+
 import Agent
 import interfaces as itf
 import util
-from TupleDotOperations import Toper, Tadd, Tdiv, Tmul, Tsub, Tfdiv
+from TupleDotOperations import Toper, Tadd, Tdiv, Tmul, Tsub, Tfdiv, T_generate_links
 
 tile_counter = util.Counter()
 
@@ -35,6 +37,10 @@ class PlaneTile:
                 decision = value
         return decision
 
+    def checkIfMovable(self, agentData: dict):
+        decision = self.checkAgainst(agentData)
+        return decision in default_movable
+
 
 defaultTileTypes = [
     PlaneTile(PlaneTile.accessible),
@@ -54,11 +60,11 @@ class PlaneEnvironment(itf.iEnvironment):
     dir_left = counter.use()
     dir_right = counter.use()
 
-    def __init__(self, sAA, scale, shapes=None, entities=None, tileTypes=None):
+    def __init__(self, scale, shapes=None, entities=None, tileTypes=None):
         super().__init__()
         if tileTypes is None:
             tileTypes = defaultTileTypes
-        self.tileTypes=tileTypes
+        self.tileTypes = tileTypes
         if entities is None:
             entities = []
         if shapes is None:
@@ -66,7 +72,7 @@ class PlaneEnvironment(itf.iEnvironment):
         self.scale = scale
         self.grid = [[0 for i in range(scale[1])] for j in range(scale[0])]
         self.gridContents = dict()
-        rects = shapes.get("rects", [])
+        rects = shapes.get("rect", [])
         for (x1, y1, x2, y2, ID) in rects:
             for x in range(x1, x2 + 1):
                 self.grid[x][y1] = ID
@@ -98,6 +104,12 @@ class PlaneEnvironment(itf.iEnvironment):
             return None
         return self.grid[i][j]
 
+    def is_tile_movable(self, tilePos, agentData):
+        tileID = self.get_tile(tilePos)
+        tile = self.tileTypes[tileID]
+        movability = tile.checkIfMovable(agentData)
+        return movability
+
     def view_direction(self, position, direction, opaque=None):
         if opaque is None:
             opaque = default_opaque
@@ -112,7 +124,7 @@ class PlaneEnvironment(itf.iEnvironment):
             distance += 1
             start = Tadd(position, util.reverseIf((distance * direction, 0), axis == 1))
             scheck = self.get_tile(start)
-            print(start, scheck)
+            # print(start, scheck)
             if scheck is None:
                 break
             used_any = False
@@ -131,7 +143,7 @@ class PlaneEnvironment(itf.iEnvironment):
                         break
                     L.append((temp, val))
                 vis_inc = VO_inc.step([e[1] in opaque for e in L], distance)
-                print(temp, "".join([str(el[1]) for el in L]), vis_inc)
+                # print(temp, "".join([str(el[1]) for el in L]), vis_inc)
                 for i in range(len(vis_inc)):
                     RES[L[i][0]] = vis_inc[i]
                 for i in range(len(vis_inc), len(L)):
@@ -151,7 +163,7 @@ class PlaneEnvironment(itf.iEnvironment):
                         break
                     L.append((temp, val))
                 vis_dec = VO_dec.step([e[1] in opaque for e in L], distance)
-                print(temp, "".join([str(el[1]) for el in L]), vis_dec)
+                # print(temp, "".join([str(el[1]) for el in L]), vis_dec)
                 for i in range(len(vis_dec)):
                     RES[L[i][0]] = vis_dec[i]
                 for i in range(len(vis_dec), len(L)):
@@ -197,31 +209,83 @@ class PlaneEnvironment(itf.iEnvironment):
         return data
 
     def getMoves(self, entityID=None):
-        entity:itf.Entity=self.entities[entityID]
-        location=entity.get(entity.LOCATION,None)
-        goodMoves=[]
+        entity: itf.Entity = self.entities[entityID]
+        location = entity.get(entity.LOCATION, None)
+        goodMoves = []
         for move in global_actions:
-            direction=global_directions[move]
-            neigh_loc=Tadd(location,direction)
-            neigh_tile:PlaneTile=self.tileTypes[self.get_tile(neigh_loc)]
-            values=neigh_tile.checkAgainst(entity.properties)
+            direction = global_directions[move]
+            neigh_loc = Tadd(location, direction)
+            movability = self.is_tile_movable(neigh_loc, entity.properties)
             goodMoves.append(move)
         return goodMoves
 
+    def moveEntity(self, entID, destination):
+        ent = self.entities[entID]
+        if not self.is_tile_movable(destination, ent.properties):
+            return False
+        source = ent.get(ent.LOCATION, None)
+        if source in self.taken:
+            self.taken.pop(source)
+        ent.properties[ent.LOCATION] = destination
+        self.taken[destination] = entID
+        return True
 
-
-    def moveDirection(self, movingAgents):
+    def moveDirection(self, movingEntIDs, direction):
+        print(direction, end="->")
+        locations = []
+        for ID in movingEntIDs:
+            ent: itf.Entity = self.entities[ID]
+            locations.append(ent.get(ent.LOCATION, None))
+        M = T_generate_links(set(self.taken.keys()), locations, direction)
+        for L in M:
+            F = L.pop()
+            while L:
+                E = L.pop()
+                entID = self.taken[E]
+                if not self.moveEntity(entID, F):
+                    break
+                F = E
         return
 
-    def runChanges(self, moves:dict):
-        print(moves)
-        moveTypes=set(moves.values())
-        for entityID,moveID in moves.items():
-            print(entityID,moveID)
+    def runChanges(self, moves: dict):
+        moveTypes = {e: [] for e in moves.values()}
+        for entityID, moveID in moves.items():
+            moveTypes[moveID].append(entityID)
+        for e, V in moveTypes.items():
+            self.moveDirection(V, global_directions[e])
         return
 
+def readPlaneEnvironment(lines,agentDict):
+    scale=(20,20)
+    shapes=dict()
+    agents=[]
+    entities=[]
+    for e in lines:
+        E=[f for f in e.split(" ") if f!=""]
+        if E[0]=="scale":
+            scale=(int(E[1]),int(E[2]))
+        elif E[0]=="shape":
+            shapetype=E[1]
+            shapedata=tuple([int(e) for e in E[2:]])
+        elif E[0]=="agent":
+            agents.append(agentDict[E[1]](E[2:]))
+        elif E[0]=="entity":
+            data:dict=json.load(E[4])
+            data[itf.Entity.LOCATION]=
+            entity=itf.Entity(agents[int(E[1])],)
+            entities.append(entity)
+        elif E[0]=="data":
+            pass
+    RES=PlaneEnvironment(
+        scale=scale,
+        shapes=shapes,
+        entities=entities
+    )
+    return
 
-global_actions = [PlaneEnvironment.dir_up, PlaneEnvironment.dir_down, PlaneEnvironment.dir_left, PlaneEnvironment.dir_right]
+
+global_actions = [PlaneEnvironment.dir_up, PlaneEnvironment.dir_down, PlaneEnvironment.dir_left,
+                  PlaneEnvironment.dir_right]
 global_directions = {
     PlaneEnvironment.dir_up: (0, -1),
     PlaneEnvironment.dir_down: (0, 1),
@@ -229,7 +293,16 @@ global_directions = {
     PlaneEnvironment.dir_right: (1, 1),
 }
 default_opaque = {PlaneTile.wall, PlaneTile.curtain, PlaneTile.lethalwall}
+default_movable = {PlaneTile.goal, PlaneTile.curtain, PlaneTile.lethal, PlaneTile.accessible}
+keys={
+    "wall":PlaneTile.wall,
+    "curt":PlaneTile.curtain,
+    "leth":PlaneTile.lethal,
+    "lewa":PlaneTile.lethalwall,
+    "goal":PlaneTile.goal,
+    "acce":PlaneTile.accessible
 
+}
 
 def main():
     R = [
@@ -239,10 +312,19 @@ def main():
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     test_agent_1 = Agent.RecordedActionsAgent([global_actions[int(e)] for e in "0213210321"])
     test_entity_1 = itf.Entity(test_agent_1, {itf.Entity.LOCATION: (15, 5)})
-    X = PlaneEnvironment(False, [20, 20], {"rects": R}, entities=[test_entity_1])
+    X = PlaneEnvironment(scale=[20, 20], shapes={"rect": R}, entities=[test_entity_1])
+    TXR='''scale 20 20
+    shape rect 0 0 19 19 2
+    shape rect 2 2 4 4 2
+    agent RAA 0213210321
+    entity 
+    '''
+    print(PlaneTile.wall)
     print(X.text_display(guide))
     # print(X.view_direction((15, 10), PlaneEnvironment.dir_up))
-    X.runIteration()
+    for i in range(20):
+        X.runIteration()
+        print(X.taken)
     print(X.text_display(guide))
     return
 

@@ -1,6 +1,18 @@
 import interfaces
 
 
+class BoxAgent(interfaces.iAgent):
+    def __init__(self):
+        super().__init__()
+
+    def receiveEnvironmentData(self, data):
+        return
+
+    def performAction(self, actions):
+        return None
+
+
+
 class MirrorAgent(interfaces.iAgent):
     def __init__(self, mirroredAgent, actionMirrors: dict):
         super().__init__()
@@ -17,6 +29,7 @@ class MirrorAgent(interfaces.iAgent):
     def performAction(self, actions):
         return actions.get(self.actionMirrors.get(self.agent_data, self.agent_data), None)
 
+def initMirrorAgent()
 
 class RecordedActionsAgent(interfaces.iAgent):
     def __init__(self, actions):

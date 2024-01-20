@@ -21,7 +21,7 @@ class Entity:
     S_view_down = counter.use()
     S_view_right = counter.use()
     S_view_left = counter.use()
-    view_directions=[S_view_up,S_view_down,S_view_left,S_view_right]
+    view_directions = [S_view_up, S_view_down, S_view_left, S_view_right]
     S_view_self = counter.use()
     NAME = counter.use()
     LOCATION = counter.use()
@@ -32,7 +32,7 @@ class Entity:
 
     def receiveEnvironmentData(self, data):
         if not self.properties.get(Entity.S_mirror, False):
-            data['agent_last_action']=dict()
+            data['agent_last_action'] = dict()
         if self.properties.get(Entity.S_blind, False):
             data = dict()
         return self.agent.receiveEnvironmentData(data)
@@ -43,16 +43,17 @@ class Entity:
         return self.agent.performAction(actions)
 
     def getPriority(self):
-        return self.properties.get("priority",0)
+        return self.properties.get("priority", 0)
 
-    def get(self,key,default):
-        return self.properties.get(key,default)
+    def get(self, key, default):
+        return self.properties.get(key, default)
+
 
 class iEnvironment:
     def __init__(self):
         self.data = dict()
         self.entities = dict()
-        self.entityPriority=[]
+        self.entityPriority = []
 
     def getEnvData(self, agentID=None):
         raise NotImplementedError
@@ -66,22 +67,21 @@ class iEnvironment:
     def runIteration(self):
         D = dict()
         self.data['agent_current_action'] = D
-        cur_prio=0
-        cur_D=dict()
-        for ent_prio,entityID in self.entityPriority:
-            entity=self.entities[entityID]
+        cur_prio = 0
+        cur_D = dict()
+        for ent_prio, entityID in self.entityPriority:
+            entity = self.entities[entityID]
             entity: Entity
-            if ent_prio>cur_prio:
+            if ent_prio > cur_prio:
                 D.update(cur_D)
-                cur_D=dict()
-                cur_prio=ent_prio
-            envData=self.getEnvData(entityID)
+                cur_D = dict()
+                cur_prio = ent_prio
+            envData = self.getEnvData(entityID)
             if envData is None:
                 raise Exception("HEY!")
             entity.receiveEnvironmentData(envData)
-            move=self.getMoves(entityID)
-            print(move)
-            chosenAction=entity.performAction(move)
+            move = self.getMoves(entityID)
+            chosenAction = entity.performAction(move)
             cur_D[entityID] = chosenAction
         D.update(cur_D)
         self.data['agent_last_action'] = D
