@@ -22,7 +22,6 @@ class RecordedActionsAgent(interfaces.iAgent):
     def __init__(self, actions):
         self.i = 0
         self.actions = actions
-        super().__init__()
 
     def receiveEnvironmentData(self, data):
         return
