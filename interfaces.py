@@ -9,22 +9,19 @@ class iAgent:
         raise NotImplementedError
 
 
-counter = util.Counter()
-
-
 class Entity:
-    S_blind = counter.use()
-    S_allseeing = counter.use()
-    S_frozen = counter.use()
-    S_mirror = counter.use()
-    S_view_up = counter.use()
-    S_view_down = counter.use()
-    S_view_right = counter.use()
-    S_view_left = counter.use()
+    S_blind = "blind"
+    S_allseeing = "allsee"
+    S_frozen = "frozen"
+    S_mirror = "mirror"
+    S_view_up = "viewup"
+    S_view_down = "viewdn"
+    S_view_right = "viewri"
+    S_view_left = "viewle"
     view_directions = [S_view_up, S_view_down, S_view_left, S_view_right]
-    S_view_self = counter.use()
-    NAME = counter.use()
-    LOCATION = counter.use()
+    S_view_self = "viewse"
+    NAME = "name"
+    LOCATION = "loc"
 
     def __init__(self, agent: iAgent, properties=None):
         self.properties = dict() if properties is None else properties
