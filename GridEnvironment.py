@@ -279,7 +279,7 @@ def readPlaneEnvironment(raw, agentDict):
         elif E[0] == "entity":
             data: dict = json.loads(E[4])
             data[itf.Entity.LOCATION] = (int(E[2]), int(E[3]))
-            entity = itf.Entity(agents[int(E[1])], )
+            entity = itf.Entity(agents[int(E[1])],data)
             entities.append(entity)
         elif E[0] == "data":
             pass
@@ -313,21 +313,12 @@ keys = {
 
 
 def main():
-    R = [
-        (0, 0, 19, 19, PlaneTile.wall),
-        (2, 2, 4, 4, PlaneTile.wall)
-    ]
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
-    test_agent_1 = Agent.RecordedActionsAgent([global_actions[int(e)] for e in "0213210321"])
-    test_entity_1 = itf.Entity(test_agent_1, {itf.Entity.LOCATION: (15, 5)})
-    X = PlaneEnvironment(scale=[20, 20], shapes={"rect": R}, entities=[test_entity_1])
-    TXR = '''scale 20 20
-    shape rect 0 0 19 19 2
-    shape rect 2 2 4 4 2
-    agent RAA 0213210321
-    entity 0 15 5 {}
-    '''
-    TX = readPlaneEnvironment(TXR,{"RAA":Agent.initRAAFactory(global_actions)})
+    F=open("tests/basic_tests.txt","r")
+    TESTS=F.read().split("\n\n")
+    F.close()
+    TXR = TESTS[0]
+    X = readPlaneEnvironment(TXR,{"RAA":Agent.initRAAFactory(global_actions)})
     print(PlaneTile.wall)
     print(X.text_display(guide))
     # print(X.view_direction((15, 10), PlaneEnvironment.dir_up))
