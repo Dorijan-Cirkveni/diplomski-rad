@@ -28,8 +28,12 @@ class MirrorAgent(interfaces.iAgent):
     def performAction(self, actions):
         return actions.get(self.actionMirrors.get(self.agent_data, self.agent_data), None)
 
+
 def intMAFactory(actionMirrors):
-    return
+    def MakeMirrorAgent(mirroredAgent):
+        return MirrorAgent(mirroredAgent, actionMirrors)
+
+    return MakeMirrorAgent
 
 
 class RecordedActionsAgent(interfaces.iAgent):
@@ -52,10 +56,26 @@ def initRAAFactory(translation):
     def initRAA(s="4213214321"):
         actions = []
         for e in s[0]:
-            i=int(e)
-            actions.append(translation[i%len(translation)])
+            i = int(e)
+            actions.append(translation[i % len(translation)])
         return RecordedActionsAgent(actions)
+
     return initRAA
+
+class NeuralNetworkAgent(interfaces.iAgent):
+    def __init__(self, watchedTiles, actions):
+        self.i = 0
+        self.actions = actions
+
+    def receiveEnvironmentData(self, data):
+        return
+
+    def performAction(self, actions):
+        cur = self.actions[self.i]
+        self.i += 1
+        if self.i == len(self.actions):
+            self.i = 0
+        return cur
 
 
 def main():
