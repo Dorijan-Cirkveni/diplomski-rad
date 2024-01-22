@@ -1,4 +1,5 @@
 import util
+import TupleDotOperations as tdo
 
 
 class iAgent:
@@ -20,6 +21,7 @@ class Entity:
     S_view_left = "viewle"
     view_directions = [S_view_up, S_view_down, S_view_left, S_view_right]
     S_view_self = "viewse"
+    S_relativepos = "relpos"
     NAME = "name"
     LOCATION = "loc"
 
@@ -32,6 +34,15 @@ class Entity:
             data['agent_last_action'] = dict()
         if self.properties.get(Entity.S_blind, False):
             data = dict()
+        if self.properties.get(Entity.S_relativepos, False):
+            relativeTo = self.get(self.LOCATION, (0, 0))
+            newdata = dict()
+            for k, v in data:
+                if type(k) != tuple or len(k) != 2:
+                    newdata[k] = v
+                else:
+                    newdata[tdo.Tsub(k, relativeTo)] = v
+            data = newdata
         return self.agent.receiveEnvironmentData(data)
 
     def performAction(self, actions):

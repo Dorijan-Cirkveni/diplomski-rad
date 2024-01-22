@@ -3,7 +3,8 @@ import json
 import Agent
 import interfaces as itf
 import util
-from TupleDotOperations import Toper, Tadd, Tdiv, Tmul, Tsub, Tfdiv, T_generate_links
+from definitions import *
+from TupleDotOperations import *
 
 tile_counter = util.Counter()
 
@@ -110,10 +111,10 @@ class PlaneEnvironment(itf.iEnvironment):
         movability = tile.checkIfMovable(agentData)
         return movability
 
-    def view_direction(self, position, direction, opaque=None):
+    def view_direction(self, position, direction: tuple, opaque=None):
         if opaque is None:
             opaque = default_opaque
-        (axis, direction) = global_directions[direction]
+        (axis, sig) = int(direction[1] == 0), direction[0] + direction[1]
         data = {}
         VO_inc = util.VisionOctant()
         VO_dec = util.VisionOctant()
@@ -122,7 +123,7 @@ class PlaneEnvironment(itf.iEnvironment):
         RES = dict()
         while used_any:
             distance += 1
-            start = Tadd(position, util.reverseIf((distance * direction, 0), axis == 1))
+            start = Tadd(position, util.reverseIf((distance * sig, 0), axis == 1))
             scheck = self.get_tile(start)
             # print(start, scheck)
             if scheck is None:
@@ -191,10 +192,10 @@ class PlaneEnvironment(itf.iEnvironment):
                 for j in range(self.scale[1]):
                     data[(i, j)] = self.get_tile(i, j)
         else:
-            for i, direction in enumerate(global_actions):
+            for i, direction in enumerate(V2DIRS):
                 if not entity.get(entity.view_directions[i], False):
                     continue
-                D = self.view_direction(location, global_directions[direction])
+                D = self.view_direction(location, direction)
                 data.update(D)
         for _, otherID in self.entityPriority:
             if otherID == entityID:
@@ -212,8 +213,7 @@ class PlaneEnvironment(itf.iEnvironment):
         entity: itf.Entity = self.entities[entityID]
         location = entity.get(entity.LOCATION, None)
         goodMoves = []
-        for move in global_actions:
-            direction = global_directions[move]
+        for move, direction in enumerate(global_moves):
             neigh_loc = Tadd(location, direction)
             movability = self.is_tile_movable(neigh_loc, entity.properties)
             goodMoves.append(move)
@@ -252,7 +252,9 @@ class PlaneEnvironment(itf.iEnvironment):
         for entityID, moveID in moves.items():
             moveTypes[moveID].append(entityID)
         for e, V in moveTypes.items():
-            self.moveDirection(V, global_directions[e])
+            if e==(0,0):
+                continue
+            self.moveDirection(V, e)
         return
 
 
@@ -264,22 +266,22 @@ def readPlaneEnvironment(raw, agentDict):
     for e in raw.split("\n"):
         E = [f for f in e.split(" ") if f != ""]
         print(E)
-        if len(E)==0:
+        if len(E) == 0:
             continue
         if E[0] == "scale":
             scale = (int(E[1]), int(E[2]))
         elif E[0] == "shape":
             shapetype = E[1]
             shapedata = tuple([int(e) for e in E[2:]])
-            L=shapes.get(shapetype,[])
-            shapes[shapetype]=L
+            L = shapes.get(shapetype, [])
+            shapes[shapetype] = L
             L.append(shapedata)
         elif E[0] == "agent":
             agents.append(agentDict[E[1]](E[2:]))
         elif E[0] == "entity":
             data: dict = json.loads(E[4])
             data[itf.Entity.LOCATION] = (int(E[2]), int(E[3]))
-            entity = itf.Entity(agents[int(E[1])],data)
+            entity = itf.Entity(agents[int(E[1])], data)
             entities.append(entity)
         elif E[0] == "data":
             pass
@@ -291,14 +293,6 @@ def readPlaneEnvironment(raw, agentDict):
     return RES
 
 
-global_actions = [PlaneEnvironment.dir_up, PlaneEnvironment.dir_down, PlaneEnvironment.dir_left,
-                  PlaneEnvironment.dir_right]
-global_directions = {
-    PlaneEnvironment.dir_up: (0, -1),
-    PlaneEnvironment.dir_down: (0, 1),
-    PlaneEnvironment.dir_left: (1, -1),
-    PlaneEnvironment.dir_right: (1, 1),
-}
 default_opaque = {PlaneTile.wall, PlaneTile.curtain, PlaneTile.lethalwall}
 default_movable = {PlaneTile.goal, PlaneTile.curtain, PlaneTile.lethal, PlaneTile.accessible}
 keys = {
@@ -310,15 +304,16 @@ keys = {
     "acce": PlaneTile.accessible
 
 }
+global_moves = [(0, 0)] + V2DIRS
 
 
 def main():
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
-    F=open("tests/basic_tests.txt","r")
-    TESTS=F.read().split("\n\n")
+    F = open("tests/basic_tests.txt", "r")
+    TESTS = F.read().split("\n\n")
     F.close()
     TXR = TESTS[0]
-    X = readPlaneEnvironment(TXR,{"RAA":Agent.initRAAFactory(global_actions)})
+    X = readPlaneEnvironment(TXR, {"RAA": Agent.initRAAFactory(global_moves)})
     print(PlaneTile.wall)
     print(X.text_display(guide))
     # print(X.view_direction((15, 10), PlaneEnvironment.dir_up))

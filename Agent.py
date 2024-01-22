@@ -28,6 +28,9 @@ class MirrorAgent(interfaces.iAgent):
     def performAction(self, actions):
         return actions.get(self.actionMirrors.get(self.agent_data, self.agent_data), None)
 
+def intMAFactory(actionMirrors):
+    return
+
 
 class RecordedActionsAgent(interfaces.iAgent):
     def __init__(self, actions):
@@ -46,8 +49,11 @@ class RecordedActionsAgent(interfaces.iAgent):
 
 
 def initRAAFactory(translation):
-    def initRAA(s):
-        actions = [translation[int(e)] for e in "0213210321"]
+    def initRAA(s="4213214321"):
+        actions = []
+        for e in s[0]:
+            i=int(e)
+            actions.append(translation[i%len(translation)])
         return RecordedActionsAgent(actions)
     return initRAA
 
