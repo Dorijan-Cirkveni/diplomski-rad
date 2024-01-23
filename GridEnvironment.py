@@ -146,9 +146,8 @@ class PlaneEnvironment(itf.iEnvironment):
                 vis_inc = VO_inc.step([e[1] in opaque for e in L], distance)
                 # print(temp, "".join([str(el[1]) for el in L]), vis_inc)
                 for i in range(len(vis_inc)):
-                    RES[L[i][0]] = vis_inc[i]
-                for i in range(len(vis_inc), len(L)):
-                    RES[L[i][0]] = False
+                    if vis_inc[i]:
+                        RES[L[i][0]]=L[i][1]
             if VO_dec.lines:
                 used_any = True
                 L = [(start, scheck)]
@@ -166,9 +165,8 @@ class PlaneEnvironment(itf.iEnvironment):
                 vis_dec = VO_dec.step([e[1] in opaque for e in L], distance)
                 # print(temp, "".join([str(el[1]) for el in L]), vis_dec)
                 for i in range(len(vis_dec)):
-                    RES[L[i][0]] = vis_dec[i]
-                for i in range(len(vis_dec), len(L)):
-                    RES[L[i][0]] = False
+                    if vis_dec[i]:
+                        RES[L[i][0]]=L[i][1]
         return RES
 
     def text_display(self, guide):

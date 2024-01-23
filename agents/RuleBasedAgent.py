@@ -21,13 +21,16 @@ class Rule:
 
 
 class RuleBasedAgent(iAgent):
-    def __init__(self, rules, default):
-        self.rules = rules
+    def __init__(self, ruleList, default):
+        self.rules:dict = dict()
+        for rule in ruleList:
+
         self.default = default
         self.persistent=dict()
+        self.decision=default
 
     def receiveEnvironmentData(self, data):
-
+        for
         pass
 
     def performAction(self, actions):
@@ -40,7 +43,7 @@ def ruleTest():
         'A2': True,
         'A4': True
     }
-    R1 = Rule(X, "A3")
+    R1 = Rule(X, {"A3":True})
     print(R1.check({'A1': True, 'A2': True, "A4": True}))
 
 
