@@ -3,6 +3,7 @@ from definitions import *
 from interfaces import iAgent
 from util import Counter
 
+
 class Rule:
     def __init__(self, conditions: dict, result):
         self.conditions: dict = conditions
@@ -15,42 +16,57 @@ class Rule:
         return self.result
 
     def __copy__(self):
-        X={e:v for e,v in self.conditions}
-        new=Rule(X,self.result)
+        X = {e: v for e, v in self.conditions}
+        new = Rule(X, self.result)
         return new
 
 
 class RuleBasedAgent(iAgent):
     def __init__(self, ruleList, default, persistent):
-        self.ruleList=ruleList
-        self.byElement=dict()
-        for i,rule in enumerate(ruleList):
-            for element,_ in rule:
-                D=self.byElement.get(element,set())
+        self.ruleList = ruleList
+        self.byElement = dict()
+        for i, rule in enumerate(ruleList):
+            for element, _ in rule:
+                D = self.byElement.get(element, set())
                 D.add(i)
-                self.byElement[element]=D
+                self.byElement[element] = D
         self.default = default
-        self.persistent={e:None for e in persistent}
-        self.decision=default
+        self.persistent = {e: None for e in persistent}
+        self.decision = default
 
-    def receiveEnvironmentData(self, data:dict):
-        relevant=set()
-        for el,V in self.byElement:
+    def receiveEnvironmentData(self, data: dict):
+        curActionState=dict()
+        relevant = set()
+        for el, V in self.byElement:
             if el not in data:
                 continue
-            relevant|=V
+            for ruleNumber in V:
+                removing=set()
+                if ruleNumber not in relevant:
+                    rule:Rule=self.ruleList[ruleNumber]
+                    rule=rule.__copy__()
+                    if not rule.conditions[el](data[el]):
+                        continue
+                else:
+                    rule=self.ruleList[ruleNumber]
+                for e in rule.conditions.keys():
+                    if e in data:
+                        if rule.conditions[el](data[el]):
+                            removing.add(e)
+                            continue
+                    S=curActionState.get(e,set())
+                    S.add(ruleNumber)
+                    curActionState[e]=S
+                relevant.add()
+                else:
+                    curActionState[]
+
+
         while relevant:
-            ruleIndex=relevant.pop()
-            rule:Rule=self.ruleList[ruleIndex]
-            result=rule.check(data)
-            if result is None:
-                continue
-            data[result[0]]=result[1]
-            if result[0] in self.byElement:
-                relevant|=self.byElement[result[0]]
         pass
 
     def performAction(self, actions):
+        for
         pass
 
 
@@ -60,12 +76,12 @@ def ruleTest():
         'A2': True,
         'A4': True
     }
-    R1 = Rule(X, {"A3":True})
+    R1 = Rule(X, {"A3": True})
     print(R1.check({'A1': True, 'A2': True, "A4": True}))
 
 
 def main():
-    X=bool
+    X = bool
     print(X(0))
     ruleTest()
     return
