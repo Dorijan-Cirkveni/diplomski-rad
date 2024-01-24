@@ -37,7 +37,7 @@ class RuleBasedAgent(iAgent):
 
     def receiveEnvironmentData(self, data:dict):
         for e,v in data.items():
-
+            
         pass
 
     def performAction(self, actions):
