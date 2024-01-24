@@ -4,39 +4,49 @@ from interfaces import iAgent
 from util import Counter
 
 
-class Rule:
+class iRule:
+    def check(self,data):
+        raise NotImplementedError
+    def getCategories(self):
+        raise NotImplementedError
+    def reduce(self,variable,value):
+        raise NotImplementedError
+    def __copy__(self):
+        raise NotImplementedError
+
+
+class Rule(iRule):
     def __init__(self, conditions: dict, result):
         self.conditions: dict = conditions
         self.result = result
+    def getCategories(self):
+        return set(self.conditions.keys())
 
     def check(self, data: dict):
         for el, val in self.conditions.items():
             if el not in data or data[el] != val:
                 return None
         return self.result
-
     def __copy__(self):
         X = {e: v for e, v in self.conditions}
         new = Rule(X, self.result)
         return new
-    def reduce(self,data):
-        satisfied=set()
-        for el,lam in self.conditions:
-            if el not in data:
-                continue
-            if callable(lam):
-                if not lam(el):
-                    continue
-            elif lam!=data[el]:
-                continue
-            satisfied.add(el)
-        for e in satisfied:
-            self.conditions.pop(e)
-        return satisfied
+    def reduce(self,variable,value):
+        if variable not in self.conditions:
+            return self,False
+        condition=self.conditions[value]
+        if callable(condition):
+            if not condition(value):
+                return self,False
+        elif condition!=value:
+            return self,False
+        self.conditions.pop(variable)
+        return self,True
 
-class TranslationRule(Rule):
-    def check(self, data: dict):
-        result=self.
+class FirstOrderRule(Rule):
+    def getCategories(self):
+        return Rule.getCategories()
+
 
 
 class RuleBasedAgent(iAgent):
