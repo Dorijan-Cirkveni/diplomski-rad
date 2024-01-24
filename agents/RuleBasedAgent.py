@@ -4,6 +4,13 @@ from interfaces import iAgent
 from util import Counter
 
 
+def CallOrEqual(condition,value):
+    if callable(condition):
+        return condition(value)
+    else:
+        return condition==value
+
+
 class iRule:
     def check(self,data):
         raise NotImplementedError
@@ -35,17 +42,28 @@ class Rule(iRule):
         if variable not in self.conditions:
             return self,False
         condition=self.conditions[value]
-        if callable(condition):
-            if not condition(value):
-                return self,False
-        elif condition!=value:
+        if not CallOrEqual(condition,value):
             return self,False
         self.conditions.pop(variable)
-        return self,True
+        return self,len(self.conditions)==0
 
-class FirstOrderRule(Rule):
+class FirstOrderRule(iRule):
+    def __init__(self,conditions:list,result):
+        self.conditions=conditions
+        self.result=result
+    def __copy__(self):
+        newconds=self.conditions.copy()
+        newres=self.result
+        return FirstOrderRule(newconds,newres)
     def getCategories(self):
-        return Rule.getCategories()
+        return {e[0] for e in self.conditions}|{"FO"}
+    def reduce(self,variable,value):
+        (categoryCondition,valueCondition)=self.conditions[-1]
+        if CallOrEqual(categoryCondition,variable):
+            if CallOrEqual(valueCondition,value):
+                self.conditions.pop()
+        return self,len(self.conditions)==0
+
 
 
 
