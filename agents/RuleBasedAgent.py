@@ -26,16 +26,28 @@ class RuleBasedAgent(iAgent):
         self.byElement=dict()
         for i,rule in enumerate(ruleList):
             for element,_ in rule:
-                D=self.byElement.get(element,dict())
-                D[i]=rule
+                D=self.byElement.get(element,set())
+                D.add(i)
                 self.byElement[element]=D
         self.default = default
         self.persistent={e:None for e in persistent}
         self.decision=default
 
     def receiveEnvironmentData(self, data:dict):
-        for e,v in data.items():
-
+        relevant=set()
+        for el,V in self.byElement:
+            if el not in data:
+                continue
+            relevant|=V
+        while relevant:
+            ruleIndex=relevant.pop()
+            rule:Rule=self.ruleList[ruleIndex]
+            result=rule.check(data)
+            if result is None:
+                continue
+            data[result[0]]=result[1]
+            if result[0] in self.byElement:
+                relevant|=self.byElement[result[0]]
         pass
 
     def performAction(self, actions):
