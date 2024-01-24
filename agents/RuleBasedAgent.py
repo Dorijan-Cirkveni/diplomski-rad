@@ -37,9 +37,9 @@ class RuleBasedAgent(iAgent):
     def receiveEnvironmentData(self, data: dict):
         curActionState=dict()
         relevant = set()
-        for el, V in self.byElement:
-            if el not in data:
-                continue
+        element_queue=[(el,V) for el,V in self.byElement.items() if el in data]
+        while element_queue:
+            el,V=element_queue.pop()
             for ruleNumber in V:
                 removing=set()
                 if ruleNumber not in relevant:
