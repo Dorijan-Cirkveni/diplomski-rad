@@ -22,7 +22,17 @@ class Rule:
     def reduce(self,data):
         satisfied=set()
         for el,lam in self.conditions:
-            lam:function
+            if el not in data:
+                continue
+            if callable(lam):
+                if not lam(el):
+                    continue
+            elif lam!=data[el]:
+                continue
+            satisfied.add(el)
+        for e in satisfied:
+            self.conditions.pop(e)
+        return satisfied
 
 class TranslationRule(Rule):
     def check(self, data: dict):
