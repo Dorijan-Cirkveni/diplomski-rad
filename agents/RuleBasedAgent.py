@@ -19,14 +19,23 @@ class Rule:
         X = {e: v for e, v in self.conditions}
         new = Rule(X, self.result)
         return new
+    def reduce(self,data):
+        satisfied=set()
+        for el,lam in self.conditions:
+            lam:function
+
+class TranslationRule(Rule):
+    def check(self, data: dict):
+        result=self.
 
 
 class RuleBasedAgent(iAgent):
-    def __init__(self, ruleList, default, persistent):
-        self.ruleList = ruleList
+    def __init__(self, rulelist:list, persistent, default):
+        self.rulelist:list = rulelist
         self.byElement = dict()
-        for i, rule in enumerate(ruleList):
-            for element, _ in rule:
+        for i, rule in enumerate(rulelist):
+            rule:Rule
+            for element, _ in rule.conditions.items():
                 D = self.byElement.get(element, set())
                 D.add(i)
                 self.byElement[element] = D
@@ -36,39 +45,34 @@ class RuleBasedAgent(iAgent):
 
     def receiveEnvironmentData(self, data: dict):
         curRules=dict()
-        relevant = set()
-        element_queue=[(el,V) for el,V in self.byElement.items() if el in data]
-        while element_queue:
-            el,V=element_queue.pop()
-            for ruleNumber in V:
-                if
-                removing=set()
-                if ruleNumber not in relevant:
-                    rule:Rule=self.ruleList[ruleNumber]
-                    rule=rule.__copy__()
-                    if not rule.conditions[el](data[el]):
-                        continue
-                else:
-                    rule=self.ruleList[ruleNumber]
-                for e in rule.conditions.keys():
-                    if e in data:
-                        if rule.conditions[el](data[el]):
-                            removing.add(e)
-                            continue
-                    S=curActionState.get(e,set())
-                    S.add(ruleNumber)
-                    curActionState[e]=S
-                relevant.add()
-                else:
-                    curActionState[]
-
-
-        while relevant:
+        curByElement=dict()
+        S=set()
+        L=[]
+        for el_main,v in self.byElement.items():
+            if el_main not in data:
+                continue
+            S.update(v)
+            L.append(el_main)
+        for ruleID in S:
+            if ruleID not in curRules:
+                rule=self.rulelist[ruleID]
+                curRules[ruleID]=rule.__copy__()
+                for e in rule.conditions:
+                    S=curByElement.get(e,set())
+                    S.add(ruleID)
+                    curByElement[e]=S
+        while L:
+            el=L.pop()
+            ruleID=
         pass
 
     def performAction(self, actions):
-        for
-        pass
+        action=self.default
+        for e in actions:
+            if self.persistent.get(e,None) in (None,False):
+                continue
+            action=e
+        return action
 
 
 def ruleTest():
@@ -79,6 +83,9 @@ def ruleTest():
     }
     R1 = Rule(X, {"A3": True})
     print(R1.check({'A1': True, 'A2': True, "A4": True}))
+    actions=V2DIRS + [(0, 0)]
+    RBA=RuleBasedAgent([R1],set(V2DIRS),ACTIONS[-1])
+    RBA.receiveEnvironmentData({'A1':True})
 
 
 def main():
