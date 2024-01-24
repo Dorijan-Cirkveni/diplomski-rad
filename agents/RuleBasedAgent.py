@@ -23,10 +23,12 @@ class Rule:
 class RuleBasedAgent(iAgent):
     def __init__(self, ruleList, default, persistent):
         self.ruleList=ruleList
-        for rule in ruleList:
+        self.byElement=dict()
+        for i,rule in enumerate(ruleList):
             for element,_ in rule:
-                S=self.rules.get(element,set())
-
+                D=self.byElement.get(element,dict())
+                D[i]=rule
+                self.byElement[element]=D
         self.default = default
         self.persistent={e:None for e in persistent}
         self.decision=default
