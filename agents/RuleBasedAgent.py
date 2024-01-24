@@ -3,10 +3,8 @@ from definitions import *
 from interfaces import iAgent
 from util import Counter
 
-RuleIDCounter=Counter()
 class Rule:
-    def __init__(self, ID, conditions: dict, result):
-        self.ID=ID
+    def __init__(self, conditions: dict, result):
         self.conditions: dict = conditions
         self.result = result
 
@@ -18,26 +16,24 @@ class Rule:
 
     def __copy__(self):
         X={e:v for e,v in self.conditions}
-        new=Rule(RuleIDCounter.use(),X,self.result)
+        new=Rule(X,self.result)
         return new
-
-    def __hash__(self):
-        return hash(self.ID)
 
 
 class RuleBasedAgent(iAgent):
     def __init__(self, ruleList, default, persistent):
-        self.rules:dict = dict()
+        self.ruleList=ruleList
         for rule in ruleList:
             for element,_ in rule:
-                S=
+                S=self.rules.get(element,set())
+
         self.default = default
         self.persistent={e:None for e in persistent}
         self.decision=default
 
     def receiveEnvironmentData(self, data:dict):
         for e,v in data.items():
-            
+
         pass
 
     def performAction(self, actions):
