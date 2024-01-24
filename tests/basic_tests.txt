@@ -1,4 +1,4 @@
-name "Basic Test 1"
+name "Environment Test 1"
 scale 20 20
 shape rect 0 18 19 19 1
 shape rect 0 0 19 19 2
@@ -6,7 +6,7 @@ shape rect 2 2 4 4 2
 agent RAA 44444444442222222222223333333333322222222221111111111111
 entity 0 15 5 {}
 
-name "Basic Test 2"
+name "Environment Test 2"
 scale 20 20
 shape rect 0 18 19 19 1
 shape rect 0 0 19 19 2
