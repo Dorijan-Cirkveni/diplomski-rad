@@ -54,12 +54,21 @@ class Rule(iRule):
         return self, len(self.conditions) == 0, {variable}
 
     def getResult(self):
-        pass
+        if self.conditions:
+            return None
+        return self.result
+
+
+class iFirstOrderCondition:
+    def check(self, value, metadata):
+        raise NotImplementedError
+
 
 class FirstOrderRule(iRule):
     def __init__(self, conditions: list, result):
         self.conditions = conditions
         self.result = result
+        self.metadata = dict()
 
     def __copy__(self):
         newconds = self.conditions.copy()
@@ -70,33 +79,77 @@ class FirstOrderRule(iRule):
         return {"FO"}
 
     def reduce(self, variable, value):
-        new = self
         (categoryCondition, valueCondition) = self.conditions[-1]
-        if CallOrEqual(categoryCondition, variable):
-            if CallOrEqual(valueCondition, value):
-                new = self.__copy__()
-                new.conditions.pop()
+        categoryCondition: iFirstOrderCondition
+        valueCondition: iFirstOrderCondition
+        isValid, newData = categoryCondition.check(variable, self.metadata)
+        if not isValid:
+            return self, False, {}
+        isValid, newData = valueCondition.check(value, newData)
+        if not isValid:
+            return self, False, {}
+        new = self.__copy__()
+        new.conditions.pop()
+        new.metadata = newData
         if new.conditions:
             return new, False, {}
         return new, True, {"FO"}
-    
+
     def getResult(self):
+        if self.conditions:
+            return None
+        (categoryCondition, valueCondition) = self.result
+
         pass
+
+
+class AscendingTestVariableCondition(iFirstOrderCondition):
+    def __init__(self, const, minval, maxval):
+        self.const = const
+        self.minval = minval
+        self.maxval = maxval
+
+    def check(self, value, metadata):
+        n = len(self.const)
+        if value[:n] != self.const:
+            return False
+        value: str = value[n:]
+        if not value.isdigit():
+            return False
+        value: int = int(value)
+        if value not in range(self.minval, self.maxval + 1):
+            return False
+        cur = metadata.get('cur', None)
+        if cur and value <= cur:
+            return False
+        metadata[cur] = value
+        return True
+
+class RulesetManager:
+    def __init__(self):
+        self.rules=[]
+        self.byElement=dict()
+        self.ruleCounter=Counter()
+        self.freeIndices=set()
+    def allocateIndex(self):
+        if self.freeIndices:
+            return self.freeIndices.pop()
+        return self.ruleCounter.use()
+    def freeIndex(self,ID):
+        self.freeIndices.add(ID)
+        last=self.ruleCounter.value-1
+        while last in self.freeIndices:
+            self.freeIndices.remove(last)
+            last-=1
+        self.ruleCounter.value+=1
+    def add(self,rule:iRule):
+        ruleID=self.allocateIndex()
+        X=rule.getCategories()
+        for cat in X:
 
 
 class RuleBasedAgent(iAgent):
     def __init__(self, rulelist: list, persistent, default):
-        self.rulelist: list = rulelist
-        self.byElement = dict()
-        for i, rule in enumerate(rulelist):
-            rule: iRule
-            for element, _ in rule.getCategories():
-                D = self.byElement.get(element, set())
-                D.add(i)
-                self.byElement[element] = D
-        self.default = default
-        self.persistent = {e: None for e in persistent}
-        self.decision = default
 
     def receiveEnvironmentData(self, data: dict):
         curRules = dict()
