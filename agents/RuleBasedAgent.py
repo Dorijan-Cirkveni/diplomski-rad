@@ -53,6 +53,8 @@ class Rule(iRule):
         self.conditions.pop(variable)
         return self, len(self.conditions) == 0, {variable}
 
+    def getResult(self):
+        pass
 
 class FirstOrderRule(iRule):
     def __init__(self, conditions: list, result):
@@ -77,6 +79,9 @@ class FirstOrderRule(iRule):
         if new.conditions:
             return new, False, {}
         return new, True, {"FO"}
+    
+    def getResult(self):
+        pass
 
 
 class RuleBasedAgent(iAgent):
@@ -148,7 +153,7 @@ def ruleTest():
         'A4': True
     }
     LX = [('A1', True), ('A2', True), ('A3', True)]
-    R1 = FirstOrderRule(LX, {"A3": True})
+    R1 = FirstOrderRule([])
     for (k, v) in LX[::-1]:
         RES = R1.reduce(k, v)
         print(RES[0] is R1)
