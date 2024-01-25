@@ -12,9 +12,6 @@ def CallOrEqual(condition, value):
 
 
 class iRule:
-    def check(self, data):
-        raise NotImplementedError
-
     def getCategories(self):
         raise NotImplementedError
 
@@ -54,7 +51,7 @@ class Rule(iRule):
         if not CallOrEqual(condition, value):
             return False, {}
         self.conditions.pop(variable)
-        return len(self.conditions) == 0, {variable}
+        return self, len(self.conditions) == 0, {variable}
 
 
 class FirstOrderRule(iRule):
@@ -71,14 +68,15 @@ class FirstOrderRule(iRule):
         return {"FO"}
 
     def reduce(self, variable, value):
-        res = False
+        new = self
         (categoryCondition, valueCondition) = self.conditions[-1]
         if CallOrEqual(categoryCondition, variable):
             if CallOrEqual(valueCondition, value):
-                self.conditions.pop()
-        if self.conditions:
-            return False, {}
-        return True, {"FO"}
+                new = self.__copy__()
+                new.conditions.pop()
+        if new.conditions:
+            return new, False, {}
+        return new, True, {"FO"}
 
 
 class RuleBasedAgent(iAgent):
@@ -97,6 +95,7 @@ class RuleBasedAgent(iAgent):
 
     def receiveEnvironmentData(self, data: dict):
         curRules = dict()
+        newRuleCount = Counter(len(self.rulelist))
         curByElement = dict()
         S = set()
         L = []
@@ -118,13 +117,20 @@ class RuleBasedAgent(iAgent):
             for ruleID in S | self.byElement.get("FO", set()):
                 rule = self.rulelist[ruleID]
                 rule: iRule
-                isSatisfied, remove = rule.reduce(el,data[el])
+                newrule, isSatisfied, remove = rule.reduce(el, data[el])
+                newrule: iRule
+                if newrule is not rule:
+                    newruleID = newRuleCount.use()
+                    curRules[newruleID] = newruleID
+                    for el in newrule.getCategories():
+                        S = curByElement.get(el, set())
+                        S.add(newruleID)
+                        curByElement[el] = S
                 for el in remove:
-                    S:set=self.byElement[el]
+                    S: set = self.byElement[el]
                     S.remove(ruleID)
                 if isSatisfied:
-
-        pass
+                    pass
 
     def performAction(self, actions):
         action = self.default
@@ -141,16 +147,18 @@ def ruleTest():
         'A2': True,
         'A4': True
     }
-    R1 = Rule(X, {"A3": True})
-    print(R1.check({'A1': True, 'A2': True, "A4": True}))
+    LX = [('A1', True), ('A2', True), ('A3', True)]
+    R1 = FirstOrderRule(LX, {"A3": True})
+    for (k, v) in LX[::-1]:
+        RES = R1.reduce(k, v)
+        print(RES[0] is R1)
+        R1 = RES[0]
     actions = V2DIRS + [(0, 0)]
     RBA = RuleBasedAgent([R1], set(V2DIRS), ACTIONS[-1])
     RBA.receiveEnvironmentData({'A1': True})
 
 
 def main():
-    X = bool
-    print(X(0))
     ruleTest()
     return
 
