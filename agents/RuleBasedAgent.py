@@ -127,47 +127,55 @@ class AscendingTestVariableCondition(iFirstOrderCondition):
         metadata[cur] = value
         return True
 
+
 class RulesetManager:
-    def __init__(self,rules=None,byElement=None,freeIndices=None):
-        self.rules=[]
-        self.byElement=defaultdict(set)
-        self.freeIndices=set()
-    def allocateIndex(self,rule):
+    def __init__(self, rules=None, byElement=None, freeIndices=None):
+        self.rules = []
+        self.byElement = defaultdict(set)
+        self.freeIndices = set()
+
+    def allocateIndex(self, rule):
         if self.freeIndices:
-            ID=self.freeIndices.pop()
-            self.rules[ID]=rule
+            ID = self.freeIndices.pop()
+            self.rules[ID] = rule
             return ID
         self.rules.append(rule)
-        return len(self.rules)-1
-    def freeIndex(self,ID):
+        return len(self.rules) - 1
+
+    def freeIndex(self, ID):
         self.freeIndices.add(ID)
-        last=len(self.rules)-1
+        last = len(self.rules) - 1
         while last in self.freeIndices:
             self.freeIndices.remove(last)
             self.rules.pop()
-            last-=1
-    def add(self,rule:iRule):
-        ruleID=self.allocateIndex(rule)
-        X=rule.getCategories()
+            last -= 1
+
+    def add(self, rule: iRule):
+        ruleID = self.allocateIndex(rule)
+        X = rule.getCategories()
         for cat in X:
             self.byElement[cat].add(ruleID)
+
     def __copy__(self):
-        new=RulesetManager()
-        new.rules=[rule.__copy__() for rule in self.rules]
-        for e,v in self.byElement:
-            v:set
-            new.byElement[e]=v.copy()
-        new.freeIndices=self.freeIndices.copy()
-        return
-    def apply_data_point(self,variable,value,data:dict):
-        for ruleID in self.byElement.get(variable,set)|self.byElement.get("FO",set):
-            rule=self.rules[ruleID]
-            rule:iRule
-            newrule,done,removedCats=rule.reduce(variable,value)
-            newrule:iRule
+        new = RulesetManager()
+        new.rules = [rule.__copy__() for rule in self.rules]
+        for e, v in self.byElement:
+            v: set
+            new.byElement[e] = v.copy()
+        new.freeIndices = self.freeIndices.copy()
+        return new
+
+    def apply_data_point(self, variable, value, data: dict):
+        new_data = set()
+        for ruleID in self.byElement.get(variable, set) | self.byElement.get("FO", set):
+            rule = self.rules[ruleID]
+            rule: iRule
+            newrule, done, removedCats = rule.reduce(variable, value)
+            newrule: iRule
             if done:
-                (resvar,resval)=newrule.getResult()
-                data[resvar]=resval
+                (resvar, resval) = newrule.getResult()
+                data[resvar] = resval
+                new_data.add(resvar)
             if newrule is not rule:
                 if not done:
                     self.add(newrule)
@@ -175,25 +183,36 @@ class RulesetManager:
                 if done:
                     self.freeIndex(ruleID)
                 for cat in removedCats:
-                    S=self.byElement[cat]
+                    S = self.byElement[cat]
                     S.remove(ruleID)
                     if not S:
                         self.byElement.pop(cat)
+        return new_data
 
 
 class RuleBasedAgent(iAgent):
-    def __init__(self, rulelist: list, persistent, default):
-        self.manager=RulesetManager()
+    def __init__(self, rulelist: list, used: set, pers_vars: set, defaultAction):
+        self.manager = RulesetManager()
         for rule in rulelist:
             self.manager.add(rule)
-        self.persistent=persistent
-        self.default=default
+        self.used = used
+        self.persistent = {e: None for e in pers_vars}
+        self.defaultAction = defaultAction
 
     def receiveEnvironmentData(self, data: dict):
-        pass  # TODO
+        curManager: RulesetManager = self.manager.__copy__()
+        L = [e for e in self.used if e in data]
+        while L:
+            cat = L.pop()
+            new_data = curManager.apply_data_point(cat, data[cat], data)
+            L.extend(new_data)
+        for e in self.persistent:
+            if e not in data:
+                continue
+            self.persistent[e] = data[e]
 
     def performAction(self, actions):
-        action = self.default
+        action = self.defaultAction
         for e in actions:
             if self.persistent.get(e, None) in (None, False):
                 continue
