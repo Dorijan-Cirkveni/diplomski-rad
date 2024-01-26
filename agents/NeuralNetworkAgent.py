@@ -1,5 +1,6 @@
 import interfaces as itf
 import numpy as np
+import util
 
 
 def sigmoid(x):
@@ -11,31 +12,36 @@ def deltasigmoid(x):
 
 
 class NNAgent(itf.iAgent):
-    def __init__(self, inputPositions, actions, hiddenLayers=None, weights=None):
+    def __init__(self, inputPositions: dict[list], actions, hiddenLayers=None, weights=None):
         if hiddenLayers is None:
             hiddenLayers = [5]
         self.inputPositions = inputPositions
+        inputCount = 0
+        for L in self.inputPositions.values():
+            L: list
+            inputCount += len(L)
         self.actions = actions
-        self.layer_n = [len(self.inputPositions)] + hiddenLayers + [len(self.actions)]
-        self.layers=[]
-        last=None
+        self.layer_n = [inputCount] + hiddenLayers + [len(self.actions)]
+        self.layers = []
+        last = None
         for e in self.layer_n:
             if last is None:
-                last=e
+                last = e
                 continue
-            weights=np.random.rand(e,last)
-            bias=np.zeros((e, 1))
-            self.layers.append((weights,bias))
-            last=e
+            weights = np.random.rand(e, last)
+            bias = np.zeros((e, 1))
+            self.layers.append((weights, bias))
+            last = e
+        self.actionValues = np.array([0 for e in self.actions])
 
-    def forward(self, X,log=None):
-        Y=X
-        for (weights,bias) in self.layers:
-            X=Y
+    def forward(self, X, log=None):
+        Y = X
+        for (weights, bias) in self.layers:
+            X = Y
             Z = np.dot(weights, X) + bias
             Y = sigmoid(Z)
             if log is not None:
-                log:list
+                log: list
                 log.append(X)
         if log is not None:
             log.append(Y)
@@ -58,8 +64,17 @@ class NNAgent(itf.iAgent):
         self.layers[0][0] += learning_rate * np.dot(hidden_delta, layer_outputs[0].T)
         self.layers[0][1] += learning_rate * hidden_delta
 
-    def receiveEnvironmentData(self, data:dict):
-        D={e:data.get(e,None) if data in}
+    def receiveEnvironmentData(self, data: dict):
+        X = []
+        for e, L in self.inputPositions.items():
+            dX = data.get(e, None)
+            for f in L:
+                dY = util.CallOrEqual(f, dX)
+                X.append(int(dY))
+        X = np.array(X)
+        log = []
+        Y = self.forward(X, log)
+        self.actionValues = Y
         pass
 
     def performAction(self, actions):

@@ -3,14 +3,7 @@ from collections import defaultdict
 from definitions import *
 
 from interfaces import iAgent
-from util import *
-
-
-def CallOrEqual(condition, value):
-    if callable(condition):
-        return condition(value)
-    else:
-        return condition == value
+import util
 
 
 class iRule:
@@ -50,7 +43,7 @@ class Rule(iRule):
         if variable not in self.conditions:
             return False, {}
         condition = self.conditions[value]
-        if not CallOrEqual(condition, value):
+        if not util.CallOrEqual(condition, value):
             return False, {}
         self.conditions.pop(variable)
         return self, len(self.conditions) == 0, {variable}
@@ -227,7 +220,7 @@ def ruleTest():
         'A4': True
     }
     LX = [('A1', True), ('A2', True), ('A3', True)]
-    R1 = FirstOrderRule([])
+    R1 = FirstOrderRule([],)
     for (k, v) in LX[::-1]:
         RES = R1.reduce(k, v)
         print(RES[0] is R1)

@@ -10,6 +10,13 @@ class Counter:
         return self.value
 
 
+def CallOrEqual(condition, value):
+    if callable(condition):
+        return condition(value)
+    else:
+        return condition == value
+
+
 def reverseIf(E, cond):
     return (E[1], E[0]) if cond else E
 
