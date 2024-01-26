@@ -1,7 +1,9 @@
+from collections import defaultdict
+
 from definitions import *
 
 from interfaces import iAgent
-from util import Counter
+from util import *
 
 
 def CallOrEqual(condition, value):
@@ -126,69 +128,69 @@ class AscendingTestVariableCondition(iFirstOrderCondition):
         return True
 
 class RulesetManager:
-    def __init__(self):
+    def __init__(self,rules=None,byElement=None,freeIndices=None):
         self.rules=[]
-        self.byElement=dict()
-        self.ruleCounter=Counter()
+        self.byElement=defaultdict(set)
         self.freeIndices=set()
-    def allocateIndex(self):
+    def allocateIndex(self,rule):
         if self.freeIndices:
-            return self.freeIndices.pop()
-        return self.ruleCounter.use()
+            ID=self.freeIndices.pop()
+            self.rules[ID]=rule
+            return ID
+        self.rules.append(rule)
+        return len(self.rules)-1
     def freeIndex(self,ID):
         self.freeIndices.add(ID)
-        last=self.ruleCounter.value-1
+        last=len(self.rules)-1
         while last in self.freeIndices:
             self.freeIndices.remove(last)
+            self.rules.pop()
             last-=1
-        self.ruleCounter.value+=1
     def add(self,rule:iRule):
-        ruleID=self.allocateIndex()
+        ruleID=self.allocateIndex(rule)
         X=rule.getCategories()
         for cat in X:
+            self.byElement[cat].add(ruleID)
+    def __copy__(self):
+        new=RulesetManager()
+        new.rules=[rule.__copy__() for rule in self.rules]
+        for e,v in self.byElement:
+            v:set
+            new.byElement[e]=v.copy()
+        new.freeIndices=self.freeIndices.copy()
+        return
+    def apply_data_point(self,variable,value,data:dict):
+        for ruleID in self.byElement.get(variable,set)|self.byElement.get("FO",set):
+            rule=self.rules[ruleID]
+            rule:iRule
+            newrule,done,removedCats=rule.reduce(variable,value)
+            newrule:iRule
+            if done:
+                (resvar,resval)=newrule.getResult()
+                data[resvar]=resval
+            if newrule is not rule:
+                if not done:
+                    self.add(newrule)
+            else:
+                if done:
+                    self.freeIndex(ruleID)
+                for cat in removedCats:
+                    S=self.byElement[cat]
+                    S.remove(ruleID)
+                    if not S:
+                        self.byElement.pop(cat)
 
 
 class RuleBasedAgent(iAgent):
     def __init__(self, rulelist: list, persistent, default):
+        self.manager=RulesetManager()
+        for rule in rulelist:
+            self.manager.add(rule)
+        self.persistent=persistent
+        self.default=default
 
     def receiveEnvironmentData(self, data: dict):
-        curRules = dict()
-        newRuleCount = Counter(len(self.rulelist))
-        curByElement = dict()
-        S = set()
-        L = []
-        for el_main, v in self.byElement.items():
-            if el_main not in data:
-                continue
-            S.update(v)
-            L.append(el_main)
-        for ruleID in S:
-            if ruleID not in curRules:
-                rule: iRule = self.rulelist[ruleID]
-                curRules[ruleID] = rule.__copy__()
-                for e in rule.getCategories():
-                    S = curByElement.get(e, set())
-                    S.add(ruleID)
-                    curByElement[e] = S
-        while L:
-            el = L.pop()
-            for ruleID in S | self.byElement.get("FO", set()):
-                rule = self.rulelist[ruleID]
-                rule: iRule
-                newrule, isSatisfied, remove = rule.reduce(el, data[el])
-                newrule: iRule
-                if newrule is not rule:
-                    newruleID = newRuleCount.use()
-                    curRules[newruleID] = newruleID
-                    for el in newrule.getCategories():
-                        S = curByElement.get(el, set())
-                        S.add(newruleID)
-                        curByElement[el] = S
-                for el in remove:
-                    S: set = self.byElement[el]
-                    S.remove(ruleID)
-                if isSatisfied:
-                    pass
+        pass  # TODO
 
     def performAction(self, actions):
         action = self.default
