@@ -75,13 +75,20 @@ class NNAgent(itf.iAgent):
         log = []
         Y = self.forward(X, log)
         self.actionValues = Y
-        pass
+        return Y
 
     def performAction(self, actions):
         pass
 
 
 def main():
+    X = [i for i in range(7)]
+    Y = util.ACTIONS.copy()
+    inputPositions = {e: X for e in Y}
+    test=NNAgent(inputPositions,util.ACTIONS,[7])
+    Z=[0,0,0,1,0]
+    data={Y[i]:Z[i] for i in range(5)}
+    res=test.receiveEnvironmentData(data)
     return
 
 

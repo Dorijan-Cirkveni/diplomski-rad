@@ -17,6 +17,7 @@ class PlaneTile:
     lethal = tile_counter.use()
     lethalwall = tile_counter.use()
     goal = tile_counter.use()
+    TYPE_COUNT = tile_counter.value + 1
     """
     A class describing a plane tile and how it reacts to entities
     (whether it allows entities to enter its space unharmed, destroys them, prevents them from moving in...)
@@ -147,7 +148,7 @@ class PlaneEnvironment(itf.iEnvironment):
                 # print(temp, "".join([str(el[1]) for el in L]), vis_inc)
                 for i in range(len(vis_inc)):
                     if vis_inc[i]:
-                        RES[L[i][0]]=L[i][1]
+                        RES[L[i][0]] = L[i][1]
             if VO_dec.lines:
                 used_any = True
                 L = [(start, scheck)]
@@ -166,7 +167,7 @@ class PlaneEnvironment(itf.iEnvironment):
                 # print(temp, "".join([str(el[1]) for el in L]), vis_dec)
                 for i in range(len(vis_dec)):
                     if vis_dec[i]:
-                        RES[L[i][0]]=L[i][1]
+                        RES[L[i][0]] = L[i][1]
         return RES
 
     def text_display(self, guide):
@@ -250,7 +251,7 @@ class PlaneEnvironment(itf.iEnvironment):
         for entityID, moveID in moves.items():
             moveTypes[moveID].append(entityID)
         for e, V in moveTypes.items():
-            if e==(0,0):
+            if e == (0, 0):
                 continue
             self.moveDirection(V, e)
         return

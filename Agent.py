@@ -62,19 +62,38 @@ def initRAAFactory(translation):
 
     return initRAA
 
-class NeuralNetworkAgent(interfaces.iAgent):
-    def __init__(self, watchedTiles, actions):
-        self.i = 0
+
+class ManualInputAgent(interfaces.iAgent):
+    def __init__(self, watchedDimensions, actions, guide):
+        self.watchedDimensions = watchedDimensions
         self.actions = actions
+        self.guide = guide
 
     def receiveEnvironmentData(self, data):
+        (y1, y2), (x1, x2) = self.watchedDimensions
+        print()
+        print("Tile layout:")
+        for i in range(y1, y2 + 1):
+            s = ''
+            for j in range(x1, x2 + 1):
+                val = self.guide[(i, j)]
+                s += str(val)
+            print(s)
+        D = data.get("taken", dict())
+        if D:
+            for position, agentData in D.items():
+                print("Agent on position {} with properties {}".format(position, agentData))
+        else:
+            print("No visible agents")
         return
 
     def performAction(self, actions):
-        cur = self.actions[self.i]
-        self.i += 1
-        if self.i == len(self.actions):
-            self.i = 0
+        X = []
+        for i, e in enumerate(self.actions):
+            X.append("{}:{}".format(i, e))
+        actions = ",".join(X)
+        actionID = input("Action?({})")
+        cur = self.actions[actionID]
         return cur
 
 

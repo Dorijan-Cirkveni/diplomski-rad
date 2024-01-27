@@ -30,7 +30,7 @@ class iGene:
 
 
 class iLifeform:
-    def setRandomStats(self):
+    def setRandomStats(self, randomSeed=None):
         raise NotImplementedError
 
     def combine(self, other, rate=0.1, randomSeed=None):
@@ -39,15 +39,40 @@ class iLifeform:
     def mutate(self, rate=0.1, randomSeed=None):
         raise NotImplementedError
 
+    def copy(self):
+        raise NotImplementedError
+
+    def makeNew(self,other,cRate,mRate,randomSeed):
+        new:iLifeform=self.combine(other,cRate,randomSeed)
+        return new.mutate(mRate)
+
 
 class Selector:
-    def __init__(self, lifeformTemplate, testFunction, population=100, elitism=0.5, birthrate=1):
-        self.population = []
+    def __init__(self, lifeformTemplate, testFunction, populationSize=100, elitism=0.5, birthrate=1, randomSeed=None):
+        self.randomizer = random.Random(randomSeed) if randomSeed is not None else random.Random
+        self.population: list = []
+        self.populationSize = populationSize
         self.template = lifeformTemplate
         self.test: callable = testFunction
-        self.population = population
-        self.elitism = int(population * elitism) if elitism < 1 else elitism
+        self.elitism = int(populationSize * elitism) if elitism < 1 else elitism
         self.birthrate = birthrate
+
+    def initate(self, randomSeed=None):
+        self.population = []
+        for i in range(self.populationSize):
+            unit: iLifeform = self.template.copy()
+            unit.setRandomStats(randomSeed)
+            score = self.test(unit)
+            self.population.append((unit, score))
+
+    def runGeneration(self):
+        self.population:list
+        X:list[iLifeform] = self.randomizer.sample(self.population, self.populationSize)
+        for i in range(0,len(X)-1,2):
+            unit: iLifeform = X[i].makeNew(X[i+1],randomSeed=self.randomizer.random())
+            score = self.test(unit)
+            self.population.append((unit, score))
+
 
 
 def main():
