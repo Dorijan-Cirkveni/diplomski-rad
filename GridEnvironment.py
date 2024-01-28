@@ -1,6 +1,7 @@
 import json
 
 import Agent
+import debug
 import interfaces as itf
 import util
 from definitions import *
@@ -332,7 +333,7 @@ def main():
     TXR = TESTS[0]
     X = readPlaneEnvironment(TXR, {"RAA": Agent.initRAAFactory(global_moves)})
     Y = X.__copy__()
-    for e in X:
+
     print(PlaneTile.wall)
     print(X.text_display(guide))
     # print(X.view_direction((15, 10), PlaneEnvironment.dir_up))
