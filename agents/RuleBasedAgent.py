@@ -93,9 +93,10 @@ class FirstOrderRule(iRule):
     def getResult(self):
         if self.conditions:
             return None
-        (categoryCondition, valueCondition) = self.result
-
-        pass
+        (categoryCalculator, valueCalculator) = self.result
+        category=categoryCalculator(self.metadata) if callable(categoryCalculator) else categoryCalculator
+        value=valueCalculator(self.metadata) if callable(valueCalculator) else valueCalculator
+        return (category,value)
 
 
 class AscendingTestVariableCondition(iFirstOrderCondition):
