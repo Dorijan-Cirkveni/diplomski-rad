@@ -62,8 +62,10 @@ class PlaneEnvironment(itf.iEnvironment):
     dir_left = counter.use()
     dir_right = counter.use()
 
-    def __init__(self, scale, shapes=None, entities=None, tileTypes=None):
+    def __init__(self, scale, shapes=None, entities=None, activeEntities: set = None, tileTypes=None):
         super().__init__()
+        if scale is None:
+            return
         if tileTypes is None:
             tileTypes = defaultTileTypes
         self.tileTypes = tileTypes
@@ -71,6 +73,7 @@ class PlaneEnvironment(itf.iEnvironment):
             entities = []
         if shapes is None:
             shapes = dict()
+        self.activeEntities = set() if activeEntities is None else activeEntities
         self.scale = scale
         self.grid = [[0 for i in range(scale[1])] for j in range(scale[0])]
         self.gridContents = dict()
@@ -98,6 +101,21 @@ class PlaneEnvironment(itf.iEnvironment):
             self.entityPriority.append((priority, ID))
         self.entityPriority.sort()
         return
+
+    def __copy__(self):
+        new = PlaneEnvironment(None)
+        new.activeEntities = self.activeEntities.copy()
+        new.data = self.data
+        new.entityCounter = self.entityCounter
+        new.entities = self.entities
+        new.entityPriority = self.entityPriority.copy()
+        new.grid = [[f for f in e] for e in self.grid]
+        new.gridContents = self.gridContents.copy()
+        new.scale = self.scale
+        new.taken = self.taken.copy()
+        new.tileTypes = self.tileTypes
+        new.tileTypes = self.tileTypes
+        return new
 
     def get_tile(self, i, j=None):
         if j is None:

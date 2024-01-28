@@ -4,10 +4,10 @@ class mainSystem:
     def __init__(self):
         return
     def runEnvironment(self,environment:itf.iEnvironment,agents:list[itf.iAgent]):
-        X=environment
+        for agent in agents:
+            instance=environment.__copy__()
+
     def train(self,agentSystem,trainingGroup):
-
-
 
 
 

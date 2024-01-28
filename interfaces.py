@@ -66,6 +66,9 @@ class iEnvironment:
     def __copy__(self):
         raise NotImplementedError
 
+    def getValue(self, agentID=None):
+        raise NotImplementedError
+
     def getEnvData(self, agentID=None):
         raise NotImplementedError
 
