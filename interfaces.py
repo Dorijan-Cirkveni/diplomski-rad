@@ -63,6 +63,9 @@ class iEnvironment:
         self.entities = dict()
         self.entityPriority = []
 
+    def __copy__(self):
+        raise NotImplementedError
+
     def getEnvData(self, agentID=None):
         raise NotImplementedError
 

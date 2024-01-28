@@ -84,14 +84,3 @@ def testVisionOctant(R):
         print(i + 1, VL.lines, vis)
         if not VL.lines:
             print("END HERE")
-
-
-def main():
-    print(reverseIf((0, 1), 0 == 1), reverseIf((0, 1), 1 == 1))
-    testVisionOctant("0100|0010|1001|00000")
-    testVisionOctant("1000|0010|0001")
-    return
-
-
-if __name__ == "__main__":
-    main()
