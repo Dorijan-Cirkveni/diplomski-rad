@@ -115,6 +115,9 @@ class iTrainingMethod:
     def __init__(self, agentTemplate, *args, **kwargs):
         raise NotImplementedError
     def train(self):
+        raise NotImplementedError
+    def evaluate(self, testExamples=list[iEnvironment]):
+
 
 
 def main():

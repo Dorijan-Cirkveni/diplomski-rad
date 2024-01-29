@@ -46,9 +46,14 @@ class iLifeform:
         new:iLifeform=self.combine(other,cRate,randomSeed)
         return new.mutate(mRate)
 
+    def generateAgent(self):
+        raise NotImplementedError
+
 
 class Selector(itf.iTrainingMethod):
-    def __init__(self, lifeformTemplate, populationSize=100, elitism=0.5, birthrate=1, randomSeed=None):
+    def __init__(self, lifeformTemplate, agentTemplate,
+                 populationSize=100, elitism=0.5, birthrate=1, randomSeed=None):
+        super().__init__(agentTemplate, *args, **kwargs)
         self.randomizer = random.Random(randomSeed) if randomSeed is not None else random.Random
         self.population: list = []
         self.populationSize = populationSize
@@ -64,6 +69,9 @@ class Selector(itf.iTrainingMethod):
             unit.setRandomStats(randomSeed)
             score = self.test(unit)
             self.population.append((unit, score))
+    def test(self, testSet:list[callable]):
+        for unit in self.population:
+            unit:iLifeform
 
     def runGeneration(self):
         self.population:list
@@ -72,6 +80,7 @@ class Selector(itf.iTrainingMethod):
             unit: iLifeform = X[i].makeNew(X[i+1],randomSeed=self.randomizer.random())
             score = self.test(unit)
             self.population.append((unit, score))
+
 
 
 
