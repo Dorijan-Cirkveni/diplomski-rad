@@ -1,5 +1,6 @@
 import util
 import interfaces as itf
+
 class mainSystem:
     def __init__(self):
         return
@@ -7,7 +8,7 @@ class mainSystem:
         for agent in agents:
             instance=environment.__copy__()
 
-    def train(self,agentSystem,trainingGroup):
+    def train(self,agentsAndMethods:list[tuple[itf.iAgent,itf.iTrainingMethod]]):
 
 
 

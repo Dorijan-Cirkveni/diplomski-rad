@@ -1,5 +1,5 @@
 import random
-
+import interfaces as itf
 
 class iGene:
     def __init__(self, value: str):
@@ -47,8 +47,8 @@ class iLifeform:
         return new.mutate(mRate)
 
 
-class Selector:
-    def __init__(self, lifeformTemplate, testFunction, populationSize=100, elitism=0.5, birthrate=1, randomSeed=None):
+class Selector(itf.iTrainingMethod):
+    def __init__(self, lifeformTemplate, populationSize=100, elitism=0.5, birthrate=1, randomSeed=None):
         self.randomizer = random.Random(randomSeed) if randomSeed is not None else random.Random
         self.population: list = []
         self.populationSize = populationSize
@@ -57,7 +57,7 @@ class Selector:
         self.elitism = int(populationSize * elitism) if elitism < 1 else elitism
         self.birthrate = birthrate
 
-    def initate(self, randomSeed=None):
+    def initiate(self, randomSeed=None):
         self.population = []
         for i in range(self.populationSize):
             unit: iLifeform = self.template.copy()

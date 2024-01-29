@@ -111,6 +111,11 @@ class iEnvironment:
         self.data['agent_last_action'] = D
         self.runChanges(D)
 
+class iTrainingMethod:
+    def __init__(self, agentTemplate, *args, **kwargs):
+        raise NotImplementedError
+    def train(self):
+
 
 def main():
     return
