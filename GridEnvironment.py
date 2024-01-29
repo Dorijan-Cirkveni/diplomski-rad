@@ -63,29 +63,14 @@ class PlaneEnvironment(itf.iEnvironment):
     dir_left = counter.use()
     dir_right = counter.use()
 
-    def __init__(self, scale, shapes=None, entities=None, activeEntities: set = None, tileTypes=None):
+    def __init__(self, scale, grid:list[list[int]], entities=None, activeEntities: set = None, tileTypes=None):
         super().__init__()
-        if scale is None:
-            return
-        if tileTypes is None:
-            tileTypes = defaultTileTypes
-        self.tileTypes = tileTypes
-        if entities is None:
-            entities = []
-        if shapes is None:
-            shapes = dict()
-        self.activeEntities = set() if activeEntities is None else activeEntities
         self.scale = scale
-        self.grid = [[0 for i in range(scale[1])] for j in range(scale[0])]
+        self.entities=[] if entities is None else entities
+        self.activeEntities = set() if activeEntities is None else activeEntities
+        self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
+        self.grid = grid
         self.gridContents = dict()
-        rects = shapes.get("rect", [])
-        for (x1, y1, x2, y2, ID) in rects:
-            for x in range(x1, x2 + 1):
-                self.grid[x][y1] = ID
-                self.grid[x][y2] = ID
-            for y in range(y1, y2 + 1):
-                self.grid[x1][y] = ID
-                self.grid[x2][y] = ID
         self.entityCounter = util.Counter()
         self.taken = dict()
         for entity in entities:
