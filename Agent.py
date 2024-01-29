@@ -11,6 +11,9 @@ class BoxAgent(interfaces.iAgent):
     def performAction(self, actions):
         return None
 
+    def __copy__(self):
+        return
+
 
 class MirrorAgent(interfaces.iAgent):
     def __init__(self, mirroredAgent, actionMirrors: dict):

@@ -3,10 +3,14 @@ import TupleDotOperations as tdo
 
 
 class iAgent:
+
     def receiveEnvironmentData(self, data):
         raise NotImplementedError
 
     def performAction(self, actions):
+        raise NotImplementedError
+
+    def __copy__(self):
         raise NotImplementedError
 
 
@@ -28,6 +32,12 @@ class Entity:
     def __init__(self, agent: iAgent, properties=None):
         self.properties = dict() if properties is None else properties
         self.agent = agent
+
+    def __copy__(self):
+        newAgent=self.agent.copy()
+        newProps=self.properties.copy()
+        return Entity(newAgent,newProps)
+
 
     def receiveEnvironmentData(self, data):
         if not self.properties.get(Entity.S_mirror, False):

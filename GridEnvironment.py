@@ -63,44 +63,37 @@ class PlaneEnvironment(itf.iEnvironment):
     dir_left = counter.use()
     dir_right = counter.use()
 
-    def __init__(self, scale, grid:list[list[int]], entities=None, activeEntities: set = None, tileTypes=None):
+    def __init__(self, scale:tuple, grid:list[list[int]], entities:list[itf.Entity]=None,
+                 activeEntities: set = None, tileTypes=None):
         super().__init__()
         self.scale = scale
+        self.grid = grid
         self.entities=[] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
-        self.grid = grid
         self.gridContents = dict()
-        self.entityCounter = util.Counter()
         self.taken = dict()
-        for entity in entities:
+        for ID,entity in enumerate(self.entities):
             entity: itf.Entity
             name = entity.properties.get(entity.NAME, "Untitled")
-            ID = self.entityCounter.use()
             location = entity.properties.get(entity.LOCATION, None)
             priority = entity.getPriority()
             if location is None:
                 print("Unable to initialise Entity {} ({}) without location!".format(ID, name))
                 continue
-            self.entities[ID] = entity
             self.taken[location] = ID
             self.entityPriority.append((priority, ID))
         self.entityPriority.sort()
         return
 
     def __copy__(self):
+        newScale=self.scale
+        newGrid=[e.copy() for e in self.grid]
+        entities=[]
+        for e in self.entities:
+            e:itf.Entity
+            entities.append(e.copy())
         new = PlaneEnvironment(None)
-        new.activeEntities = self.activeEntities.copy()
-        new.data = self.data
-        new.entityCounter = self.entityCounter
-        new.entities = self.entities
-        new.entityPriority = self.entityPriority.copy()
-        new.grid = [[f for f in e] for e in self.grid]
-        new.gridContents = self.gridContents.copy()
-        new.scale = self.scale
-        new.taken = self.taken.copy()
-        new.tileTypes = self.tileTypes
-        new.tileTypes = self.tileTypes
         return new
 
     def get_tile(self, i, j=None):

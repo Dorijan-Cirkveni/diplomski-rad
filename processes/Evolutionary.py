@@ -39,7 +39,7 @@ class iLifeform:
     def mutate(self, rate=0.1, randomSeed=None):
         raise NotImplementedError
 
-    def copy(self):
+    def __copy__(self):
         raise NotImplementedError
 
     def makeNew(self,other,cRate,mRate,randomSeed):
