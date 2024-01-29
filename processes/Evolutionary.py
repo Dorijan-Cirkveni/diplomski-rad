@@ -57,8 +57,9 @@ class Selector(itf.iTrainingMethod):
         super().__init__(agentTemplate)
         self.randomizer = random.Random(randomSeed) if randomSeed is not None else random.Random
         self.population: list = []
-        self.populationSize = populationSize
         self.template = lifeformTemplate
+
+        self.populationSize = populationSize
         self.elitism = int(populationSize * elitism) if elitism < 1 else elitism
         self.birthrate = birthrate
 
@@ -72,9 +73,9 @@ class Selector(itf.iTrainingMethod):
             self.population.append((units.pop(), results.pop()))
         return
 
-    def testAll(self, testSet: list[callable], combinationMethod=lambda L: sum(L)):
+    def testAll(self, population, testSet: list[callable], combinationMethod=lambda L: sum(L)):
         RES = []
-        for unit in self.population:
+        for unit in population:
             unit: iLifeform
             results = [fn(unit) for fn in testSet]
             fin_result = combinationMethod(results)

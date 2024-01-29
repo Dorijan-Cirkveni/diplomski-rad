@@ -10,20 +10,20 @@ from TupleDotOperations import *
 tile_counter = util.Counter()
 
 
-def rect(E,grid):
-    if len(E)!=5:
+def rect(E, grid):
+    if len(E) != 5:
         raise Exception("Bad rect data length!")
-    (y1,x1,y2,x2,v)=E
-    if y1>y2:
-        y1,y2=y2,y1
-    if x1>x2:
-        x1,x2=x2,x1
-    for dx in range(x1,x2+1):
-        grid[y1][dx]=v
-        grid[y2][dx]=v
-    for dy in range(y1,y2+1):
-        grid[dy][x1]=v
-        grid[dy][x2]=v
+    (y1, x1, y2, x2, v) = E
+    if y1 > y2:
+        y1, y2 = y2, y1
+    if x1 > x2:
+        x1, x2 = x2, x1
+    for dx in range(x1, x2 + 1):
+        grid[y1][dx] = v
+        grid[y2][dx] = v
+    for dy in range(y1, y2 + 1):
+        grid[dy][x1] = v
+        grid[dy][x2] = v
     return
 
 
@@ -80,17 +80,17 @@ class PlaneEnvironment(itf.iEnvironment):
     dir_left = counter.use()
     dir_right = counter.use()
 
-    def __init__(self, scale:tuple, grid:list[list[int]], entities:list[itf.Entity]=None,
+    def __init__(self, scale: tuple, grid: list[list[int]], entities: list[itf.Entity] = None,
                  activeEntities: set = None, tileTypes=None):
         super().__init__()
         self.scale = scale
         self.grid = grid
-        self.entities=[] if entities is None else entities
+        self.entities = [] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
         self.gridContents = dict()
         self.taken = dict()
-        for ID,entity in enumerate(self.entities):
+        for ID, entity in enumerate(self.entities):
             entity: itf.Entity
             name = entity.properties.get(entity.NAME, "Untitled")
             location = entity.properties.get(entity.LOCATION, None)
@@ -104,11 +104,11 @@ class PlaneEnvironment(itf.iEnvironment):
         return
 
     def __copy__(self):
-        newScale=self.scale
-        newGrid=[e.copy() for e in self.grid]
-        entities=[]
+        newScale = self.scale
+        newGrid = [e.copy() for e in self.grid]
+        entities = []
         for e in self.entities:
-            e:itf.Entity
+            e: itf.Entity
             entities.append(e.copy())
         new = PlaneEnvironment(None)
         return new
@@ -271,35 +271,36 @@ class PlaneEnvironment(itf.iEnvironment):
         return
 
 
-def readPlaneEnvironment(raw, agentDict):
+def readPlaneEnvironment(json_str, agentDict):
     scale = (20, 20)
-    grid=[[0 for __ in range(scale[1])]for _ in range(scale[0])]
+    grid = [[0 for __ in range(scale[1])] for _ in range(scale[0])]
     agents = []
     entities = []
-    active=set()
-    for e in raw.split("\n"):
-        E = [f for f in e.split(" ") if f != ""]
-        print(E)
-        if len(E) == 0:
-            continue
-        if E[0] == "scale":
-            scale = (int(E[1]), int(E[2]))
-        elif E[0] == "shape":
-            shapetype = E[1]
-            shapedata = tuple([int(e) for e in E[2:]])
-            if shapetype=="rect":
-                rect(shapedata, grid)
-        elif E[0] == "agent":
-            agents.append(agentDict[E[1]](E[2:]))
-        elif E[0] == "entity":
-            data: dict = json.loads(E[4])
-            data[itf.Entity.LOCATION] = (int(E[2]), int(E[3]))
-            entity = itf.Entity(agents[int(E[1])], data)
-            entities.append(entity)
-        elif E[0] == "data":
-            pass
-        elif E[0] == "active":
-            active.update({int(e) for e in E[1:]})
+    active = set()
+
+    # Load the JSON string
+    raw = json.loads(json_str)
+
+    for e in raw.get("shapes", {}).get("rectangles", []):
+        rect(tuple(e.values()), grid)
+
+    for agent_data in raw.get("agent", []):
+        a_type = agent_data.get("type", None)
+        if a_type is None:
+            raise Exception("Agent type must be specified!")
+        a_data = agent_data.get("data", dict())
+        agents.append(agentDict[a_type](a_data))
+
+    for entity_data in raw.get("entities", []):
+        ID=entity_data.get("id",None)
+        if ID is None:
+            raise Exception("Entity agent ID must be specified!")
+        entity = itf.Entity(agents[int(ID)], entity_data.get("properties",dict()))
+        entities.append(entity)
+
+    for e in raw.get("activeEntities", []):
+        active.update({int(val) for val in e.values()})
+
     RES = PlaneEnvironment(
         scale=scale,
         grid=grid,
