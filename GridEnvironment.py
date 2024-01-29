@@ -276,6 +276,7 @@ def readPlaneEnvironment(raw, agentDict):
     grid=[[0 for __ in range(scale[1])]for _ in range(scale[0])]
     agents = []
     entities = []
+    active=set()
     for e in raw.split("\n"):
         E = [f for f in e.split(" ") if f != ""]
         print(E)
@@ -287,8 +288,7 @@ def readPlaneEnvironment(raw, agentDict):
             shapetype = E[1]
             shapedata = tuple([int(e) for e in E[2:]])
             if shapetype=="rect":
-                for y1 in range(shapedata[0],shapedata[2]):
-                    grid[]
+                rect(shapedata, grid)
         elif E[0] == "agent":
             agents.append(agentDict[E[1]](E[2:]))
         elif E[0] == "entity":
@@ -298,10 +298,13 @@ def readPlaneEnvironment(raw, agentDict):
             entities.append(entity)
         elif E[0] == "data":
             pass
+        elif E[0] == "active":
+            active.update({int(e) for e in E[1:]})
     RES = PlaneEnvironment(
         scale=scale,
-        shapes=shapes,
-        entities=entities
+        grid=grid,
+        entities=entities,
+        activeEntities=active
     )
     return RES
 
