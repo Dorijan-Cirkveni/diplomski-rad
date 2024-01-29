@@ -256,7 +256,7 @@ class PlaneEnvironment(itf.iEnvironment):
 
 def readPlaneEnvironment(raw, agentDict):
     scale = (20, 20)
-    shapes = dict()
+    grid=[[0 for __ in range(scale[1])]for _ in range(scale[0])]
     agents = []
     entities = []
     for e in raw.split("\n"):
@@ -269,9 +269,9 @@ def readPlaneEnvironment(raw, agentDict):
         elif E[0] == "shape":
             shapetype = E[1]
             shapedata = tuple([int(e) for e in E[2:]])
-            L = shapes.get(shapetype, [])
-            shapes[shapetype] = L
-            L.append(shapedata)
+            if shapetype=="rect":
+                for y1 in range(shapedata[0],shapedata[2]):
+                    grid[]
         elif E[0] == "agent":
             agents.append(agentDict[E[1]](E[2:]))
         elif E[0] == "entity":
