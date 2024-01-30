@@ -62,7 +62,7 @@ def testAll(population, testSet: list[callable], combinationMethod=lambda L: sum
 
 class Selector(itf.iTrainingMethod):
     def __init__(self, lifeformTemplate, agentTemplate,
-                 populationSize=100, elitism=0.5, birthrate=1, randomSeed=None):
+                 populationSize=100, elitism=0.5, birthrate=2, cRate=0.1, mRate=0.1, randomSeed=None):
         super().__init__(agentTemplate)
         self.randomizer = random.Random(randomSeed) if randomSeed is not None else random.Random
         self.population: list = []
@@ -72,7 +72,7 @@ class Selector(itf.iTrainingMethod):
         self.elitism = int(populationSize * elitism) if elitism < 1 else elitism
         self.birthrate = birthrate
 
-    def initiate(self, randomSeed=None, trainingSet:list[callable], evalSet: list[callable]):
+    def initiate(self, trainingSet:list[callable], evalSet: list[callable], randomSeed=None):
         self.population = []
         units = [self.template.copy() for i in range(self.populationSize)]
         for unit in units:
