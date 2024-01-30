@@ -74,6 +74,7 @@ def testAll(population, testSet: list[callable], combinationMethod=lambda L: sum
         unit: iLifeform
         results = [fn(unit) for fn in testSet]
         fin_result = combinationMethod(results)
+        RES.append(fin_result)
     return RES, fin_result
 
 
@@ -82,7 +83,7 @@ class Selector(itf.iTrainingMethod):
                  populationSize=100, elitism=0.5, birthrate=2, cRate=0.1, mRate=0.1, combinationMethod=lambda L: sum(L),
                  randomSeed=None):
         super().__init__()
-        self.randomizer = random.Random(randomSeed) if randomSeed is not None else random.Random
+        self.randomizer: random.Random = random.Random(randomSeed) if randomSeed is not None else random.Random()
         self.population: list = []
         self.template = lifeformTemplate
 
@@ -100,6 +101,7 @@ class Selector(itf.iTrainingMethod):
             unit: iLifeform
             results = [fn(unit) for fn in testSet]
             fin_result = self.combinationMethod(results)
+            RES.append(fin_result)
         return RES, fin_result
 
     def initiate(self, trainingSet: list[callable], randomSeed=None):
@@ -108,7 +110,9 @@ class Selector(itf.iTrainingMethod):
         for unit in units:
             unit.setRandomStats(randomSeed)
         results, total = testAll(units, trainingSet)
-        eval_results, eval_total = testAll(units, trainingSet)
+        eval_results, eval_total = self.testAll(units, trainingSet)
+        if len(results) != len(units):
+            raise Exception(len(results), len(units))
         while units:
             self.population.append((units.pop(), results.pop(), eval_results.pop()))
         self.population.sort(key=lambda E: E[1], reverse=True)
@@ -128,10 +132,11 @@ class Selector(itf.iTrainingMethod):
         self.population: list
         units = []
         for (parent1, parent2) in self.selectParents():
-            unit: iLifeform = self.population[parent1].makeNew(self.population[parent2],
-                                                               cRate=self.cRate,
-                                                               mRate=self.mRate,
-                                                               randomSeed=self.randomizer.randint(0, (1 << 32 - 1)))
+            first = self.population[parent1]
+            unit: iLifeform = first[0].makeNew(self.population[parent2][0],
+                                               cRate=self.cRate,
+                                               mRate=self.mRate,
+                                               randomSeed=self.randomizer.randint(0, (1 << 32 - 1)))
             units.append(unit)
         results, new_total = testAll(units, trainingSet)
         eval_results, new_eval_total = testAll(units, evalSet)
@@ -142,7 +147,7 @@ class Selector(itf.iTrainingMethod):
         newadditions.sort(key=lambda E: E[1], reverse=True)
         newgeneration = self.population[:self.elitism] + newadditions
         self.population = newgeneration[:self.populationSize]
-        self.population.sort()
+        self.population.sort(key=lambda E:E[1])
         new_total = self.combinationMethod([E[1] for E in self.population])
         new_eval_total = self.combinationMethod([E[2] for E in self.population])
         return NET, (new_total, new_eval_total)

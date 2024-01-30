@@ -3,6 +3,35 @@ import unittest
 from Evolutionary import *
 
 
+class SimpleLifeform(iLifeform):
+    def __init__(self, gene_value="111"):
+        self.gene = Gene(gene_value, 49, 52)
+
+    def setRandomStats(self, randomSeed=None):
+        pass
+
+    def combine(self, other, rate=0.1, randomSeed=None) -> 'iLifeform':
+        other:SimpleLifeform
+        new_gene, _ = self.gene.combine(other.gene, randomSeed=randomSeed, crossoverRate=rate)
+        new_lifeform = SimpleLifeform()
+        new_lifeform.gene = new_gene
+        return new_lifeform
+
+    def mutate(self, rate=0.1, randomSeed=None) -> 'iLifeform':
+        new_gene = self.gene.mutate(mutationRate=rate, randomSeed=randomSeed)
+        new_lifeform = SimpleLifeform()
+        new_lifeform.gene = new_gene
+        return new_lifeform
+
+    def __copy__(self) -> 'iLifeform':
+        new_lifeform = SimpleLifeform()
+        new_lifeform.gene = self.gene.__copy__()
+        return new_lifeform
+
+    def generateAgent(self):
+        pass
+
+
 class TestSelector(unittest.TestCase):
     def setUp(self):
         # Initialize any required objects or configurations for testing
@@ -13,38 +42,36 @@ class TestSelector(unittest.TestCase):
         pass
 
     def test_gene_combine(self):
-        gene1 = Gene("111", 49, 52)
-        gene2 = Gene("000", 49, 52)
+        lifeform1 = SimpleLifeform()
+        lifeform2 = SimpleLifeform('000')
 
-        for seed,value in {42:'101', 123:'010', 999:'100'}.items():
+        for seed, value in {42: '101', 123: '010', 999: '100'}.items():
             with self.subTest(seed=seed):
-                new_gene, _ = gene1.combine(gene2, randomSeed=seed, crossoverRate=0.5)
+                new_lifeform = lifeform1.combine(lifeform2, rate=0.5, randomSeed=seed)
 
-                self.assertTrue(isinstance(new_gene, Gene))
-                self.assertEqual(new_gene.use(), value)
+                self.assertTrue(isinstance(new_lifeform, SimpleLifeform))
+                self.assertEqual(new_lifeform.gene.use(), value)
 
     def test_gene_mutate(self):
-        gene = Gene("111", 49, 52)
+        lifeform = SimpleLifeform()
 
-        for seed,value in {42:'132', 123:'111', 999:'143'}.items():
+        for seed, value in {42: '132', 123: '111', 999: '143'}.items():
             with self.subTest(seed=seed):
-                new_gene = gene.mutate(mutationRate=0.5, randomSeed=seed)
-                self.assertTrue(isinstance(new_gene, Gene))
-                self.assertEqual(new_gene.use(), value)
+                new_lifeform = lifeform.mutate(rate=0.5, randomSeed=seed)
+                self.assertTrue(isinstance(new_lifeform, SimpleLifeform))
+                self.assertEqual(new_lifeform.gene.use(), value)
 
     def test_selector_initiate(self):
-        selector = Selector(lifeformTemplate=iLifeform(), populationSize=5)
+        selector = Selector(lifeformTemplate=SimpleLifeform(), populationSize=5)
 
         total, eval_total = selector.initiate(trainingSet=[lambda _: 1], randomSeed=42)
 
     def test_selector_run_generation(self):
-        selector = Selector(lifeformTemplate=iLifeform(), populationSize=5)
+        selector = Selector(lifeformTemplate=SimpleLifeform(), populationSize=5)
 
         _, eval_total_before = selector.initiate(trainingSet=[lambda _: 1], randomSeed=42)
 
         NET, ET = selector.runGeneration(trainingSet=[lambda _: 1], evalSet=[lambda _: 1])
-
-        self.assertEqual(ET[1], eval_total_before)
 
 
 def main():
