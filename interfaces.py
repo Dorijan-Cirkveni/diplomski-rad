@@ -41,12 +41,22 @@ class Entity:
         return Entity(newAgent, newProps)
 
     def receiveEnvironmentData(self, data):
+        relativeTo = self.get(self.LOCATION, (0, 0))
         if not self.properties.get(Entity.S_mirror, False):
             data['agent_last_action'] = dict()
-        if self.properties.get(Entity.S_blind, False):
+        if (self.properties.get(Entity.S_blind, False) or
+                self.properties.get(Entity.VISIONDATA, set()).__contains__(Entity.S_blind)):
             data = dict()
+        elif Entity.VISIONDATA in self.properties:
+            remove={}
+            lim=self.properties[Entity.VISIONDATA]
+            for E in data:
+                if type(E) != tuple:
+                    continue
+                if len(E) != 2:
+                    continue
+                if tdo.Tmanhat(tdo.Tsub(E, relativeTo)<=
         if self.properties.get(Entity.S_relativepos, False):
-            relativeTo = self.get(self.LOCATION, (0, 0))
             newdata = dict()
             for k, v in data:
                 if type(k) != tuple or len(k) != 2:

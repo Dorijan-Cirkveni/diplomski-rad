@@ -27,6 +27,10 @@ def Tfdiv(T1, T2):
     return Toper(T1, T2, lambda A, B: A // B)
 
 
+def Tmanhat(T):
+    return sum([abs(e) for e in T])
+
+
 def T_generate_links(objectset: set, moves: list, direction):
     nex = dict()
     starters = set()
