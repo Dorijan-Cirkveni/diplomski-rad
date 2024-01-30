@@ -156,7 +156,21 @@ class PlaneEnvironment(itf.iEnvironment):
                 v = M[E[0]][E[1]]
                 if v is None:
                     raise Exception("Cosmic Ray Error?")
-                for move in self.getMoves(agentID)
+                v+=1
+                for move in self.getMoves(agentID):
+                    newpos=Tadd(E,move)
+                    newtiletype=self.get_tile(newpos)
+                    if newtiletype is None:
+                        continue
+                    tile = self.tileTypes[newtiletype]
+                    tile: PlaneTile
+                    M[newpos[0]][newpos[1]]=v
+                    if self.is_tile_movable(newpos,data):
+                        newtemp.append(newpos)
+        return M
+
+    def determineDistances(self,agentID=None):
+        M=self.calcDistances()
 
     def get_tile(self, i, j=None):
         if j is None:
@@ -175,7 +189,6 @@ class PlaneEnvironment(itf.iEnvironment):
         if opaque is None:
             opaque = default_opaque
         (axis, sig) = int(direction[1] == 0), direction[0] + direction[1]
-        data = {}
         VO_inc = util.VisionOctant()
         VO_dec = util.VisionOctant()
         distance = 0
@@ -192,7 +205,6 @@ class PlaneEnvironment(itf.iEnvironment):
             if VO_inc.lines:
                 used_any = True
                 L = [(start, scheck)]
-                temp = None
                 for i in range(1, distance):
                     diff = (
                         i * axis,
