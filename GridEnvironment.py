@@ -265,6 +265,12 @@ class PlaneEnvironment(itf.iEnvironment):
             self.moveDirection(V, e)
         return
 
+    def getValue(self, agentID=None):
+        
+
+    def evaluateActiveEntities(self):
+
+
 
 def readPlaneEnvironment(json_str, agentDict):
     scale = (20, 20)
