@@ -81,12 +81,10 @@ class PlaneEnvironment(itf.iEnvironment):
     dir_right = counter.use()
 
     def __init__(self, scale: tuple, grid: list[list[int]], entities: list[itf.Entity] = None,
-                 activeEntities: set = None, tileTypes=None):
-        super().__init__()
+                 activeEntities: set = None, tileTypes=None, data=None):
+        super().__init__(entities,activeEntities)
         self.scale = scale
         self.grid = grid
-        self.entities = [] if entities is None else entities
-        self.activeEntities = set() if activeEntities is None else activeEntities
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
         self.gridContents = dict()
         self.taken = dict()
@@ -94,13 +92,10 @@ class PlaneEnvironment(itf.iEnvironment):
             entity: itf.Entity
             name = entity.properties.get(entity.NAME, "Untitled")
             location = entity.properties.get(entity.LOCATION, None)
-            priority = entity.getPriority()
             if location is None:
                 print("Unable to initialise Entity {} ({}) without location!".format(ID, name))
                 continue
             self.taken[location] = ID
-            self.entityPriority.append((priority, ID))
-        self.entityPriority.sort()
         return
 
     def __copy__(self):

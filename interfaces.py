@@ -34,10 +34,9 @@ class Entity:
         self.agent = agent
 
     def __copy__(self):
-        newAgent=self.agent.copy()
-        newProps=self.properties.copy()
-        return Entity(newAgent,newProps)
-
+        newAgent = self.agent.__copy__()
+        newProps = self.properties.copy()
+        return Entity(newAgent, newProps)
 
     def receiveEnvironmentData(self, data):
         if not self.properties.get(Entity.S_mirror, False):
@@ -68,10 +67,15 @@ class Entity:
 
 
 class iEnvironment:
-    def __init__(self):
+    def __init__(self,entities,activeEntities):
         self.data = dict()
-        self.entities = dict()
+        self.entities = [] if entities is None else entities
+        self.activeEntities = set() if activeEntities is None else activeEntities
         self.entityPriority = []
+        for ID, entity in enumerate(self.entities):
+            priority = entity.getPriority()
+            self.entityPriority.append((priority, ID))
+        self.entityPriority.sort()
 
     def __copy__(self):
         raise NotImplementedError
@@ -111,13 +115,21 @@ class iEnvironment:
         self.data['agent_last_action'] = D
         self.runChanges(D)
 
-class iTrainingMethod:
-    def __init__(self, agentTemplate, *args, **kwargs):
+    def evaluateActiveEntities(self):
         raise NotImplementedError
-    def train(self):
-        raise NotImplementedError
-    def evaluate(self, testExamples=list[iEnvironment]):
 
+    def makeAgentTest(self,agent:iAgent):
+        def agentTest():
+            curInstance=self.__copy__()
+            for ID in sel
+
+
+class iTrainingMethod:
+    def train(self, testExamples=list[callable]):
+        raise NotImplementedError
+
+    def evaluate(self, testExamples=list[callable]):
+        raise NotImplementedError
 
 
 def main():

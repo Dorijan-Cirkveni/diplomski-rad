@@ -51,6 +51,15 @@ class iLifeform:
         raise NotImplementedError
 
 
+def testAll(population, testSet: list[callable], combinationMethod=lambda L: sum(L)):
+    RES = []
+    for unit in population:
+        unit: iLifeform
+        results = [fn(unit) for fn in testSet]
+        fin_result = combinationMethod(results)
+    return RES
+
+
 class Selector(itf.iTrainingMethod):
     def __init__(self, lifeformTemplate, agentTemplate,
                  populationSize=100, elitism=0.5, birthrate=1, randomSeed=None):
@@ -63,23 +72,15 @@ class Selector(itf.iTrainingMethod):
         self.elitism = int(populationSize * elitism) if elitism < 1 else elitism
         self.birthrate = birthrate
 
-    def initiate(self, randomSeed=None):
+    def initiate(self, randomSeed=None, trainingSet:list[callable], evalSet: list[callable]):
         self.population = []
         units = [self.template.copy() for i in range(self.populationSize)]
         for unit in units:
             unit.setRandomStats()
-        results = self.testAll(units)
+        results = testAll(units)
         while units:
             self.population.append((units.pop(), results.pop()))
         return
-
-    def testAll(self, population, testSet: list[callable], combinationMethod=lambda L: sum(L)):
-        RES = []
-        for unit in population:
-            unit: iLifeform
-            results = [fn(unit) for fn in testSet]
-            fin_result = combinationMethod(results)
-        return RES
 
     def runGeneration(self):
         self.population: list
