@@ -82,10 +82,12 @@ class PlaneEnvironment(itf.iEnvironment):
 
     def __init__(self, scale: tuple, grid: list[list[int]], entities: list[itf.Entity] = None,
                  activeEntities: set = None, tileTypes=None, data=None):
-        super().__init__(entities,activeEntities)
+        super().__init__(entities, activeEntities)
         self.scale = scale
         self.grid = grid
+
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
+        self.tileData = [[dict() for F in E] for E in self.grid]
         self.gridContents = dict()
         self.taken = dict()
         for ID, entity in enumerate(self.entities):
@@ -100,13 +102,61 @@ class PlaneEnvironment(itf.iEnvironment):
 
     def __copy__(self):
         newScale = self.scale
-        newGrid = [e.copy() for e in self.grid]
+        newGrid = [e.__copy__() for e in self.grid]
         entities = []
         for e in self.entities:
             e: itf.Entity
-            entities.append(e.copy())
-        new = PlaneEnvironment(None)
+            entities.append(e.__copy__())
+        new = PlaneEnvironment(newScale, newGrid, entities)
         return new
+
+    def exportTileData(self, other):
+        for i, E in enumerate(self.grid):
+            E2 = other.grid[i]
+            for j, F in enumerate(E):
+                F2 = E2[j]
+                F: dict
+                F2: dict
+                F.update(F2)
+        return
+
+    def setDistances(self, M, agentID=None):
+        for i, E in enumerate(M):
+            L = self.tileData[i]
+            for j, F in enumerate(E):
+                D = L[j]
+                D2 = D.get("disFor", dict())
+                D["disFor"] = D2
+                D2[agentID] = F
+        return
+
+    def calcDistances(self, agentID=None):
+        data = dict()
+        if agentID is not None:
+            entity = self.entities[agentID]
+            entity: itf.Entity
+            data = entity.properties
+        temp = []
+        M = []
+        for i, E in enumerate(self.grid):
+            L = []
+            for j, F in enumerate(E):
+                entry = None
+                tile = self.tileTypes[F]
+                tile: PlaneTile
+                if tile.checkAgainst(data) == PlaneTile.goal:
+                    entry = 0
+                    temp.append((i, j))
+                L.append(entry)
+            M.append(L)
+        while temp:
+            newtemp = []
+            while temp:
+                E = temp.pop()
+                v = M[E[0]][E[1]]
+                if v is None:
+                    raise Exception("Cosmic Ray Error?")
+                for move in self.getMoves(agentID)
 
     def get_tile(self, i, j=None):
         if j is None:
@@ -217,14 +267,19 @@ class PlaneEnvironment(itf.iEnvironment):
             data[entityID] = entity.properties
         return data
 
-    def getMoves(self, entityID=None):
-        entity: itf.Entity = self.entities[entityID]
-        location = entity.get(entity.LOCATION, None)
+    def getMoves(self, entityID=None, customLocation=None):
+        properties=dict()
+        location=customLocation
+        if entityID is not None:
+            entity: itf.Entity = self.entities[entityID]
+            location = entity.get(entity.LOCATION, None) if customLocation is None else customLocation
+            properties =entity.properties
         goodMoves = []
         for move, direction in enumerate(global_moves):
             neigh_loc = Tadd(location, direction)
-            movability = self.is_tile_movable(neigh_loc, entity.properties)
-            goodMoves.append(move)
+            movability = self.is_tile_movable(neigh_loc, properties)
+            if movability:
+                goodMoves.append(move)
         return goodMoves
 
     def moveEntity(self, entID, destination):
@@ -265,11 +320,8 @@ class PlaneEnvironment(itf.iEnvironment):
             self.moveDirection(V, e)
         return
 
-    def getValue(self, agentID=None):
-        
-
     def evaluateActiveEntities(self):
-
+        raise NotImplementedError
 
 
 def readPlaneEnvironment(json_str, agentDict):
@@ -293,10 +345,10 @@ def readPlaneEnvironment(json_str, agentDict):
         agents.append(agentDict[a_type](a_data))
 
     for entity_data in raw.get("entities", []):
-        ID=entity_data.get("id",None)
+        ID = entity_data.get("id", None)
         if ID is None:
             raise Exception("Entity agent ID must be specified!")
-        entity = itf.Entity(agents[int(ID)], entity_data.get("properties",dict()))
+        entity = itf.Entity(agents[int(ID)], entity_data.get("properties", dict()))
         entities.append(entity)
 
     for e in raw.get("activeEntities", []):

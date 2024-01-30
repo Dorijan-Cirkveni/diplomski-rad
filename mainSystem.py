@@ -9,7 +9,7 @@ class mainSystem:
             instance=environment.__copy__()
 
     def train(self,agentsAndMethods:list[tuple[itf.iAgent,itf.iTrainingMethod]]):
-
+        return
 
 
 def main():

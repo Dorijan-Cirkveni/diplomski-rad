@@ -67,7 +67,7 @@ class Entity:
 
 
 class iEnvironment:
-    def __init__(self,entities,activeEntities):
+    def __init__(self, entities, activeEntities):
         self.data = dict()
         self.entities = [] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
@@ -80,8 +80,12 @@ class iEnvironment:
     def __copy__(self):
         raise NotImplementedError
 
-    def getValue(self, agentID=None):
+    def getPositionValue(self, position):
         raise NotImplementedError
+
+    def getValue(self, agentID=None):
+        entity: Entity = self.entities[agentID]
+        return entity.properties
 
     def getEnvData(self, agentID=None):
         raise NotImplementedError
@@ -118,10 +122,9 @@ class iEnvironment:
     def evaluateActiveEntities(self):
         raise NotImplementedError
 
-    def makeAgentTest(self,agent:iAgent):
+    def makeAgentTest(self, agent: iAgent):
         def agentTest():
-            curInstance=self.__copy__()
-            for ID in sel
+            curInstance = self.__copy__()
 
 
 class iTrainingMethod:
