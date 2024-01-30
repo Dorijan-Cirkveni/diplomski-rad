@@ -35,6 +35,7 @@ class PlaneTile:
     lethal = tile_counter.use()
     lethalwall = tile_counter.use()
     goal = tile_counter.use()
+    effect = tile_counter.use()
     TYPE_COUNT = tile_counter.value + 1
     """
     A class describing a plane tile and how it reacts to entities
@@ -156,21 +157,28 @@ class PlaneEnvironment(itf.iEnvironment):
                 v = M[E[0]][E[1]]
                 if v is None:
                     raise Exception("Cosmic Ray Error?")
-                v+=1
+                v += 1
                 for move in self.getMoves(agentID):
-                    newpos=Tadd(E,move)
-                    newtiletype=self.get_tile(newpos)
+                    newpos = Tadd(E, move)
+                    newtiletype = self.get_tile(newpos)
                     if newtiletype is None:
                         continue
                     tile = self.tileTypes[newtiletype]
                     tile: PlaneTile
-                    M[newpos[0]][newpos[1]]=v
-                    if self.is_tile_movable(newpos,data):
+                    M[newpos[0]][newpos[1]] = v
+                    if self.is_tile_movable(newpos, data):
                         newtemp.append(newpos)
         return M
 
-    def determineDistances(self,agentID=None):
-        M=self.calcDistances()
+    def determineDistances(self, agentID=None):
+        M = self.calcDistances()
+
+    def getPositionValue(self, position, agentID=None):
+        tile = self.get_tile(position)
+        if tile is None:
+            return None
+        data: dict = self.tileData[position[0]][position[1]]
+
 
     def get_tile(self, i, j=None):
         if j is None:
@@ -280,12 +288,12 @@ class PlaneEnvironment(itf.iEnvironment):
         return data
 
     def getMoves(self, entityID=None, customLocation=None):
-        properties=dict()
-        location=customLocation
+        properties = dict()
+        location = customLocation
         if entityID is not None:
             entity: itf.Entity = self.entities[entityID]
             location = entity.get(entity.LOCATION, None) if customLocation is None else customLocation
-            properties =entity.properties
+            properties = entity.properties
         goodMoves = []
         for move, direction in enumerate(global_moves):
             neigh_loc = Tadd(location, direction)
@@ -376,15 +384,16 @@ def readPlaneEnvironment(json_str, agentDict):
 
 
 default_opaque = {PlaneTile.wall, PlaneTile.curtain, PlaneTile.lethalwall}
-default_movable = {PlaneTile.goal, PlaneTile.curtain, PlaneTile.lethal, PlaneTile.accessible}
+default_movable = {PlaneTile.goal, PlaneTile.curtain, PlaneTile.lethal, PlaneTile.accessible, PlaneTile.effect}
 keys = {
     "wall": PlaneTile.wall,
     "curt": PlaneTile.curtain,
     "leth": PlaneTile.lethal,
     "lewa": PlaneTile.lethalwall,
     "goal": PlaneTile.goal,
-    "acce": PlaneTile.accessible
-
+    "acce": PlaneTile.accessible,
+    "glas": PlaneTile.glass,
+    "effe": PlaneTile.effect
 }
 global_moves = [(0, 0)] + V2DIRS
 

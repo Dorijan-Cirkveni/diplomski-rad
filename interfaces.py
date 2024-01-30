@@ -26,8 +26,10 @@ class Entity:
     view_directions = [S_view_up, S_view_down, S_view_left, S_view_right]
     S_view_self = "viewse"
     S_relativepos = "relpos"
+    VISIONDATA = "vision"
     NAME = "name"
     LOCATION = "loc"
+    FALSE_INPUT = "falin"
 
     def __init__(self, agent: iAgent, properties=None):
         self.properties = dict() if properties is None else properties
@@ -80,7 +82,7 @@ class iEnvironment:
     def __copy__(self):
         raise NotImplementedError
 
-    def getPositionValue(self, position):
+    def getPositionValue(self, position, agentID=None):
         raise NotImplementedError
 
     def getValue(self, agentID=None):
