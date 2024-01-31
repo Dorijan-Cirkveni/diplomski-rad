@@ -1,5 +1,6 @@
 import pygame
 import TupleDotOperations as tdo
+from PlaneEnvironment import *
 
 fixedBG = (0, 0, 0)
 GRID_COLOR = (255, 255, 255)
@@ -77,7 +78,10 @@ class GridDisplay:
         pass
 
 
-standardGrid = None
+class GridInteractive:
+    def __init__(self):
+        self.grid=None
+        self.
 
 
 if __name__ == "__main__":
