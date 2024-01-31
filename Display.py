@@ -1,60 +1,77 @@
 import pygame
-import TupleDotOperations as TDO
+import TupleDotOperations as tdo
 
 fixedBG = (0, 0, 0)
 GRID_COLOR = (255, 255, 255)
 
 
 class GridElementDisplay:
-    def __init__(self, filename, offset):
+    def __init__(self, filename, offset, size):
         self.image = pygame.image.load(filename)
         self.offset = offset
+        self.size=size
 
-    def apply(self, location, size):
-        realOffset = TDO.Tmul(size, self.offset)
+    def apply(self, location, size, localOffset=(0,0)):
+        localOffset=tdo.Tadd(localOffset,self.offset)
+        realOffset = tdo.Tmul(size, localOffset)
+        size=tdo.Tmul(size,self.size)
         image = pygame.transform.scale(self.image, size)
-        location = TDO.Tadd(location, realOffset)
+        location = tdo.Tadd(location, realOffset)
         rect = image.get_rect()
         rect.x, rect.y = location
         return image, rect
 
 
-class AgentDisplay:
-    def __init__(self, images, current):
-        self.images = images
-        self.current = current
-
-
 class GridDisplay:
-    def __init__(self, elements, screenV=(600, 600), gridV=(20, 20), name="Untitled Grid Simulation"):
+    def __init__(self, elementTypes, agentTypes, screenV=(600, 600), gridV=(20, 20), name="Untitled Grid Simulation"):
+        self.elementTypes:list[GridElementDisplay]=elementTypes
+        self.agentTypes:list[GridElementDisplay]=agentTypes
         self.screenV = screenV
         self.gridV = gridV
-        self.tileV = TDO.Tfdiv(screenV, gridV)
+        self.tileV = tdo.Tfdiv(screenV, gridV)
         print(self.tileV)
-        self.screen = None
         self.name = name
         pygame.init()
         self.screen = pygame.display.set_mode(self.screenV)
         pygame.display.set_caption(self.name)
         return
 
-    def draw_frame(self, tiles, agents):
-        if self.screen is None:
-            return False
+    def draw_row(self, row_coordinate, row_tiles, row_agents):
         screen = self.screen
-        for i in range(0, self.screenV[0] + 1, self.tileV[0]):
-            print(i, end="|")
-            pygame.draw.line(screen, GRID_COLOR, (i, 0), (i, self.screenV[1]))
-        for i in range(1, self.screenV[1] + 1, self.tileV[1]):
-            print(i, end="|")
-            pygame.draw.line(screen, GRID_COLOR, (0, i), (self.screenV[1], i))
-        for x, E in enumerate(tiles):
-            x *= self.tileV[0]
-            for y, e in enumerate(E):
-                y *= self.tileV[1]
-                print(x, y, self.tileV)
-                pygame.draw.rect(screen, GRID_COLOR, (x, y, self.tileV[0], self.tileV[1]), 1)
+
+        # Draw tiles in the current row
+        for y, e in enumerate(row_tiles):
+            y_pixel = row_coordinate * self.tileV[1]
+            x_pixel = y * self.tileV[0]
+
+            element = self.elementTypes[e]
+            image, rect = element.apply((x_pixel, y_pixel), self.tileV)
+            screen.blit(image, rect)
+
+        # Draw agents in the current row
+        for x, agent_index in row_agents.items():
+            x_pixel = x * self.tileV[0]
+            y_pixel = row_coordinate * self.tileV[1]
+
+            agent = self.agentTypes[agent_index]
+            image, rect = agent.apply((x_pixel, y_pixel), self.tileV)
+            screen.blit(image, rect)
+
         pygame.display.flip()
+
+    def draw_frame(self, grid, agents:dict):
+        for row_coordinate, row_content in enumerate(grid):
+            row_tiles = [e for e in row_content if isinstance(e, int)]
+            row_agents = {}
+            for col_coordinate in range(self.gridV[1]):
+                if (row_coordinate,col_coordinate) not in agents:
+                    continue
+                row_agents[col_coordinate]=agents[(row_coordinate,col_coordinate)]
+            self.draw_row(row_coordinate, row_tiles, row_agents)
+            pygame.time.wait(100)  # Pause for 500 milliseconds (adjust as needed)
+
+        pygame.display.flip()
+        return True
 
     def hide_grid(self):
         pass
@@ -63,17 +80,32 @@ class GridDisplay:
 standardGrid = None
 
 
-def main():
-    elementGrid = [
-        GridElementDisplay("grid_tiles/floor.png", (0, 0)),
-        GridElementDisplay("grid_tiles/wall.png", (0, -0.5))
+if __name__ == "__main__":
+    main_grid = [
+        [1, 0, 1, 0, 1],
+        [0, 1, 0, 1, 0],
+        [1, 0, 1, 0, 1],
+        [0, 1, 0, 1, 0],
+        [1, 0, 1, 0, 1],
+        [],
+        [0]*10+[1]
     ]
+    agents={(5,10):0}
+    element_grid = [
+        GridElementDisplay("grid_tiles/floor.png", (0, 0), (1,1)),
+        GridElementDisplay("grid_tiles/wall.png", (0, -0.5), (1,1.5))
+    ]
+    agent_grid = [
+        GridElementDisplay("grid_tiles/blueAgent.png", (0, -0.5), (1,1.5)),
+    ]
+
     TEST = GridDisplay(
-        elements=None
+        elementTypes=element_grid,
+        agentTypes=agent_grid
     )
-    TEST.draw_frame([[1] * 20 for i in range(20)], None)
+    TEST.draw_frame(main_grid,agents)
     input()
-    return
+
 
 
 if __name__ == "__main__":
