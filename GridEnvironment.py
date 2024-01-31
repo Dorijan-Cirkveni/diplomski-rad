@@ -75,7 +75,7 @@ defaultTileTypes = [
 counter = util.Counter()
 
 
-class PlaneEnvironment(itf.iEnvironment):
+class GridEnvironment(itf.iEnvironment):
     dir_up = counter.use()
     dir_down = counter.use()
     dir_left = counter.use()
@@ -108,7 +108,7 @@ class PlaneEnvironment(itf.iEnvironment):
         for e in self.entities:
             e: itf.Entity
             entities.append(e.__copy__())
-        new = PlaneEnvironment(newScale, newGrid, entities)
+        new = GridEnvironment(newScale, newGrid, entities)
         return new
 
     def exportTileData(self, other):
@@ -374,7 +374,7 @@ def readPlaneEnvironment(json_str, agentDict):
     for e in raw.get("activeEntities", []):
         active.update({int(val) for val in e.values()})
 
-    RES = PlaneEnvironment(
+    RES = GridEnvironment(
         scale=scale,
         grid=grid,
         entities=entities,
@@ -409,7 +409,7 @@ def main():
 
     print(PlaneTile.wall)
     print(X.text_display(guide))
-    # print(X.view_direction((15, 10), PlaneEnvironment.dir_up))
+    # print(X.view_direction((15, 10), GridEnvironment.dir_up))
     for i in range(20):
         X.runIteration()
         print(X.taken)
