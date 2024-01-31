@@ -1,4 +1,8 @@
+import os
+
 import pygame
+
+import GridEnvironment
 import TupleDotOperations as tdo
 from GridEnvironment import *
 
@@ -18,14 +22,14 @@ class GridElementDisplay:
         size = tdo.Tmul(size, self.size)
         image = pygame.transform.scale(self.image, size)
         location = tdo.Tadd(location, realOffset)
-        rect = image.get_rect()
-        rect.x, rect.y = location
-        return image, rect
+        cur_rect = image.get_rect()
+        cur_rect.x, cur_rect.y = location
+        return image, cur_rect
 
 
 class GridDisplay:
     def __init__(self, elementTypes, agentTypes, gridV=(20, 20), screenV=(800, 600),
-                 gridscreenV=(600,600), name="Untitled Grid Simulation"):
+                 gridscreenV=(600, 600), name="Untitled Grid Simulation"):
         self.elementTypes: list[GridElementDisplay] = elementTypes
         self.agentTypes: list[GridElementDisplay] = agentTypes
         self.screenV = screenV
@@ -34,11 +38,14 @@ class GridDisplay:
         self.tileV = tdo.Tfdiv(gridscreenV, gridV)
         print(self.tileV)
         self.name = name
+        self.screen = None
+        return
+
+    def show_display(self):
         pygame.init()
         self.screen = pygame.display.set_mode(self.screenV)
         pygame.display.set_caption(self.name)
         self.draw_buttons()
-        return
 
     def draw_buttons(self):
         screen = self.screen
@@ -57,8 +64,8 @@ class GridDisplay:
             x_pixel = y * self.tileV[0]
 
             element = self.elementTypes[e]
-            image, rect = element.apply((x_pixel, y_pixel), self.tileV)
-            screen.blit(image, rect)
+            image, cur_rect = element.apply((x_pixel, y_pixel), self.tileV)
+            screen.blit(image, cur_rect)
 
         # Draw agents in the current row
         for x, agent_index in row_agents.items():
@@ -66,8 +73,8 @@ class GridDisplay:
             y_pixel = row_coordinate * self.tileV[1]
 
             agent = self.agentTypes[agent_index]
-            image, rect = agent.apply((x_pixel, y_pixel), self.tileV)
-            screen.blit(image, rect)
+            image, cur_rect = agent.apply((x_pixel, y_pixel), self.tileV)
+            screen.blit(image, cur_rect)
 
         pygame.display.flip()
 
@@ -85,26 +92,44 @@ class GridDisplay:
         self.draw_buttons()  # Draw buttons after the grid
         pygame.display.flip()
 
-
     def hide_grid(self):
         pass
 
 
-
 class GridInteractive:
     def __init__(self):
-        self.grid = None
-        self.display = None
+        self.grid:[GridEnvironment,None] = None
+        self.display:[GridDisplay,None] = None
 
-    def load_grid(self, gridEnv:GridEnvironment):
-        tiles,agents=self.display()
+    def load_grid(self, gridEnv: GridEnvironment):
+        tiles, agents = self.display()
+
+    def load_grid_from_file(self, filename, index=0):
+        if os.path.isfile(filename):
+            with open(filename, 'r') as file:
+                json_raw = file.read()
+                grid = readPlaneEnvironment(json_raw,index)
+                self.grid = grid
+                return True
+        print("Error: File '{}' not found.".format(filename))
+        return False
+
+    def init_display(self,
+                     elementTypes:list[GridElementDisplay],
+                     agentTypes:list[GridElementDisplay]
+                     ):
+        if self.grid is None:
+            print("Load a grid first!")
+        self.grid:GridEnvironment
+        self.display = GridDisplay(elementTypes, agentTypes)
+        self.display.show_display()
+        self.display.draw_frame(self.grid.grid,{})
+        print(self.grid.text_display('0123456789'))
 
 
-    def load_grid_from_file(self, filename):
-        pass
-
-
-if __name__ == "__main__":
+def main():
+    testGI=GridInteractive()
+    testGI.load_grid_from_file("tests/basic_tests.json")
     main_grid = [
         [1, 0, 1, 0, 1],
         [0, 1, 0, 1, 0],
@@ -117,18 +142,22 @@ if __name__ == "__main__":
     agents = {(5, 10): 0}
     element_grid = [
         GridElementDisplay("grid_tiles/floor.png", (0, 0), (1, 1)),
+        GridElementDisplay("grid_tiles/goal.png", (0, 0), (1, 1)),
         GridElementDisplay("grid_tiles/wall.png", (0, -0.5), (1, 1.5))
     ]
     agent_grid = [
         GridElementDisplay("grid_tiles/blueAgent.png", (0, -0.5), (1, 1.5)),
     ]
-
+    testGI.init_display(element_grid,agent_grid)
+    '''
     TEST = GridDisplay(
         elementTypes=element_grid,
         agentTypes=agent_grid
     )
     TEST.draw_frame(main_grid, agents)
+    '''
     input()
+
 
 if __name__ == "__main__":
     main()

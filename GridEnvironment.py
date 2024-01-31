@@ -179,7 +179,6 @@ class GridEnvironment(itf.iEnvironment):
             return None
         data: dict = self.tileData[position[0]][position[1]]
 
-
     def get_tile(self, i, j=None):
         if j is None:
             i, j = i
@@ -344,25 +343,26 @@ class GridEnvironment(itf.iEnvironment):
         raise NotImplementedError
 
 
-def readPlaneEnvironment(json_str, agentDict):
-    scale = (20, 20)
+def readPlaneEnvironment(json_str, index, agentDict=None):
+    if agentDict is None:
+        agentDict = {"RAA": Agent.initRAAFactory(global_moves)}
+    json_rawL: dict = json.loads(json_str)
+    if index not in range(-len(json_rawL), len(json_rawL)):
+        raise Exception("Invalid index {} for file with {} entries!".format(index, len(json_rawL)))
+    raw = json_rawL[index]
+    scale = tuple(raw.get("scale", [20, 20]))
     grid = [[0 for __ in range(scale[1])] for _ in range(scale[0])]
     agents = []
     entities = []
     active = set()
+    shapes=raw.get("shapes", {})
+    for type,V in shapes.items():
+        if type=="rectangles":
+            for e in V:
+                rect(tuple(e), grid)
 
-    # Load the JSON string
-    raw = json.loads(json_str)
-
-    for e in raw.get("shapes", {}).get("rectangles", []):
-        rect(tuple(e.values()), grid)
-
-    for agent_data in raw.get("agent", []):
-        a_type = agent_data.get("type", None)
-        if a_type is None:
-            raise Exception("Agent type must be specified!")
-        a_data = agent_data.get("data", dict())
-        agents.append(agentDict[a_type](a_data))
+    for (a_type,a_raw) in raw.get("agent", []):
+        agents.append(agentDict[a_type](a_raw))
 
     for entity_data in raw.get("entities", []):
         ID = entity_data.get("id", None)
@@ -371,8 +371,7 @@ def readPlaneEnvironment(json_str, agentDict):
         entity = itf.Entity(agents[int(ID)], entity_data.get("properties", dict()))
         entities.append(entity)
 
-    for e in raw.get("activeEntities", []):
-        active.update({int(val) for val in e.values()})
+    active.update(set(raw.get("activeEntities", [])))
 
     RES = GridEnvironment(
         scale=scale,
@@ -400,15 +399,15 @@ global_moves = [(0, 0)] + V2DIRS
 
 def main():
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
-    F = open("tests/basic_tests.txt", "r")
+    F = open("tests/basic_tests.json", "r")
     TESTS = F.read().split("\n\n")
     F.close()
-    TXR = TESTS[0]
-    X = readPlaneEnvironment(TXR, {"RAA": Agent.initRAAFactory(global_moves)})
+    TXR = TESTS
+    X = readPlaneEnvironment(TXR, 0, {"RAA": Agent.initRAAFactory(global_moves)})
     Y = X.__copy__()
 
     print(PlaneTile.wall)
-    print(X.text_display(guide))
+    print(Y.text_display(guide))
     # print(X.view_direction((15, 10), GridEnvironment.dir_up))
     for i in range(20):
         X.runIteration()

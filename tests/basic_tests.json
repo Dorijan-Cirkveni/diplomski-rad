@@ -1,0 +1,39 @@
+[
+{
+  "name": "Environment Test 1",
+  "scale": [20,20],
+  "shapes": {
+    "rectangles": [
+      [0, 18, 19, 19, 1],
+      [0, 0, 19, 19, 2],
+      [2, 2, 4, 4, 2]
+    ]
+  },
+  "agent": [
+    ["RAA","42132143212132141241212"]
+  ],
+  "entities": [
+    {"id": 0, "properties": {"location": [15, 5]}}
+  ],
+  "activeEntities": [0]
+}
+,
+{
+  "name": "Environment Test 2",
+  "scale": [20,20],
+  "shapes": {
+    "rectangles": [
+      [0, 18, 19, 19, 1],
+      [0, 0, 19, 19, 2],
+      [2, 2, 4, 4, 2]
+    ]
+  },
+  "agent": [
+    ["RAA","4213214321"]
+  ],
+  "entities": [
+    {"id": 0, "properties": {"location": [15, 5]}}
+  ],
+  "activeEntities": [0]
+}
+]

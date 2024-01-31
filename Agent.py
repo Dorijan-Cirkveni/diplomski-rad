@@ -72,6 +72,9 @@ class ManualInputAgent(interfaces.iAgent):
         self.actions = actions
         self.guide = guide
 
+    def __copy__(self):
+        return ManualInputAgent(self.watchedDimensions,self.actions,self.guide)
+
     def receiveEnvironmentData(self, data):
         (y1, y2), (x1, x2) = self.watchedDimensions
         print()
