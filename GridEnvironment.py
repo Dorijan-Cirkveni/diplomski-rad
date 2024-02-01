@@ -28,12 +28,12 @@ def rect(E, grid):
 
 class PlaneTile:
     accessible = tile_counter.use()
-    glass = tile_counter.use()
+    goal = tile_counter.use()
     wall = tile_counter.use()
     curtain = tile_counter.use()
     lethal = tile_counter.use()
     lethalwall = tile_counter.use()
-    goal = tile_counter.use()
+    glass = tile_counter.use()
     effect = tile_counter.use()
     TYPE_COUNT = tile_counter.value + 1
     """
@@ -354,7 +354,7 @@ class GridEnvironment(itf.iEnvironment):
         return
 
     def evaluateActiveEntities(self):
-        raise NotImplementedError
+        
 
     def changeActiveEntityAgents(self, newAgents: list[itf.iAgent]):
         i = 0

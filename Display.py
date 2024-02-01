@@ -268,6 +268,12 @@ def main():
         GridElementDisplay("grid_tiles/floor.png", (0, 0), (1, 1)),
         GridElementDisplay("grid_tiles/goal.png", (0, 0), (1, 1)),
         GridElementDisplay("grid_tiles/wall.png", (0, -0.5), (1, 1.5)),
+        GridElementDisplay("grid_tiles/curt.png", (0, -0.5), (1, 1.5)),
+        GridElementDisplay("grid_tiles/leth.png", (0, 0), (1, 1)),
+        GridElementDisplay("grid_tiles/lethwall.png", (0, -0.5), (1, 1.5)),
+        GridElementDisplay("grid_tiles/glass.png", (0, -0.5), (1, 1.5)),
+        GridElementDisplay("grid_tiles/effect.png", (0, 0), (1, 1)),
+
         GridElementDisplay("grid_tiles/null.png", (0, -0.5), (1, 1.5))
     ]
     agent_grid = [
