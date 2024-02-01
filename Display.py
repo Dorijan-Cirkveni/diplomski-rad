@@ -28,7 +28,7 @@ class GridElementDisplay:
 
 
 class GridDisplay:
-    def __init__(self, elementTypes, agentTypes, gridV=(20, 20), screenV=(800, 600),
+    def __init__(self, elementTypes, agentTypes, gridV=(20, 20), screenV=(800, 800),
                  gridscreenV=(600, 600), name="Untitled Grid Simulation"):
         self.elementTypes: list[GridElementDisplay] = elementTypes
         self.agentTypes: list[GridElementDisplay] = agentTypes
@@ -49,10 +49,9 @@ class GridDisplay:
 
     def draw_buttons(self):
         screen = self.screen
-        button_width = 200
-        button_color = (100, 0, 100)
 
-        pygame.draw.rect(screen, button_color, (self.gridscreenV[0], 0, button_width, self.screenV[1]))
+        pygame.draw.rect(screen, (100, 0, 100), (self.gridscreenV[0], 0, self.screenV[0]-self.gridscreenV[0], self.screenV[1]))
+        pygame.draw.rect(screen, (0, 0, 100), (0, self.gridscreenV[1], self.screenV[0], self.screenV[1]-self.gridscreenV[1]))
         # Add your button drawing code here
 
     def draw_row(self, row_coordinate, row_tiles, row_agents):
