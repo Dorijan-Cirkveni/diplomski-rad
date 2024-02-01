@@ -50,9 +50,17 @@ class GridDisplay:
     def draw_buttons(self):
         screen = self.screen
 
-        pygame.draw.rect(screen, (100, 0, 100), (self.gridscreenV[0], 0, self.screenV[0]-self.gridscreenV[0], self.screenV[1]))
-        pygame.draw.rect(screen, (0, 0, 100), (0, self.gridscreenV[1], self.screenV[0], self.screenV[1]-self.gridscreenV[1]))
+        pygame.draw.rect(screen, (100, 0, 100),
+                         (self.gridscreenV[0], 0, self.screenV[0] - self.gridscreenV[0], self.screenV[1]))
+        pygame.draw.rect(screen, (0, 0, 100),
+                         (0, self.gridscreenV[1], self.screenV[0], self.screenV[1] - self.gridscreenV[1]))
         # Add your button drawing code here
+        font = pygame.font.Font(None, 36)  # You can customize the font and size
+        text = font.render("Your Text Here", True, (255, 255, 255))  # Change the text and color
+        text_rect = text.get_rect(center=(self.screenV[0] // 2, (self.screenV[1] + self.gridscreenV[1]) // 2))
+        screen.blit(text, text_rect)
+
+        pygame.display.flip()
 
     def draw_row(self, row_coordinate, row_tiles, row_agents):
         screen = self.screen
@@ -77,7 +85,7 @@ class GridDisplay:
 
         pygame.display.flip()
 
-    def draw_frame(self, grid, agents: dict):
+    def draw_frame(self, grid, agents: dict, delay=0):
         for row_coordinate, row_content in enumerate(grid):
             row_tiles = [e for e in row_content if isinstance(e, int)]
             row_agents = {}
@@ -86,7 +94,7 @@ class GridDisplay:
                     continue
                 row_agents[col_coordinate] = agents[(row_coordinate, col_coordinate)]
             self.draw_row(row_coordinate, row_tiles, row_agents)
-            pygame.time.wait(100)  # Pause for 100 milliseconds (adjust as needed)
+            pygame.time.wait(delay)  # Pause for 100 milliseconds (adjust as needed)
 
         self.draw_buttons()  # Draw buttons after the grid
         pygame.display.flip()
@@ -94,11 +102,22 @@ class GridDisplay:
     def hide_grid(self):
         pass
 
+    def run(self):
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
+            self.draw_buttons()
+
+        pygame.quit()
+
 
 class GridInteractive:
     def __init__(self):
-        self.grid:[GridEnvironment,None] = None
-        self.display:[GridDisplay,None] = None
+        self.grid: [GridEnvironment, None] = None
+        self.display: [GridDisplay, None] = None
 
     def load_grid(self, gridEnv: GridEnvironment):
         tiles, agents = self.display()
@@ -107,27 +126,27 @@ class GridInteractive:
         if os.path.isfile(filename):
             with open(filename, 'r') as file:
                 json_raw = file.read()
-                grid = readPlaneEnvironment(json_raw,index)
+                grid = readPlaneEnvironment(json_raw, index)
                 self.grid = grid
                 return True
         print("Error: File '{}' not found.".format(filename))
         return False
 
     def init_display(self,
-                     elementTypes:list[GridElementDisplay],
-                     agentTypes:list[GridElementDisplay]
+                     elementTypes: list[GridElementDisplay],
+                     agentTypes: list[GridElementDisplay]
                      ):
         if self.grid is None:
             print("Load a grid first!")
-        self.grid:GridEnvironment
+        self.grid: GridEnvironment
         self.display = GridDisplay(elementTypes, agentTypes)
         self.display.show_display()
-        self.display.draw_frame(self.grid.grid,{})
+        self.display.draw_frame(self.grid.grid, {})
         print(self.grid.text_display('0123456789'))
 
 
 def main():
-    testGI=GridInteractive()
+    testGI = GridInteractive()
     testGI.load_grid_from_file("tests/basic_tests.json")
     main_grid = [
         [1, 0, 1, 0, 1],
@@ -147,7 +166,7 @@ def main():
     agent_grid = [
         GridElementDisplay("grid_tiles/blueAgent.png", (0, -0.5), (1, 1.5)),
     ]
-    testGI.init_display(element_grid,agent_grid)
+    testGI.init_display(element_grid, agent_grid)
     '''
     TEST = GridDisplay(
         elementTypes=element_grid,
@@ -155,7 +174,7 @@ def main():
     )
     TEST.draw_frame(main_grid, agents)
     '''
-    input()
+    testGI.display.run()
 
 
 if __name__ == "__main__":
