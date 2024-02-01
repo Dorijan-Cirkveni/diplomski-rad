@@ -109,14 +109,13 @@ class ManualInputAgent(interfaces.iAgent):
 
 
 class GraphicManualInputAgent(interfaces.iAgent):
-    def __init__(self, watchedDimensions, actions, guide):
+    def __init__(self, watchedDimensions, actions):
         self.watchedDimensions = watchedDimensions
         self.actions = actions
-        self.guide = guide
         self.cur = self.actions[-1]
 
     def __copy__(self):
-        return ManualInputAgent(self.watchedDimensions, self.actions, self.guide)
+        return GraphicManualInputAgent(self.watchedDimensions, self.actions)
 
     def receiveEnvironmentData(self, data):
         return

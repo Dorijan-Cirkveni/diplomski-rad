@@ -1,7 +1,6 @@
 import json
 
-import Agent
-import debug
+from agents import Agent
 import interfaces as itf
 import util
 from definitions import *
@@ -262,7 +261,7 @@ class GridEnvironment(itf.iEnvironment):
 
     def getEnvData(self, entityID=None):
         data = dict()
-        self.entities:list
+        self.entities: list
         entity: itf.Entity = self.entities[entityID]
         location = entity.get(entity.LOCATION, None)
         if entity.get(entity.S_allseeing, False):
@@ -343,6 +342,16 @@ class GridEnvironment(itf.iEnvironment):
     def evaluateActiveEntities(self):
         raise NotImplementedError
 
+    def changeActiveEntityAgents(self, newAgents: list[itf.iAgent]):
+        i = 0
+        for ID in self.activeEntities:
+            entity: itf.Entity = self.entities[ID]
+            entity.agent = newAgents[i].__copy__()
+            i += 1
+            if i == len(newAgents):
+                i = 0
+        return
+
 
 def readPlaneEnvironment(json_str, index, agentDict=None):
     if agentDict is None:
@@ -356,21 +365,21 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
     agents = []
     entities = []
     active = set()
-    shapes=raw.get("shapes", {})
-    for type,V in shapes.items():
-        if type=="rectangles":
+    shapes = raw.get("shapes", {})
+    for type, V in shapes.items():
+        if type == "rectangles":
             for e in V:
                 rect(tuple(e), grid)
 
-    for (a_type,a_raw) in raw.get("agent", []):
+    for (a_type, a_raw) in raw.get("agent", []):
         agents.append(agentDict[a_type](a_raw))
 
     for entity_data in raw.get("entities", []):
         ID = entity_data.get("id", None)
         if ID is None:
             raise Exception("Entity agent ID must be specified!")
-        properties=entity_data.get("properties", dict())
-        properties['loc']=tuple(properties.get('loc',[5,5]))
+        properties = entity_data.get("properties", dict())
+        properties['loc'] = tuple(properties.get('loc', [5, 5]))
         entity = itf.Entity(agents[int(ID)], properties)
         entities.append(entity)
 

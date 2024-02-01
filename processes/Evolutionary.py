@@ -1,8 +1,6 @@
-import math
 import random
-from collections import deque
 
-import Agent
+from agents import Agent
 import interfaces as itf
 
 

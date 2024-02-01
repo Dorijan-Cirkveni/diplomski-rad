@@ -2,7 +2,6 @@ import os
 
 import pygame
 
-import Agent
 import GridEnvironment
 import TupleDotOperations as tdo
 from GridEnvironment import *
@@ -237,7 +236,7 @@ class GridInteractive:
             with open(filename, 'r') as file:
                 json_raw = file.read()
                 grid = readPlaneEnvironment(json_raw, index)
-                self.grid = grid
+                self.grid:GridEnvironment = grid
                 return True
         print("Error: File '{}' not found.".format(filename))
         return False
@@ -261,7 +260,8 @@ class GridInteractive:
 def main():
     testGI = GridInteractive()
     testGI.load_grid_from_file("tests/basic_tests.json")
-    agents = {(5, 10): 0}
+    grid:GridEnvironment=testGI.grid
+    grid.changeActiveEntityAgents([Agent.GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
     element_grid = [
         GridElementDisplay("grid_tiles/floor.png", (0, 0), (1, 1)),
         GridElementDisplay("grid_tiles/goal.png", (0, 0), (1, 1)),
