@@ -13,7 +13,7 @@
     ["RAA","42132143212132141241212"]
   ],
   "entities": [
-    {"id": 0, "properties": {"location": [15, 5]}}
+    {"id": 0, "properties": {"location": [15, 5], "viewup": true}}
   ],
   "activeEntities": [0]
 }
@@ -32,7 +32,7 @@
     ["RAA","4213214321"]
   ],
   "entities": [
-    {"id": 0, "properties": {"location": [15, 5]}}
+    {"id": 0, "properties": {"location": [15, 5], "viewup": true}}
   ],
   "activeEntities": [0]
 }

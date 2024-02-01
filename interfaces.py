@@ -22,7 +22,7 @@ class Entity:
     S_view_down = "viewdn"
     S_view_right = "viewri"
     S_view_left = "viewle"
-    view_directions = [S_view_up, S_view_down, S_view_left, S_view_right]
+    view_directions = [S_view_down, S_view_up, S_view_left, S_view_right]
     S_view_self = "viewse"
     S_relativepos = "relpos"
     VISIONDATA = "vision"

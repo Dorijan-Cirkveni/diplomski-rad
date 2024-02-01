@@ -104,7 +104,7 @@ class Joystick(iButton):
 
 
 class GridDisplay:
-    def __init__(self, elementTypes, agentTypes, gridV=(20, 20), screenV=(800, 800),
+    def __init__(self, elementTypes, agentTypes, obsAgent, gridV=(20, 20), screenV=(800, 800),
                  gridscreenV=(600, 600), name="Untitled Grid Simulation"):
         self.elementTypes: list[GridElementDisplay] = elementTypes
         self.agentTypes: list[GridElementDisplay] = agentTypes
@@ -115,6 +115,7 @@ class GridDisplay:
         self.name = name
         self.screen = None
         self.buttons = dict()
+        self.obsAgent=obsAgent
         return
 
     def show_display(self):
@@ -169,7 +170,8 @@ class GridDisplay:
 
         pygame.display.flip()
 
-    def draw_frame(self, grid, agents: dict, delay=10):
+    def draw_frame(self, env:GridEnvironment, delay=10):
+        grid,agents=env.getDisplayData(self.obsAgent)
         for row_coordinate, row_content in enumerate(grid):
             row_tiles = [e for e in row_content if isinstance(e, int)]
             row_agents = {}
@@ -216,7 +218,7 @@ class GridDisplay:
                             self.change_grid(grid,action=result)
             if runIter:
                 grid.runIteration()
-                self.draw_frame(grid.grid,grid.taken)
+                self.draw_frame(grid)
                 runIter=False
             self.draw_buttons()
 
@@ -248,9 +250,9 @@ class GridInteractive:
         if self.grid is None:
             print("Load a grid first!")
         self.grid: GridEnvironment
-        self.display = GridDisplay(elementTypes, agentTypes)
+        self.display = GridDisplay(elementTypes, agentTypes, 0)
         self.display.show_display()
-        self.display.draw_frame(self.grid.grid, self.grid.taken)
+        self.display.draw_frame(self.grid)
 
     def run(self):
         self.display: GridDisplay
@@ -265,7 +267,8 @@ def main():
     element_grid = [
         GridElementDisplay("grid_tiles/floor.png", (0, 0), (1, 1)),
         GridElementDisplay("grid_tiles/goal.png", (0, 0), (1, 1)),
-        GridElementDisplay("grid_tiles/wall.png", (0, -0.5), (1, 1.5))
+        GridElementDisplay("grid_tiles/wall.png", (0, -0.5), (1, 1.5)),
+        GridElementDisplay("grid_tiles/null.png", (0, -0.5), (1, 1.5))
     ]
     agent_grid = [
         GridElementDisplay("grid_tiles/blueAgent.png", (0, -0.5), (1, 1.5)),

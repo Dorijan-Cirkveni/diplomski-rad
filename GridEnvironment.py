@@ -290,10 +290,15 @@ class GridEnvironment(itf.iEnvironment):
         if entityID is None:
             return self.grid
         data = self.getEnvData(entityID)
+        print(data)
         grid = [[-1 for _ in E] for E in self.grid]
+        agents = dict()
         for E in data:
             if type(E) == tuple and len(E) == 2:
                 grid[E[0]][E[1]] = self.get_tile(E)
+                if E in self.taken:
+                    agents[E] = self.taken[E]
+        return grid,agents
 
     def getMoves(self, entityID=None, customLocation=None):
         properties = dict()
