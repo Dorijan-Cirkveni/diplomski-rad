@@ -44,6 +44,11 @@ class RecordedActionsAgent(interfaces.iAgent):
         self.i = 0
         self.actions = actions
 
+    def __copy__(self):
+        new = RecordedActionsAgent(self.actions[::])
+        new.i = self.i
+        return new
+
     def receiveEnvironmentData(self, data):
         return
 
@@ -58,7 +63,7 @@ class RecordedActionsAgent(interfaces.iAgent):
 def initRAAFactory(translation):
     def initRAA(s="4213214321"):
         actions = []
-        for e in s[0]:
+        for e in s:
             i = int(e)
             actions.append(translation[i % len(translation)])
         return RecordedActionsAgent(actions)
@@ -108,36 +113,16 @@ class GraphicManualInputAgent(interfaces.iAgent):
         self.watchedDimensions = watchedDimensions
         self.actions = actions
         self.guide = guide
+        self.cur = self.actions[-1]
 
     def __copy__(self):
         return ManualInputAgent(self.watchedDimensions, self.actions, self.guide)
 
     def receiveEnvironmentData(self, data):
-        (y1, y2), (x1, x2) = self.watchedDimensions
-        print()
-        print("Tile layout:")
-        for i in range(y1, y2 + 1):
-            s = ''
-            for j in range(x1, x2 + 1):
-                val = self.guide[(i, j)]
-                s += str(val)
-            print(s)
-        D = data.get("taken", dict())
-        if D:
-            for position, agentData in D.items():
-                print("Agent on position {} with properties {}".format(position, agentData))
-        else:
-            print("No visible agents")
         return
 
     def performAction(self, actions):
-        X = []
-        for i, e in enumerate(self.actions):
-            X.append("{}:{}".format(i, e))
-        actions = ",".join(X)
-        actionID = input("Action?({})")
-        cur = self.actions[actionID]
-        return cur
+        return self.cur
 
 
 def main():

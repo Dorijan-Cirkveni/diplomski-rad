@@ -103,7 +103,7 @@ class GridEnvironment(itf.iEnvironment):
 
     def __copy__(self):
         newScale = self.scale
-        newGrid = [e.__copy__() for e in self.grid]
+        newGrid = [e.copy() for e in self.grid]
         entities = []
         for e in self.entities:
             e: itf.Entity
@@ -262,7 +262,8 @@ class GridEnvironment(itf.iEnvironment):
 
     def getEnvData(self, entityID=None):
         data = dict()
-        entity: itf.Entity = self.entities.get(entityID)
+        self.entities:list
+        entity: itf.Entity = self.entities[entityID]
         location = entity.get(entity.LOCATION, None)
         if entity.get(entity.S_allseeing, False):
             for i in range(self.scale[0]):
@@ -402,7 +403,7 @@ global_moves = [(0, 0)] + V2DIRS
 def main():
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     F = open("tests/basic_tests.json", "r")
-    TESTS = F.read().split("\n\n")
+    TESTS = F.read()
     F.close()
     TXR = TESTS
     X = readPlaneEnvironment(TXR, 0, {"RAA": Agent.initRAAFactory(global_moves)})

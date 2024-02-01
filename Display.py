@@ -2,6 +2,7 @@ import os
 
 import pygame
 
+import Agent
 import GridEnvironment
 import TupleDotOperations as tdo
 from GridEnvironment import *
@@ -26,6 +27,7 @@ class GridElementDisplay:
         cur_rect.x, cur_rect.y = location
         return image, cur_rect
 
+
 class iButton:
     def __init__(self, color, text, original_dimensions):
         self.color = color
@@ -41,7 +43,7 @@ class iButton:
         L[3] *= sizeChange[1]
         return tuple(L)
 
-    def draw(self, screen, location, sizeChange=(1,1)):
+    def draw(self, screen, location, sizeChange=(1, 1)):
         raise NotImplementedError
 
     def is_clicked(self, event):
@@ -52,8 +54,8 @@ class Button(iButton):
     def __init__(self, color, text, original_dimensions):
         super().__init__(color, text, original_dimensions)
 
-    def draw(self, screen, location, sizeChange=(1,1)):
-        dimensions=self.getResized(location,sizeChange)
+    def draw(self, screen, location, sizeChange=(1, 1)):
+        dimensions = self.getResized(location, sizeChange)
         self.rect = pygame.draw.rect(screen, self.color, dimensions)
         font = pygame.font.Font(None, 36)
         text = font.render(self.text, True, (255, 255, 255))
@@ -62,8 +64,8 @@ class Button(iButton):
 
     def is_clicked(self, event):
         if self.rect is None:
-            return False,None
-        return self.rect.collidepoint(event.pos),None
+            return False, None
+        return self.rect.collidepoint(event.pos), None
 
 
 class Joystick(iButton):
@@ -85,22 +87,21 @@ class Joystick(iButton):
         L[3] *= sizeChange[1]
         return tuple(L)
 
-
-    def draw(self, screen, location, sizeChange=(1,1)):
-        dimensions=self.getResized(location,sizeChange)
+    def draw(self, screen, location, sizeChange=(1, 1)):
+        dimensions = self.getResized(location, sizeChange)
         self.rect = pygame.draw.rect(screen, self.color, dimensions)
         for direction, button in self.buttons.items():
             button: Button
-            button.draw(screen, location,sizeChange)
+            button.draw(screen, location, sizeChange)
 
     def is_clicked(self, event):
         if self.rect is None:
-            return False,None
-        for direction,button in self.buttons.items():
-            (isClicked,_) = button.is_clicked(event)
+            return False, None
+        for direction, button in self.buttons.items():
+            (isClicked, _) = button.is_clicked(event)
             if isClicked:
-                return True,direction
-        return False,None
+                return True, direction
+        return False, None
 
 
 class GridDisplay:
@@ -114,7 +115,7 @@ class GridDisplay:
         self.tileV = tdo.Tfdiv(gridscreenV, gridV)
         self.name = name
         self.screen = None
-        self.buttons=dict()
+        self.buttons = dict()
         return
 
     def show_display(self):
@@ -135,18 +136,14 @@ class GridDisplay:
         text = font.render("Your Text Here", True, (255, 255, 255))  # Change the text and color
         text_rect = text.get_rect(center=(self.screenV[0] // 2, (self.screenV[1] + self.gridscreenV[1]) // 2))
         screen.blit(text, text_rect)
-        button_width = 50
-        button_height = 30
-        button_spacing = 10
-        for i in range(3):
-            pygame.draw.rect(screen, (255, 0, 0), (self.gridscreenV[0] + i * (button_width + button_spacing),
-                                                   10, button_width, button_height))
 
-        test = Button((100, 0, 0), "Test?", (self.gridscreenV[0] + 10, 10, 100, 100))
-        test = Joystick((100, 0, 0),(200,0,0),"text???")
-        test.draw(screen,(600,200),(1,1))
-        self.buttons["joystick"]=test
+        for e in ["Run iteration", "Run 10 iterations", "Exit"]:
+            test = Button((100, 0, 0), "Test?", (self.gridscreenV[0] + 10, 10, 100, 100))
+            self.buttons["button" + e] = test
 
+        test = Joystick((100, 0, 0), (200, 0, 0), "text???")
+        test.draw(screen, (600, 200), (1, 1))
+        self.buttons["joystick"] = test
 
         pygame.display.flip()
 
@@ -190,18 +187,38 @@ class GridDisplay:
     def hide_grid(self):
         pass
 
-    def run(self):
+    def change_grid(self, grid: GridEnvironment, action):
+        for entity in grid.entities:
+            entity: itf.Entity
+            agent: itf.iAgent = entity.agent
+            if type(agent) == Agent.RecordedActionsAgent:
+                print("Test successful!")
+            if type(agent) != Agent.GraphicManualInputAgent:
+                continue
+            agent: Agent.GraphicManualInputAgent
+            agent.cur = action
+
+    def run(self, grid):
+        grid: GridEnvironment
+        grid = grid.__copy__()
         running = True
+        runIter=False
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    for name,element in self.buttons.items():
-                        element:iButton
-                        isClicked,result=element.is_clicked(event)
+                    for name, element in self.buttons.items():
+                        element: iButton
+                        isClicked, result = element.is_clicked(event)
                         if isClicked:
                             print(result)
+                            runIter=True
+                            self.change_grid(grid,action=result)
+            if runIter:
+                grid.runIteration()
+                self.draw_frame(grid.grid,grid.taken)
+                runIter=False
             self.draw_buttons()
 
         pygame.quit()
@@ -236,6 +253,10 @@ class GridInteractive:
         self.display.show_display()
         self.display.draw_frame(self.grid.grid, self.grid.taken)
 
+    def run(self):
+        self.display: GridDisplay
+        self.display.run(self.grid)
+
 
 def main():
     testGI = GridInteractive()
@@ -257,7 +278,7 @@ def main():
     )
     TEST.draw_frame(main_grid, agents)
     '''
-    testGI.display.run()
+    testGI.run()
 
 
 if __name__ == "__main__":

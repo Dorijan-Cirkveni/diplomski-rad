@@ -1,4 +1,3 @@
-import util
 import TupleDotOperations as tdo
 
 
@@ -85,7 +84,7 @@ class Entity:
 class iEnvironment:
     def __init__(self, entities, activeEntities):
         self.data = dict()
-        self.entities = [] if entities is None else entities
+        self.entities:list = [] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
         self.entityPriority = []
         for ID, entity in enumerate(self.entities):
