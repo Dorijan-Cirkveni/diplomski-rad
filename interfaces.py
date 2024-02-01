@@ -134,7 +134,7 @@ class iEnvironment:
         self.data['agent_last_action'] = D
         self.runChanges(D)
 
-    def evaluateActiveEntities(self):
+    def evaluateActiveEntities(self, evalMethod: callable):
         raise NotImplementedError
 
     def makeAgentTest(self, agent: iAgent):

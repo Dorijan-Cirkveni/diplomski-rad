@@ -97,8 +97,6 @@ def generate_maze(width, height):
 
     return maze
 
-    def eval
-
 
 def main():
     # Example usage for a 20x20 maze

@@ -298,7 +298,7 @@ class GridEnvironment(itf.iEnvironment):
                 grid[E[0]][E[1]] = self.get_tile(E)
                 if E in self.taken:
                     agents[E] = self.taken[E]
-        return grid,agents
+        return grid, agents
 
     def getMoves(self, entityID=None, customLocation=None):
         properties = dict()
@@ -353,8 +353,25 @@ class GridEnvironment(itf.iEnvironment):
             self.moveDirection(V, e)
         return
 
-    def evaluateActiveEntities(self):
-        
+    def getManhatthanDistanceToGoal(self, E):
+        rows, cols = len(self.grid), len(self.grid[0])
+        target_x, target_y = E
+
+        min_distance = float('inf')
+
+        for i in range(rows):
+            for j in range(cols):
+                if self.grid[i][j] == PlaneTile.goal:
+                    distance = abs(target_x - j) + abs(target_y - i)
+                    min_distance = min(min_distance, distance)
+
+    def evaluateActiveEntities(self, evalMethod: callable):
+        totalLoss = 0
+        for E, ID in self.taken:
+            if ID not in self.activeEntities:
+                continue
+            totalLoss += self.getManhatthanDistanceToGoal(E)
+
 
     def changeActiveEntityAgents(self, newAgents: list[itf.iAgent]):
         i = 0
