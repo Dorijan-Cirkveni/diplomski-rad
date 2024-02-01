@@ -26,6 +26,82 @@ class GridElementDisplay:
         cur_rect.x, cur_rect.y = location
         return image, cur_rect
 
+class iButton:
+    def __init__(self, color, text, original_dimensions):
+        self.color = color
+        self.text = text
+        self.original_dimensions = original_dimensions
+        self.rect = None
+
+    def getResized(self, location, sizeChange):
+        L = list(self.original_dimensions)
+        L[0] += location[0]
+        L[1] += location[1]
+        L[2] *= sizeChange[0]
+        L[3] *= sizeChange[1]
+        return tuple(L)
+
+    def draw(self, screen, location, sizeChange=(1,1)):
+        raise NotImplementedError
+
+    def is_clicked(self, event):
+        raise NotImplementedError
+
+
+class Button(iButton):
+    def __init__(self, color, text, original_dimensions):
+        super().__init__(color, text, original_dimensions)
+
+    def draw(self, screen, location, sizeChange=(1,1)):
+        dimensions=self.getResized(location,sizeChange)
+        self.rect = pygame.draw.rect(screen, self.color, dimensions)
+        font = pygame.font.Font(None, 36)
+        text = font.render(self.text, True, (255, 255, 255))
+        text_rect = text.get_rect(center=self.rect.center)
+        screen.blit(text, text_rect)
+
+    def is_clicked(self, event):
+        if self.rect is None:
+            return False,None
+        return self.rect.collidepoint(event.pos),None
+
+
+class Joystick(iButton):
+    def __init__(self, color, buttonColor, text, original_dimensions=(0, 0, 100, 100)):
+        super().__init__(color, text, original_dimensions)
+        self.buttons = {
+            (0, 0): Button(buttonColor, "X", (35, 35, 30, 30)),
+            (1, 0): Button(buttonColor, "S", (35, 70, 30, 30)),
+            (0, 1): Button(buttonColor, "D", (70, 35, 30, 30)),
+            (-1, 0): Button(buttonColor, "W", (35, 0, 30, 30)),
+            (0, -1): Button(buttonColor, "A", (0, 35, 30, 30))
+        }
+
+    def getResized(self, location, sizeChange):
+        L = list(self.original_dimensions)
+        L[0] += location[0]
+        L[1] += location[1]
+        L[2] *= sizeChange[0]
+        L[3] *= sizeChange[1]
+        return tuple(L)
+
+
+    def draw(self, screen, location, sizeChange=(1,1)):
+        dimensions=self.getResized(location,sizeChange)
+        self.rect = pygame.draw.rect(screen, self.color, dimensions)
+        for direction, button in self.buttons.items():
+            button: Button
+            button.draw(screen, location,sizeChange)
+
+    def is_clicked(self, event):
+        if self.rect is None:
+            return False,None
+        for direction,button in self.buttons.items():
+            (isClicked,_) = button.is_clicked(event)
+            if isClicked:
+                return True,direction
+        return False,None
+
 
 class GridDisplay:
     def __init__(self, elementTypes, agentTypes, gridV=(20, 20), screenV=(800, 800),
@@ -36,9 +112,9 @@ class GridDisplay:
         self.gridscreenV = gridscreenV
         self.gridV = gridV
         self.tileV = tdo.Tfdiv(gridscreenV, gridV)
-        print(self.tileV)
         self.name = name
         self.screen = None
+        self.buttons=dict()
         return
 
     def show_display(self):
@@ -59,6 +135,18 @@ class GridDisplay:
         text = font.render("Your Text Here", True, (255, 255, 255))  # Change the text and color
         text_rect = text.get_rect(center=(self.screenV[0] // 2, (self.screenV[1] + self.gridscreenV[1]) // 2))
         screen.blit(text, text_rect)
+        button_width = 50
+        button_height = 30
+        button_spacing = 10
+        for i in range(3):
+            pygame.draw.rect(screen, (255, 0, 0), (self.gridscreenV[0] + i * (button_width + button_spacing),
+                                                   10, button_width, button_height))
+
+        test = Button((100, 0, 0), "Test?", (self.gridscreenV[0] + 10, 10, 100, 100))
+        test = Joystick((100, 0, 0),(200,0,0),"text???")
+        test.draw(screen,(600,200),(1,1))
+        self.buttons["joystick"]=test
+
 
         pygame.display.flip()
 
@@ -85,7 +173,7 @@ class GridDisplay:
 
         pygame.display.flip()
 
-    def draw_frame(self, grid, agents: dict, delay=0):
+    def draw_frame(self, grid, agents: dict, delay=10):
         for row_coordinate, row_content in enumerate(grid):
             row_tiles = [e for e in row_content if isinstance(e, int)]
             row_agents = {}
@@ -94,7 +182,7 @@ class GridDisplay:
                     continue
                 row_agents[col_coordinate] = agents[(row_coordinate, col_coordinate)]
             self.draw_row(row_coordinate, row_tiles, row_agents)
-            pygame.time.wait(delay)  # Pause for 100 milliseconds (adjust as needed)
+            pygame.time.wait(delay)
 
         self.draw_buttons()  # Draw buttons after the grid
         pygame.display.flip()
@@ -108,7 +196,12 @@ class GridDisplay:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    for name,element in self.buttons.items():
+                        element:iButton
+                        isClicked,result=element.is_clicked(event)
+                        if isClicked:
+                            print(result)
             self.draw_buttons()
 
         pygame.quit()
@@ -141,22 +234,12 @@ class GridInteractive:
         self.grid: GridEnvironment
         self.display = GridDisplay(elementTypes, agentTypes)
         self.display.show_display()
-        self.display.draw_frame(self.grid.grid, {})
-        print(self.grid.text_display('0123456789'))
+        self.display.draw_frame(self.grid.grid, self.grid.taken)
 
 
 def main():
     testGI = GridInteractive()
     testGI.load_grid_from_file("tests/basic_tests.json")
-    main_grid = [
-        [1, 0, 1, 0, 1],
-        [0, 1, 0, 1, 0],
-        [1, 0, 1, 0, 1],
-        [0, 1, 0, 1, 0],
-        [1, 0, 1, 0, 1],
-        [],
-        [0] * 10 + [1]
-    ]
     agents = {(5, 10): 0}
     element_grid = [
         GridElementDisplay("grid_tiles/floor.png", (0, 0), (1, 1)),
