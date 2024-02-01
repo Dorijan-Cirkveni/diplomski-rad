@@ -286,6 +286,15 @@ class GridEnvironment(itf.iEnvironment):
             data[entityID] = entity.properties
         return data
 
+    def getDisplayData(self, entityID=None):
+        if entityID is None:
+            return self.grid
+        data = self.getEnvData(entityID)
+        grid = [[-1 for _ in E] for E in self.grid]
+        for E in data:
+            if type(E) == tuple and len(E) == 2:
+                grid[E[0]][E[1]] = self.get_tile(E)
+
     def getMoves(self, entityID=None, customLocation=None):
         properties = dict()
         location = customLocation
