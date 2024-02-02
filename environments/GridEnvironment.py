@@ -442,7 +442,7 @@ global_moves = [(0, 0)] + V2DIRS
 
 def main():
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
-    F = open("tests/basic_tests.json", "r")
+    F = open("../tests/basic_tests.json", "r")
     TESTS = F.read()
     F.close()
     TXR = TESTS
