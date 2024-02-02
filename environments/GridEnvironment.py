@@ -417,10 +417,13 @@ class GridEnvironment(itf.iEnvironment):
                 i = 0
         return
 
+    def GenerateGroup(self,requests):
+
     def GenerateSetGroups(self,size,ratio=[60,20,20]):
         ratio=util.adjustRatio(size,ratio)
         X=[[] for e in ratio]
         for L in X:
+
 
 
 
