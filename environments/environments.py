@@ -8,16 +8,17 @@ def getEnvironment(type, filename, ID):
         env = gren.readPlaneEnvironment(filename, ID)
         return env
 
-def getEnvironments(type, filename, ID):
+
+def getEnvironments(type, ):
     if type == "base":
         env = gren.readPlaneEnvironment(filename, ID)
         return env
+
 
 def getEnvironmentGroups(type, filename, ID):
     if type == "base":
         env = gren.readPlaneEnvironment(filename, ID)
         return env
-
 
 
 def main():
