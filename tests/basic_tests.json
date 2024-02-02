@@ -6,7 +6,7 @@
     "rectangles": [
       [0, 18, 19, 19, 1],
       [0, 0, 19, 19, 2],
-      [2, 2, 4, 4, 2]
+      [2, 2, 10, 4, 2]
     ]
   },
   "agent": [
@@ -14,7 +14,7 @@
     ["BOX",""]
   ],
   "entities": [
-    {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [15, 5], "viewup": true, "viewdn": true}},
+    {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [3, 3], "viewup": true, "viewdn": true}},
     {"id": 1, "displays": [0,1,2,3], "curdis": 3, "properties": {"image": "blue", "loc": [15, 10]}}
   ],
   "activeEntities": [0],

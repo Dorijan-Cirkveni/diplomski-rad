@@ -104,14 +104,16 @@ class Joystick(iButton):
 
 
 class GridDisplay:
-    def __init__(self, elementTypes, agentTypes, obsAgent, gridV=(20, 20), screenV=(800, 800),
+    def __init__(self, grid: GridEnvironment, elementTypes: list, agentTypes: list, obsAgent: [int,None], screenV=(800, 800),
                  gridscreenV=(600, 600), name="Untitled Grid Simulation"):
+        self.grid = grid
+        gridV = self.grid.scale
         self.elementTypes: list[GridElementDisplay] = elementTypes
         self.agentTypes: list[GridElementDisplay] = agentTypes
         self.screenV = screenV
         self.gridscreenV = gridscreenV
-        self.gridV = gridV
-        self.tileV = tdo.Tfdiv(gridscreenV, gridV)
+        tileV1=min(tdo.Tfdiv(gridscreenV, gridV))
+        self.tileV = (tileV1,tileV1)
         self.name = name
         self.screen = None
         self.buttons = dict()
@@ -138,12 +140,14 @@ class GridDisplay:
         text_rect = text.get_rect(center=(self.screenV[0] // 2, (self.screenV[1] + self.gridscreenV[1]) // 2))
         screen.blit(text, text_rect)
 
-        for num, e in enumerate(["Run iteration", "Run 10 iterations", "Exit"]):
-            test = Button((100, 0, 0), "Test?", (self.gridscreenV[0] + 10, 10 + 120 * num, 100, 100))
+        for num, e in enumerate(["Run iteration", "Run 10 iterations", "Run 100 iterations",
+                                 "Run all iterations","Exit"]):
+            test = Button((100, 0, 0), e, (5, 10 + 60 * num, 190, 50))
+            test.draw(screen, (self.gridscreenV[0], 0))
             self.buttons["button" + e] = test
 
         test = Joystick((100, 0, 0), (200, 0, 0), "text???")
-        test.draw(screen, (600, 200), (1, 1))
+        test.draw(screen, (650, 400), (1, 1))
         self.buttons["joystick"] = test
 
         pygame.display.flip()
@@ -152,7 +156,8 @@ class GridDisplay:
         self.bottom_text = new_text
 
     def show_iter(self):
-        self.change_text("Current iteration:{}".format(self.iteration))
+        value = self.grid.evaluateActiveEntities()
+        self.change_text("Current step:{}\nValue:{}".format(self.iteration, value))
 
     def draw_row(self, row_coordinate, row_tiles, row_agents):
         screen = self.screen
@@ -177,12 +182,12 @@ class GridDisplay:
 
         pygame.display.flip()
 
-    def draw_frame(self, env: GridEnvironment, delay=10):
-        grid, agents = env.getDisplayData(self.obsAgent)
+    def draw_frame(self, delay=10):
+        grid, agents = self.grid.getDisplayData(self.obsAgent)
         for row_coordinate, row_content in enumerate(grid):
             row_tiles = [e for e in row_content if isinstance(e, int)]
             row_agents = {}
-            for col_coordinate in range(self.gridV[1]):
+            for col_coordinate in range(self.grid.scale[1]):
                 if (row_coordinate, col_coordinate) not in agents:
                     continue
                 row_agents[col_coordinate] = agents[(row_coordinate, col_coordinate)]
@@ -195,8 +200,8 @@ class GridDisplay:
     def hide_grid(self):
         pass
 
-    def change_grid(self, grid: GridEnvironment, action):
-        for entity in grid.entities:
+    def change_grid(self, action):
+        for entity in self.grid.entities:
             entity: itf.Entity
             agent: itf.iAgent = entity.agent
             if type(agent) == AgentManager.RecordedActionsAgent:
@@ -206,9 +211,7 @@ class GridDisplay:
             agent: AgentManager.GraphicManualInputAgent
             agent.cur = action
 
-    def run(self, grid):
-        grid: GridEnvironment
-        grid = grid.__copy__()
+    def run(self):
         running = True
         runIter = False
         self.show_iter()
@@ -223,12 +226,12 @@ class GridDisplay:
                         if isClicked:
                             print(result)
                             runIter = True
-                            self.change_grid(grid, action=result)
+                            self.change_grid(action=result)
             if runIter:
-                grid.runIteration()
+                self.grid.runIteration()
                 self.iteration += 1
                 self.show_iter()
-                self.draw_frame(grid)
+                self.draw_frame()
                 runIter = False
             self.draw_buttons()
 
@@ -241,7 +244,7 @@ class GridInteractive:
         self.display: [GridDisplay, None] = None
 
     def load_grid(self, gridEnv: GridEnvironment):
-        tiles, agents = self.display()
+        self.grid = gridEnv.__copy__()
 
     def load_grid_from_file(self, filename, index=0):
         if os.path.isfile(filename):
@@ -260,13 +263,13 @@ class GridInteractive:
         if self.grid is None:
             print("Load a grid first!")
         self.grid: GridEnvironment
-        self.display = GridDisplay(elementTypes, agentTypes, None)
+        self.display = GridDisplay(self.grid,elementTypes, agentTypes, None)
         self.display.show_display()
-        self.display.draw_frame(self.grid)
+        self.display.draw_frame()
 
     def run(self):
         self.display: GridDisplay
-        self.display.run(self.grid)
+        self.display.run()
 
 
 element_grid = [

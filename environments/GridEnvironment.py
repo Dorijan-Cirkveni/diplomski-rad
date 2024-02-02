@@ -91,8 +91,7 @@ class GridEnvironment(itf.iEnvironment):
         self.grid = grid
 
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
-        self.tileData = [[dict() for F in E] for E in self.grid]
-        self.gridContents = dict()
+        self.tileData={"disFor":dict()}
         self.taken = dict()
         for ID, entity in enumerate(self.entities):
             entity: itf.Entity
@@ -128,13 +127,9 @@ class GridEnvironment(itf.iEnvironment):
         return
 
     def setDistances(self, M, agentID=None):
-        for i, E in enumerate(M):
-            L = self.tileData[i]
-            for j, F in enumerate(E):
-                D = L[j]
-                D2 = D.get("disFor", dict())
-                D["disFor"] = D2
-                D2[agentID] = F
+        disfor=self.tileData.get("disFor",dict())
+        disfor[agentID]=M
+        self.tileData["disFor"]=disfor
         return
 
     def calcDistances(self, agentID=None):
@@ -156,6 +151,8 @@ class GridEnvironment(itf.iEnvironment):
                     temp.append((i, j))
                 L.append(entry)
             M.append(L)
+        for e in M:
+            print(e)
         while temp:
             newtemp = []
             while temp:
@@ -171,19 +168,28 @@ class GridEnvironment(itf.iEnvironment):
                         continue
                     tile = self.tileTypes[newtiletype]
                     tile: PlaneTile
-                    M[newpos[0]][newpos[1]] = v
-                    if self.is_tile_movable(newpos, data):
-                        newtemp.append(newpos)
+                    if M[newpos[0]][newpos[1]] is None:
+                        M[newpos[0]][newpos[1]] = v
+                        if self.is_tile_movable(newpos, data):
+                            newtemp.append(newpos)
+            temp=newtemp
+        for e in M:
+            print(e)
+        self.tileData['disFor'][agentID]=M
         return M
 
-    def determineDistances(self, agentID=None):
-        M = self.calcDistances()
-
-    def getPositionValue(self, position, agentID=None):
+    def getPositionValue(self, position, agentID=None, ignoreObstacles=False):
+        valueID=agentID
+        if ignoreObstacles:
+            valueID=~agentID
         tile = self.get_tile(position)
         if tile is None:
             return None
-        data: dict = self.tileData[position[0]][position[1]]
+        disfor=self.tileData['disFor']
+        if agentID not in disfor:
+            self.calcDistances(agentID)
+        M=disfor[agentID]
+        return M[position[0]][position[1]]
 
     def get_tile(self, i, j=None):
         if j is None:
@@ -322,7 +328,10 @@ class GridEnvironment(itf.iEnvironment):
     def getMoves(self, entityID=None, customLocation=None):
         properties = dict()
         location = customLocation
-        if entityID is not None:
+        if entityID is None:
+            if location is None:
+                return global_moves
+        else:
             entity: itf.Entity = self.entities[entityID]
             if entity is None:
                 return []  # Entity is destroyed.
@@ -387,24 +396,16 @@ class GridEnvironment(itf.iEnvironment):
             self.activeEntities -= {e}
         return
 
-    def getManhatthanDistanceToGoal(self, E):
-        rows, cols = len(self.grid), len(self.grid[0])
-        target_x, target_y = E
-
-        min_distance = float('inf')
-
-        for i in range(rows):
-            for j in range(cols):
-                if self.grid[i][j] == PlaneTile.goal:
-                    distance = abs(target_x - j) + abs(target_y - i)
-                    min_distance = min(min_distance, distance)
-
-    def evaluateActiveEntities(self, evalMethod: callable):
-        totalLoss = 0
-        for E, ID in self.taken:
+    def evaluateActiveEntities(self, evalMethod: callable=lambda E:0 if not E else -min(E)):
+        totalLoss = []
+        for E, ID in self.taken.items():
             if ID not in self.activeEntities:
                 continue
-            totalLoss += self.getManhatthanDistanceToGoal(E)
+            val=self.getPositionValue(E)
+            if val is None:
+                val=self.scale[0]*self.scale[1]
+            totalLoss.append(val)
+        return evalMethod(totalLoss)
 
     def changeActiveEntityAgents(self, newAgents: list[itf.iAgent]):
         i = 0
