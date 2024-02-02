@@ -1,6 +1,3 @@
-from GridEnvironment import *
-
-
 def main():
     return
 

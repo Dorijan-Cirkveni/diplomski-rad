@@ -2,9 +2,9 @@ import os
 
 import pygame
 
-import GridEnvironment
+from environments import GridEnvironment
 import TupleDotOperations as tdo
-from GridEnvironment import *
+from environments.GridEnvironment import *
 
 fixedBG = (0, 0, 0)
 GRID_COLOR = (255, 255, 255)
@@ -238,7 +238,7 @@ class GridInteractive:
             with open(filename, 'r') as file:
                 json_raw = file.read()
                 grid = readPlaneEnvironment(json_raw, index)
-                self.grid:GridEnvironment = grid
+                self.grid: GridEnvironment = grid
                 return True
         print("Error: File '{}' not found.".format(filename))
         return False
@@ -262,7 +262,7 @@ class GridInteractive:
 def main():
     testGI = GridInteractive()
     testGI.load_grid_from_file("tests/basic_tests.json")
-    grid:GridEnvironment=testGI.grid
+    grid: GridEnvironment =testGI.grid
     grid.changeActiveEntityAgents([Agent.GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
     element_grid = [
         GridElementDisplay("grid_tiles/floor.png", (0, 0), (1, 1)),

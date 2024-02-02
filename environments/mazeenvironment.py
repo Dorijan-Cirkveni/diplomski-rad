@@ -1,10 +1,6 @@
 import random
-import random
-import json
-from collections import deque
 
-from GridEnvironment import *
-from TupleDotOperations import Tadd
+from environments.GridEnvironment import *
 
 
 def rect(E, grid):
