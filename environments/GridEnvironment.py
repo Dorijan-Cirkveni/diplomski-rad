@@ -1,6 +1,6 @@
 import json
 
-from agents import Agent
+from agents import AgentManager
 import interfaces as itf
 import util
 from definitions import *
@@ -106,7 +106,10 @@ class GridEnvironment(itf.iEnvironment):
 
     def __copy__(self):
         newScale = self.scale
-        newGrid = [e.copy() for e in self.grid]
+        newGrid = []
+        for e in self.grid:
+            e:list
+            newGrid.append(e.copy())
         entities = []
         for e in self.entities:
             e: itf.Entity
@@ -304,7 +307,7 @@ class GridEnvironment(itf.iEnvironment):
 
     def getDisplayData(self, entityID=None):
         if entityID is None:
-            return self.grid
+            return self.grid, self.taken.copy()
         data = self.getEnvData(entityID)
         print(data)
         grid = [[-1 for _ in E] for E in self.grid]
@@ -414,7 +417,7 @@ class GridEnvironment(itf.iEnvironment):
 
 def readPlaneEnvironment(json_str, index, agentDict=None):
     if agentDict is None:
-        agentDict = {"RAA": Agent.initRAAFactory(global_moves)}
+        agentDict = AgentManager.ALL_AGENTS
     json_rawL: dict = json.loads(json_str)
     if index not in range(-len(json_rawL), len(json_rawL)):
         raise Exception("Invalid index {} for file with {} entries!".format(index, len(json_rawL)))
@@ -474,7 +477,7 @@ def main():
     TESTS = F.read()
     F.close()
     TXR = TESTS
-    X = readPlaneEnvironment(TXR, 0, {"RAA": Agent.initRAAFactory(global_moves)})
+    X = readPlaneEnvironment(TXR, 0)
     Y = X.__copy__()
 
     print(PlaneTile.wall)

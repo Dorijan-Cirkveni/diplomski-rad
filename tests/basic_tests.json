@@ -10,12 +10,16 @@
     ]
   },
   "agent": [
-    ["RAA","42132143212132141241212"]
+    ["RAA","42132143212132141241212"],
+    ["BOX",""]
   ],
   "entities": [
-    {"id": 0, "properties": {"location": [15, 5], "viewup": true}}
+    {"id": 0, "properties": {"location": [15, 5], "viewup": true, "viewdn": true}},
+    {"id": 1, "properties": {"location": [15, 10]}}
   ],
-  "activeEntities": [0]
+  "activeEntities": [0],
+  "passiveMoveLimit": 1,
+  "null": null
 }
 ,
 {
@@ -34,6 +38,8 @@
   "entities": [
     {"id": 0, "properties": {"location": [15, 5], "viewup": true}}
   ],
-  "activeEntities": [0]
+  "activeEntities": [0],
+  "passiveMoveLimit": 1,
+  "null": null
 }
 ]

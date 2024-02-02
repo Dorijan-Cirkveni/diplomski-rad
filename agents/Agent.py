@@ -12,10 +12,15 @@ class BoxAgent(interfaces.iAgent):
         return None
 
     def __copy__(self):
-        return
+        return BoxAgent()
 
 
 class MirrorAgent(interfaces.iAgent):
+    def __copy__(self):
+        newMirrors = self.actionMirrors.copy()
+        newMirror = MirrorAgent(self.mirroredAgent, newMirrors)
+        return newMirror
+
     def __init__(self, mirroredAgent, actionMirrors: dict):
         super().__init__()
         self.mirroredAgent = mirroredAgent
@@ -124,8 +129,49 @@ class GraphicManualInputAgent(interfaces.iAgent):
         return self.cur
 
 
+import copy
+
+
 def main():
-    return
+    # Test BoxAgent __copy__
+    box_agent = BoxAgent()
+    copied_box_agent = copy.copy(box_agent)
+    assert type(copied_box_agent) is BoxAgent
+
+    # Test MirrorAgent __copy__
+    mirrored_agent = BoxAgent()
+    action_mirrors = {'action1': 'mirrored_action1', 'action2': 'mirrored_action2'}
+    mirror_agent = MirrorAgent(mirrored_agent, action_mirrors)
+    copied_mirror_agent = copy.copy(mirror_agent)
+    assert type(copied_mirror_agent) is MirrorAgent
+    assert copied_mirror_agent.mirroredAgent == mirrored_agent
+    assert copied_mirror_agent.actionMirrors == action_mirrors
+
+    # Test RecordedActionsAgent __copy__
+    actions = ['action1', 'action2', 'action3']
+    recorded_actions_agent = RecordedActionsAgent(actions)
+    copied_recorded_actions_agent = copy.copy(recorded_actions_agent)
+    assert type(copied_recorded_actions_agent) is RecordedActionsAgent
+    assert copied_recorded_actions_agent.actions == actions
+    assert copied_recorded_actions_agent.i == recorded_actions_agent.i
+
+    # Test ManualInputAgent __copy__
+    watched_dimensions = ((0, 1), (0, 1))
+    guide = {(0, 0): 1, (0, 1): 2, (1, 0): 3, (1, 1): 4}
+    manual_input_agent = ManualInputAgent(watched_dimensions, actions, guide)
+    copied_manual_input_agent = copy.copy(manual_input_agent)
+    assert type(copied_manual_input_agent) is ManualInputAgent
+    assert copied_manual_input_agent.watchedDimensions == watched_dimensions
+    assert copied_manual_input_agent.actions == actions
+    assert copied_manual_input_agent.guide == guide
+
+    # Test GraphicManualInputAgent __copy__
+    graphic_manual_input_agent = GraphicManualInputAgent(watched_dimensions, actions)
+    copied_graphic_manual_input_agent = copy.copy(graphic_manual_input_agent)
+    assert type(copied_graphic_manual_input_agent) is GraphicManualInputAgent
+    assert copied_graphic_manual_input_agent.watchedDimensions == watched_dimensions
+    assert copied_graphic_manual_input_agent.actions == actions
+    assert copied_graphic_manual_input_agent.cur == graphic_manual_input_agent.cur
 
 
 if __name__ == "__main__":

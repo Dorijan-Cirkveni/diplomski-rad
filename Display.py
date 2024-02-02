@@ -192,11 +192,11 @@ class GridDisplay:
         for entity in grid.entities:
             entity: itf.Entity
             agent: itf.iAgent = entity.agent
-            if type(agent) == Agent.RecordedActionsAgent:
+            if type(agent) == AgentManager.RecordedActionsAgent:
                 print("Test successful!")
-            if type(agent) != Agent.GraphicManualInputAgent:
+            if type(agent) != AgentManager.GraphicManualInputAgent:
                 continue
-            agent: Agent.GraphicManualInputAgent
+            agent: AgentManager.GraphicManualInputAgent
             agent.cur = action
 
     def run(self, grid):
@@ -250,7 +250,7 @@ class GridInteractive:
         if self.grid is None:
             print("Load a grid first!")
         self.grid: GridEnvironment
-        self.display = GridDisplay(elementTypes, agentTypes, 0)
+        self.display = GridDisplay(elementTypes, agentTypes, None)
         self.display.show_display()
         self.display.draw_frame(self.grid)
 
@@ -262,8 +262,8 @@ class GridInteractive:
 def main():
     testGI = GridInteractive()
     testGI.load_grid_from_file("tests/basic_tests.json")
-    grid: GridEnvironment =testGI.grid
-    grid.changeActiveEntityAgents([Agent.GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
+    grid: GridEnvironment = testGI.grid
+    grid.changeActiveEntityAgents([AgentManager.GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
     element_grid = [
         GridElementDisplay("grid_tiles/floor.png", (0, 0), (1, 1)),
         GridElementDisplay("grid_tiles/goal.png", (0, 0), (1, 1)),

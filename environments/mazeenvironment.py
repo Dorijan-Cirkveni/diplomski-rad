@@ -1,6 +1,6 @@
 import random
 
-from environments.GridEnvironment import *
+from GridEnvironment import *
 
 
 def rect(E, grid):
@@ -60,7 +60,7 @@ class MazeEnvironment(GridEnvironment):
 
 # Example usage:
 maze_seed = 42  # Change this seed to generate a different maze
-maze_env = MazeEnvironment((20, 20), maze_seed)
+maze_env = MazeEnvironment((20, 20), maze_seed=42)
 
 
 def generate_maze(width, height):
