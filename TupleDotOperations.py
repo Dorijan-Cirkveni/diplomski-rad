@@ -31,16 +31,17 @@ def Tmanhat(T):
     return sum([abs(e) for e in T])
 
 
-def T_generate_links(objectset: set, moves: list, direction):
+def T_generate_links(objectset: set, moves: list, direction, passiveEntityLimit=-1):
     nex = dict()
     starters = set()
+    active = moves
     while moves:
         E = moves.pop()
         if E not in objectset:
             continue
         F = Tadd(E, direction)
-        starters^={E}
-        starters^={F}
+        starters ^= {E}
+        starters ^= {F}
         nex[E] = F
         moves.append(F)
         objectset.remove(E)
@@ -52,9 +53,25 @@ def T_generate_links(objectset: set, moves: list, direction):
         F = E
         while F is not None:
             L.append(F)
-            F = nex.get(F,None)
+            F = nex.get(F, None)
         M.append(L)
-    return M
+    if passiveEntityLimit == -1:
+        return M
+    M2 = []
+    for L in M:
+        L2 = []
+        passiveCount = 0
+        for e in L:
+            if e in active:
+                passiveCount = 0
+            else:
+                passiveCount += 1
+            if passiveCount > passiveEntityLimit:
+                L2 = []
+            else:
+                L2.append(e)
+        M2.append(L2)
+    return M2
 
 
 def main():
@@ -64,11 +81,11 @@ def main():
     print(Tsub(A, B))
     print(Tmul(A, B))
     print(Tdiv(A, B))
-    OS={(0,e) for e in range(6)}
-    OS.remove((0,2))
-    X=[(0,3),(0,0)]
-    print(OS,X)
-    res=T_generate_links(OS,X,(0,1))
+    OS = {(0, e) for e in range(6)}
+    OS.remove((0, 2))
+    X = [(0, 3), (0, 0)]
+    print(OS, X)
+    res = T_generate_links(OS, X, (0, 1))
     print(res)
     return
 

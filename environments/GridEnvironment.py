@@ -61,6 +61,10 @@ class PlaneTile:
         decision = self.checkAgainst(agentData)
         return decision in default_movable
 
+    def checkIfLethal(self, agentData: dict):
+        decision = self.checkAgainst(agentData)
+        return decision in {PlaneTile.lethal, PlaneTile.lethalwall}
+
 
 defaultTileTypes = [
     PlaneTile(PlaneTile.accessible),
@@ -191,6 +195,12 @@ class GridEnvironment(itf.iEnvironment):
         movability = tile.checkIfMovable(agentData)
         return movability
 
+    def is_tile_lethal(self, tilePos, agentData):
+        tileID = self.get_tile(tilePos)
+        tile = self.tileTypes[tileID]
+        movability = tile.checkIfLethal(agentData)
+        return movability
+
     def view_direction(self, position, direction: tuple, opaque=None):
         if opaque is None:
             opaque = default_opaque
@@ -259,10 +269,14 @@ class GridEnvironment(itf.iEnvironment):
             res.append(s)
         return "\n".join(res)
 
-    def getEnvData(self, entityID=None):
+    def getEnvData(self, entityID=None):  # TODO check impl
         data = dict()
         self.entities: list
+        if entityID not in range(len(self.entities)):
+            return None
         entity: itf.Entity = self.entities[entityID]
+        if entity is None:
+            return None
         location = entity.get(entity.LOCATION, None)
         if entity.get(entity.S_allseeing, False):
             for i in range(self.scale[0]):
@@ -278,6 +292,8 @@ class GridEnvironment(itf.iEnvironment):
             if otherID == entityID:
                 continue
             otherent: itf.Entity = self.entities[otherID]
+            if otherent is None:
+                continue
             otherloc = otherent.get(otherent.LOCATION, None)
             if otherloc not in data:
                 continue
@@ -305,6 +321,8 @@ class GridEnvironment(itf.iEnvironment):
         location = customLocation
         if entityID is not None:
             entity: itf.Entity = self.entities[entityID]
+            if entity is None:
+                return []  # Entity is destroyed.
             location = entity.get(entity.LOCATION, None) if customLocation is None else customLocation
             properties = entity.properties
         goodMoves = []
@@ -315,8 +333,12 @@ class GridEnvironment(itf.iEnvironment):
                 goodMoves.append(move)
         return goodMoves
 
-    def moveEntity(self, entID, destination):
-        ent = self.entities[entID]
+    def moveEntity(self, entID, destination, terminatedEntities: set):
+        ent: itf.Entity = self.entities[entID]
+        if ent is None:
+            return True
+        if self.is_tile_lethal(destination, ent.properties):
+            terminatedEntities.add(entID)
         if not self.is_tile_movable(destination, ent.properties):
             return False
         source = ent.get(ent.LOCATION, None)
@@ -326,7 +348,7 @@ class GridEnvironment(itf.iEnvironment):
         self.taken[destination] = entID
         return True
 
-    def moveDirection(self, movingEntIDs, direction):
+    def moveDirection(self, movingEntIDs, direction, terminatedEntities: set):
         print(direction, end="->")
         locations = []
         for ID in movingEntIDs:
@@ -338,7 +360,7 @@ class GridEnvironment(itf.iEnvironment):
             while L:
                 E = L.pop()
                 entID = self.taken[E]
-                if not self.moveEntity(entID, F):
+                if not self.moveEntity(entID, F, terminatedEntities):
                     break
                 F = E
         return
@@ -347,10 +369,17 @@ class GridEnvironment(itf.iEnvironment):
         moveTypes = {e: [] for e in moves.values()}
         for entityID, moveID in moves.items():
             moveTypes[moveID].append(entityID)
+        terminatedEntities = set()
         for e, V in moveTypes.items():
             if e == (0, 0):
                 continue
-            self.moveDirection(V, e)
+            self.moveDirection(V, e, terminatedEntities)
+        for e in terminatedEntities:
+            ent: itf.Entity = self.entities[e]
+            entpos = ent.get(itf.Entity.LOCATION, None)
+            self.taken.pop(entpos)
+            self.entities[e] = None
+            self.activeEntities -= {e}
         return
 
     def getManhatthanDistanceToGoal(self, E):
@@ -371,7 +400,6 @@ class GridEnvironment(itf.iEnvironment):
             if ID not in self.activeEntities:
                 continue
             totalLoss += self.getManhatthanDistanceToGoal(E)
-
 
     def changeActiveEntityAgents(self, newAgents: list[itf.iAgent]):
         i = 0
