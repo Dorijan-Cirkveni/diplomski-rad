@@ -14,7 +14,7 @@
     ["BOX",""]
   ],
   "entities": [
-    {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [3, 3], "viewup": true, "viewdn": true}},
+    {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [15, 5], "viewup": true, "viewdn": true}},
     {"id": 1, "displays": [0,1,2,3], "curdis": 3, "properties": {"image": "blue", "loc": [15, 10]}}
   ],
   "activeEntities": [0],

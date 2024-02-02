@@ -151,8 +151,6 @@ class GridEnvironment(itf.iEnvironment):
                     temp.append((i, j))
                 L.append(entry)
             M.append(L)
-        for e in M:
-            print(e)
         while temp:
             newtemp = []
             while temp:
@@ -161,7 +159,8 @@ class GridEnvironment(itf.iEnvironment):
                 if v is None:
                     raise Exception("Cosmic Ray Error?")
                 v += 1
-                for move in self.getMoves(agentID):
+                moves=self.getMoves(agentID)
+                for move in moves:
                     newpos = Tadd(E, move)
                     newtiletype = self.get_tile(newpos)
                     if newtiletype is None:
@@ -173,8 +172,6 @@ class GridEnvironment(itf.iEnvironment):
                         if self.is_tile_movable(newpos, data):
                             newtemp.append(newpos)
             temp=newtemp
-        for e in M:
-            print(e)
         self.tileData['disFor'][agentID]=M
         return M
 
@@ -315,7 +312,6 @@ class GridEnvironment(itf.iEnvironment):
         if entityID is None:
             return self.grid, self.taken.copy()
         data = self.getEnvData(entityID)
-        print(data)
         grid = [[-1 for _ in E] for E in self.grid]
         agents = dict()
         for E in data:
@@ -325,7 +321,7 @@ class GridEnvironment(itf.iEnvironment):
                     agents[E] = self.taken[E]
         return grid, agents
 
-    def getMoves(self, entityID=None, customLocation=None):
+    def getMoves(self, entityID=None, customLocation=None)->list[tuple]:
         properties = dict()
         location = customLocation
         if entityID is None:
@@ -338,11 +334,11 @@ class GridEnvironment(itf.iEnvironment):
             location = entity.get(entity.LOCATION, None) if customLocation is None else customLocation
             properties = entity.properties
         goodMoves = []
-        for move, direction in enumerate(global_moves):
+        for direction in global_moves:
             neigh_loc = Tadd(location, direction)
             movability = self.is_tile_movable(neigh_loc, properties)
             if movability:
-                goodMoves.append(move)
+                goodMoves.append(direction)
         return goodMoves
 
     def moveEntity(self, entID, destination, terminatedEntities: set):
@@ -363,7 +359,6 @@ class GridEnvironment(itf.iEnvironment):
     def moveDirection(self, movingEntIDs, direction, terminatedEntities: set):
         if direction is None:
             return
-        print(direction, end="->")
         locations = []
         for ID in movingEntIDs:
             ent: itf.Entity = self.entities[ID]
@@ -406,6 +401,11 @@ class GridEnvironment(itf.iEnvironment):
                 val=self.scale[0]*self.scale[1]
             totalLoss.append(val)
         return evalMethod(totalLoss)
+
+    def isWin(self):
+        X={self.getPositionValue(E,ID) for E,ID in self.taken.items() if ID in self.activeEntities}
+        print(X)
+        return 0 in X
 
     def changeActiveEntityAgents(self, newAgents: list[itf.iAgent]):
         i = 0

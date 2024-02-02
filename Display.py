@@ -155,9 +155,12 @@ class GridDisplay:
     def change_text(self, new_text):
         self.bottom_text = new_text
 
-    def show_iter(self):
+    def show_iter(self,winStatus=None):
         value = self.grid.evaluateActiveEntities()
-        self.change_text("Current step:{}\nValue:{}".format(self.iteration, value))
+        s="Current step:{}\nValue:{}".format(self.iteration, value)
+        if winStatus==True:
+            s="Win on step {}".format(self.iteration)
+        self.change_text(s)
 
     def draw_row(self, row_coordinate, row_tiles, row_agents):
         screen = self.screen
@@ -214,6 +217,7 @@ class GridDisplay:
     def run(self):
         running = True
         runIter = False
+        status=None # win=True, loss=False, ongoing=None
         self.show_iter()
         while running:
             for event in pygame.event.get():
@@ -224,16 +228,18 @@ class GridDisplay:
                         element: iButton
                         isClicked, result = element.is_clicked(event)
                         if isClicked:
-                            print(result)
                             runIter = True
                             self.change_grid(action=result)
             if runIter:
                 self.grid.runIteration()
                 self.iteration += 1
-                self.show_iter()
+                if self.grid.isWin():
+                    status=True
+                self.show_iter(status)
                 self.draw_frame()
                 runIter = False
-            self.draw_buttons()
+            if status is None:
+                self.draw_buttons()
 
         pygame.quit()
 
