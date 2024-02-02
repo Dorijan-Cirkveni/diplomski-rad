@@ -115,7 +115,9 @@ class GridDisplay:
         self.name = name
         self.screen = None
         self.buttons = dict()
-        self.obsAgent=obsAgent
+        self.obsAgent = obsAgent
+        self.iteration = 0
+        self.bottom_text = ">"
         return
 
     def show_display(self):
@@ -131,14 +133,13 @@ class GridDisplay:
                          (self.gridscreenV[0], 0, self.screenV[0] - self.gridscreenV[0], self.screenV[1]))
         pygame.draw.rect(screen, (0, 0, 100),
                          (0, self.gridscreenV[1], self.screenV[0], self.screenV[1] - self.gridscreenV[1]))
-        # Add your button drawing code here
         font = pygame.font.Font(None, 36)  # You can customize the font and size
-        text = font.render("Your Text Here", True, (255, 255, 255))  # Change the text and color
+        text = font.render(self.bottom_text, True, (255, 255, 255))  # Change the text and color
         text_rect = text.get_rect(center=(self.screenV[0] // 2, (self.screenV[1] + self.gridscreenV[1]) // 2))
         screen.blit(text, text_rect)
 
-        for e in ["Run iteration", "Run 10 iterations", "Exit"]:
-            test = Button((100, 0, 0), "Test?", (self.gridscreenV[0] + 10, 10, 100, 100))
+        for num,e in enumerate(["Run iteration", "Run 10 iterations", "Exit"]):
+            test = Button((100, 0, 0), "Test?", (self.gridscreenV[0] + 10, 10 + 120 * num, 100, 100))
             self.buttons["button" + e] = test
 
         test = Joystick((100, 0, 0), (200, 0, 0), "text???")
@@ -146,6 +147,12 @@ class GridDisplay:
         self.buttons["joystick"] = test
 
         pygame.display.flip()
+
+    def change_text(self, new_text):
+        self.bottom_text = new_text
+
+    def show_iter(self):
+        self.change_text("Current iteration:{}".format(self.iteration))
 
     def draw_row(self, row_coordinate, row_tiles, row_agents):
         screen = self.screen
@@ -170,8 +177,8 @@ class GridDisplay:
 
         pygame.display.flip()
 
-    def draw_frame(self, env:GridEnvironment, delay=10):
-        grid,agents=env.getDisplayData(self.obsAgent)
+    def draw_frame(self, env: GridEnvironment, delay=10):
+        grid, agents = env.getDisplayData(self.obsAgent)
         for row_coordinate, row_content in enumerate(grid):
             row_tiles = [e for e in row_content if isinstance(e, int)]
             row_agents = {}
@@ -203,7 +210,8 @@ class GridDisplay:
         grid: GridEnvironment
         grid = grid.__copy__()
         running = True
-        runIter=False
+        runIter = False
+        self.show_iter()
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -214,12 +222,14 @@ class GridDisplay:
                         isClicked, result = element.is_clicked(event)
                         if isClicked:
                             print(result)
-                            runIter=True
-                            self.change_grid(grid,action=result)
+                            runIter = True
+                            self.change_grid(grid, action=result)
             if runIter:
                 grid.runIteration()
+                self.iteration += 1
+                self.show_iter()
                 self.draw_frame(grid)
-                runIter=False
+                runIter = False
             self.draw_buttons()
 
         pygame.quit()
@@ -278,6 +288,7 @@ def main():
     ]
     agent_grid = [
         GridElementDisplay("grid_tiles/blueAgent.png", (0, -0.5), (1, 1.5)),
+        GridElementDisplay("grid_tiles/box.png", (0, -0.5), (1, 1.5)),
     ]
     testGI.init_display(element_grid, agent_grid)
     '''

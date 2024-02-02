@@ -1,3 +1,5 @@
+import json
+
 import TupleDotOperations as tdo
 
 
@@ -29,6 +31,13 @@ class Entity:
     NAME = "name"
     LOCATION = "loc"
     FALSE_INPUT = "falin"
+
+    def __repr__(self):
+        entity_dict = {
+            'properties': self.properties,
+            'agent': repr(self.agent)
+        }
+        return json.dumps(entity_dict, indent=2)
 
     def __init__(self, agent: iAgent, properties=None):
         self.properties = dict() if properties is None else properties

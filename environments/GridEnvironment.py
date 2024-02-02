@@ -352,6 +352,8 @@ class GridEnvironment(itf.iEnvironment):
         return True
 
     def moveDirection(self, movingEntIDs, direction, terminatedEntities: set):
+        if direction is None:
+            return
         print(direction, end="->")
         locations = []
         for ID in movingEntIDs:
@@ -374,7 +376,7 @@ class GridEnvironment(itf.iEnvironment):
             moveTypes[moveID].append(entityID)
         terminatedEntities = set()
         for e, V in moveTypes.items():
-            if e == (0, 0):
+            if e is None or e == (0, 0):
                 continue
             self.moveDirection(V, e, terminatedEntities)
         for e in terminatedEntities:
