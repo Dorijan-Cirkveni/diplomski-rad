@@ -444,7 +444,9 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
             raise Exception("Entity agent ID must be specified!")
         properties = entity_data.get("properties", dict())
         properties['loc'] = tuple(properties.get('loc', [5, 5]))
-        entity = itf.Entity(agents[int(ID)], properties)
+        displays=entity_data.get("displays", [0])
+        curdis=entity_data.get("displays", 0)
+        entity = itf.Entity(agents[int(ID)], displays, curdis, properties)
         entities.append(entity)
 
     active.update(set(raw.get("activeEntities", [])))

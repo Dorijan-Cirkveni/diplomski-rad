@@ -32,23 +32,27 @@ class Entity:
     LOCATION = "loc"
     FALSE_INPUT = "falin"
 
+    def __init__(self, agent: iAgent, displays: list, curdis: int, properties: dict = None):
+        self.displays = displays
+        self.curdis = curdis
+        self.properties = dict() if properties is None else properties
+        self.agent = agent
+
     def __repr__(self):
         entity_dict = {
             'properties': self.properties,
-            'agent': repr(self.agent)
+            'agent': repr(self.agent),
+            'displays': self.displays,
+            'curdis': self.curdis
         }
         return json.dumps(entity_dict, indent=2)
-
-    def __init__(self, agent: iAgent, properties=None):
-        self.properties = dict() if properties is None else properties
-        self.agent = agent
 
     def __copy__(self):
         newAgent = self.agent.__copy__()
         newProps = self.properties.copy()
-        return Entity(newAgent, newProps)
+        return Entity(newAgent, self.displays, self.curdis, newProps)
 
-    def receiveEnvironmentData(self, data:dict):
+    def receiveEnvironmentData(self, data: dict):
         relativeTo = self.get(self.LOCATION, (0, 0))
         if not self.properties.get(Entity.S_mirror, False):
             data['agent_last_action'] = dict()
@@ -56,14 +60,14 @@ class Entity:
                 self.properties.get(Entity.VISIONDATA, set()).__contains__(Entity.S_blind)):
             data = dict()
         elif Entity.VISIONDATA in self.properties:
-            remove=set()
-            lim=self.properties[Entity.VISIONDATA]
+            remove = set()
+            lim = self.properties[Entity.VISIONDATA]
             for E in data:
                 if type(E) != tuple:
                     continue
                 if len(E) != 2:
                     continue
-                if tdo.Tmanhat(tdo.Tsub(E, relativeTo))<=lim:
+                if tdo.Tmanhat(tdo.Tsub(E, relativeTo)) <= lim:
                     continue
                 remove.add(E)
             for E in remove:
@@ -89,11 +93,21 @@ class Entity:
     def get(self, key, default):
         return self.properties.get(key, default)
 
+    def set(self, key, value):
+        self.properties[key] = value
+        return
+
+    def getDisplay(self):
+        return self.displays[self.curdis]
+
+    def setDisplay(self, curdis):
+        self.curdis = curdis
+
 
 class iEnvironment:
     def __init__(self, entities, activeEntities):
         self.data = dict()
-        self.entities:list = [] if entities is None else entities
+        self.entities: list = [] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
         self.entityPriority = []
         for ID, entity in enumerate(self.entities):

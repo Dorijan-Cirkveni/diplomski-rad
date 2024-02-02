@@ -138,7 +138,7 @@ class GridDisplay:
         text_rect = text.get_rect(center=(self.screenV[0] // 2, (self.screenV[1] + self.gridscreenV[1]) // 2))
         screen.blit(text, text_rect)
 
-        for num,e in enumerate(["Run iteration", "Run 10 iterations", "Exit"]):
+        for num, e in enumerate(["Run iteration", "Run 10 iterations", "Exit"]):
             test = Button((100, 0, 0), "Test?", (self.gridscreenV[0] + 10, 10 + 120 * num, 100, 100))
             self.buttons["button" + e] = test
 
@@ -269,35 +269,31 @@ class GridInteractive:
         self.display.run(self.grid)
 
 
+element_grid = [
+    GridElementDisplay("grid_tiles/floor.png", (0, 0), (1, 1)),
+    GridElementDisplay("grid_tiles/goal.png", (0, 0), (1, 1)),
+    GridElementDisplay("grid_tiles/wall.png", (0, -0.5), (1, 1.5)),
+    GridElementDisplay("grid_tiles/curt.png", (0, -0.5), (1, 1.5)),
+    GridElementDisplay("grid_tiles/leth.png", (0, 0), (1, 1)),
+    GridElementDisplay("grid_tiles/lethwall.png", (0, -0.5), (1, 1.5)),
+    GridElementDisplay("grid_tiles/glass.png", (0, -1), (1, 2)),
+    GridElementDisplay("grid_tiles/effect.png", (0, 0), (1, 1)),
+
+    GridElementDisplay("grid_tiles/null.png", (0, -0.5), (1, 1.5))
+]
+agent_grid = [
+    GridElementDisplay("grid_tiles/blueAgent.png", (0, -0.5), (1, 1.5)),
+    GridElementDisplay("grid_tiles/box.png", (0, -0.5), (1, 1.5)),
+]
+
+
 def main():
     testGI = GridInteractive()
     testGI.load_grid_from_file("tests/basic_tests.json")
     grid: GridEnvironment = testGI.grid
     grid.changeActiveEntityAgents([AgentManager.GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
-    element_grid = [
-        GridElementDisplay("grid_tiles/floor.png", (0, 0), (1, 1)),
-        GridElementDisplay("grid_tiles/goal.png", (0, 0), (1, 1)),
-        GridElementDisplay("grid_tiles/wall.png", (0, -0.5), (1, 1.5)),
-        GridElementDisplay("grid_tiles/curt.png", (0, -0.5), (1, 1.5)),
-        GridElementDisplay("grid_tiles/leth.png", (0, 0), (1, 1)),
-        GridElementDisplay("grid_tiles/lethwall.png", (0, -0.5), (1, 1.5)),
-        GridElementDisplay("grid_tiles/glass.png", (0, -0.5), (1, 1.5)),
-        GridElementDisplay("grid_tiles/effect.png", (0, 0), (1, 1)),
 
-        GridElementDisplay("grid_tiles/null.png", (0, -0.5), (1, 1.5))
-    ]
-    agent_grid = [
-        GridElementDisplay("grid_tiles/blueAgent.png", (0, -0.5), (1, 1.5)),
-        GridElementDisplay("grid_tiles/box.png", (0, -0.5), (1, 1.5)),
-    ]
     testGI.init_display(element_grid, agent_grid)
-    '''
-    TEST = GridDisplay(
-        elementTypes=element_grid,
-        agentTypes=agent_grid
-    )
-    TEST.draw_frame(main_grid, agents)
-    '''
     testGI.run()
 
 
