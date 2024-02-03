@@ -91,7 +91,7 @@ class GridEnvironment(itf.iEnvironment):
         self.grid = grid
 
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
-        self.tileData={"disFor":dict()}
+        self.tileData = {"disFor": dict()}
         self.taken = dict()
         for ID, entity in enumerate(self.entities):
             entity: itf.Entity
@@ -107,7 +107,7 @@ class GridEnvironment(itf.iEnvironment):
         newScale = self.scale
         newGrid = []
         for e in self.grid:
-            e:list
+            e: list
             newGrid.append(e.copy())
         entities = []
         for e in self.entities:
@@ -127,9 +127,9 @@ class GridEnvironment(itf.iEnvironment):
         return
 
     def setDistances(self, M, agentID=None):
-        disfor=self.tileData.get("disFor",dict())
-        disfor[agentID]=M
-        self.tileData["disFor"]=disfor
+        disfor = self.tileData.get("disFor", dict())
+        disfor[agentID] = M
+        self.tileData["disFor"] = disfor
         return
 
     def calcDistances(self, agentID=None):
@@ -159,7 +159,7 @@ class GridEnvironment(itf.iEnvironment):
                 if v is None:
                     raise Exception("Cosmic Ray Error?")
                 v += 1
-                moves=self.getMoves(agentID)
+                moves = self.getMoves(agentID)
                 for move in moves:
                     newpos = Tadd(E, move)
                     newtiletype = self.get_tile(newpos)
@@ -171,21 +171,21 @@ class GridEnvironment(itf.iEnvironment):
                         M[newpos[0]][newpos[1]] = v
                         if self.is_tile_movable(newpos, data):
                             newtemp.append(newpos)
-            temp=newtemp
-        self.tileData['disFor'][agentID]=M
+            temp = newtemp
+        self.tileData['disFor'][agentID] = M
         return M
 
     def getPositionValue(self, position, agentID=None, ignoreObstacles=False):
-        valueID=agentID
+        valueID = agentID
         if ignoreObstacles:
-            valueID=~agentID
+            valueID = ~agentID
         tile = self.get_tile(position)
         if tile is None:
             return None
-        disfor=self.tileData['disFor']
+        disfor = self.tileData['disFor']
         if agentID not in disfor:
             self.calcDistances(agentID)
-        M=disfor[agentID]
+        M = disfor[agentID]
         return M[position[0]][position[1]]
 
     def get_tile(self, i, j=None):
@@ -321,7 +321,7 @@ class GridEnvironment(itf.iEnvironment):
                     agents[E] = self.taken[E]
         return grid, agents
 
-    def getMoves(self, entityID=None, customLocation=None)->list[tuple]:
+    def getMoves(self, entityID=None, customLocation=None) -> list[tuple]:
         properties = dict()
         location = customLocation
         if entityID is None:
@@ -391,19 +391,19 @@ class GridEnvironment(itf.iEnvironment):
             self.activeEntities -= {e}
         return
 
-    def evaluateActiveEntities(self, evalMethod: callable=lambda E:0 if not E else -min(E)):
+    def evaluateActiveEntities(self, evalMethod: callable = lambda E: 0 if not E else -min(E)):
         totalLoss = []
         for E, ID in self.taken.items():
             if ID not in self.activeEntities:
                 continue
-            val=self.getPositionValue(E)
+            val = self.getPositionValue(E)
             if val is None:
-                val=self.scale[0]*self.scale[1]
+                val = self.scale[0] * self.scale[1]
             totalLoss.append(val)
         return evalMethod(totalLoss)
 
     def isWin(self):
-        X={self.getPositionValue(E,ID) for E,ID in self.taken.items() if ID in self.activeEntities}
+        X = {self.getPositionValue(E, ID) for E, ID in self.taken.items() if ID in self.activeEntities}
         print(X)
         return 0 in X
 
@@ -417,14 +417,19 @@ class GridEnvironment(itf.iEnvironment):
                 i = 0
         return
 
-    def GenerateGroup(self,requests):
+    def GenerateGroup(self, size, learning_aspects, requests: dict):
+        raise NotImplementedError
 
-    def GenerateSetGroups(self,size,ratio=[60,20,20]):
-        ratio=util.adjustRatio(size,ratio)
-        X=[[] for e in ratio]
-        for L in X:
+    def GenerateSetGroups(self, size, learning_aspects: dict, ratio=None):
+        if ratio is None:
+            ratio = [60, 20, 20]
+        ratio = util.adjustRatio(size, ratio)
+        X = []
+        LA=[dict() for e in ratio]
+        for k,V in learning_aspects.items():
 
-
+        for i, groupSize in enumerate(ratio):
+            X.append(self.GenerateGroup(size, learning_aspects))
 
 
 def readPlaneEnvironment(json_str, index, agentDict=None):
@@ -454,8 +459,8 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
             raise Exception("Entity agent ID must be specified!")
         properties = entity_data.get("properties", dict())
         properties['loc'] = tuple(properties.get('loc', [5, 5]))
-        displays=entity_data.get("displays", [0])
-        curdis=entity_data.get("displays", 0)
+        displays = entity_data.get("displays", [0])
+        curdis = entity_data.get("displays", 0)
         entity = itf.Entity(agents[int(ID)], displays, curdis, properties)
         entities.append(entity)
 
