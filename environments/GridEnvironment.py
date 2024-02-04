@@ -86,11 +86,11 @@ class GridEnvironment(itf.iEnvironment):
     dir_right = counter.use()
 
     def __init__(self, scale: tuple, grid: list[list[int]], entities: list[itf.Entity] = None,
-                 activeEntities: set = None, tileTypes=None, data=None):
+                 activeEntities: set = None, tileTypes: list[PlaneTile] = None, data: dict = None):
         super().__init__(entities, activeEntities)
         self.scale = scale
         self.grid = grid
-
+        self.data = dict() if data is None else data
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
         self.tileData = {"disFor": dict()}
         self.taken = dict()
@@ -309,17 +309,33 @@ class GridEnvironment(itf.iEnvironment):
             data[entityID] = entity.properties
         return data
 
+    def getAgentDisplay(self, agents: dict, E: tuple, ):
+        if E not in self.taken:
+            return
+        entID = self.taken[E]
+        ent: itf.Entity = self.entities[entID]
+        if ent is None:
+            return
+        imageID = ent.getDisplay()
+        agents[E] = self.taken[E]
+        return
+
     def getDisplayData(self, entityID=None):
         if entityID is None:
-            return self.grid, self.taken.copy()
+            agents = dict()
+            for E in self.taken.keys():
+                self.getAgentDisplay(agents, E)
+            return self.grid, agents
         data = self.getEnvData(entityID)
         grid = [[-1 for _ in E] for E in self.grid]
         agents = dict()
         for E in data:
-            if type(E) == tuple and len(E) == 2:
-                grid[E[0]][E[1]] = self.get_tile(E)
-                if E in self.taken:
-                    agents[E] = self.taken[E]
+            if type(E) != tuple or len(E) != 2:
+                continue
+            grid[E[0]][E[1]] = self.get_tile(E)
+        for E in self.taken:
+            if E not in data:
+                continue
         return grid, agents
 
     def getMoves(self, entityID=None, customLocation=None) -> list[tuple]:
@@ -435,10 +451,10 @@ class GridEnvironment(itf.iEnvironment):
                 L.append(v)
                 LV.append(count)
             LV = util.adjustRatio(size, LV)
-            curind=0
-            curleft=LV[0]
-            for i,e in enumerate(ratio):
-                pass # TODO
+            curind = 0
+            curleft = LV[0]
+            for i, e in enumerate(ratio):
+                pass  # TODO
         for i, groupSize in enumerate(ratio):
             X.append(self.GenerateGroup(size, learning_aspects, dict()))
 
@@ -471,7 +487,7 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
         properties = entity_data.get("properties", dict())
         properties['loc'] = tuple(properties.get('loc', [5, 5]))
         displays = entity_data.get("displays", [0])
-        curdis = entity_data.get("displays", 0)
+        curdis = entity_data.get("curdis", 0)
         entity = itf.Entity(agents[int(ID)], displays, curdis, properties)
         entities.append(entity)
 

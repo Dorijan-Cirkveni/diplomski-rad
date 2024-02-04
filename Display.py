@@ -104,7 +104,8 @@ class Joystick(iButton):
 
 
 class GridDisplay:
-    def __init__(self, grid: GridEnvironment, elementTypes: list, agentTypes: list, obsAgent: [int,None], screenV=(800, 800),
+    def __init__(self, grid: GridEnvironment, elementTypes: list, agentTypes: list, obsAgent: [int, None],
+                 screenV=(800, 800),
                  gridscreenV=(600, 600), name="Untitled Grid Simulation"):
         self.grid = grid
         gridV = self.grid.scale
@@ -112,8 +113,8 @@ class GridDisplay:
         self.agentTypes: list[GridElementDisplay] = agentTypes
         self.screenV = screenV
         self.gridscreenV = gridscreenV
-        tileV1=min(tdo.Tfdiv(gridscreenV, gridV))
-        self.tileV = (tileV1,tileV1)
+        tileV1 = min(tdo.Tfdiv(gridscreenV, gridV))
+        self.tileV = (tileV1, tileV1)
         self.name = name
         self.screen = None
         self.buttons = dict()
@@ -141,7 +142,7 @@ class GridDisplay:
         screen.blit(text, text_rect)
 
         for num, e in enumerate(["Run iteration", "Run 10 iterations", "Run 100 iterations",
-                                 "Run all iterations","Exit"]):
+                                 "Run all iterations", "Exit"]):
             test = Button((100, 0, 0), e, (5, 10 + 60 * num, 190, 50))
             test.draw(screen, (self.gridscreenV[0], 0))
             self.buttons["button" + e] = test
@@ -155,11 +156,11 @@ class GridDisplay:
     def change_text(self, new_text):
         self.bottom_text = new_text
 
-    def show_iter(self,winStatus=None):
+    def show_iter(self, winStatus=None):
         value = self.grid.evaluateActiveEntities()
-        s="Current step:{}\nValue:{}".format(self.iteration, value)
-        if winStatus==True:
-            s="Win on step {}".format(self.iteration)
+        s = "Current step:{}\nValue:{}".format(self.iteration, value)
+        if winStatus == True:
+            s = "Win on step {}".format(self.iteration)
         self.change_text(s)
 
     def draw_row(self, row_coordinate, row_tiles, row_agents):
@@ -217,7 +218,7 @@ class GridDisplay:
     def run(self):
         running = True
         runIter = False
-        status=None # win=True, loss=False, ongoing=None
+        status = None  # win=True, loss=False, ongoing=None
         self.show_iter()
         while running:
             for event in pygame.event.get():
@@ -234,7 +235,7 @@ class GridDisplay:
                 self.grid.runIteration()
                 self.iteration += 1
                 if self.grid.isWin():
-                    status=True
+                    status = True
                 self.show_iter(status)
                 self.draw_frame()
                 runIter = False
@@ -257,7 +258,6 @@ class GridInteractive:
         self.grid: GridEnvironment = grid
         return True
 
-
     def load_grid_from_file(self, filename, index=0):
         if os.path.isfile(filename):
             with open(filename, 'r') as file:
@@ -275,7 +275,7 @@ class GridInteractive:
         if self.grid is None:
             print("Load a grid first!")
         self.grid: GridEnvironment
-        self.display = GridDisplay(self.grid,elementTypes, agentTypes, None)
+        self.display = GridDisplay(self.grid, elementTypes, agentTypes, None)
         self.display.show_display()
         self.display.draw_frame()
 
@@ -297,9 +297,13 @@ element_grid = [
     GridElementDisplay("grid_tiles/null.png", (0, -0.5), (1, 1.5))
 ]
 agent_grid = [
+    GridElementDisplay("grid_tiles/redAgent.png", (0, -0.5), (1, 1.5)),
+    GridElementDisplay("grid_tiles/yellowAgent.png", (0, -0.5), (1, 1.5)),
+    GridElementDisplay("grid_tiles/greenAgent.png", (0, -0.5), (1, 1.5)),
     GridElementDisplay("grid_tiles/blueAgent.png", (0, -0.5), (1, 1.5)),
     GridElementDisplay("grid_tiles/box.png", (0, -0.5), (1, 1.5)),
 ]
+
 
 def GridTest1():
     testGI = GridInteractive()
@@ -311,8 +315,42 @@ def GridTest1():
     testGI.run()
 
 
+def ManualGridInput():
+    ManualRaw = '''{
+  "name": "Environment Test 1",
+  "scale": [20,20],
+  "shapes": {
+    "rectangles": [
+      [0, 18, 19, 19, 1],
+      [0, 0, 19, 19, 2],
+      [2, 2, 10, 4, 2]
+    ]
+  },
+  "agent": [
+    ["RAA","42132143212132141241212"],
+    ["BOX",""]
+  ],
+  "entities": [
+    {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [15, 5], "viewup": true, "viewdn": true}},
+    {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [15, 6]}},
+    {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [15, 11]}}
+  ],
+  "activeEntities": [0],
+  "passiveMoveLimit": 1,
+  "null": null
+}
+'''
+    testGI = GridInteractive()
+    testGI.load_grid_from_raw(ManualRaw)
+    grid: GridEnvironment = testGI.grid
+    grid.changeActiveEntityAgents([AgentManager.GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
+
+    testGI.init_display(element_grid, agent_grid)
+    testGI.run()
+
+
 def main():
-    pass
+    ManualGridInput()
 
 
 if __name__ == "__main__":

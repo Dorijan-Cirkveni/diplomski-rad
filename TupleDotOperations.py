@@ -31,10 +31,10 @@ def Tmanhat(T):
     return sum([abs(e) for e in T])
 
 
-def T_generate_links(objectset: set, moves: list, direction, passiveEntityLimit=-1):
+def T_generate_links(objectset: set, moves: list, direction, passiveEntityLimit=1):
     nex = dict()
     starters = set()
-    active = moves
+    active = set(moves)
     while moves:
         E = moves.pop()
         if E not in objectset:
@@ -60,6 +60,7 @@ def T_generate_links(objectset: set, moves: list, direction, passiveEntityLimit=
     M2 = []
     for L in M:
         L2 = []
+        last=L.pop()
         passiveCount = 0
         for e in L:
             if e in active:
@@ -70,7 +71,9 @@ def T_generate_links(objectset: set, moves: list, direction, passiveEntityLimit=
                 L2 = []
             else:
                 L2.append(e)
-        M2.append(L2)
+        if L2:
+            L2.append(last)
+            M2.append(L2)
     return M2
 
 
