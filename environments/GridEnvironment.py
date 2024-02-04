@@ -427,7 +427,7 @@ class GridEnvironment(itf.iEnvironment):
         X = []
         LA=[dict() for e in ratio]
         for k,V in learning_aspects.items():
-
+            pass
         for i, groupSize in enumerate(ratio):
             X.append(self.GenerateGroup(size, learning_aspects))
 

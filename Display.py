@@ -252,6 +252,12 @@ class GridInteractive:
     def load_grid(self, gridEnv: GridEnvironment):
         self.grid = gridEnv.__copy__()
 
+    def load_grid_from_raw(self, json_raw):
+        grid = readPlaneEnvironment("[{}]".format(json_raw), 0)
+        self.grid: GridEnvironment = grid
+        return True
+
+
     def load_grid_from_file(self, filename, index=0):
         if os.path.isfile(filename):
             with open(filename, 'r') as file:
@@ -295,8 +301,7 @@ agent_grid = [
     GridElementDisplay("grid_tiles/box.png", (0, -0.5), (1, 1.5)),
 ]
 
-
-def main():
+def GridTest1():
     testGI = GridInteractive()
     testGI.load_grid_from_file("tests/basic_tests.json")
     grid: GridEnvironment = testGI.grid
@@ -304,6 +309,10 @@ def main():
 
     testGI.init_display(element_grid, agent_grid)
     testGI.run()
+
+
+def main():
+    pass
 
 
 if __name__ == "__main__":
