@@ -317,7 +317,7 @@ class GridEnvironment(itf.iEnvironment):
         if ent is None:
             return
         imageID = ent.getDisplay()
-        agents[E] = self.taken[E]
+        agents[E] = imageID
         return
 
     def getDisplayData(self, entityID=None):
@@ -333,9 +333,11 @@ class GridEnvironment(itf.iEnvironment):
             if type(E) != tuple or len(E) != 2:
                 continue
             grid[E[0]][E[1]] = self.get_tile(E)
-        for E in self.taken:
+        agents = dict()
+        for E in self.taken.keys():
             if E not in data:
                 continue
+            self.getAgentDisplay(agents, E)
         return grid, agents
 
     def getMoves(self, entityID=None, customLocation=None) -> list[tuple]:
@@ -468,6 +470,16 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
     raw = json_rawL[index]
     scale = tuple(raw.get("scale", [20, 20]))
     grid = [[0 for __ in range(scale[1])] for _ in range(scale[0])]
+    if "grid" in raw:
+        M: list[list[int]] = raw["grid"]
+        for i, E in enumerate(M):
+            if i == scale[0]:
+                break
+            E2 = grid[i]
+            for j, F in enumerate(E):
+                if j == scale[1]:
+                    break
+                E2[j] = F
     agents = []
     entities = []
     active = set()
@@ -475,6 +487,8 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
     for type, V in shapes.items():
         if type == "rectangles":
             for e in V:
+                if not e:
+                    continue
                 rect(tuple(e), grid)
 
     for (a_type, a_raw) in raw.get("agent", []):
@@ -502,7 +516,7 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
     return RES
 
 
-default_opaque = {PlaneTile.wall, PlaneTile.curtain, PlaneTile.lethalwall}
+default_opaque = {PlaneTile.wall, PlaneTile.curtain, PlaneTile.lethalwall, PlaneTile.curtain}
 default_movable = {PlaneTile.goal, PlaneTile.curtain, PlaneTile.lethal, PlaneTile.accessible, PlaneTile.effect}
 keys = {
     "wall": PlaneTile.wall,

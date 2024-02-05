@@ -142,6 +142,8 @@ class iEnvironment:
         for ent_prio, entityID in self.entityPriority:
             entity = self.entities[entityID]
             entity: Entity
+            if entity is None:
+                continue
             if ent_prio > cur_prio:
                 D.update(cur_D)
                 cur_D = dict()

@@ -42,4 +42,39 @@
   "passiveMoveLimit": 1,
   "null": null
 }
+,
+{
+  "name": "Box Push Test 1",
+  "scale": [20,20],
+  "shapes": {
+    "rectangles": [
+      [0, 0, 19, 19, 2],
+      [8, 2, 12, 10, 2],
+      [10,10,10,10,0],
+      [9, 12, 11, 14, 1],
+      []
+    ]
+  },
+  "grid":
+  [
+    [],[],[],[],[],[],[],[],[],
+    [0,0,0,0,0,0,0,0,0,2],[0,0,0,0,0,0,0,2,0,0,0,0,4,4],
+    []
+  ],
+  "agent": [
+    ["RAA","42132143212132141241212"],
+    ["BOX",""]
+  ],
+  "entities": [
+    {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties":
+      {"loc": [9, 8], "viewup": true, "viewdn": true, "viewle":  true, "viewri": true}
+    },
+    {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [10, 8]}},
+    {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [11, 8]}}
+  ],
+  "activeEntities": [0],
+  "passiveMoveLimit": 1,
+  "stopOnWin": false,
+  "null": null
+}
 ]

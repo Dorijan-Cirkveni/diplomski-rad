@@ -207,6 +207,8 @@ class GridDisplay:
     def change_grid(self, action):
         for entity in self.grid.entities:
             entity: itf.Entity
+            if entity is None:
+                continue
             agent: itf.iAgent = entity.agent
             if type(agent) == AgentManager.RecordedActionsAgent:
                 print("Test successful!")
@@ -305,14 +307,18 @@ agent_grid = [
 ]
 
 
-def GridTest1():
+def GridTest(file, ind):
     testGI = GridInteractive()
-    testGI.load_grid_from_file("tests/basic_tests.json")
+    testGI.load_grid_from_file(file, ind)
     grid: GridEnvironment = testGI.grid
     grid.changeActiveEntityAgents([AgentManager.GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
 
     testGI.init_display(element_grid, agent_grid)
     testGI.run()
+
+
+def GT1(ind=0):
+    return GridTest("tests/basic_tests.json", ind)
 
 
 def ManualGridInput():
@@ -323,9 +329,15 @@ def ManualGridInput():
     "rectangles": [
       [0, 18, 19, 19, 1],
       [0, 0, 19, 19, 2],
-      [2, 2, 10, 4, 2]
+      [2, 8, 10, 12, 2],
+      [10,10,10,10,0],
     ]
   },
+  "grid":
+  [
+  [],[],[],[],[],[],[],[],[],[],
+  [0,0,0,]
+  ],
   "agent": [
     ["RAA","42132143212132141241212"],
     ["BOX",""]
@@ -350,7 +362,7 @@ def ManualGridInput():
 
 
 def main():
-    ManualGridInput()
+    GT1(2)
 
 
 if __name__ == "__main__":
