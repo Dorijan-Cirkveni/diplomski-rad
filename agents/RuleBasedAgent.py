@@ -3,7 +3,7 @@ from collections import defaultdict
 from definitions import *
 
 from interfaces import iAgent
-import util
+from util import util
 
 
 class iRule:

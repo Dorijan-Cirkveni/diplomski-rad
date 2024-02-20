@@ -1,9 +1,8 @@
 import json
-from collections.abc import Iterable
 
 from agents import AgentManager
 import interfaces as itf
-import util
+from util import util
 from definitions import *
 from TupleDotOperations import *
 
