@@ -71,8 +71,11 @@ defaultTileTypes = [
     PlaneTile(PlaneTile.accessible),
     PlaneTile(PlaneTile.goal),
     PlaneTile(PlaneTile.wall),
-    PlaneTile(PlaneTile.glass),
+    PlaneTile(PlaneTile.curtain),
     PlaneTile(PlaneTile.lethal),
+    PlaneTile(PlaneTile.lethalwall),
+    PlaneTile(PlaneTile.glass),
+    PlaneTile(PlaneTile.effect),
     PlaneTile(PlaneTile.accessible, [("blue", PlaneTile.goal)])
 ]
 

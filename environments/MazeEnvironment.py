@@ -23,12 +23,11 @@ def rect(E, grid):
 class MazeEnvironment(GridEnvironment):
     def __init__(self, scale: tuple, entities: list[itf.Entity] = None,
                  activeEntities: set = None, tileTypes=None, data=None, maze_seed=0):
-        # Generate maze using Recursive Backtracking algorithm
         maze = self.generate_maze(scale, maze_seed)
         super().__init__(scale, maze, entities, activeEntities=activeEntities, tileTypes=tileTypes)
 
-    @staticmethod
-    def generate_maze(scale: tuple, maze_seed: int):
+    def generate_maze(self, scale: tuple, maze_seed: int):
+        mazeScale=Tdiv(scale,(2,2))
         random.seed(maze_seed)
 
         def carve_path(x, y):

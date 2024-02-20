@@ -298,13 +298,8 @@ element_grid = [
 
     GridElementDisplay("grid_tiles/null.png", (0, -0.5), (1, 1.5))
 ]
-agent_grid = [
-    GridElementDisplay("grid_tiles/redAgent.png", (0, -0.5), (1, 1.5)),
-    GridElementDisplay("grid_tiles/yellowAgent.png", (0, -0.5), (1, 1.5)),
-    GridElementDisplay("grid_tiles/greenAgent.png", (0, -0.5), (1, 1.5)),
-    GridElementDisplay("grid_tiles/blueAgent.png", (0, -0.5), (1, 1.5)),
-    GridElementDisplay("grid_tiles/box.png", (0, -0.5), (1, 1.5)),
-]
+agent_GL=["red{}","yellow{}","green{}","blue{}","box"]
+agent_grid = [GridElementDisplay("grid_tiles/{}.png".format(e.format("Agent")), (0, -0.3), (1, 1.5)) for e in agent_GL]
 
 
 def GridTest(file, ind):
@@ -336,7 +331,9 @@ def ManualGridInput():
   "grid":
   [
   [],[],[],[],[],[],[],[],[],[],
-  [0,0,0,]
+  [0,0,0],
+  [],
+  [1,2,3,4,5,6,7]
   ],
   "agent": [
     ["RAA","42132143212132141241212"],
@@ -362,7 +359,7 @@ def ManualGridInput():
 
 
 def main():
-    GT1(2)
+    GT1(0)
 
 
 if __name__ == "__main__":
