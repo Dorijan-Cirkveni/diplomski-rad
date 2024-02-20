@@ -285,6 +285,15 @@ class GridInteractive:
         self.display: GridDisplay
         self.display.run()
 
+def runInteractive():
+    testGI = GridInteractive()
+    testGI.load_grid_from_file(file, ind)
+    grid: GridEnvironment = testGI.grid
+    grid.changeActiveEntityAgents([AgentManager.GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
+
+    testGI.init_display(element_grid, agent_grid)
+    testGI.run()
+
 
 element_grid = [
     GridElementDisplay("grid_tiles/floor.png", (0, 0), (1, 1)),

@@ -1,5 +1,7 @@
 import random
 
+import agents.Agent
+import util.mazes
 from GridEnvironment import *
 
 
@@ -20,88 +22,36 @@ def rect(E, grid):
     return
 
 
-class MazeEnvironment(GridEnvironment):
-    def __init__(self, scale: tuple, entities: list[itf.Entity] = None,
-                 activeEntities: set = None, tileTypes=None, data=None, maze_seed=0):
-        maze = self.generate_maze(scale, maze_seed)
-        super().__init__(scale, maze, entities, activeEntities=activeEntities, tileTypes=tileTypes)
+class BasicMazeEnvironment(GridEnvironment):
 
-    def generate_maze(self, scale: tuple, maze_seed: int):
-        mazeScale=Tdiv(scale,(2,2))
-        random.seed(maze_seed)
+    def __init__(self, scale: tuple, start: tuple, idealGoal:tuple, maze_seed=0, entity=None, tileTypes=None,
+                 data=None):
+        if entity is None:
+            entity = itf.Entity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
+        self.start = start
+        entity.set(entity.LOCATION,start)
+        grid = util.mazes.CreateFullMaze(scale, start, maze_seed=maze_seed)
+        super().__init__(scale, grid, [entity], {0}, tileTypes, data)
 
-        def carve_path(x, y):
-            directions = [(2, 0), (-2, 0), (0, 2), (0, -2)]
-            random.shuffle(directions)
+    def GenerateGroup(self, size, learning_aspects, requests: dict):
+        return [BasicMazeEnvironment(self.scale, )]
 
-            for dx, dy in directions:
-                nx, ny = x + dx, y + dy
-                if 0 <= nx < scale[1] and 0 <= ny < scale[0] and maze[ny][nx] == 0:
-                    maze[y + dy // 2][x + dx // 2] = 1
-                    maze[ny][nx] = 1
-                    carve_path(nx, ny)
+class DualMazeEnvironment(GridEnvironment):
 
-        maze = [[0] * scale[1] for _ in range(scale[0])]
+    def __init__(self, scale: tuple, start: tuple, goal:tuple, maze_seed=0, entity=None, tileTypes=None,
+                 data=None):
+        if entity is None:
+            entity = itf.Entity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
+        self.start = start
+        entity.set(entity.LOCATION,start)
+        grid = util.mazes.CreateFullMaze(scale, start, maze_seed=maze_seed)
+        super().__init__(scale, grid, [entity], {0}, tileTypes, data)
 
-        # Set up the initial state
-        start_x, start_y = random.randrange(1, scale[1], 2), random.randrange(1, scale[0], 2)
-        maze[start_y][start_x] = 3  # Agent starting position
-
-        # Generate the maze
-        carve_path(start_x, start_y)
-
-        # Set a random goal position
-        goal_x, goal_y = random.randrange(1, scale[1], 2), random.randrange(1, scale[0], 2)
-        maze[goal_y][goal_x] = 2  # Goal position
-
-        return maze
-
-
-# Example usage:
-maze_seed = 42  # Change this seed to generate a different maze
-maze_env = MazeEnvironment((20, 20), maze_seed=42)
-
-
-def generate_maze(width, height):
-    maze = [[0] * width for _ in range(height)]
-
-    def is_valid(x, y):
-        return 0 <= x < width and 0 <= y < height
-
-    def carve_path(x, y):
-        directions = [(2, 0), (-2, 0), (0, 2), (0, -2)]
-        random.shuffle(directions)
-
-        for dx, dy in directions:
-            nx, ny = x + dx, y + dy
-            if is_valid(nx, ny) and maze[ny][nx] == 0:
-                maze[y + dy // 2][x + dx // 2] = 1
-                maze[ny][nx] = 1
-                carve_path(nx, ny)
-
-    # Set up the initial state
-    start_x, start_y = random.randrange(1, width, 2), random.randrange(1, height, 2)
-    maze[start_y][start_x] = 3  # Agent starting position
-
-    # Generate the maze
-    carve_path(start_x, start_y)
-
-    # Set a random goal position
-    goal_x, goal_y = random.randrange(1, width, 2), random.randrange(1, height, 2)
-    maze[goal_y][goal_x] = 2  # Goal position
-
-    return maze
-
+    def GenerateGroup(self, size, learning_aspects, requests: dict):
+        return [BasicMazeEnvironment(self.scale, )]
 
 
 def main():
-    # Example usage for a 20x20 maze
-    maze_width, maze_height = 20, 20
-    generated_maze = generate_maze(maze_width, maze_height)
-
-    # Display the generated maze
-    for row in generated_maze:
-        print(" ".join(map(str, row)))
     return
 
 

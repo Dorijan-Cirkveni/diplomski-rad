@@ -30,23 +30,40 @@ def Tfdiv(T1, T2):
 def Tmanhat(T):
     return sum([abs(e) for e in T])
 
-def Tinrange(T,R,L=(0,0)):
+
+def Tinrange(T, R, L=(0, 0)):
     for i in range(len(T)):
-        if T[i] not in range(L[i],R[i]):
+        if T[i] not in range(L[i], R[i]):
             return False
     return True
 
-def Tneighbours(T):
-    X=[]
-    TL=list(T)
-    for i in range(len(T)):
-        TL[i]+=1
-        X.append(tuple(TL))
-        TL[i]-=2
-        X.append(tuple(TL))
-        TL[i]+=1
+
+def TgetAsIndex(T, M):
+    for e in T:
+        M = M[e]
+    return M
+
+
+def TsetAsIndex(T, M, v):
+    X = [M]
+    ind = 0
+    for e in T:
+        X = M[ind]
+        ind = e
+    X[ind] = v
     return
 
+
+def Tneighbours(T):
+    X = []
+    TL = list(T)
+    for i in range(len(T)):
+        TL[i] += 1
+        X.append(tuple(TL))
+        TL[i] -= 2
+        X.append(tuple(TL))
+        TL[i] += 1
+    return X
 
 
 def T_generate_links(objectset: set, moves: list, direction, passiveEntityLimit=1):
@@ -78,7 +95,7 @@ def T_generate_links(objectset: set, moves: list, direction, passiveEntityLimit=
     M2 = []
     for L in M:
         L2 = []
-        last=L.pop()
+        last = L.pop()
         passiveCount = 0
         for e in L:
             if e in active:

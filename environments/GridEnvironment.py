@@ -486,8 +486,8 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
     entities = []
     active = set()
     shapes = raw.get("shapes", {})
-    for type, V in shapes.items():
-        if type == "rectangles":
+    for type_V, V in shapes.items():
+        if type_V == "rectangles":
             for e in V:
                 if not e:
                     continue
