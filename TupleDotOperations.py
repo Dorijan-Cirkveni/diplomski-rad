@@ -30,6 +30,24 @@ def Tfdiv(T1, T2):
 def Tmanhat(T):
     return sum([abs(e) for e in T])
 
+def Tinrange(T,R,L=(0,0)):
+    for i in range(len(T)):
+        if T[i] not in range(L[i],R[i]):
+            return False
+    return True
+
+def Tneighbours(T):
+    X=[]
+    TL=list(T)
+    for i in range(len(T)):
+        TL[i]+=1
+        X.append(tuple(TL))
+        TL[i]-=2
+        X.append(tuple(TL))
+        TL[i]+=1
+    return
+
+
 
 def T_generate_links(objectset: set, moves: list, direction, passiveEntityLimit=1):
     nex = dict()
