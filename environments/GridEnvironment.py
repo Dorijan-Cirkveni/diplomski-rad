@@ -5,6 +5,7 @@ import interfaces as itf
 from util import util
 from definitions import *
 from TupleDotOperations import *
+from util.Grid2D import Grid2D
 
 tile_counter = util.Counter()
 
@@ -87,11 +88,10 @@ class GridEnvironment(itf.iEnvironment):
     dir_left = counter.use()
     dir_right = counter.use()
 
-    def __init__(self, scale: tuple, grid: list[list[int]], entities: list[itf.Entity] = None,
+    def __init__(self, grid: Grid2D, entities: list[itf.Entity] = None,
                  activeEntities: set = None, tileTypes: list[PlaneTile] = None, data: dict = None):
         super().__init__(entities, activeEntities)
-        self.scale = scale
-        self.grid = grid
+        self.grid: Grid2D = grid
         self.data = dict() if data is None else data
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
         self.tileData = {"disFor": dict()}
@@ -107,16 +107,12 @@ class GridEnvironment(itf.iEnvironment):
         return
 
     def __copy__(self):
-        newScale = self.scale
-        newGrid = []
-        for e in self.grid:
-            e: list
-            newGrid.append(e.copy())
+        newGrid = self.grid.__copy__()
         entities = []
         for e in self.entities:
             e: itf.Entity
             entities.append(e.__copy__())
-        new = GridEnvironment(newScale, newGrid, entities)
+        new = GridEnvironment(newGrid, entities)
         return new
 
     def exportTileData(self, other):
@@ -194,7 +190,7 @@ class GridEnvironment(itf.iEnvironment):
     def get_tile(self, i, j=None):
         if j is None:
             i, j = i
-        if i not in range(self.scale[0]) or j not in range(self.scale[1]):
+        if i not in range(self.grid.scale[0]) or j not in range(self.grid.scale[1]):
             return None
         return self.grid[i][j]
 
@@ -288,8 +284,8 @@ class GridEnvironment(itf.iEnvironment):
             return None
         location = entity.get(entity.LOCATION, None)
         if entity.get(entity.S_allseeing, False):
-            for i in range(self.scale[0]):
-                for j in range(self.scale[1]):
+            for i in range(self.grid.scale[0]):
+                for j in range(self.grid.scale[1]):
                     data[(i, j)] = self.get_tile(i, j)
         else:
             for i, direction in enumerate(V2DIRS):
@@ -419,7 +415,7 @@ class GridEnvironment(itf.iEnvironment):
                 continue
             val = self.getPositionValue(E)
             if val is None:
-                val = self.scale[0] * self.scale[1]
+                val = self.grid.scale[0] * self.grid.scale[1]
             totalLoss.append(val)
         return evalMethod(totalLoss)
 
@@ -471,13 +467,13 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
         raise Exception("Invalid index {} for file with {} entries!".format(index, len(json_rawL)))
     raw = json_rawL[index]
     scale = tuple(raw.get("scale", [20, 20]))
-    grid = [[0 for __ in range(scale[1])] for _ in range(scale[0])]
+    grid_M = [[0 for __ in range(scale[1])] for _ in range(scale[0])]
     if "grid" in raw:
         M: list[list[int]] = raw["grid"]
         for i, E in enumerate(M):
             if i == scale[0]:
                 break
-            E2 = grid[i]
+            E2 = grid_M[i]
             for j, F in enumerate(E):
                 if j == scale[1]:
                     break
@@ -491,7 +487,7 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
             for e in V:
                 if not e:
                     continue
-                rect(tuple(e), grid)
+                rect(tuple(e), grid_M)
 
     for (a_type, a_raw) in raw.get("agent", []):
         agents.append(agentDict[a_type](a_raw))
@@ -510,8 +506,7 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
     active.update(set(raw.get("activeEntities", [])))
 
     RES = GridEnvironment(
-        scale=scale,
-        grid=grid,
+        grid=Grid2D(scale, grid_M),
         entities=entities,
         activeEntities=active
     )
