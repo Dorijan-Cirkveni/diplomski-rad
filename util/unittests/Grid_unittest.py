@@ -51,11 +51,11 @@ class TestGrid2DCopy(unittest.TestCase):
         self.assertIsNot(copied_grid, original_grid)
 
         # Assert that dimensions are copied correctly
-        self.assertEqual(copied_grid.dimensions, original_grid.dimensions)
+        self.assertEqual(copied_grid.scale, original_grid.scale)
 
         # Assert that the content of the grids are the same
-        for i in range(original_grid.dimensions[0]):
-            for j in range(original_grid.dimensions[1]):
+        for i in range(original_grid.scale[0]):
+            for j in range(original_grid.scale[1]):
                 self.assertEqual(copied_grid[i, j], original_grid[i, j])
 
 

@@ -4,7 +4,6 @@ import TupleDotOperations as tdo
 
 
 class iAgent:
-
     def receiveEnvironmentData(self, data):
         raise NotImplementedError
 
