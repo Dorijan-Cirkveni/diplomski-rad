@@ -108,7 +108,7 @@ class GridDisplay:
                  screenV=(800, 800),
                  gridscreenV=(600, 600), name="Untitled Grid Simulation"):
         self.grid = grid
-        gridV = self.grid.scale
+        gridV = self.grid.getScale()
         self.elementTypes: list[GridElementDisplay] = elementTypes
         self.agentTypes: list[GridElementDisplay] = agentTypes
         self.screenV = screenV
@@ -191,7 +191,7 @@ class GridDisplay:
         for row_coordinate, row_content in enumerate(grid):
             row_tiles = [e for e in row_content if isinstance(e, int)]
             row_agents = {}
-            for col_coordinate in range(self.grid.scale[1]):
+            for col_coordinate in range(self.grid.getScale()[1]):
                 if (row_coordinate, col_coordinate) not in agents:
                     continue
                 row_agents[col_coordinate] = agents[(row_coordinate, col_coordinate)]
@@ -323,48 +323,6 @@ def GridTest(file, ind):
 
 def GT1(ind=0):
     return GridTest("tests/basic_tests.json", ind)
-
-
-def ManualGridInput():
-    ManualRaw = '''{
-  "name": "Environment Test 1",
-  "scale": [20,20],
-  "shapes": {
-    "rectangles": [
-      [0, 18, 19, 19, 1],
-      [0, 0, 19, 19, 2],
-      [2, 8, 10, 12, 2],
-      [10,10,10,10,0],
-    ]
-  },
-  "grid":
-  [
-  [],[],[],[],[],[],[],[],[],[],
-  [0,0,0],
-  [],
-  [1,2,3,4,5,6,7]
-  ],
-  "agent": [
-    ["RAA","42132143212132141241212"],
-    ["BOX",""]
-  ],
-  "entities": [
-    {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [15, 5], "viewup": true, "viewdn": true}},
-    {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [15, 6]}},
-    {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [15, 11]}}
-  ],
-  "activeEntities": [0],
-  "passiveMoveLimit": 1,
-  "null": null
-}
-'''
-    testGI = GridInteractive()
-    testGI.load_grid_from_raw(ManualRaw)
-    grid: GridEnvironment = testGI.grid
-    grid.changeActiveEntityAgents([AgentManager.GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
-
-    testGI.init_display(element_grid, agent_grid)
-    testGI.run()
 
 
 def main():

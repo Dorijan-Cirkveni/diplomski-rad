@@ -32,6 +32,9 @@ class Grid2D:
         newG2D.M = M
         return newG2D
 
+    def copy(self):
+        return self.__copy__()
+
     def __getitem__(self, item):
         if type(item) == int:
             return self.M[item]
@@ -86,12 +89,18 @@ class Grid2D:
             M.append(L)
         return
 
-    def apply(self, function):
+    def apply(self, func:callable):
+        for i,E in enumerate(self.M):
+            for j,f in enumerate(E):
+                E[j]=func(f)
+        return self
 
-    def makeNew(self, function):
-        newGrid = Grid2D((0,0))
-        newGrid.scale=self.scale
-        newGrid.M=
+    def makeNew(self, func:callable):
+        newGrid = self.copy()
+        return newGrid.apply(func)
+
+    def makeList(self,func:callable):
+        return self.makeNew(func)
 
 
 def main():

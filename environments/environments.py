@@ -1,23 +1,15 @@
-import GridEnvironment as gren
-
-ALL_ENVIRONMENTS = dict()
-
+import GridEnvironment as grid_env
+import MazeEnvironment as
 
 def getEnvironment(type, filename, ID):
     if type == "base":
-        env = gren.readPlaneEnvironment(filename, ID)
-        return env
-
-
-def getEnvironments(type, ):
-    if type == "base":
-        env = gren.readPlaneEnvironment(filename, ID)
+        env = grid_env.readPlaneEnvironment(filename, ID)
         return env
 
 
 def getEnvironmentGroups(type, filename, ID):
     if type == "base":
-        env = gren.readPlaneEnvironment(filename, ID)
+        env = grid_env.readPlaneEnvironment(filename, ID)
         return env
 
 

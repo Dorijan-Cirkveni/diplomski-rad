@@ -106,6 +106,9 @@ class GridEnvironment(itf.iEnvironment):
             self.taken[location] = ID
         return
 
+    def getScale(self):
+        return self.grid.scale
+
     def __copy__(self):
         newGrid = self.grid.__copy__()
         entities = []
