@@ -1,5 +1,5 @@
 import GridEnvironment as grid_env
-import MazeEnvironment as
+import MazeEnvironment as maze_env
 
 def getEnvironment(type, filename, ID):
     if type == "base":

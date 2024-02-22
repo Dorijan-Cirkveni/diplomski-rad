@@ -103,6 +103,13 @@ class Entity:
         self.curdis = curdis
 
 
+defaultEntityData = json.loads('''
+    {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {
+        "loc": [2, 2], "viewup": true, "viewdn": true, "viewle":true, "viewri":true}
+    },
+''')
+
+
 class iEnvironment:
     def __init__(self, entities, activeEntities):
         self.data = dict()

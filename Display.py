@@ -324,6 +324,8 @@ def GridTest(file, ind):
 def GT1(ind=0):
     return GridTest("tests/basic_tests.json", ind)
 
+def MazeTest()
+
 
 def main():
     GT1(0)

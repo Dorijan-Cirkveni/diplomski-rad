@@ -92,7 +92,6 @@ class GridEnvironment(itf.iEnvironment):
                  activeEntities: set = None, tileTypes: list[PlaneTile] = None, data: dict = None):
         super().__init__(entities, activeEntities)
         self.grid: Grid2D = grid
-        self.data = dict() if data is None else data
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
         self.tileData = {"disFor": dict()}
         self.taken = dict()
@@ -104,6 +103,55 @@ class GridEnvironment(itf.iEnvironment):
                 print("Unable to initialise Entity {} ({}) without location!".format(ID, name))
                 continue
             self.taken[location] = ID
+        return
+
+    def getFromDict(self, raw: dict):
+        agentDict = raw.get("agentDict", None)
+        agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
+        scale = tuple(raw.get("scale", [20, 20]))
+        grid_M = [[0 for __ in range(scale[1])] for _ in range(scale[0])]
+        if "grid" in raw:
+            M: list[list[int]] = raw["grid"]
+            for i, E in enumerate(M):
+                if i == scale[0]:
+                    break
+                E2 = grid_M[i]
+                for j, F in enumerate(E):
+                    if j == scale[1]:
+                        break
+                    E2[j] = F
+        agents = []
+        entities = []
+        active = set()
+        shapes = raw.get("shapes", {})
+        for type_V, V in shapes.items():
+            if type_V == "rectangles":
+                for e in V:
+                    if not e:
+                        continue
+                    rect(tuple(e), grid_M)
+
+        for (a_type, a_raw) in raw.get("agent", []):
+            agents.append(agentDict[a_type](a_raw))
+
+        for entity_data in raw.get("entities", []):
+            ID = entity_data.get("id", None)
+            if ID is None:
+                raise Exception("Entity agent ID must be specified!")
+            properties = entity_data.get("properties", dict())
+            properties['loc'] = tuple(properties.get('loc', [5, 5]))
+            displays = entity_data.get("displays", [0])
+            curdis = entity_data.get("curdis", 0)
+            entity = itf.Entity(agents[int(ID)], displays, curdis, properties)
+            entities.append(entity)
+
+        active.update(set(raw.get("activeEntities", [])))
+
+        self.__init__(
+            grid=Grid2D(scale, grid_M),
+            entities=entities,
+            activeEntities=active
+        )
         return
 
     def getScale(self):
@@ -134,7 +182,7 @@ class GridEnvironment(itf.iEnvironment):
         self.tileData["disFor"] = disfor
         return
 
-    def calcDistances(self, agentID=None):
+    def calcDistances(self, agentID=None, ignoreObstacles=False):
         data = dict()
         if agentID is not None:
             entity = self.entities[agentID]
@@ -174,20 +222,17 @@ class GridEnvironment(itf.iEnvironment):
                         if self.is_tile_movable(newpos, data):
                             newtemp.append(newpos)
             temp = newtemp
-        self.tileData['disFor'][agentID] = M
+        self.tileData['disFor'][agentID + "_" + str(ignoreObstacles)] = M
         return M
 
     def getPositionValue(self, position, agentID=None, ignoreObstacles=False):
-        valueID = agentID
-        if ignoreObstacles:
-            valueID = ~agentID
         tile = self.get_tile(position)
         if tile is None:
             return None
         disfor = self.tileData['disFor']
         if agentID not in disfor:
-            self.calcDistances(agentID)
-        M = disfor[agentID]
+            self.calcDistances(agentID, ignoreObstacles)
+        M = disfor[agentID + "_" + str(ignoreObstacles)]
         return M[position[0]][position[1]]
 
     def get_tile(self, i, j=None):
@@ -469,49 +514,9 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
     if index not in range(-len(json_rawL), len(json_rawL)):
         raise Exception("Invalid index {} for file with {} entries!".format(index, len(json_rawL)))
     raw = json_rawL[index]
-    scale = tuple(raw.get("scale", [20, 20]))
-    grid_M = [[0 for __ in range(scale[1])] for _ in range(scale[0])]
-    if "grid" in raw:
-        M: list[list[int]] = raw["grid"]
-        for i, E in enumerate(M):
-            if i == scale[0]:
-                break
-            E2 = grid_M[i]
-            for j, F in enumerate(E):
-                if j == scale[1]:
-                    break
-                E2[j] = F
-    agents = []
-    entities = []
-    active = set()
-    shapes = raw.get("shapes", {})
-    for type_V, V in shapes.items():
-        if type_V == "rectangles":
-            for e in V:
-                if not e:
-                    continue
-                rect(tuple(e), grid_M)
-
-    for (a_type, a_raw) in raw.get("agent", []):
-        agents.append(agentDict[a_type](a_raw))
-
-    for entity_data in raw.get("entities", []):
-        ID = entity_data.get("id", None)
-        if ID is None:
-            raise Exception("Entity agent ID must be specified!")
-        properties = entity_data.get("properties", dict())
-        properties['loc'] = tuple(properties.get('loc', [5, 5]))
-        displays = entity_data.get("displays", [0])
-        curdis = entity_data.get("curdis", 0)
-        entity = itf.Entity(agents[int(ID)], displays, curdis, properties)
-        entities.append(entity)
-
-    active.update(set(raw.get("activeEntities", [])))
-
+    raw['agentDict'] = agentDict
     RES = GridEnvironment(
-        grid=Grid2D(scale, grid_M),
-        entities=entities,
-        activeEntities=active
+        data=raw
     )
     return RES
 
