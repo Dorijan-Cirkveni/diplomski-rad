@@ -34,6 +34,7 @@ class BasicMazeEnvironment(GridEnvironment):
         if entity is None:
             entity = itf.Entity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
         self.start = start
+        self.idealGoal = idealGoal
         entity.set(entity.LOCATION, start)
         grid_L = util.mazes.CreateFullMaze(scale, start, maze_seed=maze_seed)
         super().__init__(Grid2D(scale, grid), [entity], {0}, tileTypes)
@@ -57,13 +58,24 @@ class BasicMazeEnvironment(GridEnvironment):
             tuple(raw.get("scale", [25, 25])),
             tuple(raw.get("start", [12, 0])),
             tuple(raw.get("goal", [12, 14])),
-            raw.get("seed",0),
+            raw.get("seed", 0),
             entity
         )
         return
 
-    def GenerateGroup(self, size, learning_aspects, requests: dict):
-        return [BasicMazeEnvironment(self.scale, )]
+    def GenerateGroup(self, size, learning_aspects: dict, requests: dict, randomSeed=42):
+        randomizer = random.Random()
+        randomizer.seed(randomSeed)
+        group = []
+        startArea = requests.get("startArea", self.start * 2)
+        goalArea = requests.get("goalArea", self.idealGoal)
+        for _ in range(size):
+            start = (randomizer.randint(startArea[0], startArea[2]), randomizer.randint(startArea[1], startArea[3]))
+            goal = (randomizer.randint(goalArea[0], goalArea[2]), randomizer.randint(goalArea[1], goalArea[3]))
+            seed = randomizer.randint(0, (1 << 32) - 1)
+            newEnv = BasicMazeEnvironment(self.getScale(), start, goal, seed)
+            group = BasicMazeEnvironment()
+        return group
 
 
 class DualMazeEnvironment(GridEnvironment):
@@ -74,8 +86,9 @@ class DualMazeEnvironment(GridEnvironment):
             entity = itf.Entity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
         self.start = start
         entity.set(entity.LOCATION, start)
-        grid = util.mazes.CreateFullMaze(scale, start, maze_seed=maze_seed)
-        super().__init__(scale, grid, [entity], {0}, tileTypes, data)
+        grid_M = util.mazes.CreateDualMaze(scale, start, goal, maze_seed)
+
+        super().__init__(Grid2D(scale, grid_M), [entity], {0}, tileTypes, data)
 
     def GenerateGroup(self, size, learning_aspects, requests: dict):
         return [BasicMazeEnvironment(self.scale, )]

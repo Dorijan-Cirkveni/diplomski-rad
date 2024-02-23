@@ -1,4 +1,5 @@
 import json
+import random
 
 from agents import AgentManager
 import interfaces as itf
@@ -485,7 +486,7 @@ class GridEnvironment(itf.iEnvironment):
     def GenerateGroup(self, size, learning_aspects, requests: dict):
         raise NotImplementedError
 
-    def GenerateSetGroups(self, size, learning_aspects: dict, ratio=None):
+    def GenerateSetGroups(self, size, learning_aspects: dict, requests: dict, ratio=None):
         if ratio is None:
             ratio = [60, 20, 20]
         ratio = util.adjustRatio(size, ratio)
@@ -504,7 +505,7 @@ class GridEnvironment(itf.iEnvironment):
             for i, e in enumerate(ratio):
                 pass  # TODO
         for i, groupSize in enumerate(ratio):
-            X.append(self.GenerateGroup(size, learning_aspects, dict()))
+            X.append(self.GenerateGroup(groupSize, learning_aspects, requests))
 
 
 def readPlaneEnvironment(json_str, index, agentDict=None):

@@ -7,6 +7,14 @@ def Toper(T1, T2, oper):
     return tuple(X)
 
 
+def Tmin(T1, T2):
+    return Toper(T1, T2, lambda A, B: min(A, B))
+
+
+def Tmax(T1, T2):
+    return Toper(T1, T2, lambda A, B: max(A, B))
+
+
 def Tadd(T1, T2):
     return Toper(T1, T2, lambda A, B: A + B)
 
