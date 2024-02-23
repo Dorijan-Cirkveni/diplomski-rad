@@ -324,7 +324,9 @@ def GridTest(file, ind):
 def GT1(ind=0):
     return GridTest("tests/basic_tests.json", ind)
 
-def MazeTest()
+def MazeTest():
+    testGI = GridInteractive
+    testGI.load_grid_from_file()
 
 
 def main():
