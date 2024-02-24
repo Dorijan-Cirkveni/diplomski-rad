@@ -34,7 +34,7 @@ class BasicMazeEnvironment(GridEnvironment):
         self.idealGoal = idealGoal
         entity.set(entity.LOCATION, start)
         grid_L = util_mngr.mazes.CreateFullMaze(scale, start, maze_seed=maze_seed)
-        super().__init__(Grid2D(scale, grid_L), [entity], {0}, tileTypes)
+        super().__init__(util_mngr.Grid2D.Grid2D(scale, grid_L), [entity], {0}, tileTypes)
 
     def getFromDict(self, raw: dict):
         agentDict = raw.get("agentDict", None)
@@ -82,7 +82,7 @@ class DualMazeEnvironment(GridEnvironment):
         entity.set(entity.LOCATION, start)
         grid_M = util_mngr.mazes.CreateDualMaze(scale, start, goal, maze_seed)
 
-        super().__init__(Grid2D(scale, grid_M), [entity], {0}, tileTypes, data)
+        super().__init__(util_mngr.Grid2D.Grid2D(scale, grid_M), [entity], {0}, tileTypes, data)
 
     def GenerateGroup(self, size, learning_aspects, requests: dict):
         return []

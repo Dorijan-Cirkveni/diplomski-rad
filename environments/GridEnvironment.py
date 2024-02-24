@@ -1,12 +1,10 @@
 import json
-import random
 
+from definitions import *
 from agents import AgentManager
 import interfaces as itf
 from util import UtilManager as util_mngr
-from definitions import *
-from TupleDotOperations import *
-from util.Grid2D import Grid2D
+from util.UtilManager.Grid2D import *
 
 tile_counter = util_mngr.Counter()
 
@@ -89,7 +87,7 @@ class GridEnvironment(itf.iEnvironment):
     dir_left = counter.use()
     dir_right = counter.use()
 
-    def __init__(self, grid: Grid2D, entities: list[itf.Entity] = None,
+    def __init__(self, grid:Grid2D, entities: list[itf.Entity] = None,
                  activeEntities: set = None, tileTypes: list[PlaneTile] = None, data: dict = None):
         super().__init__(entities, activeEntities)
         self.grid: Grid2D = grid
