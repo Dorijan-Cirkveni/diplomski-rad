@@ -1,12 +1,4 @@
 from collections import deque
-from definitions import *
-import json
-
-import debug
-import Grid2D
-import InputGenerator
-import mazes
-import rawJsonProcessor
 
 
 class Counter:

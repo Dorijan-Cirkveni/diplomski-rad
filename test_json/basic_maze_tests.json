@@ -1,6 +1,6 @@
 [
   {
-    "type": "MazeEnvironment",
+    "type": "mazeBasic",
     "name": "Maze Test 1",
     "scale": [25,25],
     "agent": ["RAA","42132143212132141241212"],

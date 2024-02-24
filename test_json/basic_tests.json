@@ -1,5 +1,6 @@
 [
 {
+  "type": "grid",
   "name": "Environment Test 1",
   "scale": [25,25],
   "shapes": {
@@ -24,6 +25,7 @@
 }
 ,
 {
+  "type": "grid",
   "name": "Environment Test 2",
   "scale": [20,20],
   "shapes": {
@@ -45,6 +47,7 @@
 }
 ,
 {
+  "type": "grid",
   "name": "Box Push Test 1",
   "scale": [20,20],
   "shapes": {
@@ -78,8 +81,9 @@
   "stopOnWin": false,
   "null": null
 }
-  ,
-  {
+,
+{
+  "type": "grid",
   "name": "Environment Test 3",
   "scale": [20,20],
   "shapes": {

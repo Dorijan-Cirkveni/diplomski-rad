@@ -1,6 +1,6 @@
 import json
 
-import TupleDotOperations as tdo
+from util import TupleDotOperations as tdo
 
 
 class iAgent:
@@ -113,6 +113,10 @@ class iEnvironment:
             priority = entity.getPriority()
             self.entityPriority.append((priority, ID))
         self.entityPriority.sort()
+
+    @staticmethod
+    def getFromDict(raw: dict):
+        raise NotImplementedError
 
     def __copy__(self):
         raise NotImplementedError

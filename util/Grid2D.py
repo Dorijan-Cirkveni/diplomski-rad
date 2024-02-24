@@ -1,4 +1,4 @@
-from TupleDotOperations import *
+from util.TupleDotOperations import *
 
 WRAP_NONE = 0
 WRAP_FIRST = 1

@@ -1,6 +1,6 @@
 import random
 from collections import deque
-from TupleDotOperations import *
+from util.TupleDotOperations import *
 
 
 def CreateFullMaze(dimensions, start, maze_seed, stepOdds=0.9, allowLoops=False):

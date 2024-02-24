@@ -1,12 +1,14 @@
 import os
-
 import pygame
 
+from definitions import *
 import interfaces as itf
-from environments import GridEnvironment
-import TupleDotOperations as tdo
-from environments.EnvironmentManager import *
-from agents.AgentManager import *
+from util import TupleDotOperations as tdo
+import environments.EnvironmentManager as env_mngr
+
+GridEnvironment = env_mngr.grid_env.GridEnvironment
+
+from agents.Agent import GraphicManualInputAgent
 
 fixedBG = (0, 0, 0)
 GRID_COLOR = (255, 255, 255)
@@ -106,7 +108,8 @@ class Joystick(iButton):
 
 
 class GridDisplay:
-    def __init__(self, grid: GridEnvironment, elementTypes: list, agentTypes: list, obsAgent: [int, None],
+    def __init__(self, grid: env_mngr.grid_env.GridEnvironment, elementTypes: list, agentTypes: list,
+                 obsAgent: [int, None],
                  screenV=(800, 800),
                  gridscreenV=(600, 600), name="Untitled Grid Simulation"):
         self.grid = grid
@@ -212,7 +215,7 @@ class GridDisplay:
             if entity is None:
                 continue
             agent: itf.iAgent = entity.agent
-            if type(agent) == RecordedActionsAgent:
+            if type(agent) == GraphicManualInputAgent:
                 print("Test successful!")
             if type(agent) != GraphicManualInputAgent:
                 continue
@@ -258,7 +261,7 @@ class GridInteractive:
         self.grid = gridEnv.__copy__()
 
     def load_grid_from_raw(self, json_raw):
-        grid = readPlaneEnvironment("[{}]".format(json_raw), 0)
+        grid = env_mngr.readPlaneEnvironment("[{}]".format(json_raw), 0)
         self.grid: GridEnvironment = grid
         return True
 
@@ -266,7 +269,7 @@ class GridInteractive:
         if os.path.isfile(filename):
             with open(filename, 'r') as file:
                 json_raw = file.read()
-                grid = readPlaneEnvironment(json_raw, index)
+                grid = env_mngr.readEnvironment(json_raw, index)
                 self.grid: GridEnvironment = grid
                 return True
         print("Error: File '{}' not found.".format(filename))
@@ -330,7 +333,7 @@ def GT1(ind=0):
 
 def MazeTest():
     testGI = GridInteractive()
-    testGI.load_grid_from_file("test_json/basic_maze_tests.json",0)
+    testGI.load_grid_from_file("test_json/basic_maze_tests.json", 0)
     grid: GridEnvironment = testGI.grid
     grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
 

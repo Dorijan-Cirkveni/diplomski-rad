@@ -4,7 +4,8 @@ from definitions import *
 from agents import AgentManager
 import interfaces as itf
 from util import UtilManager as util_mngr
-from util.UtilManager.Grid2D import *
+from util.Grid2D import Grid2D
+from util.TupleDotOperations import *
 
 tile_counter = util_mngr.Counter()
 
@@ -88,7 +89,7 @@ class GridEnvironment(itf.iEnvironment):
     dir_right = counter.use()
 
     def __init__(self, grid:Grid2D, entities: list[itf.Entity] = None,
-                 activeEntities: set = None, tileTypes: list[PlaneTile] = None, data: dict = None):
+                 activeEntities: set = None, tileTypes: list[PlaneTile] = None, extraData: dict = None):
         super().__init__(entities, activeEntities)
         self.grid: Grid2D = grid
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
@@ -104,7 +105,8 @@ class GridEnvironment(itf.iEnvironment):
             self.taken[location] = ID
         return
 
-    def getFromDict(self, raw: dict):
+    @staticmethod
+    def getFromDict(raw: dict):
         agentDict = raw.get("agentDict", None)
         agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
         scale = tuple(raw.get("scale", [20, 20]))
@@ -146,12 +148,12 @@ class GridEnvironment(itf.iEnvironment):
 
         active.update(set(raw.get("activeEntities", [])))
 
-        self.__init__(
+        res = GridEnvironment(
             grid=Grid2D(scale, grid_M),
             entities=entities,
             activeEntities=active
         )
-        return
+        return res
 
     def getScale(self):
         return self.grid.scale
@@ -221,7 +223,7 @@ class GridEnvironment(itf.iEnvironment):
                         if self.is_tile_movable(newpos, data):
                             newtemp.append(newpos)
             temp = newtemp
-        self.tileData['disFor'][agentID + "_" + str(ignoreObstacles)] = M
+        self.tileData['disFor'][str(agentID) + "_" + str(ignoreObstacles)] = M
         return M
 
     def getPositionValue(self, position, agentID=None, ignoreObstacles=False):
@@ -231,7 +233,7 @@ class GridEnvironment(itf.iEnvironment):
         disfor = self.tileData['disFor']
         if agentID not in disfor:
             self.calcDistances(agentID, ignoreObstacles)
-        M = disfor[agentID + "_" + str(ignoreObstacles)]
+        M = disfor[str(agentID) + "_" + str(ignoreObstacles)]
         return M[position[0]][position[1]]
 
     def get_tile(self, i, j=None):
@@ -514,10 +516,7 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
         raise Exception("Invalid index {} for file with {} entries!".format(index, len(json_rawL)))
     raw = json_rawL[index]
     raw['agentDict'] = agentDict
-    RES = GridEnvironment(
-        Grid2D((0,0)),
-        data=raw
-    )
+    RES = GridEnvironment.getFromDict(raw)
     return RES
 
 
