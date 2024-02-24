@@ -1,29 +1,32 @@
 import random
 from collections import deque
+from util.Grid2D import Grid2D
 from util.TupleDotOperations import *
 
 
-def CreateFullMaze(dimensions, start, idealGoal, maze_seed, tiles=(0,2,1), stepOdds=0.9, allowLoops=False):
-    M = [[1 for __ in range(dimensions[1])] for _ in range(dimensions[0])]
+def CreateFullMaze(dimensions, start: tuple, idealGoal: tuple, maze_seed, tiles=(0, 2, 1), stepOdds=0.9,
+                   allowLoops=False):
+    M = Grid2D(dimensions, defaultValue=tiles[1])
     nexQ = deque()
     nexQ.append(start)
     randomizer = random.Random(maze_seed)
-    bestGoal=
-    bestGoalV=abs(bestGoal[0])+abs()
+    bestGoal = (Tmanhat(idealGoal), (0, 0))
     while nexQ:
         curE = nexQ.popleft()
-        EN = [e for e in Tneighbours(curE) if Tinrange(e, dimensions)]
-        values = [TgetAsIndex(E, M) for E in EN]
+        EN = [e for e in M.get_neighbours(curE)]
+        values = [M[E]==tiles[0] for E in EN]
         usedCount = sum(values)
-        if usedCount < 3 and not allowLoops:
+        if usedCount > 1 and not allowLoops:
             continue
         if randomizer.random() > stepOdds:
             continue
-        TsetAsIndex(curE, M, 0)
+        M[curE] = tiles[0]
+        bestGoal = max(bestGoal, (Tmanhat(Tsub(idealGoal, curE)), curE))
         for i, E in enumerate(EN):
-            if values[i] == 0:
+            if values[i] == 1:
                 continue
             nexQ.append(E)
+    M[bestGoal[1]]=tiles[2]
     return M
 
 

@@ -31,11 +31,8 @@ class BasicMazeEnvironment(GridEnvironment):
         self.start = start
         self.idealGoal = idealGoal
         entity.set(entity.LOCATION, start)
-        grid_L = mazes.CreateFullMaze(scale, start, maze_seed=maze_seed)
-        grid_base: Grid2D = Grid2D(scale, grid_L)
-        grid_transformed = grid_base.apply(lambda x: [0, 2][x])
-        grid_transformed[idealGoal] = 1
-        super().__init__(grid_transformed, [entity], {0}, tileTypes)
+        grid = mazes.CreateFullMaze(scale, start, idealGoal, maze_seed=maze_seed, tiles=[0,2,1])
+        super().__init__(grid, [entity], {0}, tileTypes)
 
     @staticmethod
     def getFromDict(raw: dict):

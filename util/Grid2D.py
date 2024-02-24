@@ -7,7 +7,7 @@ WRAP_BOTH = 3
 
 
 class Grid2D:
-    def __init__(self, dimensions, M=None, defaultValue=0):
+    def __init__(self, dimensions: tuple, M: list[list] = None, defaultValue=0):
         self.scale = dimensions
         if len(dimensions) != 2:
             raise Exception("Dimensions tuple dimensions must be 2, not {}".format(len(dimensions)))
@@ -80,26 +80,26 @@ class Grid2D:
         return res
 
     def dot(self, func: callable):
-        M=[]
+        M = []
         for i in range(self.scale[0]):
-            L=[]
+            L = []
             for j in range(self.scale[1]):
                 L.append(func(self.M[i][j]))
                 L.append(j)
             M.append(L)
         return
 
-    def apply(self, func:callable):
-        for i,E in enumerate(self.M):
-            for j,f in enumerate(E):
-                E[j]=func(f)
+    def apply(self, func: callable):
+        for i, E in enumerate(self.M):
+            for j, f in enumerate(E):
+                E[j] = func(f)
         return self
 
-    def makeNew(self, func:callable):
+    def makeNew(self, func: callable):
         newGrid = self.copy()
         return newGrid.apply(func)
 
-    def makeList(self,func:callable):
+    def makeList(self, func: callable):
         return self.makeNew(func)
 
 
