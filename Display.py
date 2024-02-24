@@ -342,7 +342,7 @@ def MazeTest():
 
 
 def main():
-    GT1(0)
+    MazeTest()
 
 
 if __name__ == "__main__":

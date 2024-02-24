@@ -245,6 +245,8 @@ class GridEnvironment(itf.iEnvironment):
 
     def is_tile_movable(self, tilePos, agentData):
         tileID = self.get_tile(tilePos)
+        if tileID is None:
+            return False
         tile = self.tileTypes[tileID]
         movability = tile.checkIfMovable(agentData)
         return movability

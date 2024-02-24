@@ -2,6 +2,7 @@ import random
 
 import agents.Agent
 from environments.GridEnvironment import *
+import util.mazes as mazes
 
 
 def rect(E, grid):
@@ -30,8 +31,11 @@ class BasicMazeEnvironment(GridEnvironment):
         self.start = start
         self.idealGoal = idealGoal
         entity.set(entity.LOCATION, start)
-        grid_L = util_mngr.mazes.CreateFullMaze(scale, start, maze_seed=maze_seed)
-        super().__init__(util_mngr.Grid2D.Grid2D(scale, grid_L), [entity], {0}, tileTypes)
+        grid_L = mazes.CreateFullMaze(scale, start, maze_seed=maze_seed)
+        grid_base: Grid2D = Grid2D(scale, grid_L)
+        grid_transformed = grid_base.apply(lambda x: [0, 2][x])
+        grid_transformed[idealGoal] = 1
+        super().__init__(grid_transformed, [entity], {0}, tileTypes)
 
     @staticmethod
     def getFromDict(raw: dict):
@@ -78,9 +82,9 @@ class DualMazeEnvironment(GridEnvironment):
             entity = itf.Entity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
         self.start = start
         entity.set(entity.LOCATION, start)
-        grid_M = util_mngr.mazes.CreateDualMaze(scale, start, goal, maze_seed)
+        grid_M = mazes.CreateDualMaze(scale, start, goal, maze_seed)
 
-        super().__init__(util_mngr.Grid2D.Grid2D(scale, grid_M), [entity], {0}, tileTypes, data)
+        super().__init__(Grid2D(scale, grid_M), [entity], {0}, tileTypes, data)
 
     def GenerateGroup(self, size, learning_aspects, requests: dict):
         return []

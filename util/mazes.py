@@ -3,11 +3,13 @@ from collections import deque
 from util.TupleDotOperations import *
 
 
-def CreateFullMaze(dimensions, start, maze_seed, stepOdds=0.9, allowLoops=False):
+def CreateFullMaze(dimensions, start, idealGoal, maze_seed, tiles=(0,2,1), stepOdds=0.9, allowLoops=False):
     M = [[1 for __ in range(dimensions[1])] for _ in range(dimensions[0])]
     nexQ = deque()
     nexQ.append(start)
     randomizer = random.Random(maze_seed)
+    bestGoal=
+    bestGoalV=abs(bestGoal[0])+abs()
     while nexQ:
         curE = nexQ.popleft()
         EN = [e for e in Tneighbours(curE) if Tinrange(e, dimensions)]
