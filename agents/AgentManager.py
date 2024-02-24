@@ -1,11 +1,11 @@
-from agents.Agent import *
-import agents.NeuralNetworkAgent as lib_nna
-import agents.RuleBasedAgent as lib_rba
+import agents.Agent as base
+import agents.NeuralNetworkAgent as NNA
+import agents.RuleBasedAgent as RBA
 from definitions import ACTIONS
 
 ALL_AGENTS = {
-    "RAA": initRAAFactory(ACTIONS),
-    "BOX": lambda s:BoxAgent()
+    "RAA": base.initRAAFactory(ACTIONS),
+    "BOX": lambda s:base.BoxAgent()
 }
 
 

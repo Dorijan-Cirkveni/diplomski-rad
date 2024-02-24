@@ -1,9 +1,6 @@
 import random
 
-from pygame.examples import grid
-
 import agents.Agent
-import util.mazes
 from GridEnvironment import *
 
 
@@ -36,8 +33,8 @@ class BasicMazeEnvironment(GridEnvironment):
         self.start = start
         self.idealGoal = idealGoal
         entity.set(entity.LOCATION, start)
-        grid_L = util.mazes.CreateFullMaze(scale, start, maze_seed=maze_seed)
-        super().__init__(Grid2D(scale, grid), [entity], {0}, tileTypes)
+        grid_L = util_mngr.mazes.CreateFullMaze(scale, start, maze_seed=maze_seed)
+        super().__init__(Grid2D(scale, grid_L), [entity], {0}, tileTypes)
 
     def getFromDict(self, raw: dict):
         agentDict = raw.get("agentDict", None)
@@ -45,14 +42,11 @@ class BasicMazeEnvironment(GridEnvironment):
         (a_type, a_raw) = raw.get("agent", ["BOX", ""])
         agent = agentDict[a_type](a_raw)
         entity_data = raw.get("entity", {})
-        active = {0}
         properties = entity_data.get("properties", dict())
         properties['loc'] = tuple(properties.get('loc', [5, 5]))
         displays = entity_data.get("displays", [0])
         curdis = entity_data.get("curdis", 0)
         entity = itf.Entity(agent, displays, curdis, properties)
-
-        active.update(set(raw.get("activeEntities", [])))
 
         self.__init__(
             tuple(raw.get("scale", [25, 25])),
@@ -86,12 +80,12 @@ class DualMazeEnvironment(GridEnvironment):
             entity = itf.Entity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
         self.start = start
         entity.set(entity.LOCATION, start)
-        grid_M = util.mazes.CreateDualMaze(scale, start, goal, maze_seed)
+        grid_M = util_mngr.mazes.CreateDualMaze(scale, start, goal, maze_seed)
 
         super().__init__(Grid2D(scale, grid_M), [entity], {0}, tileTypes, data)
 
     def GenerateGroup(self, size, learning_aspects, requests: dict):
-        return [BasicMazeEnvironment(self.scale, )]
+        return []
 
 
 def main():

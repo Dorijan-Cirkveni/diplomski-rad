@@ -1,6 +1,8 @@
-import interfaces as itf
 import numpy as np
-from util import util
+
+from definitions import *
+import interfaces as itf
+import util.UtilManager as util_mngr
 
 
 def sigmoid(x):
@@ -69,7 +71,7 @@ class NNAgent(itf.iAgent):
         for e, L in self.inputPositions.items():
             dX = data.get(e, None)
             for f in L:
-                dY = util.CallOrEqual(f, dX)
+                dY = util_mngr.CallOrEqual(f, dX)
                 X.append(int(dY))
         X = np.array(X)
         log = []
@@ -83,9 +85,9 @@ class NNAgent(itf.iAgent):
 
 def main():
     X = [i for i in range(7)]
-    Y = util.ACTIONS.copy()
+    Y = util_mngr.ACTIONS.copy()
     inputPositions = {e: X for e in Y}
-    test=NNAgent(inputPositions, util.ACTIONS, [7])
+    test=NNAgent(inputPositions, util_mngr.ACTIONS, [7])
     Z=[0,0,0,1,0]
     data={Y[i]:Z[i] for i in range(5)}
     res=test.receiveEnvironmentData(data)

@@ -2,9 +2,11 @@ import os
 
 import pygame
 
+import interfaces as itf
 from environments import GridEnvironment
 import TupleDotOperations as tdo
-from environments.GridEnvironment import *
+from environments.EnvironmentManager import *
+from agents.AgentManager import *
 
 fixedBG = (0, 0, 0)
 GRID_COLOR = (255, 255, 255)
@@ -210,11 +212,11 @@ class GridDisplay:
             if entity is None:
                 continue
             agent: itf.iAgent = entity.agent
-            if type(agent) == AgentManager.RecordedActionsAgent:
+            if type(agent) == RecordedActionsAgent:
                 print("Test successful!")
-            if type(agent) != AgentManager.GraphicManualInputAgent:
+            if type(agent) != GraphicManualInputAgent:
                 continue
-            agent: AgentManager.GraphicManualInputAgent
+            agent: GraphicManualInputAgent
             agent.cur = action
 
     def run(self):
@@ -285,11 +287,12 @@ class GridInteractive:
         self.display: GridDisplay
         self.display.run()
 
-def runInteractive():
+
+def runInteractive(file, ind):
     testGI = GridInteractive()
     testGI.load_grid_from_file(file, ind)
     grid: GridEnvironment = testGI.grid
-    grid.changeActiveEntityAgents([AgentManager.GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
+    grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
 
     testGI.init_display(element_grid, agent_grid)
     testGI.run()
@@ -307,7 +310,7 @@ element_grid = [
 
     GridElementDisplay("grid_tiles/null.png", (0, -0.5), (1, 1.5))
 ]
-agent_GL=["red{}","yellow{}","green{}","blue{}","box"]
+agent_GL = ["red{}", "yellow{}", "green{}", "blue{}", "box"]
 agent_grid = [GridElementDisplay("grid_tiles/{}.png".format(e.format("Agent")), (0, -0.3), (1, 1.5)) for e in agent_GL]
 
 
@@ -315,18 +318,24 @@ def GridTest(file, ind):
     testGI = GridInteractive()
     testGI.load_grid_from_file(file, ind)
     grid: GridEnvironment = testGI.grid
-    grid.changeActiveEntityAgents([AgentManager.GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
+    grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
 
     testGI.init_display(element_grid, agent_grid)
     testGI.run()
 
 
 def GT1(ind=0):
-    return GridTest("tests/basic_tests.json", ind)
+    return GridTest("test_json/basic_tests.json", ind)
+
 
 def MazeTest():
-    testGI = GridInteractive
-    testGI.load_grid_from_file()
+    testGI = GridInteractive()
+    testGI.load_grid_from_file("test_json/basic_maze_tests.json",0)
+    grid: GridEnvironment = testGI.grid
+    grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
+
+    testGI.init_display(element_grid, agent_grid)
+    testGI.run()
 
 
 def main():

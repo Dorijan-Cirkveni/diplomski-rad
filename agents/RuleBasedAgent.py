@@ -1,9 +1,8 @@
 from collections import defaultdict
 
 from definitions import *
-
-from interfaces import iAgent
-from util import util
+import interfaces as itf
+import util.UtilManager as util_mngr
 
 
 class iRule:
@@ -43,7 +42,7 @@ class Rule(iRule):
         if variable not in self.conditions:
             return False, {}
         condition = self.conditions[value]
-        if not util.CallOrEqual(condition, value):
+        if not util_mngr.CallOrEqual(condition, value):
             return False, {}
         self.conditions.pop(variable)
         return self, len(self.conditions) == 0, {variable}
@@ -184,7 +183,7 @@ class RulesetManager:
         return new_data
 
 
-class RuleBasedAgent(iAgent):
+class RuleBasedAgent(itf.iAgent):
     def __init__(self, rulelist: list, used: set, pers_vars: set, defaultAction):
         self.manager = RulesetManager()
         for rule in rulelist:

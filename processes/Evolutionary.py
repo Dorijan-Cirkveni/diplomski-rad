@@ -1,6 +1,6 @@
 import random
 
-from agents import Agent
+import agents.AgentManager as agent_mngr
 import interfaces as itf
 
 
@@ -183,7 +183,7 @@ class ExampleLifeform(iLifeform):
         return ExampleLifeform(s=self.gene.__copy__())
 
     def generateAgent(self):
-        return Agent.RecordedActionsAgent(self.gene.value)
+        return agent_mngr.base.RecordedActionsAgent(self.gene.value)
 
 
 def main():

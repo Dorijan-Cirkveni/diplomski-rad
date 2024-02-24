@@ -1,7 +1,7 @@
-import interfaces
+import interfaces as itf
 
 
-class BoxAgent(interfaces.iAgent):
+class BoxAgent(itf.iAgent):
     def __init__(self):
         super().__init__()
 
@@ -15,7 +15,7 @@ class BoxAgent(interfaces.iAgent):
         return BoxAgent()
 
 
-class MirrorAgent(interfaces.iAgent):
+class MirrorAgent(itf.iAgent):
     def __copy__(self):
         newMirrors = self.actionMirrors.copy()
         newMirror = MirrorAgent(self.mirroredAgent, newMirrors)
@@ -44,7 +44,7 @@ def intMAFactory(actionMirrors):
     return MakeMirrorAgent
 
 
-class RecordedActionsAgent(interfaces.iAgent):
+class RecordedActionsAgent(itf.iAgent):
     def __init__(self, actions):
         self.i = 0
         self.actions = actions
@@ -76,7 +76,7 @@ def initRAAFactory(translation):
     return initRAA
 
 
-class ManualInputAgent(interfaces.iAgent):
+class ManualInputAgent(itf.iAgent):
     def __init__(self, watchedDimensions, actions, guide):
         self.watchedDimensions = watchedDimensions
         self.actions = actions
@@ -113,7 +113,7 @@ class ManualInputAgent(interfaces.iAgent):
         return cur
 
 
-class GraphicManualInputAgent(interfaces.iAgent):
+class GraphicManualInputAgent(itf.iAgent):
     def __init__(self, watchedDimensions, actions):
         self.watchedDimensions = watchedDimensions
         self.actions = actions

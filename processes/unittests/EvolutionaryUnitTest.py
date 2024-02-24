@@ -1,6 +1,6 @@
 import unittest
 
-from Evolutionary import *
+from processes.Evolutionary import *
 
 
 class SimpleLifeform(iLifeform):
@@ -47,9 +47,10 @@ class TestSelector(unittest.TestCase):
 
         for seed, value in {42: '101', 123: '010', 999: '100'}.items():
             with self.subTest(seed=seed):
-                new_lifeform = lifeform1.combine(lifeform2, rate=0.5, randomSeed=seed)
+                new_lifeform:iLifeform = lifeform1.combine(lifeform2, rate=0.5, randomSeed=seed)
 
                 self.assertTrue(isinstance(new_lifeform, SimpleLifeform))
+                new_lifeform:SimpleLifeform
                 self.assertEqual(new_lifeform.gene.use(), value)
 
     def test_gene_mutate(self):
@@ -57,8 +58,9 @@ class TestSelector(unittest.TestCase):
 
         for seed, value in {42: '132', 123: '111', 999: '143'}.items():
             with self.subTest(seed=seed):
-                new_lifeform = lifeform.mutate(rate=0.5, randomSeed=seed)
+                new_lifeform:iLifeform = lifeform.mutate(rate=0.5, randomSeed=seed)
                 self.assertTrue(isinstance(new_lifeform, SimpleLifeform))
+                new_lifeform:SimpleLifeform
                 self.assertEqual(new_lifeform.gene.use(), value)
 
     def test_selector_initiate(self):

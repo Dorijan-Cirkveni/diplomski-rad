@@ -1,0 +1,10 @@
+[
+  {
+    "type": "MazeEnvironment",
+    "name": "Maze Test 1",
+    "scale": [25,25],
+    "agent": ["RAA","42132143212132141241212"],
+    "entity": {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [2, 5], "viewup": true, "viewdn": true}},
+    "null":0
+  }
+]

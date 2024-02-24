@@ -3,12 +3,12 @@ import random
 
 from agents import AgentManager
 import interfaces as itf
-from util import util
+from util import UtilManager as util_mngr
 from definitions import *
 from TupleDotOperations import *
 from util.Grid2D import Grid2D
 
-tile_counter = util.Counter()
+tile_counter = util_mngr.Counter()
 
 
 def rect(E, grid):
@@ -80,7 +80,7 @@ defaultTileTypes = [
     PlaneTile(PlaneTile.accessible, [("blue", PlaneTile.goal)])
 ]
 
-counter = util.Counter()
+counter = util_mngr.Counter()
 
 
 class GridEnvironment(itf.iEnvironment):
@@ -259,14 +259,14 @@ class GridEnvironment(itf.iEnvironment):
         if opaque is None:
             opaque = default_opaque
         (axis, sig) = int(direction[1] == 0), direction[0] + direction[1]
-        VO_inc = util.VisionOctant()
-        VO_dec = util.VisionOctant()
+        VO_inc = util_mngr.VisionOctant()
+        VO_dec = util_mngr.VisionOctant()
         distance = 0
         used_any = True
         RES = dict()
         while used_any:
             distance += 1
-            start = Tadd(position, util.reverseIf((distance * sig, 0), axis == 1))
+            start = Tadd(position, util_mngr.reverseIf((distance * sig, 0), axis == 1))
             scheck = self.get_tile(start)
             # print(start, scheck)
             if scheck is None:
@@ -489,7 +489,7 @@ class GridEnvironment(itf.iEnvironment):
     def GenerateSetGroups(self, size, learning_aspects: dict, requests: dict, ratio=None):
         if ratio is None:
             ratio = [60, 20, 20]
-        ratio = util.adjustRatio(size, ratio)
+        ratio = util_mngr.adjustRatio(size, ratio)
         X = []
         LA = [dict() for _ in ratio]
         for k, V in learning_aspects.items():
@@ -499,7 +499,7 @@ class GridEnvironment(itf.iEnvironment):
             for (v, count) in V:
                 L.append(v)
                 LV.append(count)
-            LV = util.adjustRatio(size, LV)
+            LV = util_mngr.adjustRatio(size, LV)
             curind = 0
             curleft = LV[0]
             for i, e in enumerate(ratio):
@@ -517,6 +517,7 @@ def readPlaneEnvironment(json_str, index, agentDict=None):
     raw = json_rawL[index]
     raw['agentDict'] = agentDict
     RES = GridEnvironment(
+        Grid2D((0,0)),
         data=raw
     )
     return RES
@@ -539,7 +540,7 @@ global_moves = [(0, 0)] + V2DIRS
 
 def main():
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
-    F = open("../tests/basic_tests.json", "r")
+    F = open("../test_json/basic_tests.json", "r")
     TESTS = F.read()
     F.close()
     TXR = TESTS
