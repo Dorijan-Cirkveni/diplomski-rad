@@ -14,7 +14,7 @@ def CreateFullMaze(dimensions, start: tuple, idealGoal: tuple, maze_seed, tiles=
     while nexQ:
         curE = nexQ.popleft()
         EN = [e for e in M.get_neighbours(curE)]
-        values = [M[E]==tiles[0] for E in EN]
+        values = [M[E] == tiles[0] for E in EN]
         usedCount = sum(values)
         if usedCount > 1 and not allowLoops:
             continue
@@ -26,36 +26,40 @@ def CreateFullMaze(dimensions, start: tuple, idealGoal: tuple, maze_seed, tiles=
             if values[i] == 1:
                 continue
             nexQ.append(E)
-    M[bestGoal[1]]=tiles[2]
+    M[bestGoal[1]] = tiles[2]
     return M
 
 
-def CreateDualMaze(dimensions, start, end, maze_seed, stepOdds=0.9, allowLoops=False, dualLinkCount=1):
-    M = [[0 for __ in range(dimensions[1])] for _ in range(dimensions[0])]
+def CreateDualMaze(dimensions, start, end, maze_seed, tiles=(0, 2, 1), stepOdds=0.9, allowLoops=False, dualLinkCount=1):
+    M = Grid2D(dimensions, defaultValue=-1)
     nexQ = deque()
     nexQ.append((start, 1))
     nexQ.append((end, 2))
     randomizer = random.Random(maze_seed)
     while nexQ:
-        curE = nexQ.popleft()
-        EN = [e for e in Tneighbours(curE) if Tinrange(e, dimensions)]
-        values = [TgetAsIndex(E, M) for E in EN]
-        usedCount = sum([e == 2 for e in values])
+        curE,side = nexQ.popleft()
+        EN = M.get_neighbours(curE)
+        values = [M[E] for E in EN]
+        usedCount = sum([e != 2 for e in values])
+        M[curE] = 0
+        if randomizer.random() > stepOdds:
+            continue
         if usedCount < 3 and not allowLoops:
-            if set(values) & {1, 2} == {1, 2}:
+            if 3-side in values:
                 if dualLinkCount > 0:
                     dualLinkCount -= 1
                 else:
                     continue
             continue
-        if randomizer.random() > stepOdds:
-            continue
-        TsetAsIndex(curE, M, 0)
+        M[curE] = side
         for i, E in enumerate(EN):
-            if values[i] == 0:
+            if values[i] >= 0:
                 continue
-            nexQ.append(E)
-    M = [[int(f == 0) for f in e] for e in M]
+            nexQ.append((E,side))
+    for E in M:
+        print(E)
+    M.apply(lambda x: tiles[x != 0])
+    M[end] = tiles[2]
     return M
 
 

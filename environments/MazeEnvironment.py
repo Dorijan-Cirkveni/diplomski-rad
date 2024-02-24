@@ -83,6 +83,28 @@ class DualMazeEnvironment(GridEnvironment):
 
         super().__init__(Grid2D(scale, grid_M), [entity], {0}, tileTypes, data)
 
+    @staticmethod
+    def getFromDict(raw: dict):
+        agentDict = raw.get("agentDict", None)
+        agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
+        (a_type, a_raw) = raw.get("agent", ["BOX", ""])
+        agent = agentDict[a_type](a_raw)
+        entity_data = raw.get("entity", {})
+        properties = entity_data.get("properties", dict())
+        properties['loc'] = tuple(properties.get('loc', [5, 5]))
+        displays = entity_data.get("displays", [0])
+        curdis = entity_data.get("curdis", 0)
+        entity = itf.Entity(agent, displays, curdis, properties)
+
+        res = DualMazeEnvironment(
+            tuple(raw.get("scale", [25, 25])),
+            tuple(raw.get("start", [12, 0])),
+            tuple(raw.get("goal", [12, 14])),
+            raw.get("seed", 0),
+            entity
+        )
+        return res
+
     def GenerateGroup(self, size, learning_aspects, requests: dict):
         return []
 

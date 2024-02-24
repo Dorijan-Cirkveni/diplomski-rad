@@ -333,7 +333,7 @@ def GT1(ind=0):
 
 def MazeTest():
     testGI = GridInteractive()
-    testGI.load_grid_from_file("test_json/basic_maze_tests.json", 0)
+    testGI.load_grid_from_file("test_json/basic_maze_tests.json", 1)
     grid: GridEnvironment = testGI.grid
     grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
 
