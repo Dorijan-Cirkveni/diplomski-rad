@@ -7,8 +7,7 @@ import environments.MazeEnvironment as maze_env
 import agents.AgentManager as agent_mngr
 
 envList = {
-    "mazeBasic": maze_env.BasicMazeEnvironment,
-    "mazeDual": maze_env.DualMazeEnvironment,
+    "mazeBasic": maze_env.MazeEnvironment,
 
     "grid": grid_env.GridEnvironment
 }

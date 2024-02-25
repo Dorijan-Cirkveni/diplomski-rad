@@ -36,21 +36,26 @@ def CreateDualMaze(dimensions, start, end, maze_seed, tiles=(0, 2, 1), stepOdds=
     nexQ.append((start, 1))
     nexQ.append((end, 2))
     randomizer = random.Random(maze_seed)
+    dual=[]
     while nexQ:
         curE,side = nexQ.popleft()
+        if M[curE] > 0:
+            continue
         EN = M.get_neighbours(curE)
         values = [M[E] for E in EN]
-        usedCount = sum([e != 2 for e in values])
+        usedCount = sum([e > 0 for e in values])
         M[curE] = 0
         if randomizer.random() > stepOdds:
             continue
-        if usedCount < 3 and not allowLoops:
+        if usedCount > 1 and not allowLoops:
             if 3-side in values:
                 if dualLinkCount > 0:
+                    dual.append(curE)
                     dualLinkCount -= 1
                 else:
                     continue
-            continue
+            else:
+                continue
         M[curE] = side
         for i, E in enumerate(EN):
             if values[i] >= 0:
@@ -58,13 +63,16 @@ def CreateDualMaze(dimensions, start, end, maze_seed, tiles=(0, 2, 1), stepOdds=
             nexQ.append((E,side))
     for E in M:
         print(E)
-    M.apply(lambda x: tiles[x != 0])
+    print(dualLinkCount,dual)
+    M.apply(lambda x: tiles[x == 0])
     M[end] = tiles[2]
+    for E in dual:
+        M[E]+=4
     return M
 
 
 def main():
-    res = CreateFullMaze((25, 25), (12, 1), 42)
+    res = CreateFullMaze((25, 25), (12, 1), (12, 24), 42)
     for E in res:
         print("".join([" "[e] for e in E]))
     return

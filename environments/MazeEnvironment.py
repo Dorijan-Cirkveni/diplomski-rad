@@ -22,22 +22,29 @@ def rect(E, grid):
     return
 
 
-class BasicMazeEnvironment(GridEnvironment):
+mazeCreators = {
+    "mono_source_BFS": mazes.CreateFullMaze,
+    "dual_source_BFS": mazes.CreateDualMaze
+}
+
+
+class MazeEnvironment(GridEnvironment):
 
     def __init__(self, scale: tuple, start: tuple, idealGoal: tuple, maze_seed=0, entity=None, tileTypes=None,
-                 data=None):
+                 extraData:dict=None):
         if entity is None:
             entity = itf.Entity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
         self.start = start
         self.idealGoal = idealGoal
         entity.set(entity.LOCATION, start)
-        grid = mazes.CreateFullMaze(scale, start, idealGoal, maze_seed=maze_seed, tiles=[0,2,1])
-        super().__init__(grid, [entity], {0}, tileTypes)
+        grid = mazes.CreateFullMaze(scale, start, idealGoal, maze_seed=maze_seed, tiles=[0, 2, 1])
+        super().__init__(grid, [entity], {0}, tileTypes,extraData=extraData)
 
     @staticmethod
     def getFromDict(raw: dict):
         agentDict = raw.get("agentDict", None)
         agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
+
         (a_type, a_raw) = raw.get("agent", ["BOX", ""])
         agent = agentDict[a_type](a_raw)
         entity_data = raw.get("entity", {})
@@ -47,7 +54,7 @@ class BasicMazeEnvironment(GridEnvironment):
         curdis = entity_data.get("curdis", 0)
         entity = itf.Entity(agent, displays, curdis, properties)
 
-        res = BasicMazeEnvironment(
+        res = MazeEnvironment(
             tuple(raw.get("scale", [25, 25])),
             tuple(raw.get("start", [12, 0])),
             tuple(raw.get("goal", [12, 14])),

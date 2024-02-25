@@ -1,6 +1,7 @@
 [
   {
     "envType": "mazeBasic",
+    "mazeInit": "mono_source_BFS",
     "name": "Maze Test 1",
     "scale": [25,25],
     "agent": ["RAA","42132143212132141241212"],
@@ -9,7 +10,8 @@
   }
 ,
   {
-    "envType": "mazeDual",
+    "envType": "mazeBasic",
+    "mazeInit": "dual_source_BFS",
     "name": "Maze Test 1",
     "scale": [25,25],
     "agent": ["RAA","42132143212132141241212"],

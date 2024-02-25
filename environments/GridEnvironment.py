@@ -103,12 +103,16 @@ class GridEnvironment(itf.iEnvironment):
                 print("Unable to initialise Entity {} ({}) without location!".format(ID, name))
                 continue
             self.taken[location] = ID
+        self.effects=extraData.get("effects",dict())
         return
 
     @staticmethod
-    def getFromDict(raw: dict):
+    def getAgentDict(raw):
         agentDict = raw.get("agentDict", None)
         agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
+        return agentDict
+    @staticmethod
+    def assembleGrid(raw):
         scale = tuple(raw.get("scale", [20, 20]))
         grid_M = [[0 for __ in range(scale[1])] for _ in range(scale[0])]
         if "grid" in raw:
@@ -121,9 +125,6 @@ class GridEnvironment(itf.iEnvironment):
                     if j == scale[1]:
                         break
                     E2[j] = F
-        agents = []
-        entities = []
-        active = set()
         shapes = raw.get("shapes", {})
         for type_V, V in shapes.items():
             if type_V == "rectangles":
@@ -131,6 +132,15 @@ class GridEnvironment(itf.iEnvironment):
                     if not e:
                         continue
                     rect(tuple(e), grid_M)
+        return Grid2D(scale,grid_M)
+
+    @staticmethod
+    def getFromDict(raw: dict):
+        agentDict=GridEnvironment.getAgentDict(raw)
+        grid=GridEnvironment.assembleGrid(raw)
+        agents = []
+        entities = []
+        active = set()
 
         for (a_type, a_raw) in raw.get("agent", []):
             agents.append(agentDict[a_type](a_raw))
@@ -148,10 +158,13 @@ class GridEnvironment(itf.iEnvironment):
 
         active.update(set(raw.get("activeEntities", [])))
 
+        extraData=raw.get("extra",{})
+
         res = GridEnvironment(
-            grid=Grid2D(scale, grid_M),
+            grid=grid,
             entities=entities,
-            activeEntities=active
+            activeEntities=active,
+            extraData=extraData
         )
         return res
 
@@ -377,7 +390,6 @@ class GridEnvironment(itf.iEnvironment):
             return self.grid, agents
         data = self.getEnvData(entityID)
         grid = [[-1 for _ in E] for E in self.grid]
-        agents = dict()
         for E in data:
             if type(E) != tuple or len(E) != 2:
                 continue
