@@ -106,7 +106,7 @@ class Entity:
 class iEnvironment:
     def __init__(self, entities, activeEntities, extraData=None):
         self.data = [extraData,{}][extraData is None]
-        self.effects = extraData.get("effects", dict())
+        self.effects = self.data.get("effects", dict())
         self.entities: list = [] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
         self.entityPriority = []

@@ -156,6 +156,10 @@ class GridDisplay:
         test.draw(screen, (650, 400), (1, 1))
         self.buttons["joystick"] = test
 
+        test = Button((100, 0, 0), "Viewpoint: {}".format(self.obsAgent), (5, 10 + 300, 190, 50))
+        test.draw(screen, (self.gridscreenV[0], 0))
+        self.buttons["viewpoint"] = test
+
         pygame.display.flip()
 
     def change_text(self, new_text):
@@ -261,7 +265,7 @@ class GridInteractive:
         self.grid = gridEnv.__copy__()
 
     def load_grid_from_raw(self, json_raw):
-        grid = env_mngr.readPlaneEnvironment("[{}]".format(json_raw), 0)
+        grid = env_mngr.readEnvironment("[{}]".format(json_raw), 0)
         self.grid: GridEnvironment = grid
         return True
 
