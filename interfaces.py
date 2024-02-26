@@ -104,8 +104,9 @@ class Entity:
 
 
 class iEnvironment:
-    def __init__(self, entities, activeEntities):
-        self.data = dict()
+    def __init__(self, entities, activeEntities, extraData=None):
+        self.data = [extraData,{}][extraData is None]
+        self.effects = extraData.get("effects", dict())
         self.entities: list = [] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
         self.entityPriority = []
@@ -137,11 +138,24 @@ class iEnvironment:
     def runChanges(self, moves):
         raise NotImplementedError
 
-    def runIteration(self):
+    def runIteration(self, curIter=0):
         D = dict()
         self.data['agent_current_action'] = D
         cur_prio = 0
         cur_D = dict()
+        for (effect,start,period) in self.effects:
+            k=(curIter-start)%period
+            if k==0:
+                (name,value)=effect
+                for entity in self.entities:
+                    entity:Entity
+                    entity.properties[name]=value
+            elif k==1:
+                (name,value)=effect
+                for entity in self.entities:
+                    entity:Entity
+                    if name in entity.properties:
+                        entity.properties.pop(name)
         for ent_prio, entityID in self.entityPriority:
             entity = self.entities[entityID]
             entity: Entity

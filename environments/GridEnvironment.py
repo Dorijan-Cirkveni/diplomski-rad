@@ -88,9 +88,9 @@ class GridEnvironment(itf.iEnvironment):
     dir_left = counter.use()
     dir_right = counter.use()
 
-    def __init__(self, grid:Grid2D, entities: list[itf.Entity] = None,
+    def __init__(self, grid: Grid2D, entities: list[itf.Entity] = None,
                  activeEntities: set = None, tileTypes: list[PlaneTile] = None, extraData: dict = None):
-        super().__init__(entities, activeEntities)
+        super().__init__(entities, activeEntities, extraData=extraData)
         self.grid: Grid2D = grid
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
         self.tileData = {"disFor": dict()}
@@ -103,7 +103,6 @@ class GridEnvironment(itf.iEnvironment):
                 print("Unable to initialise Entity {} ({}) without location!".format(ID, name))
                 continue
             self.taken[location] = ID
-        self.effects=extraData.get("effects",dict())
         return
 
     @staticmethod
@@ -111,6 +110,7 @@ class GridEnvironment(itf.iEnvironment):
         agentDict = raw.get("agentDict", None)
         agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
         return agentDict
+
     @staticmethod
     def assembleGrid(raw):
         scale = tuple(raw.get("scale", [20, 20]))
@@ -132,12 +132,12 @@ class GridEnvironment(itf.iEnvironment):
                     if not e:
                         continue
                     rect(tuple(e), grid_M)
-        return Grid2D(scale,grid_M)
+        return Grid2D(scale, grid_M)
 
     @staticmethod
     def getFromDict(raw: dict):
-        agentDict=GridEnvironment.getAgentDict(raw)
-        grid=GridEnvironment.assembleGrid(raw)
+        agentDict = GridEnvironment.getAgentDict(raw)
+        grid = GridEnvironment.assembleGrid(raw)
         agents = []
         entities = []
         active = set()
@@ -158,7 +158,7 @@ class GridEnvironment(itf.iEnvironment):
 
         active.update(set(raw.get("activeEntities", [])))
 
-        extraData=raw.get("extra",{})
+        extraData = raw.get("extra", {})
 
         res = GridEnvironment(
             grid=grid,
