@@ -43,9 +43,12 @@ def Tmanhat(T):
     return sum([abs(e) for e in T])
 
 
-def Tinrange(T, R, L=(0, 0)):
+def Tinrange(T, R, L=(0, 0), topInclusive=False):
     for i in range(len(T)):
-        if T[i] not in range(L[i], R[i]):
+        a, b = L[i], R[i]
+        if a > b:
+            a, b = b, a
+        if T[i] not in range(a, b) or topInclusive and T[i] == b:
             return False
     return True
 

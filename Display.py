@@ -37,7 +37,7 @@ class iButton:
         self.text = text
         self.original_dimensions = original_dimensions
         self.rect = None
-        self.dimensions=self.original_dimensions
+        self.dimensions = self.original_dimensions
 
     def getResized(self, location, sizeChange):
         L = list(self.original_dimensions)
@@ -47,7 +47,7 @@ class iButton:
         L[3] *= sizeChange[1]
         return tuple(L)
 
-    def place(self, location, sizeChange=(1,1)):
+    def place(self, location, sizeChange=(1, 1)):
         self.dimensions = self.getResized(location, sizeChange)
 
     def draw(self, screen):
@@ -66,6 +66,7 @@ class Button(iButton):
         super().__init__(color, text, original_dimensions)
 
     def draw(self, screen):
+        self.rect = pygame.draw.rect(screen, self.color, self.dimensions)
         font = pygame.font.Font(None, 36)
         text = font.render(self.text, True, (255, 255, 255))
         text_rect = text.get_rect(center=self.rect.center)
@@ -73,7 +74,7 @@ class Button(iButton):
 
     def is_clicked(self, event):
         if self.rect is None:
-            return False, None
+            return False
         return self.rect.collidepoint(event.pos)
 
     def run(self, event):
@@ -88,10 +89,11 @@ class Joystick(iButton):
         for i, E in enumerate([(0, 0), (1, 0), (0, 1), (-1, 0), (0, -1)]):
             self.buttons[E] = Button(buttonColor, S[i], (35 + 35 * E[1], 35 + 35 * E[0], 30, 30), lambda: E)
 
-    def place(self, location, sizeChange=(1,1)):
+    def place(self, location, sizeChange=(1, 1)):
         for direction, button in self.buttons.items():
             button: Button
             button.place(location, sizeChange)
+        super().place(location, sizeChange)
 
     def draw(self, screen):
         self.rect = pygame.draw.rect(screen, self.color, self.dimensions)
@@ -107,8 +109,8 @@ class Joystick(iButton):
     def run(self, event):
         for direction, button in self.buttons.items():
             if button.is_clicked(event):
-                return button.run(event),1
-        return (0,0),0
+                return direction, 1
+        return (0, 0), 0
 
 
 class GridDisplay:
@@ -128,10 +130,13 @@ class GridDisplay:
 
         self.name = name
         self.screen = None
-        self.buttons = dict()
+        self.buttons = {}
         self.obsAgent = obsAgent
         self.iteration = 0
         self.bottom_text = ">"
+        self.term_screen = Button((100,100,255),"NULL",(0,0)+self.gridscreenV,lambda x:None)
+        self.term_screen.place((0,0))
+        self.place_buttons()
         return
 
     def change_obs_agent(self):
@@ -142,9 +147,9 @@ class GridDisplay:
         for curAgent in range(self.obsAgent, len(self.grid.entities)):
             if self.grid.entities[self.obsAgent] is not None:
                 self.obsAgent = curAgent
-                return
+                return (0,0), 0
         self.obsAgent = None
-        return (0,0),0
+        return (0, 0), 0
 
     def show_display(self):
         pygame.init()
@@ -154,32 +159,39 @@ class GridDisplay:
 
     def place_buttons(self):
 
-    def draw_buttons(self):
-        screen = self.screen
+        for num, e in enumerate(["Run iteration", "Run 10 iterations", "Run 100 iterations",
+                                 "Run all iterations", "Exit"]):
+            test = Button((100, 0, 0), e, (5, 10 + 60 * num, 190, 50), lambda: e)
+            test.place((self.gridscreenV[0], 0))
+            self.buttons["button" + e] = test
 
-        pygame.draw.rect(screen, (100, 0, 100),
-                         (self.gridscreenV[0], 0, self.screenV[0] - self.gridscreenV[0], self.screenV[1]))
-        pygame.draw.rect(screen, (0, 0, 100),
-                         (0, self.gridscreenV[1], self.screenV[0], self.screenV[1] - self.gridscreenV[1]))
+        test = Joystick((100, 0, 0), (200, 0, 0), "text???")
+        test.place((650, 400), (1, 1))
+        self.buttons["joystick"] = test
+
+        test = Button((100, 0, 0), "Viewpoint: {}".format(self.obsAgent), (5, 10 + 300, 190, 50), self.change_obs_agent)
+        test.place((self.gridscreenV[0], 0))
+        self.buttons["viewpoint"] = test
+        return
+
+    def draw_buttons(self):
+        '''
+
+        :return:
+        '''
+        firstPlace = (self.gridscreenV[0], 0, self.screenV[0] - self.gridscreenV[0], self.screenV[1])
+        pygame.draw.rect(self.screen, (100, 100, 100), firstPlace)
+        secondPlace = (0, self.gridscreenV[1], self.screenV[0], self.screenV[1] - self.gridscreenV[1])
+        pygame.draw.rect(self.screen, (0, 0, 100), secondPlace)
+        screen = self.screen
         font = pygame.font.Font(None, 36)  # You can customize the font and size
         text = font.render(self.bottom_text, True, (255, 255, 255))  # Change the text and color
         text_rect = text.get_rect(center=(self.screenV[0] // 2, (self.screenV[1] + self.gridscreenV[1]) // 2))
         screen.blit(text, text_rect)
 
-        for num, e in enumerate(["Run iteration", "Run 10 iterations", "Run 100 iterations",
-                                 "Run all iterations", "Exit"]):
-            test = Button((100, 0, 0), e, (5, 10 + 60 * num, 190, 50), lambda: e)
-            test.draw(screen, (self.gridscreenV[0], 0))
-            self.buttons["button" + e] = test
-
-        test = Joystick((100, 0, 0), (200, 0, 0), "text???")
-        test.draw(screen, (650, 400), (1, 1))
-        self.buttons["joystick"] = test
-
-        test = Button((100, 0, 0), "Viewpoint: {}".format(self.obsAgent), (5, 10 + 300, 190, 50),
-                      lambda: "View change!")
-        test.draw(screen, (self.gridscreenV[0], 0))
-        self.buttons["viewpoint"] = test
+        for name, part in self.buttons.items():
+            part: iButton
+            part.draw(screen)
 
         pygame.display.flip()
 
@@ -216,19 +228,22 @@ class GridDisplay:
 
         pygame.display.flip()
 
-    def draw_frame(self, delay=10):
+    def draw_frame(self, delay=0):
+        self.draw_buttons()
         grid, agents = self.grid.getDisplayData(self.obsAgent)
-        for row_coordinate, row_content in enumerate(grid):
-            row_tiles = [e for e in row_content if isinstance(e, int)]
-            row_agents = {}
-            for col_coordinate in range(self.grid.getScale()[1]):
-                if (row_coordinate, col_coordinate) not in agents:
-                    continue
-                row_agents[col_coordinate] = agents[(row_coordinate, col_coordinate)]
-            self.draw_row(row_coordinate, row_tiles, row_agents)
-            pygame.time.wait(delay)
-
-        self.draw_buttons()  # Draw buttons after the grid
+        if grid is None:
+            self.term_screen.text=agents
+            self.term_screen.draw(self.screen)
+        else:
+            for row_coordinate, row_content in enumerate(grid):
+                row_tiles = [e for e in row_content if isinstance(e, int)]
+                row_agents = {}
+                for col_coordinate in range(self.grid.getScale()[1]):
+                    if (row_coordinate, col_coordinate) not in agents:
+                        continue
+                    row_agents[col_coordinate] = agents[(row_coordinate, col_coordinate)]
+                self.draw_row(row_coordinate, row_tiles, row_agents)
+                pygame.time.wait(delay)
         pygame.display.flip()
 
     def hide_grid(self):
@@ -240,40 +255,42 @@ class GridDisplay:
             if entity is None:
                 continue
             agent: itf.iAgent = entity.agent
-            if type(agent) == GraphicManualInputAgent:
-                print("Test successful!")
             if type(agent) != GraphicManualInputAgent:
                 continue
             agent: GraphicManualInputAgent
             agent.cur = action
 
     def run(self):
+        self.place_buttons()
         running = True
-        runIter = False
         status = None  # win=True, loss=False, ongoing=None
         self.show_iter()
         while running:
             runIter = 0
+            updateImage = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
+                    updateImage = True
                     for name, element in self.buttons.items():
                         element: iButton
                         isClicked = element.is_clicked(event)
                         if isClicked:
-                            result,runIter = element.run(event)
+                            ret=element.run(event)
+                            result, runIter = ret
                             if result is not None:
                                 self.change_grid(action=result)
                             break
             if runIter != 0:
-                self.grid.runIteration()
+                for i in range(runIter):
+                    self.grid.runIteration()
                 self.iteration += runIter
                 if self.grid.isWin():
                     status = True
                 self.show_iter(status)
+            if updateImage:
                 self.draw_frame()
-            if status is None:
                 self.draw_buttons()
 
         pygame.quit()
@@ -310,8 +327,9 @@ class GridInteractive:
             print("Load a grid first!")
         self.grid: GridEnvironment
         self.display = GridDisplay(self.grid, elementTypes, agentTypes, None)
+        self.display.place_buttons()
         self.display.show_display()
-        self.display.draw_frame()
+        self.display.draw_frame(0)
 
     def run(self):
         self.display: GridDisplay
@@ -368,8 +386,16 @@ def MazeTest():
     testGI.run()
 
 
+def commandRun():
+    categories = {"base": GridTest, "maze": MazeTest}
+    while True:
+        command = input(">>>").split()
+        if command[0] == "exit":
+            return
+
+
 def main():
-    MazeTest()
+    GT1(0)
 
 
 if __name__ == "__main__":

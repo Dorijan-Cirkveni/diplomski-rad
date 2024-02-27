@@ -102,6 +102,8 @@ class Grid2D:
     def makeList(self, func: callable):
         return self.makeNew(func)
 
+    def hasTileOfIndex(self,E:tuple):
+        return Tinrange(E,self.scale)
 
 def main():
     return

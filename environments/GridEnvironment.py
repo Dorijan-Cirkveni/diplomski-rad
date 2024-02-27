@@ -388,6 +388,8 @@ class GridEnvironment(itf.iEnvironment):
             for E in self.taken.keys():
                 self.getAgentDisplay(agents, E)
             return self.grid, agents
+        if self.entities[entityID] is None:
+            return None, "Entity terminated."
         data = self.getEnvData(entityID)
         grid = [[-1 for _ in E] for E in self.grid]
         for E in data:
@@ -425,6 +427,8 @@ class GridEnvironment(itf.iEnvironment):
         ent: itf.Entity = self.entities[entID]
         if ent is None:
             return True
+        if not self.grid.hasTileOfIndex(destination):
+            return False
         if self.is_tile_lethal(destination, ent.properties):
             terminatedEntities.add(entID)
         if not self.is_tile_movable(destination, ent.properties):
@@ -484,7 +488,6 @@ class GridEnvironment(itf.iEnvironment):
 
     def isWin(self):
         X = {self.getPositionValue(E, ID) for E, ID in self.taken.items() if ID in self.activeEntities}
-        print(X)
         return 0 in X
 
     def changeActiveEntityAgents(self, newAgents: list[itf.iAgent]):
