@@ -37,6 +37,7 @@ class iButton:
         self.text = text
         self.original_dimensions = original_dimensions
         self.rect = None
+        self.dimensions=self.original_dimensions
 
     def getResized(self, location, sizeChange):
         L = list(self.original_dimensions)
@@ -46,20 +47,25 @@ class iButton:
         L[3] *= sizeChange[1]
         return tuple(L)
 
-    def draw(self, screen, location, sizeChange=(1, 1)):
+    def place(self, location, sizeChange=(1,1)):
+        self.dimensions = self.getResized(location, sizeChange)
+
+    def draw(self, screen):
         raise NotImplementedError
 
     def is_clicked(self, event):
         raise NotImplementedError
 
+    def run(self, event):
+        raise NotImplementedError
+
 
 class Button(iButton):
-    def __init__(self, color, text, original_dimensions):
+    def __init__(self, color, text, original_dimensions, runLambda):
+        self.runLambda = runLambda
         super().__init__(color, text, original_dimensions)
 
-    def draw(self, screen, location, sizeChange=(1, 1)):
-        dimensions = self.getResized(location, sizeChange)
-        self.rect = pygame.draw.rect(screen, self.color, dimensions)
+    def draw(self, screen):
         font = pygame.font.Font(None, 36)
         text = font.render(self.text, True, (255, 255, 255))
         text_rect = text.get_rect(center=self.rect.center)
@@ -68,43 +74,41 @@ class Button(iButton):
     def is_clicked(self, event):
         if self.rect is None:
             return False, None
-        return self.rect.collidepoint(event.pos), None
+        return self.rect.collidepoint(event.pos)
+
+    def run(self, event):
+        return self.runLambda()
 
 
 class Joystick(iButton):
     def __init__(self, color, buttonColor, text, original_dimensions=(0, 0, 100, 100)):
         super().__init__(color, text, original_dimensions)
-        self.buttons = {
-            (0, 0): Button(buttonColor, "X", (35, 35, 30, 30)),
-            (1, 0): Button(buttonColor, "S", (35, 70, 30, 30)),
-            (0, 1): Button(buttonColor, "D", (70, 35, 30, 30)),
-            (-1, 0): Button(buttonColor, "W", (35, 0, 30, 30)),
-            (0, -1): Button(buttonColor, "A", (0, 35, 30, 30))
-        }
+        S = "XSDWA"
+        self.buttons = {}
+        for i, E in enumerate([(0, 0), (1, 0), (0, 1), (-1, 0), (0, -1)]):
+            self.buttons[E] = Button(buttonColor, S[i], (35 + 35 * E[1], 35 + 35 * E[0], 30, 30), lambda: E)
 
-    def getResized(self, location, sizeChange):
-        L = list(self.original_dimensions)
-        L[0] += location[0]
-        L[1] += location[1]
-        L[2] *= sizeChange[0]
-        L[3] *= sizeChange[1]
-        return tuple(L)
-
-    def draw(self, screen, location, sizeChange=(1, 1)):
-        dimensions = self.getResized(location, sizeChange)
-        self.rect = pygame.draw.rect(screen, self.color, dimensions)
+    def place(self, location, sizeChange=(1,1)):
         for direction, button in self.buttons.items():
             button: Button
-            button.draw(screen, location, sizeChange)
+            button.place(location, sizeChange)
+
+    def draw(self, screen):
+        self.rect = pygame.draw.rect(screen, self.color, self.dimensions)
+        for direction, button in self.buttons.items():
+            button: Button
+            button.draw(screen)
 
     def is_clicked(self, event):
         if self.rect is None:
-            return False, None
+            return False
+        return self.rect.collidepoint(event.pos)
+
+    def run(self, event):
         for direction, button in self.buttons.items():
-            (isClicked, _) = button.is_clicked(event)
-            if isClicked:
-                return True, direction
-        return False, None
+            if button.is_clicked(event):
+                return button.run(event),1
+        return (0,0),0
 
 
 class GridDisplay:
@@ -116,10 +120,12 @@ class GridDisplay:
         gridV = self.grid.getScale()
         self.elementTypes: list[GridElementDisplay] = elementTypes
         self.agentTypes: list[GridElementDisplay] = agentTypes
+
         self.screenV = screenV
         self.gridscreenV = gridscreenV
         tileV1 = min(tdo.Tfdiv(gridscreenV, gridV))
         self.tileV = (tileV1, tileV1)
+
         self.name = name
         self.screen = None
         self.buttons = dict()
@@ -128,11 +134,25 @@ class GridDisplay:
         self.bottom_text = ">"
         return
 
+    def change_obs_agent(self):
+        if self.obsAgent is None:
+            self.obsAgent = 0
+        else:
+            self.obsAgent += 1
+        for curAgent in range(self.obsAgent, len(self.grid.entities)):
+            if self.grid.entities[self.obsAgent] is not None:
+                self.obsAgent = curAgent
+                return
+        self.obsAgent = None
+        return (0,0),0
+
     def show_display(self):
         pygame.init()
         self.screen = pygame.display.set_mode(self.screenV)
         pygame.display.set_caption(self.name)
         self.draw_buttons()
+
+    def place_buttons(self):
 
     def draw_buttons(self):
         screen = self.screen
@@ -148,7 +168,7 @@ class GridDisplay:
 
         for num, e in enumerate(["Run iteration", "Run 10 iterations", "Run 100 iterations",
                                  "Run all iterations", "Exit"]):
-            test = Button((100, 0, 0), e, (5, 10 + 60 * num, 190, 50))
+            test = Button((100, 0, 0), e, (5, 10 + 60 * num, 190, 50), lambda: e)
             test.draw(screen, (self.gridscreenV[0], 0))
             self.buttons["button" + e] = test
 
@@ -156,7 +176,8 @@ class GridDisplay:
         test.draw(screen, (650, 400), (1, 1))
         self.buttons["joystick"] = test
 
-        test = Button((100, 0, 0), "Viewpoint: {}".format(self.obsAgent), (5, 10 + 300, 190, 50))
+        test = Button((100, 0, 0), "Viewpoint: {}".format(self.obsAgent), (5, 10 + 300, 190, 50),
+                      lambda: "View change!")
         test.draw(screen, (self.gridscreenV[0], 0))
         self.buttons["viewpoint"] = test
 
@@ -232,24 +253,26 @@ class GridDisplay:
         status = None  # win=True, loss=False, ongoing=None
         self.show_iter()
         while running:
+            runIter = 0
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     for name, element in self.buttons.items():
                         element: iButton
-                        isClicked, result = element.is_clicked(event)
+                        isClicked = element.is_clicked(event)
                         if isClicked:
-                            runIter = True
-                            self.change_grid(action=result)
-            if runIter:
+                            result,runIter = element.run(event)
+                            if result is not None:
+                                self.change_grid(action=result)
+                            break
+            if runIter != 0:
                 self.grid.runIteration()
-                self.iteration += 1
+                self.iteration += runIter
                 if self.grid.isWin():
                     status = True
                 self.show_iter(status)
                 self.draw_frame()
-                runIter = False
             if status is None:
                 self.draw_buttons()
 
