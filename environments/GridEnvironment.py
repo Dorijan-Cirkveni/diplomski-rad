@@ -343,11 +343,13 @@ class GridEnvironment(itf.iEnvironment):
         if entity is None:
             return None
         location = entity.get(entity.LOCATION, None)
+        if entity.isInState(entity.S_blind):
+            return None
         if entity.get(entity.S_allseeing, False):
             for i in range(self.grid.scale[0]):
                 for j in range(self.grid.scale[1]):
                     data[(i, j)] = self.get_tile(i, j)
-        elif entity.isInState(entity.S_blind):
+        else:
             viewdirs = entity.get(entity.P_viewdirections, 15)
             for i, direction in enumerate(V2DIRS):
                 if viewdirs & (1 << i) == 0:
