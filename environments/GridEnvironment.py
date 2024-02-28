@@ -149,7 +149,7 @@ class GridEnvironment(itf.iEnvironment):
             ID = entity_data.get("id", None)
             if ID is None:
                 raise Exception("Entity agent ID must be specified!")
-            entity = itf.Entity.getFromDict(entity_data,agents[int(ID)])
+            entity = itf.Entity.getFromDict(entity_data, agents[int(ID)])
             entities.append(entity)
 
         active.update(set(raw.get("activeEntities", [])))
@@ -286,7 +286,7 @@ class GridEnvironment(itf.iEnvironment):
             if VO_inc.lines:
                 used_any = True
                 L = [(start, scheck)]
-                for i in range(1, distance+1):
+                for i in range(1, distance + 1):
                     diff = (
                         i * axis,
                         i * (1 - axis)
@@ -305,7 +305,7 @@ class GridEnvironment(itf.iEnvironment):
                 used_any = True
                 L = [(start, scheck)]
                 temp = None
-                for i in range(1, distance+1):
+                for i in range(1, distance + 1):
                     diff = (
                         i * axis,
                         i * (1 - axis)
@@ -347,10 +347,10 @@ class GridEnvironment(itf.iEnvironment):
             for i in range(self.grid.scale[0]):
                 for j in range(self.grid.scale[1]):
                     data[(i, j)] = self.get_tile(i, j)
-        else:
-            viewdirs=entity.get(entity.P_viewdirections,15)
+        elif entity.isInState(entity.S_blind):
+            viewdirs = entity.get(entity.P_viewdirections, 15)
             for i, direction in enumerate(V2DIRS):
-                if viewdirs&(1<<i)==0:
+                if viewdirs & (1 << i) == 0:
                     continue
                 D = self.view_direction(location, direction)
                 data.update(D)
@@ -385,8 +385,12 @@ class GridEnvironment(itf.iEnvironment):
             for E in self.taken.keys():
                 self.getAgentDisplay(agents, E)
             return self.grid, agents
+        entityID: int
         if self.entities[entityID] is None:
-            return None, "Entity terminated."
+            return None, "Entity terminated"
+        entity: itf.Entity = self.entities[entityID]
+        if entity.isInState(entity.S_blind):
+            return None, "Entity blinded"
         data = self.getEnvData(entityID)
         grid = [[-1 for _ in E] for E in self.grid]
         for E in data:

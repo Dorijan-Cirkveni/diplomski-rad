@@ -134,8 +134,8 @@ class GridDisplay:
         self.obsAgent = obsAgent
         self.iteration = 0
         self.bottom_text = ">"
-        self.term_screen = Button((100,100,255),"NULL",(0,0)+self.gridscreenV,lambda x:None)
-        self.term_screen.place((0,0))
+        self.term_screen = Button((100, 100, 255), "NULL", (0, 0) + self.gridscreenV, lambda x: None)
+        self.term_screen.place((0, 0))
         self.place_buttons()
         return
 
@@ -147,7 +147,7 @@ class GridDisplay:
         for curAgent in range(self.obsAgent, len(self.grid.entities)):
             if self.grid.entities[self.obsAgent] is not None:
                 self.obsAgent = curAgent
-                return (0,0), 0
+                return (0, 0), 0
         self.obsAgent = None
         return (0, 0), 0
 
@@ -201,7 +201,7 @@ class GridDisplay:
     def show_iter(self, winStatus=None):
         value = self.grid.evaluateActiveEntities()
         s = "Current step:{}\nValue:{}".format(self.iteration, value)
-        if winStatus == True:
+        if winStatus:
             s = "Win on step {}".format(self.iteration)
         self.change_text(s)
 
@@ -232,7 +232,7 @@ class GridDisplay:
         self.draw_buttons()
         grid, agents = self.grid.getDisplayData(self.obsAgent)
         if grid is None:
-            self.term_screen.text=agents
+            self.term_screen.text = agents
             self.term_screen.draw(self.screen)
         else:
             for row_coordinate, row_content in enumerate(grid):
@@ -249,7 +249,7 @@ class GridDisplay:
     def hide_grid(self):
         pass
 
-    def change_grid(self, action):
+    def apply_manual_action_to_agents(self, action):
         for entity in self.grid.entities:
             entity: itf.Entity
             if entity is None:
@@ -265,6 +265,7 @@ class GridDisplay:
         running = True
         status = None  # win=True, loss=False, ongoing=None
         self.show_iter()
+        self.iteration = 0
         while running:
             runIter = 0
             updateImage = False
@@ -277,14 +278,15 @@ class GridDisplay:
                         element: iButton
                         isClicked = element.is_clicked(event)
                         if isClicked:
-                            ret=element.run(event)
+                            ret = element.run(event)
                             result, runIter = ret
                             if result is not None:
-                                self.change_grid(action=result)
+                                self.apply_manual_action_to_agents(action=result)
                             break
             if runIter != 0:
                 for i in range(runIter):
-                    self.grid.runIteration()
+                    self.iteration += 1
+                    self.grid.runIteration(self.iteration)
                 self.iteration += runIter
                 if self.grid.isWin():
                     status = True

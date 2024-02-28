@@ -45,7 +45,7 @@ class Entity:
         properties['loc'] = tuple(properties.get('loc', [5, 5]))
         displays = entity_data.get("displays", [0])
         curdis = entity_data.get("curdis", 0)
-        states = entity_data.get("states",set())
+        states = set(entity_data.get("states",[]))
         entity = Entity(agent, displays, curdis, states, properties)
         return entity
 
@@ -101,6 +101,9 @@ class Entity:
     def getPriority(self):
         return self.properties.get("priority", 0)
 
+    def isInState(self,state):
+        return state in self.states
+
     def get(self, key, default):
         return self.properties.get(key, default)
 
@@ -152,7 +155,10 @@ class iEnvironment:
 
     def applyEffects(self, curIter=0):
         for (effect, start, period) in self.effects:
-            k = (curIter - start) % period
+            if period == 0:
+                k = 0 if curIter==start else -1
+            else:
+                k = (curIter - start) % period
             if k == 0:
                 (name, value) = effect
                 for entity in self.entities:
