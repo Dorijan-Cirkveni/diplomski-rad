@@ -201,7 +201,7 @@ class iEnvironment:
                 cur_prio = ent_prio
             envData = self.getEnvData(entityID)
             if envData is None:
-                raise Exception("HEY!")
+                envData={}
             entity.receiveEnvironmentData(envData)
             move = self.getMoves(entityID)
             chosenAction = entity.performAction(move)

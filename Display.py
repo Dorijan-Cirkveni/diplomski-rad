@@ -196,6 +196,9 @@ class GridDisplay:
             part: iButton
             part.draw(screen)
 
+        viewpoint:iButton=self.buttons["viewpoint"]
+        viewpoint.text="Viewpoint: {}".format(self.obsAgent)
+
         pygame.display.flip()
 
     def change_text(self, new_text):

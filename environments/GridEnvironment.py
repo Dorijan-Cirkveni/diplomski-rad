@@ -332,14 +332,14 @@ class GridEnvironment(itf.iEnvironment):
             res.append(s)
         return "\n".join(res)
 
-    def getEnvData(self, entityID=None):  # TODO check impl
+    def getEnvData(self, entityID=None):
         data = dict()
         self.entities: list
         if entityID not in range(len(self.entities)):
-            return None
+            raise None
         entity: itf.Entity = self.entities[entityID]
         if entity is None:
-            return None
+            return None # Intended error
         location = entity.get(entity.LOCATION, None)
         if entity.isInState(entity.S_blind):
             return None
