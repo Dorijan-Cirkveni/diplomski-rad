@@ -153,23 +153,37 @@ class iEnvironment:
     def runChanges(self, moves):
         raise NotImplementedError
 
+    def applyEffect(self,effect,remove=False):
+        isState=type(effect)==str
+        for entity in self.entities:
+            if entity is None:
+                continue
+            entity:Entity
+            if isState:
+                if remove:
+                    entity.states.remove(effect)
+                else:
+                    entity.states.add(effect)
+            else:
+                if remove:
+                    entity.states.pop(effect[0])
+                else:
+                    entity.properties[effect[0]]=effect[1]
+
     def applyEffects(self, curIter=0):
-        for (effect, start, period) in self.effects:
-            if period == 0:
+        for (effect, start, uptime, downtime) in self.effects:
+            if curIter<start:
+                print(curIter,"<",start)
+                continue
+            if downtime == 0:
                 k = 0 if curIter==start else -1
             else:
-                k = (curIter - start) % period
+                k = (curIter - start) % (uptime+downtime)
+            print((effect,start,uptime,downtime),curIter,k)
             if k == 0:
-                (name, value) = effect
-                for entity in self.entities:
-                    entity: Entity
-                    entity.properties[name] = value
-            elif k == 1:
-                (name, value) = effect
-                for entity in self.entities:
-                    entity: Entity
-                    if name in entity.properties:
-                        entity.properties.pop(name)
+                self.applyEffect(effect,False)
+            elif k == uptime:
+                self.applyEffect(effect,True)
 
     def runIteration(self, curIter=0):
         D = dict()
@@ -195,6 +209,7 @@ class iEnvironment:
         D.update(cur_D)
         self.data['agent_last_action'] = D
         self.runChanges(D)
+        self.applyEffects(curIter)
 
     def evaluateActiveEntities(self, evalMethod: callable):
         raise NotImplementedError

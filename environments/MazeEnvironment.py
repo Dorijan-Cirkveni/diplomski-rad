@@ -42,24 +42,23 @@ class MazeEnvironment(GridEnvironment):
 
     @staticmethod
     def getFromDict(raw: dict):
-        agentDict = raw.get("agentDict", None)
+        agentDict = raw.pop("agentDict", None)
         agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
 
-        (a_type, a_raw) = raw.get("agent", ["BOX", ""])
+        (a_type, a_raw) = raw.pop("agent", ["BOX", ""])
         agent = agentDict[a_type](a_raw)
-        entity_data = raw.get("entity", {})
-        properties = entity_data.get("properties", dict())
-        properties['loc'] = tuple(properties.get('loc', [5, 5]))
-        displays = entity_data.get("displays", [0])
-        curdis = entity_data.get("curdis", 0)
-        entity = itf.Entity(agent, displays, curdis, properties)
+        if "entity" not in raw:
+            raise Exception("Must have entity!")
+        entity_data = raw.pop("entity")
+        entity=itf.Entity.getFromDict(entity_data,agent)
 
         res = MazeEnvironment(
-            tuple(raw.get("scale", [25, 25])),
-            tuple(raw.get("start", [12, 0])),
-            tuple(raw.get("goal", [12, 14])),
-            raw.get("seed", 0),
-            entity
+            tuple(raw.pop("scale", [25, 25])),
+            tuple(raw.pop("start", [12, 0])),
+            tuple(raw.pop("goal", [12, 14])),
+            raw.pop("seed", 0),
+            entity,
+            extraData=raw
         )
         return res
 

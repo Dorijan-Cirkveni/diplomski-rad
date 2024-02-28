@@ -102,6 +102,9 @@ class Joystick(iButton):
             button.draw(screen)
 
     def is_clicked(self, event):
+        for direction, button in self.buttons.items():
+            if button.is_clicked(event):
+                return True
         if self.rect is None:
             return False
         return self.rect.collidepoint(event.pos)
@@ -266,6 +269,8 @@ class GridDisplay:
         status = None  # win=True, loss=False, ongoing=None
         self.show_iter()
         self.iteration = 0
+        self.draw_frame()
+        self.draw_buttons()
         while running:
             runIter = 0
             updateImage = False
@@ -287,7 +292,6 @@ class GridDisplay:
                 for i in range(runIter):
                     self.iteration += 1
                     self.grid.runIteration(self.iteration)
-                self.iteration += runIter
                 if self.grid.isWin():
                     status = True
                 self.show_iter(status)
@@ -318,8 +322,7 @@ class GridInteractive:
                 grid = env_mngr.readEnvironment(json_raw, index)
                 self.grid: GridEnvironment = grid
                 return True
-        print("Error: File '{}' not found.".format(filename))
-        return False
+        raise Exception("Error: File '{}' not found.".format(filename))
 
     def init_display(self,
                      elementTypes: list[GridElementDisplay],

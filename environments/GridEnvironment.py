@@ -142,25 +142,23 @@ class GridEnvironment(itf.iEnvironment):
         entities = []
         active = set()
 
-        for (a_type, a_raw) in raw.get("agent", []):
+        for (a_type, a_raw) in raw.pop("agent", []):
             agents.append(agentDict[a_type](a_raw))
 
-        for entity_data in raw.get("entities", []):
+        for entity_data in raw.pop("entities", []):
             ID = entity_data.get("id", None)
             if ID is None:
                 raise Exception("Entity agent ID must be specified!")
             entity = itf.Entity.getFromDict(entity_data, agents[int(ID)])
             entities.append(entity)
 
-        active.update(set(raw.get("activeEntities", [])))
-
-        extraData = raw.get("extra", {})
+        active.update(set(raw.pop("activeEntities", [])))
 
         res = GridEnvironment(
             grid=grid,
             entities=entities,
             activeEntities=active,
-            extraData=extraData
+            extraData=raw
         )
         return res
 

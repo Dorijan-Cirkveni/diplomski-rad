@@ -1,12 +1,11 @@
 [
   {
     "envType": "mazeBasic",
-    "mazeInit": "mono_source_BFS",
-    "name": "Maze Test (Basic Generation Method)",
+    "mazeInit": "dual_source_BFS",
+    "name": "1. Pathfinding Test",
     "scale": [25,25],
     "agent": ["RAA","42132143212132141241212"],
     "entity": {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [2, 5], "viewdir": 10}},
-    "effects": [["blind",5,1,1]],
     "null":0
   }
 ,
@@ -14,16 +13,6 @@
     "envType": "mazeBasic",
     "mazeInit": "dual_source_BFS",
     "name": "Maze Test (Dual Generation Method)",
-    "scale": [25,25],
-    "agent": ["RAA","42132143212132141241212"],
-    "entity": {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [2, 5], "viewdir": 10}},
-    "null":0
-  }
-,
-  {
-    "envType": "mazeBasic",
-    "mazeInit": "dual_source_BFS",
-    "name": "Maze Test (Dual Generation Method, periodic blindness)",
     "scale": [25,25],
     "agent": ["RAA","42132143212132141241212"],
     "entity": {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [2, 5], "viewdir": 10}},
