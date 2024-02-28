@@ -19,11 +19,8 @@ class Entity:
     S_allseeing = "allsee"
     S_frozen = "frozen"
     S_mirror = "mirror"
-    S_view_up = "viewup"
-    S_view_down = "viewdn"
-    S_view_right = "viewri"
-    S_view_left = "viewle"
-    view_directions = [S_view_down, S_view_up, S_view_left, S_view_right]
+    # down=0, up=1, left=2, right=3
+    P_viewdirections = "viewdir"
     S_view_self = "viewse"
     S_relativepos = "relpos"
     VISIONDATA = "vision"
@@ -31,11 +28,26 @@ class Entity:
     LOCATION = "loc"
     FALSE_INPUT = "falin"
 
-    def __init__(self, agent: iAgent, displays: list, curdis: int, properties: dict = None):
+    def __init__(self, agent: iAgent, displays: list, curdis: int,
+                 states: set = None, properties: dict = None):
         self.displays = displays
         self.curdis = curdis
+        self.states = set() if states is None else states
         self.properties = dict() if properties is None else properties
         self.agent = agent
+
+    @staticmethod
+    def getFromDict(entity_data, agent: iAgent):
+        ID = entity_data.get("id", None)
+        if ID is None:
+            raise Exception("Entity agent ID must be specified!")
+        properties = entity_data.get("properties", dict())
+        properties['loc'] = tuple(properties.get('loc', [5, 5]))
+        displays = entity_data.get("displays", [0])
+        curdis = entity_data.get("curdis", 0)
+        states = entity_data.get("states",set())
+        entity = Entity(agent, displays, curdis, states, properties)
+        return entity
 
     def __repr__(self):
         entity_dict = {
@@ -48,15 +60,15 @@ class Entity:
 
     def __copy__(self):
         newAgent = self.agent.__copy__()
+        newStates = self.states.copy()
         newProps = self.properties.copy()
-        return Entity(newAgent, self.displays, self.curdis, newProps)
+        return Entity(newAgent, self.displays, self.curdis, newStates, newProps)
 
     def receiveEnvironmentData(self, data: dict):
         relativeTo = self.get(self.LOCATION, (0, 0))
         if not self.properties.get(Entity.S_mirror, False):
             data['agent_last_action'] = dict()
-        if (self.properties.get(Entity.S_blind, False) or
-                self.properties.get(Entity.VISIONDATA, set()).__contains__(Entity.S_blind)):
+        if Entity.S_blind in self.states:
             data = dict()
         elif Entity.VISIONDATA in self.properties:
             remove = set()
@@ -71,7 +83,7 @@ class Entity:
                 remove.add(E)
             for E in remove:
                 data.pop(E)
-        if self.properties.get(Entity.S_relativepos, False):
+        if Entity.S_relativepos in self.states:
             newdata = dict()
             for k, v in data:
                 if type(k) != tuple or len(k) != 2:
@@ -105,8 +117,8 @@ class Entity:
 
 class iEnvironment:
     def __init__(self, entities, activeEntities, extraData=None):
-        self.data = [extraData,{}][extraData is None]
-        self.effects = self.data.get("effects", dict())
+        self.data = [extraData, {}][extraData is None]
+        self.effects: list = self.data.get("effects", [])
         self.entities: list = [] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
         self.entityPriority = []
@@ -138,24 +150,26 @@ class iEnvironment:
     def runChanges(self, moves):
         raise NotImplementedError
 
+    def applyEffects(self, curIter=0):
+        for (effect, start, period) in self.effects:
+            k = (curIter - start) % period
+            if k == 0:
+                (name, value) = effect
+                for entity in self.entities:
+                    entity: Entity
+                    entity.properties[name] = value
+            elif k == 1:
+                (name, value) = effect
+                for entity in self.entities:
+                    entity: Entity
+                    if name in entity.properties:
+                        entity.properties.pop(name)
+
     def runIteration(self, curIter=0):
         D = dict()
         self.data['agent_current_action'] = D
         cur_prio = 0
         cur_D = dict()
-        for (effect,start,period) in self.effects:
-            k=(curIter-start)%period
-            if k==0:
-                (name,value)=effect
-                for entity in self.entities:
-                    entity:Entity
-                    entity.properties[name]=value
-            elif k==1:
-                (name,value)=effect
-                for entity in self.entities:
-                    entity:Entity
-                    if name in entity.properties:
-                        entity.properties.pop(name)
         for ent_prio, entityID in self.entityPriority:
             entity = self.entities[entityID]
             entity: Entity
