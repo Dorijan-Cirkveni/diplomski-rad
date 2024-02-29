@@ -6,6 +6,16 @@ import util.mazes as mazes
 
 
 def rect(E, grid):
+    """
+    Draw a rectangle on the grid with the given value.
+
+    Args:
+        E (tuple): A tuple containing the coordinates and the value of the rectangle.
+        grid (list): The grid on which to draw the rectangle.
+
+    Returns:
+        None
+    """
     if len(E) != 5:
         raise Exception("Bad rect data length!")
     (y1, x1, y2, x2, v) = E
@@ -29,9 +39,24 @@ mazeCreators = {
 
 
 class MazeEnvironment(GridEnvironment):
+    """
+    A class representing a maze environment.
+    """
 
     def __init__(self, scale: tuple, start: tuple, idealGoal: tuple, maze_seed=0, entity=None, tileTypes=None,
                  extraData: dict = None):
+        """
+        Initialize the MazeEnvironment.
+
+        Args:
+            scale (tuple): The scale of the grid.
+            start (tuple): The starting position.
+            idealGoal (tuple): The ideal goal position.
+            maze_seed (int): The seed for generating the maze.
+            entity (GridEntity, optional): The entity in the environment. Defaults to None.
+            tileTypes (list, optional): The types of tiles in the environment. Defaults to None.
+            extraData (dict, optional): Extra data for the environment. Defaults to None.
+        """
         if entity is None:
             entity = GridEntity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
         self.start = start
@@ -42,6 +67,15 @@ class MazeEnvironment(GridEnvironment):
 
     @staticmethod
     def getFromDict(raw: dict):
+        """
+        Create a MazeEnvironment object from a dictionary.
+
+        Args:
+            raw (dict): The dictionary containing environment data.
+
+        Returns:
+            MazeEnvironment: A MazeEnvironment object.
+        """
         agentDict = raw.pop("agentDict", None)
         agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
 
@@ -63,6 +97,18 @@ class MazeEnvironment(GridEnvironment):
         return res
 
     def GenerateGroup(self, size, learning_aspects: dict, requests: dict, randomSeed=42):
+        """
+        Generate a group of MazeEnvironment objects.
+
+        Args:
+            size (int): The number of environments to generate.
+            learning_aspects (dict): Learning aspects for the environments.
+            requests (dict): Requests for generating the environments.
+            randomSeed (int, optional): The seed for randomization. Defaults to 42.
+
+        Returns:
+            list: A list of MazeEnvironment objects.
+        """
         randomizer = random.Random()
         randomizer.seed(randomSeed)
         group = []
@@ -78,9 +124,24 @@ class MazeEnvironment(GridEnvironment):
 
 
 class DualMazeEnvironment(GridEnvironment):
+    """
+    A class representing a dual maze environment.
+    """
 
     def __init__(self, scale: tuple, start: tuple, goal: tuple, maze_seed=0, entity=None, tileTypes=None,
                  data=None):
+        """
+        Initialize the DualMazeEnvironment.
+
+        Args:
+            scale (tuple): The scale of the grid.
+            start (tuple): The starting position.
+            goal (tuple): The goal position.
+            maze_seed (int): The seed for generating the maze.
+            entity (GridEntity, optional): The entity in the environment. Defaults to None.
+            tileTypes (list, optional): The types of tiles in the environment. Defaults to None.
+            data (Any, optional): Additional data for the environment. Defaults to None.
+        """
         if entity is None:
             entity = GridEntity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
         self.start = start
@@ -91,6 +152,15 @@ class DualMazeEnvironment(GridEnvironment):
 
     @staticmethod
     def getFromDict(raw: dict):
+        """
+        Create a DualMazeEnvironment object from a dictionary.
+
+        Args:
+            raw (dict): The dictionary containing environment data.
+
+        Returns:
+            DualMazeEnvironment: A DualMazeEnvironment object.
+        """
         agentDict = raw.get("agentDict", None)
         agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
         (a_type, a_raw) = raw.get("agent", ["BOX", ""])
@@ -112,10 +182,24 @@ class DualMazeEnvironment(GridEnvironment):
         return res
 
     def GenerateGroup(self, size, learning_aspects, requests: dict):
+        """
+        Generate a group of DualMazeEnvironment objects.
+
+        Args:
+            size (int): The number of environments to generate.
+            learning_aspects (dict): Learning aspects for the environments.
+            requests (dict): Requests for generating the environments.
+
+        Returns:
+            list: An empty list since no environments are generated in this case.
+        """
         return []
 
 
 def main():
+    """
+    Main function.
+    """
     return
 
 
