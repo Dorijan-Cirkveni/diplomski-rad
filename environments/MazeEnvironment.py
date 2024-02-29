@@ -72,8 +72,8 @@ class MazeEnvironment(GridEnvironment):
             start = (randomizer.randint(startArea[0], startArea[2]), randomizer.randint(startArea[1], startArea[3]))
             goal = (randomizer.randint(goalArea[0], goalArea[2]), randomizer.randint(goalArea[1], goalArea[3]))
             seed = randomizer.randint(0, (1 << 32) - 1)
-            newEnv = BasicMazeEnvironment(self.getScale(), start, goal, seed)
-            group = BasicMazeEnvironment()
+            newEnv = MazeEnvironment(self.getScale(), start, goal, seed)
+            group.append(newEnv)
         return group
 
 
