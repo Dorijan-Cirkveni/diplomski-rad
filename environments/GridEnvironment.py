@@ -79,16 +79,73 @@ defaultTileTypes = [
     PlaneTile(PlaneTile.accessible, [("blue", PlaneTile.goal)])
 ]
 
+
+class GridEntity(itf.iEntity):
+    S_blind = "blind"
+    S_allseeing = "allsee"
+    S_frozen = "frozen"
+    S_mirror = "mirror"
+    P_viewdirections = "viewdir"  # down=0, up=1, left=2, right=3
+    S_view_self = "viewse"
+    S_relativepos = "relpos"
+    P_visionlimit = "vision_limit"
+    LOCATION = "loc"
+    FALSE_INPUT = "falin"
+
+    def __init__(self, agent: itf.iAgent, displays: list, curdis: int,
+                 states: set = None, properties: dict = None):
+        super().__init__(agent, displays, curdis, states, properties)
+
+    @staticmethod
+    def getFromDict(entity_data, agent: itf.iAgent):
+        ID = entity_data.get("id", None)
+        if ID is None:
+            raise Exception("Entity agent ID must be specified!")
+        properties = entity_data.get("properties", dict())
+        properties['loc'] = tuple(properties.get('loc', [5, 5]))
+        displays = entity_data.get("displays", [0])
+        curdis = entity_data.get("curdis", 0)
+        states = set(entity_data.get("states",[]))
+        entity = GridEntity(agent, displays, curdis, states, properties)
+        return entity
+    
+    def receiveEnvironmentData(self, data: dict):
+        relativeTo = self.get(self.LOCATION, (0, 0))
+        if not self.properties.get(self.S_mirror, False):
+            data['agent_last_action'] = dict()
+        if "grid" not in data:
+            raise Exception("Not sending grid data properly!")
+        gridData:Grid2D=data.pop("grid")
+        if self.S_blind in self.states:
+            gridData=Grid2D(gridData.scale,defaultValue=-1)
+        elif self.P_visionlimit in self.properties:
+            gridData.applyManhatLimit()
+        if self.S_relativepos in self.states:
+            newdata = dict()
+            for k, v in data:
+                if type(k) != tuple or len(k) != 2:
+                    newdata[k] = v
+                else:
+                    newdata[Tsub(k, relativeTo)] = v
+            data = newdata
+        return self.agent.receiveEnvironmentData(data)
+
+    def performAction(self, actions):
+        if self.properties.get(self.S_frozen, False):
+            actions = dict()
+        return self.agent.performAction(actions)
+
+
 counter = util_mngr.Counter()
 
 
 class GridEnvironment(itf.iEnvironment):
-    dir_up = counter.use()
-    dir_down = counter.use()
-    dir_left = counter.use()
-    dir_right = counter.use()
+    dir_up = 0
+    dir_down = 1
+    dir_left = 2
+    dir_right = 3
 
-    def __init__(self, grid: Grid2D, entities: list[itf.Entity] = None,
+    def __init__(self, grid: Grid2D, entities: list[GridEntity] = None,
                  activeEntities: set = None, tileTypes: list[PlaneTile] = None, extraData: dict = None):
         super().__init__(entities, activeEntities, extraData=extraData)
         self.grid: Grid2D = grid
@@ -96,7 +153,7 @@ class GridEnvironment(itf.iEnvironment):
         self.tileData = {"disFor": dict()}
         self.taken = dict()
         for ID, entity in enumerate(self.entities):
-            entity: itf.Entity
+            entity: GridEntity
             name = entity.properties.get(entity.NAME, "Untitled")
             location = entity.properties.get(entity.LOCATION, None)
             if location is None:
@@ -149,7 +206,7 @@ class GridEnvironment(itf.iEnvironment):
             ID = entity_data.get("id", None)
             if ID is None:
                 raise Exception("Entity agent ID must be specified!")
-            entity = itf.Entity.getFromDict(entity_data, agents[int(ID)])
+            entity = GridEntity.getFromDict(entity_data, agents[int(ID)])
             entities.append(entity)
 
         active.update(set(raw.pop("activeEntities", [])))
@@ -169,7 +226,7 @@ class GridEnvironment(itf.iEnvironment):
         newGrid = self.grid.__copy__()
         entities = []
         for e in self.entities:
-            e: itf.Entity
+            e: GridEntity
             entities.append(e.__copy__())
         new = GridEnvironment(newGrid, entities)
         return new
@@ -194,7 +251,7 @@ class GridEnvironment(itf.iEnvironment):
         data = dict()
         if agentID is not None:
             entity = self.entities[agentID]
-            entity: itf.Entity
+            entity: GridEntity
             data = entity.properties
         temp = []
         M = []
@@ -337,9 +394,9 @@ class GridEnvironment(itf.iEnvironment):
         self.entities: list
         if entityID not in range(len(self.entities)):
             raise None
-        entity: itf.Entity = self.entities[entityID]
+        entity: GridEntity = self.entities[entityID]
         if entity is None:
-            return None # Intended error
+            return None  # Intended error
         location = entity.get(entity.LOCATION, None)
         if entity.isInState(entity.S_blind):
             return None
@@ -357,7 +414,7 @@ class GridEnvironment(itf.iEnvironment):
         for _, otherID in self.entityPriority:
             if otherID == entityID:
                 continue
-            otherent: itf.Entity = self.entities[otherID]
+            otherent: GridEntity = self.entities[otherID]
             if otherent is None:
                 continue
             otherloc = otherent.get(otherent.LOCATION, None)
@@ -372,7 +429,7 @@ class GridEnvironment(itf.iEnvironment):
         if E not in self.taken:
             return
         entID = self.taken[E]
-        ent: itf.Entity = self.entities[entID]
+        ent: GridEntity = self.entities[entID]
         if ent is None:
             return
         imageID = ent.getDisplay()
@@ -388,7 +445,7 @@ class GridEnvironment(itf.iEnvironment):
         entityID: int
         if self.entities[entityID] is None:
             return None, "Entity terminated"
-        entity: itf.Entity = self.entities[entityID]
+        entity: GridEntity = self.entities[entityID]
         if entity.isInState(entity.S_blind):
             return None, "Entity blinded"
         data = self.getEnvData(entityID)
@@ -411,7 +468,7 @@ class GridEnvironment(itf.iEnvironment):
             if location is None:
                 return global_moves
         else:
-            entity: itf.Entity = self.entities[entityID]
+            entity: GridEntity = self.entities[entityID]
             if entity is None:
                 return []  # Entity is destroyed.
             location = entity.get(entity.LOCATION, None) if customLocation is None else customLocation
@@ -425,7 +482,7 @@ class GridEnvironment(itf.iEnvironment):
         return goodMoves
 
     def moveEntity(self, entID, destination, terminatedEntities: set):
-        ent: itf.Entity = self.entities[entID]
+        ent: GridEntity = self.entities[entID]
         if ent is None:
             return True
         if not self.grid.hasTileOfIndex(destination):
@@ -446,7 +503,7 @@ class GridEnvironment(itf.iEnvironment):
             return
         locations = []
         for ID in movingEntIDs:
-            ent: itf.Entity = self.entities[ID]
+            ent: GridEntity = self.entities[ID]
             locations.append(ent.get(ent.LOCATION, None))
         M = T_generate_links(set(self.taken.keys()), locations, direction)
         for L in M:
@@ -469,8 +526,8 @@ class GridEnvironment(itf.iEnvironment):
                 continue
             self.moveDirection(V, e, terminatedEntities)
         for e in terminatedEntities:
-            ent: itf.Entity = self.entities[e]
-            entpos = ent.get(itf.Entity.LOCATION, None)
+            ent: GridEntity = self.entities[e]
+            entpos = ent.get(GridEntity.LOCATION, None)
             self.taken.pop(entpos)
             self.entities[e] = None
             self.activeEntities -= {e}
@@ -494,7 +551,7 @@ class GridEnvironment(itf.iEnvironment):
     def changeActiveEntityAgents(self, newAgents: list[itf.iAgent]):
         i = 0
         for ID in self.activeEntities:
-            entity: itf.Entity = self.entities[ID]
+            entity: GridEntity = self.entities[ID]
             entity.agent = newAgents[i].__copy__()
             i += 1
             if i == len(newAgents):

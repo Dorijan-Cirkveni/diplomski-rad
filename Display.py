@@ -257,7 +257,7 @@ class GridDisplay:
 
     def apply_manual_action_to_agents(self, action):
         for entity in self.grid.entities:
-            entity: itf.Entity
+            entity: itf.iEntity
             if entity is None:
                 continue
             agent: itf.iAgent = entity.agent

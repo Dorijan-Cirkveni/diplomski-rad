@@ -31,14 +31,14 @@ mazeCreators = {
 class MazeEnvironment(GridEnvironment):
 
     def __init__(self, scale: tuple, start: tuple, idealGoal: tuple, maze_seed=0, entity=None, tileTypes=None,
-                 extraData:dict=None):
+                 extraData: dict = None):
         if entity is None:
-            entity = itf.Entity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
+            entity = GridEntity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
         self.start = start
         self.idealGoal = idealGoal
         entity.set(entity.LOCATION, start)
         grid = mazes.CreateFullMaze(scale, start, idealGoal, maze_seed=maze_seed, tiles=[0, 2, 1])
-        super().__init__(grid, [entity], {0}, tileTypes,extraData=extraData)
+        super().__init__(grid, [entity], {0}, tileTypes, extraData=extraData)
 
     @staticmethod
     def getFromDict(raw: dict):
@@ -50,7 +50,7 @@ class MazeEnvironment(GridEnvironment):
         if "entity" not in raw:
             raise Exception("Must have entity!")
         entity_data = raw.pop("entity")
-        entity=itf.Entity.getFromDict(entity_data,agent)
+        entity = GridEntity.getFromDict(entity_data, agent)
 
         res = MazeEnvironment(
             tuple(raw.pop("scale", [25, 25])),
@@ -82,7 +82,7 @@ class DualMazeEnvironment(GridEnvironment):
     def __init__(self, scale: tuple, start: tuple, goal: tuple, maze_seed=0, entity=None, tileTypes=None,
                  data=None):
         if entity is None:
-            entity = itf.Entity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
+            entity = GridEntity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
         self.start = start
         entity.set(entity.LOCATION, start)
         grid_M = mazes.CreateDualMaze(scale, start, goal, maze_seed)
@@ -100,7 +100,7 @@ class DualMazeEnvironment(GridEnvironment):
         properties['loc'] = tuple(properties.get('loc', [5, 5]))
         displays = entity_data.get("displays", [0])
         curdis = entity_data.get("curdis", 0)
-        entity = itf.Entity(agent, displays, curdis, properties)
+        entity = GridEntity(agent, displays, curdis, properties)
 
         res = DualMazeEnvironment(
             tuple(raw.get("scale", [25, 25])),

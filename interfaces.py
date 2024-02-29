@@ -1,6 +1,7 @@
 import json
 
 from util import TupleDotOperations as tdo
+from util.Grid2D import Grid2D
 
 
 class iAgent:
@@ -14,19 +15,8 @@ class iAgent:
         raise NotImplementedError
 
 
-class Entity:
-    S_blind = "blind"
-    S_allseeing = "allsee"
-    S_frozen = "frozen"
-    S_mirror = "mirror"
-    # down=0, up=1, left=2, right=3
-    P_viewdirections = "viewdir"
-    S_view_self = "viewse"
-    S_relativepos = "relpos"
-    VISIONDATA = "vision"
+class iEntity:
     NAME = "name"
-    LOCATION = "loc"
-    FALSE_INPUT = "falin"
 
     def __init__(self, agent: iAgent, displays: list, curdis: int,
                  states: set = None, properties: dict = None):
@@ -36,21 +26,9 @@ class Entity:
         self.properties = dict() if properties is None else properties
         self.agent = agent
 
-    @staticmethod
-    def getFromDict(entity_data, agent: iAgent):
-        ID = entity_data.get("id", None)
-        if ID is None:
-            raise Exception("Entity agent ID must be specified!")
-        properties = entity_data.get("properties", dict())
-        properties['loc'] = tuple(properties.get('loc', [5, 5]))
-        displays = entity_data.get("displays", [0])
-        curdis = entity_data.get("curdis", 0)
-        states = set(entity_data.get("states",[]))
-        entity = Entity(agent, displays, curdis, states, properties)
-        return entity
-
     def __repr__(self):
         entity_dict = {
+            'states': self.states,
             'properties': self.properties,
             'agent': repr(self.agent),
             'displays': self.displays,
@@ -62,40 +40,12 @@ class Entity:
         newAgent = self.agent.__copy__()
         newStates = self.states.copy()
         newProps = self.properties.copy()
-        return Entity(newAgent, self.displays, self.curdis, newStates, newProps)
+        return iEntity(newAgent, self.displays, self.curdis, newStates, newProps)
 
     def receiveEnvironmentData(self, data: dict):
-        relativeTo = self.get(self.LOCATION, (0, 0))
-        if not self.properties.get(Entity.S_mirror, False):
-            data['agent_last_action'] = dict()
-        if Entity.S_blind in self.states:
-            data = dict()
-        elif Entity.VISIONDATA in self.properties:
-            remove = set()
-            lim = self.properties[Entity.VISIONDATA]
-            for E in data:
-                if type(E) != tuple:
-                    continue
-                if len(E) != 2:
-                    continue
-                if tdo.Tmanhat(tdo.Tsub(E, relativeTo)) <= lim:
-                    continue
-                remove.add(E)
-            for E in remove:
-                data.pop(E)
-        if Entity.S_relativepos in self.states:
-            newdata = dict()
-            for k, v in data:
-                if type(k) != tuple or len(k) != 2:
-                    newdata[k] = v
-                else:
-                    newdata[tdo.Tsub(k, relativeTo)] = v
-            data = newdata
-        return self.agent.receiveEnvironmentData(data)
+        raise NotImplementedError
 
     def performAction(self, actions):
-        if self.properties.get(Entity.S_frozen, False):
-            actions = dict()
         return self.agent.performAction(actions)
 
     def getPriority(self):

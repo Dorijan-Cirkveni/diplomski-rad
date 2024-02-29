@@ -102,10 +102,27 @@ class Grid2D:
     def makeList(self, func: callable):
         return self.makeNew(func)
 
-    def hasTileOfIndex(self,E:tuple):
-        return Tinrange(E,self.scale)
+    def hasTileOfIndex(self, E: tuple):
+        return Tinrange(E, self.scale)
+
+    def applyManhatLimit(self, center: tuple, maxDistance, fog=-1):
+        for i,E in enumerate(self.M):
+            d=maxDistance-abs(i-center[0])
+            if d<0:
+                self.M[i]=[fog for _ in E]
+                continue
+            for j in range(center[1]-d):
+                E[j]=fog
+            for j in range(center[1]+d+1,len(E)):
+                E[j]=fog
+        return
+
 
 def main():
+    X = Grid2D((10, 10),[[(i*2+j)%5 for j in range(10)]for i in range(10)])
+    X.applyManhatLimit((2, 7), 3)
+    for E in X.M:
+        print("".join([str(e+1) for e in E]))
     return
 
 
