@@ -7,6 +7,9 @@ WRAP_BOTH = 3
 
 
 class Grid2D:
+    '''
+    Class representing a 2D grid.
+    '''
     def __init__(self, dimensions: tuple, M: list[list] = None, defaultValue=0):
         self.scale = dimensions
         if len(dimensions) != 2:
@@ -106,6 +109,15 @@ class Grid2D:
         return Tinrange(E, self.scale)
 
     def applyManhatLimit(self, center: tuple, maxDistance, fog=-1):
+        '''
+        Applies a mask on all tiles outside the Manhatthan distance radius of center.
+        :param center: The center.
+        :param maxDistance: The maximum distance
+        :param fog:
+        :return:
+        '''
+        if maxDistance>=sum(self.scale)-1:
+            return
         for i,E in enumerate(self.M):
             d=maxDistance-abs(i-center[0])
             if d<0:

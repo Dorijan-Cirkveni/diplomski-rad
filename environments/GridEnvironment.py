@@ -119,7 +119,7 @@ class GridEntity(itf.iEntity):
         if self.S_blind in self.states:
             gridData=Grid2D(gridData.scale,defaultValue=-1)
         elif self.P_visionlimit in self.properties:
-            gridData.applyManhatLimit()
+            gridData.applyManhatLimit(relativeTo,self.properties[self.P_visionlimit])
         if self.S_relativepos in self.states:
             newdata = dict()
             for k, v in data:
