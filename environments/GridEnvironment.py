@@ -899,7 +899,19 @@ class GridEnvironment(itf.iEnvironment):
 
 
 
-def readPlaneEnvironment(json_str, index, agentDict=None):
+def readPlaneEnvironment(json_str, index, agentDict=None) -> GridEnvironment:
+    """
+    Reads a grid-based environment from JSON data and returns a GridEnvironment object.
+
+    Args:
+        json_str (str): The JSON string containing environment data.
+        index (int): The index of the environment to read from the JSON array.
+        agentDict (dict, optional): A dictionary mapping agent types to agent classes.
+            Defaults to None, in which case all agents are considered.
+
+    Returns:
+        GridEnvironment: A GridEnvironment object representing the environment.
+    """
     if agentDict is None:
         agentDict = AgentManager.ALL_AGENTS
     json_rawL: dict = json.loads(json_str)
@@ -927,6 +939,9 @@ global_moves = [(0, 0)] + V2DIRS
 
 
 def main():
+    """
+    Main function to run the simulation and test the environment.
+    """
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     F = open("../test_json/basic_tests.json", "r")
     TESTS = F.read()
