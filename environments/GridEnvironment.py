@@ -7,10 +7,17 @@ from util import UtilManager as util_mngr
 from util.Grid2D import Grid2D
 from util.TupleDotOperations import *
 
+# Counter for assigning unique identifiers to different types of tiles
 tile_counter = util_mngr.Counter()
 
 
 def rect(E, grid):
+    """
+    Draw a rectangle on the grid with the provided value.
+
+    :param E: tuple: Coordinates and value for the rectangle (y1, x1, y2, x2, v).
+    :param grid: Grid2D: The grid to draw the rectangle on.
+    """
     if len(E) != 5:
         raise Exception("Bad rect data length!")
     (y1, x1, y2, x2, v) = E
@@ -28,6 +35,10 @@ def rect(E, grid):
 
 
 class PlaneTile:
+    """
+    A class describing a plane tile and how it reacts to entities
+    (whether it allows entities to enter its space unharmed, destroys them, prevents them from moving in...)
+    """
     accessible = tile_counter.use()
     goal = tile_counter.use()
     wall = tile_counter.use()
@@ -37,16 +48,19 @@ class PlaneTile:
     glass = tile_counter.use()
     effect = tile_counter.use()
     TYPE_COUNT = tile_counter.value + 1
-    """
-    A class describing a plane tile and how it reacts to entities
-    (whether it allows entities to enter its space unharmed, destroys them, prevents them from moving in...)
-    """
 
     def __init__(self, defaultState, agentExceptions=None):
         self.default = defaultState
         self.agentExceptions = [] if agentExceptions is None else agentExceptions
 
     def checkAgainst(self, agentData: dict):
+        """
+        Check if the tile reacts to the given agent data.
+
+        :param agentData: dict: Data representing the agent.
+
+        :return: int: Decision regarding how the tile reacts to the agent.
+        """
         decision = self.default
         for (condition, value) in self.agentExceptions:
             if type(condition) != list:
@@ -59,10 +73,24 @@ class PlaneTile:
         return decision
 
     def checkIfMovable(self, agentData: dict):
+        """
+        Check if the tile is movable for the given agent data.
+
+        :param agentData: dict: Data representing the agent.
+
+        :return: bool: True if the tile is movable, False otherwise.
+        """
         decision = self.checkAgainst(agentData)
         return decision in default_movable
 
     def checkIfLethal(self, agentData: dict):
+        """
+        Check if the tile is lethal for the given agent data.
+
+        :param agentData: dict: Data representing the agent.
+
+        :return: bool: True if the tile is lethal, False otherwise.
+        """
         decision = self.checkAgainst(agentData)
         return decision in {PlaneTile.lethal, PlaneTile.lethalwall}
 
@@ -79,8 +107,14 @@ defaultTileTypes = [
     PlaneTile(PlaneTile.accessible, [("blue", PlaneTile.goal)])
 ]
 
+# Counter for assigning unique identifiers to different types of entities
+counter = util_mngr.Counter()
+
 
 class GridEntity(itf.iEntity):
+    """
+    A class representing an entity in a grid environment.
+    """
     S_blind = "blind"
     S_allseeing = "allsee"
     S_frozen = "frozen"
@@ -98,6 +132,14 @@ class GridEntity(itf.iEntity):
 
     @staticmethod
     def getFromDict(entity_data, agent: itf.iAgent):
+        """
+        Initialize a GridEntity object from dictionary data.
+
+        :param entity_data: dict: Data representing the entity.
+        :param agent: iAgent: The agent associated with the entity.
+
+        :return: GridEntity: Initialized GridEntity object.
+        """
         ID = entity_data.get("id", None)
         if ID is None:
             raise Exception("Entity agent ID must be specified!")
@@ -105,24 +147,31 @@ class GridEntity(itf.iEntity):
         properties['loc'] = tuple(properties.get('loc', [5, 5]))
         displays = entity_data.get("displays", [0])
         curdis = entity_data.get("curdis", 0)
-        states = set(entity_data.get("states",[]))
+        states = set(entity_data.get("states", []))
         entity = GridEntity(agent, displays, curdis, states, properties)
         return entity
-    
+
     def receiveEnvironmentData(self, data: dict):
+        """
+        Receive environment data and process it for the entity.
+
+        :param data: dict: Environment data.
+
+        :return: None
+        """
         relativeTo = self.get(self.LOCATION, (0, 0))
         if not self.properties.get(self.S_mirror, False):
             data['agent_last_action'] = dict()
         if "grid" not in data:
             raise Exception("Not sending grid data properly!")
-        gridData:Grid2D=data.pop("grid")
+        gridData: Grid2D = data.pop("grid")
         if self.S_blind in self.states:
-            gridData=Grid2D(gridData.scale,defaultValue=-1)
+            gridData = Grid2D(gridData.scale, defaultValue=-1)
         elif self.P_visionlimit in self.properties:
-            gridData.applyManhatLimit(relativeTo,self.properties[self.P_visionlimit])
+            gridData.applyManhatLimit(relativeTo, self.properties[self.P_visionlimit])
         if self.S_relativepos in self.states:
             newdata = dict()
-            for k, v in data:
+            for k, v in data.items():
                 if type(k) != tuple or len(k) != 2:
                     newdata[k] = v
                 else:
@@ -131,15 +180,24 @@ class GridEntity(itf.iEntity):
         return self.agent.receiveEnvironmentData(data)
 
     def performAction(self, actions):
+        """
+        Perform actions based on the provided actions.
+
+        :param actions: dict: Actions to be performed.
+
+        :return: dict: Result of the actions.
+        """
         if self.properties.get(self.S_frozen, False):
             actions = dict()
         return self.agent.performAction(actions)
 
 
-counter = util_mngr.Counter()
-
-
 class GridEnvironment(itf.iEnvironment):
+    """
+    A class representing a grid environment.
+    """
+
+    # Constants representing directions
     dir_up = 0
     dir_down = 1
     dir_left = 2
@@ -147,6 +205,16 @@ class GridEnvironment(itf.iEnvironment):
 
     def __init__(self, grid: Grid2D, entities: list[GridEntity] = None,
                  activeEntities: set = None, tileTypes: list[PlaneTile] = None, extraData: dict = None):
+        """
+        Initializes a new GridEnvironment instance.
+
+        Args:
+            grid (Grid2D): The grid representing the environment.
+            entities (list[GridEntity], optional): List of entities in the environment. Defaults to None.
+            activeEntities (set, optional): Set of active entity IDs. Defaults to None.
+            tileTypes (list[PlaneTile], optional): List of tile types. Defaults to None.
+            extraData (dict, optional): Extra data for the environment. Defaults to None.
+        """
         super().__init__(entities, activeEntities, extraData=extraData)
         self.grid: Grid2D = grid
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
@@ -164,12 +232,30 @@ class GridEnvironment(itf.iEnvironment):
 
     @staticmethod
     def getAgentDict(raw):
+        """
+        Static method to extract the agent dictionary from raw data.
+
+        Args:
+            raw: Raw data containing agent dictionary information.
+
+        Returns:
+            dict: Agent dictionary.
+        """
         agentDict = raw.get("agentDict", None)
         agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
         return agentDict
 
     @staticmethod
     def assembleGrid(raw):
+        """
+        Static method to assemble the grid from raw data.
+
+        Args:
+            raw: Raw data containing grid information.
+
+        Returns:
+            Grid2D: Assembled grid.
+        """
         scale = tuple(raw.get("scale", [20, 20]))
         grid_M = [[0 for __ in range(scale[1])] for _ in range(scale[0])]
         if "grid" in raw:
@@ -193,6 +279,15 @@ class GridEnvironment(itf.iEnvironment):
 
     @staticmethod
     def getFromDict(raw: dict):
+        """
+        Static method to create a GridEnvironment object from dictionary data.
+
+        Args:
+            raw (dict): Raw data for creating the GridEnvironment.
+
+        Returns:
+            GridEnvironment: Created GridEnvironment object.
+        """
         agentDict = GridEnvironment.getAgentDict(raw)
         grid = GridEnvironment.assembleGrid(raw)
         agents = []
@@ -220,9 +315,21 @@ class GridEnvironment(itf.iEnvironment):
         return res
 
     def getScale(self):
+        """
+        Returns the scale (size) of the grid.
+
+        Returns:
+            tuple: Grid scale (number of rows, number of columns).
+        """
         return self.grid.scale
 
     def __copy__(self):
+        """
+        Creates a copy of the GridEnvironment object.
+
+        Returns:
+            GridEnvironment: Copy of the current GridEnvironment instance.
+        """
         newGrid = self.grid.__copy__()
         entities = []
         for e in self.entities:
@@ -232,6 +339,12 @@ class GridEnvironment(itf.iEnvironment):
         return new
 
     def exportTileData(self, other):
+        """
+        Exports tile data to another GridEnvironment object.
+
+        Args:
+            other (GridEnvironment): Another GridEnvironment object.
+        """
         for i, E in enumerate(self.grid):
             E2 = other.grid[i]
             for j, F in enumerate(E):
@@ -242,12 +355,29 @@ class GridEnvironment(itf.iEnvironment):
         return
 
     def setDistances(self, M, agentID=None):
+        """
+        Sets distances in the environment.
+
+        Args:
+            M: Distances data.
+            agentID (int, optional): ID of the agent. Defaults to None.
+        """
         disfor = self.tileData.get("disFor", dict())
         disfor[agentID] = M
         self.tileData["disFor"] = disfor
         return
 
     def calcDistances(self, agentID=None, ignoreObstacles=False):
+        """
+        Calculates distances in the environment.
+
+        Args:
+            agentID (int, optional): ID of the agent. Defaults to None.
+            ignoreObstacles (bool, optional): Whether to ignore obstacles. Defaults to False.
+
+        Returns:
+            list: Distance data.
+        """
         data = dict()
         if agentID is not None:
             entity = self.entities[agentID]
@@ -291,6 +421,17 @@ class GridEnvironment(itf.iEnvironment):
         return M
 
     def getPositionValue(self, position, agentID=None, ignoreObstacles=False):
+        """
+        Gets the position value.
+
+        Args:
+            position (tuple): Position coordinates.
+            agentID (int, optional): ID of the agent. Defaults to None.
+            ignoreObstacles (bool, optional): Whether to ignore obstacles. Defaults to False.
+
+        Returns:
+            int: Position value.
+        """
         tile = self.get_tile(position)
         if tile is None:
             return None
@@ -301,6 +442,16 @@ class GridEnvironment(itf.iEnvironment):
         return M[position[0]][position[1]]
 
     def get_tile(self, i, j=None):
+        """
+        Gets the tile at the specified position.
+
+        Args:
+            i (int or tuple): Row index or position coordinates.
+            j (int, optional): Column index. Defaults to None.
+
+        Returns:
+            int: Tile value.
+        """
         if j is None:
             i, j = i
         if i not in range(self.grid.scale[0]) or j not in range(self.grid.scale[1]):
@@ -308,6 +459,16 @@ class GridEnvironment(itf.iEnvironment):
         return self.grid[i][j]
 
     def is_tile_movable(self, tilePos, agentData):
+        """
+        Checks if the tile is movable.
+
+        Args:
+            tilePos (tuple): Tile position coordinates.
+            agentData: Agent data.
+
+        Returns:
+            bool: True if the tile is movable, False otherwise.
+        """
         tileID = self.get_tile(tilePos)
         if tileID is None:
             return False
@@ -316,12 +477,33 @@ class GridEnvironment(itf.iEnvironment):
         return movability
 
     def is_tile_lethal(self, tilePos, agentData):
+        """
+        Checks if the tile is lethal.
+
+        Args:
+            tilePos (tuple): Tile position coordinates.
+            agentData: Agent data.
+
+        Returns:
+            bool: True if the tile is lethal, False otherwise.
+        """
         tileID = self.get_tile(tilePos)
         tile = self.tileTypes[tileID]
         movability = tile.checkIfLethal(agentData)
         return movability
 
     def view_direction(self, position, direction: tuple, opaque=None):
+        """
+        Views in the specified direction.
+
+        Args:
+            position (tuple): Starting position coordinates.
+            direction (tuple): Direction vector.
+            opaque (list, optional): List of opaque tiles. Defaults to None.
+
+        Returns:
+            dict: Dictionary containing visible tiles.
+        """
         if opaque is None:
             opaque = default_opaque
         (axis, sig) = int(direction[1] == 0), direction[0] + direction[1]
@@ -378,6 +560,15 @@ class GridEnvironment(itf.iEnvironment):
         return RES
 
     def text_display(self, guide):
+        """
+        Generates a text display of the grid.
+
+        Args:
+            guide: Guide for displaying tiles.
+
+        Returns:
+            str: Text representation of the grid.
+        """
         res = []
         for i, E in enumerate(self.grid):
             s = ""
@@ -390,6 +581,15 @@ class GridEnvironment(itf.iEnvironment):
         return "\n".join(res)
 
     def getEnvData(self, entityID=None):
+        """
+        Gets environment data.
+
+        Args:
+            entityID (int, optional): ID of the entity. Defaults to None.
+
+        Returns:
+            dict: Environment data.
+        """
         data = dict()
         self.entities: list
         if entityID not in range(len(self.entities)):
@@ -426,6 +626,13 @@ class GridEnvironment(itf.iEnvironment):
         return data
 
     def getAgentDisplay(self, agents: dict, E: tuple, ):
+        """
+        Gets the display data for agents.
+
+        Args:
+            agents (dict): Dictionary to store agent display data.
+            E (tuple): Entity position.
+        """
         if E not in self.taken:
             return
         entID = self.taken[E]
@@ -437,6 +644,15 @@ class GridEnvironment(itf.iEnvironment):
         return
 
     def getDisplayData(self, entityID=None):
+        """
+        Gets the display data.
+
+        Args:
+            entityID (int, optional): ID of the entity. Defaults to None.
+
+        Returns:
+            tuple: Grid and agent display data.
+        """
         if entityID is None:
             agents = dict()
             for E in self.taken.keys():
@@ -462,6 +678,16 @@ class GridEnvironment(itf.iEnvironment):
         return grid, agents
 
     def getMoves(self, entityID=None, customLocation=None) -> list[tuple]:
+        """
+        Gets possible moves for an entity.
+
+        Args:
+            entityID (int, optional): ID of the entity. Defaults to None.
+            customLocation (tuple, optional): Custom location. Defaults to None.
+
+        Returns:
+            list[tuple]: List of possible moves.
+        """
         properties = dict()
         location = customLocation
         if entityID is None:
@@ -482,6 +708,17 @@ class GridEnvironment(itf.iEnvironment):
         return goodMoves
 
     def moveEntity(self, entID, destination, terminatedEntities: set):
+        """
+        Moves an entity to a destination.
+
+        Args:
+            entID (int): ID of the entity.
+            destination (tuple): Destination coordinates.
+            terminatedEntities (set): Set to store terminated entity IDs.
+
+        Returns:
+            bool: True if the entity was moved successfully, False otherwise.
+        """
         ent: GridEntity = self.entities[entID]
         if ent is None:
             return True
@@ -499,6 +736,14 @@ class GridEnvironment(itf.iEnvironment):
         return True
 
     def moveDirection(self, movingEntIDs, direction, terminatedEntities: set):
+        """
+        Moves entities in a specified direction.
+
+        Args:
+            movingEntIDs (list): List of entity IDs to move.
+            direction (tuple): Direction vector.
+            terminatedEntities (set): Set to store terminated entity IDs.
+        """
         if direction is None:
             return
         locations = []
@@ -517,6 +762,12 @@ class GridEnvironment(itf.iEnvironment):
         return
 
     def runChanges(self, moves: dict):
+        """
+        Runs changes in the environment based on specified moves.
+
+        Args:
+            moves (dict): Dictionary containing entity movements.
+        """
         moveTypes = {e: [] for e in moves.values()}
         for entityID, moveID in moves.items():
             moveTypes[moveID].append(entityID)
@@ -534,6 +785,15 @@ class GridEnvironment(itf.iEnvironment):
         return
 
     def evaluateActiveEntities(self, evalMethod: callable = lambda E: 0 if not E else -min(E)):
+        """
+        Evaluates active entities in the environment.
+
+        Args:
+            evalMethod (callable, optional): Evaluation method. Defaults to lambda E: 0 if not E else -min(E).
+
+        Returns:
+            int: Evaluation result.
+        """
         totalLoss = []
         for E, ID in self.taken.items():
             if ID not in self.activeEntities:
@@ -545,23 +805,76 @@ class GridEnvironment(itf.iEnvironment):
         return evalMethod(totalLoss)
 
     def isWin(self):
+        """
+        Checks if the environment represents a win state.
+
+        Returns:
+            bool: True if it's a win state, False otherwise.
+        """
         X = {self.getPositionValue(E, ID) for E, ID in self.taken.items() if ID in self.activeEntities}
         return 0 in X
 
     def changeActiveEntityAgents(self, newAgents: list[itf.iAgent]):
-        i = 0
-        for ID in self.activeEntities:
-            entity: GridEntity = self.entities[ID]
-            entity.agent = newAgents[i].__copy__()
-            i += 1
-            if i == len(newAgents):
-                i = 0
+        """
+        Changes active entity agents.
+
+        Args:
+            newAgents (list[itf.iAgent]): List of new agents.
+        """
+        for E in self.activeEntities:
+            self.entities[E].agent = newAgents[E]
         return
 
-    def GenerateGroup(self, size, learning_aspects, requests: dict):
+    def step(self, moves: dict):
+        """
+        Performs a step in the environment based on specified moves.
+
+        Args:
+            moves (dict): Dictionary containing entity movements.
+        """
+        self.runChanges(moves)
+        self.run()
+        return
+
+    def run(self):
+        """
+        Runs the environment.
+        """
+        return
+    def GenerateGroup(self, size, learning_aspects, requests: dict) -> list['GridEnvironment']:
+        """
+        Generates a group of entities.
+
+        This method is not implemented and raises a NotImplementedError.
+
+        Args:
+            size: The size of the group.
+            learning_aspects: The learning aspects for the group.
+            requests (dict): A dictionary of requests.
+
+        Raises:
+            NotImplementedError: This method is not implemented.
+
+        Returns:
+            list[GridEnvironment]: A list of GridEnvironment objects representing the generated group.
+        """
         raise NotImplementedError
 
-    def GenerateSetGroups(self, size, learning_aspects: dict, requests: dict, ratio=None):
+    def GenerateSetGroups(self, size, learning_aspects: dict, requests: dict, ratio=None) -> list[list['GridEnvironment']]:
+        """
+        Generates multiple groups of entities based on specified learning aspects and requests.
+
+        Args:
+            size: The total size of all groups combined.
+            learning_aspects (dict): A dictionary containing learning aspects for each group.
+            requests (dict): A dictionary of requests.
+            ratio (list[int], optional): A list representing the ratio of sizes for each group.
+                Defaults to None, in which case a default ratio of [60, 20, 20] is used.
+
+        Returns:
+            list[list[GridEnvironment]]: A list containing groups of GridEnvironment objects.
+
+        """
         if ratio is None:
             ratio = [60, 20, 20]
         ratio = util_mngr.adjustRatio(size, ratio)
@@ -581,6 +894,9 @@ class GridEnvironment(itf.iEnvironment):
                 pass  # TODO
         for i, groupSize in enumerate(ratio):
             X.append(self.GenerateGroup(groupSize, learning_aspects, requests))
+        return X
+
+
 
 
 def readPlaneEnvironment(json_str, index, agentDict=None):
