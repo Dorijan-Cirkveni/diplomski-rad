@@ -21,10 +21,10 @@ class MirrorAgent(itf.iAgent):
         newMirror = MirrorAgent(self.mirroredAgent, newMirrors)
         return newMirror
 
-    def __init__(self, mirroredAgent, actionMirrors: dict):
+    def __init__(self, mirroredAgent, actionMirrors: dict = None):
         super().__init__()
         self.mirroredAgent = mirroredAgent
-        self.actionMirrors = actionMirrors
+        self.actionMirrors = {} if actionMirrors is None else actionMirrors
         self.agent_data = None
 
     def receiveEnvironmentData(self, data):
@@ -34,7 +34,8 @@ class MirrorAgent(itf.iAgent):
         return
 
     def performAction(self, actions):
-        return actions.get(self.actionMirrors.get(self.agent_data, self.agent_data), None)
+        action=self.actionMirrors.get(self.agent_data, self.agent_data)
+        return action
 
 
 def intMAFactory(actionMirrors):

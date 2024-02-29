@@ -403,7 +403,7 @@ def commandRun():
 
 
 def main():
-    GT1(0)
+    GT1(4)
 
 
 if __name__ == "__main__":

@@ -5,7 +5,8 @@ from definitions import ACTIONS
 
 ALL_AGENTS = {
     "RAA": base.initRAAFactory(ACTIONS),
-    "BOX": lambda s:base.BoxAgent()
+    "BOX": lambda s:base.BoxAgent(),
+    "MIRROR": base.intMAFactory({})
 }
 
 
