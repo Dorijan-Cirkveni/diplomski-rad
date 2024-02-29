@@ -7,10 +7,19 @@ WRAP_BOTH = 3
 
 
 class Grid2D:
-    '''
+    """
     Class representing a 2D grid.
-    '''
+    """
     def __init__(self, dimensions: tuple, M: list[list] = None, defaultValue=0):
+        """
+        Initialize a 2D grid with given dimensions.
+
+        :param dimensions: tuple: The dimensions of the grid in the format (rows, columns).
+        :param M: list[list], optional: Optional initial grid values. Defaults to None.
+        :param defaultValue: Default value for grid cells. Defaults to 0.
+
+        :raises Exception: If dimensions tuple dimensions are not 2.
+        """
         self.scale = dimensions
         if len(dimensions) != 2:
             raise Exception("Dimensions tuple dimensions must be 2, not {}".format(len(dimensions)))
@@ -24,6 +33,11 @@ class Grid2D:
         return
 
     def __copy__(self):
+        """
+        Create a deep copy of the grid.
+
+        :return: Grid2D: A copy of the grid object.
+        """
         newG2D = Grid2D((0, 0))
         newG2D.scale = self.scale
         M = []
@@ -36,9 +50,27 @@ class Grid2D:
         return newG2D
 
     def copy(self):
+        """
+        Alias for __copy__ method. (Create a deep copy of the grid.)
+
+        :return: Grid2D: A copy of the grid object.
+        """
         return self.__copy__()
 
     def __getitem__(self, item):
+        """
+        Get an item from the grid.
+
+        :param item: Integer or tuple index.
+
+        :return: object: The value at the specified index:
+        -a column if type(item) is an integer
+        -a tile value if type(item) is a tuple
+
+        :raises Exception: If index is neither integer nor tuple.
+        :raises Exception: If index is out of grid bounds.
+        :raises Exception: If tuple index dimensions are not 2.
+        """
         if type(item) == int:
             return self.M[item]
         if type(item) == tuple:
@@ -50,6 +82,16 @@ class Grid2D:
         raise Exception("Index must be int or tuple, not {}".format(type(item)))
 
     def __setitem__(self, key, value):
+        """
+        Set an item in the grid.
+
+        :param key: Integer or tuple index.
+        :param value: Value to be set.
+
+        :raises Exception: For an integer index, if column insertion value is not a list.
+        :raises Exception: For a tuple index, if its dimensions are not 2.
+        :raises Exception: If the index is out of grid bounds.
+        """
         if type(key) == int:
             if type(value) != list:
                 raise Exception("Column insertion value must be list, not {}." +
@@ -68,6 +110,16 @@ class Grid2D:
         raise Exception("Index must be int or tuple, not {}".format(type(key)))
 
     def get_neighbours(self, key: tuple, wrapAround=WRAP_NONE):
+        """
+        Get neighboring indices of a given key.
+
+        :param key: tuple: The key for which neighbors are to be found.
+        :param wrapAround: int, optional: Option for wrapping around the grid edges. Defaults to WRAP_NONE.
+
+        :return: list: List of neighboring indices.
+
+        :notes: Assumes grid is a torus if wrapAround is specified.
+        """
         neighbours = Tneighbours(key)
         res = []
         for neigh in neighbours:
@@ -82,40 +134,53 @@ class Grid2D:
             res.append(trueNeigh)
         return res
 
-    def dot(self, func: callable):
-        M = []
-        for i in range(self.scale[0]):
-            L = []
-            for j in range(self.scale[1]):
-                L.append(func(self.M[i][j]))
-                L.append(j)
-            M.append(L)
-        return
-
     def apply(self, func: callable):
+        """
+        Apply a function to each element in the grid in place, then return self.
+
+        :param func: callable: Function to be applied.
+
+        :return: Grid2D: The modified grid object.
+        """
         for i, E in enumerate(self.M):
             for j, f in enumerate(E):
                 E[j] = func(f)
         return self
 
     def makeNew(self, func: callable):
+        """
+        Create a new grid by applying a function to each element in the grid.
+
+        :param func: callable: Function to be applied.
+
+        :return: Grid2D: A new grid object with the function applied to each element.
+        """
         newGrid = self.copy()
         return newGrid.apply(func)
 
     def makeList(self, func: callable):
-        return self.makeNew(func)
+        return self.makeNew(func).M
 
     def hasTileOfIndex(self, E: tuple):
+        """
+        Check if the grid contains a tile at the given index.
+
+        :param E: tuple: Index tuple.
+
+        :return: bool: True if the grid contains a tile at the given index, False otherwise.
+        """
         return Tinrange(E, self.scale)
 
     def applyManhatLimit(self, center: tuple, maxDistance, fog=-1):
-        '''
-        Applies a mask on all tiles outside the Manhatthan distance radius of center.
-        :param center: The center.
-        :param maxDistance: The maximum distance
-        :param fog:
-        :return:
-        '''
+        """
+        Apply a mask on tiles outside the Manhattan distance radius of center.
+
+        :param center: tuple: The center coordinates.
+        :param maxDistance: int: The maximum distance from the center.
+        :param fog: int, optional: Value to fill outside of the distance radius. Defaults to -1.
+
+        :return: None
+        """
         if maxDistance>=sum(self.scale)-1:
             return
         for i,E in enumerate(self.M):
