@@ -9,9 +9,15 @@ class Subgrid:
 
 
 class DynamicGridEnvironment(GridEnvironment):
-    def __init__(self, grid: Grid2D, entities: list[GridEntity] = None,
+    def __init__(self, grid: Grid2D, subgrids: list[Subgrid], entities: list[GridEntity] = None,
                  activeEntities: set = None, tileTypes: list[PlaneTile] = None, extraData: dict = None):
-        super().__init__(grid)
+        super().__init__(grid, entities, activeEntities, tileTypes, extraData)
+        self.subgrids = subgrids
+
+    def GenerateGroup(self, size, learning_aspects, requests: dict) -> list['GridEnvironment']:
+        raise NotImplementedError
+
+
 
 
 def main():

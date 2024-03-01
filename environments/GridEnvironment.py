@@ -845,7 +845,9 @@ class GridEnvironment(itf.iEnvironment):
         """
         Generates a group of entities.
 
-        This method is not implemented and raises a NotImplementedError.
+        This method is not implemented as this method is intended for -
+        Actually...
+        TODO implement iGroupableGridEnvironment as intermediary class
 
         Args:
             size: The size of the group.
