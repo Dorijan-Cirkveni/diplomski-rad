@@ -10,6 +10,7 @@ class Grid2D:
     """
     Class representing a 2D grid.
     """
+
     def __init__(self, dimensions: tuple, M: list[list] = None, defaultValue=0):
         """
         Initialize a 2D grid with given dimensions.
@@ -181,25 +182,34 @@ class Grid2D:
 
         :return: None
         """
-        if maxDistance>=sum(self.scale)-1:
+        if maxDistance >= sum(self.scale) - 1:
             return
-        for i,E in enumerate(self.M):
-            d=maxDistance-abs(i-center[0])
-            if d<0:
-                self.M[i]=[fog for _ in E]
+        for i, E in enumerate(self.M):
+            d = maxDistance - abs(i - center[0])
+            if d < 0:
+                self.M[i] = [fog for _ in E]
                 continue
-            for j in range(center[1]-d):
-                E[j]=fog
-            for j in range(center[1]+d+1,len(E)):
-                E[j]=fog
+            for j in range(center[1] - d):
+                E[j] = fog
+            for j in range(center[1] + d + 1, len(E)):
+                E[j] = fog
+        return
+
+    def overlap(self, other, offset: tuple):
+        other: Grid2D
+        top = Tsub(Tmin(self.scale, other.scale), offset)
+        bottom = Tmax((0, 0), offset)
+        for i in range(bottom[0], top[0]):
+            for j in range(bottom[1], top[1]):
+                self.M[i + offset[0]][j + offset[1]] = other[i][j]
         return
 
 
 def main():
-    X = Grid2D((10, 10),[[(i*2+j)%5 for j in range(10)]for i in range(10)])
+    X = Grid2D((10, 10), [[(i * 2 + j) % 5 for j in range(10)] for i in range(10)])
     X.applyManhatLimit((2, 7), 3)
     for E in X.M:
-        print("".join([str(e+1) for e in E]))
+        print("".join([str(e + 1) for e in E]))
     return
 
 
