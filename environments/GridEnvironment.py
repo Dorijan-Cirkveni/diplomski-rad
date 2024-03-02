@@ -256,38 +256,23 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             Grid2D: Assembled grid.
         """
-        scale = tuple(raw.get("scale", [20, 20]))
-        grid_M = [[0 for __ in range(scale[1])] for _ in range(scale[0])]
-        if "grid" in raw:
-            M: list[list[int]] = raw["grid"]
-            for i, E in enumerate(M):
-                if i == scale[0]:
-                    break
-                E2 = grid_M[i]
-                for j, F in enumerate(E):
-                    if j == scale[1]:
-                        break
-                    E2[j] = F
+        grid_raw=dict()
+        grid_raw['dimensions']=tuple(raw.get("scale", [20, 20]))
+        if 'grid' in raw:
+            grid_raw['grid']=raw['grid']
+        grid_raw['default']=raw.get('default',0)
+        grid=Grid2D.getFromDict(grid_raw)
         shapes = raw.get("shapes", {})
         for type_V, V in shapes.items():
             if type_V == "rectangles":
                 for e in V:
                     if not e:
                         continue
-                    rect(tuple(e), grid_M)
-        return Grid2D(scale, grid_M)
+                    rect(tuple(e), grid.M)
+        return grid
 
     @staticmethod
-    def getFromDict(raw: dict):
-        """
-        Static method to create a GridEnvironment object from dictionary data.
-
-        Args:
-            raw (dict): Raw data for creating the GridEnvironment.
-
-        Returns:
-            GridEnvironment: Created GridEnvironment object.
-        """
+    def getInputFromDict(raw:dict):
         agentDict = GridEnvironment.getAgentDict(raw)
         grid = GridEnvironment.assembleGrid(raw)
         agents = []
@@ -305,7 +290,19 @@ class GridEnvironment(itf.iEnvironment):
             entities.append(entity)
 
         active.update(set(raw.pop("activeEntities", [])))
+        return grid,entities,active
+    @staticmethod
+    def getFromDict(raw: dict):
+        """
+        Static method to create a GridEnvironment object from dictionary data.
 
+        Args:
+            raw (dict): Raw data for creating the GridEnvironment.
+
+        Returns:
+            GridEnvironment: Created GridEnvironment object.
+        """
+        grid,entities,active=GridEnvironment.getInputFromDict(raw)
         res = GridEnvironment(
             grid=grid,
             entities=entities,

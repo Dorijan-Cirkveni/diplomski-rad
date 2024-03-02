@@ -33,6 +33,13 @@ class Grid2D:
                 E[j] = E2[j]
         return
 
+    @staticmethod
+    def getFromDict(raw:dict):
+        dimensions=raw['dimensions']
+        grid=raw.get('grid',[])
+        default=raw.get('default',0)
+        return Grid2D(dimensions,grid,default)
+
     def __copy__(self):
         """
         Create a deep copy of the grid.
