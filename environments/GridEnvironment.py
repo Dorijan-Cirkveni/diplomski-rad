@@ -335,22 +335,6 @@ class GridEnvironment(itf.iEnvironment):
         new = GridEnvironment(newGrid, entities)
         return new
 
-    def exportTileData(self, other):
-        """
-        Exports tile data to another GridEnvironment object.
-
-        Args:
-            other (GridEnvironment): Another GridEnvironment object.
-        """
-        for i, E in enumerate(self.grid):
-            E2 = other.grid[i]
-            for j, F in enumerate(E):
-                F2 = E2[j]
-                F: dict
-                F2: dict
-                F.update(F2)
-        return
-
     def setDistances(self, M, agentID=None):
         """
         Sets distances in the environment.
@@ -364,7 +348,14 @@ class GridEnvironment(itf.iEnvironment):
         self.tileData["disFor"] = disfor
         return
 
-    def calcDistances(self, agentID=None, ignoreObstacles=False):
+    def applyFromGrid(self,func):
+        scale=self.grid.scale
+        for i in range(scale[0]):
+            for j in range(scale[1]):
+                func(self.get_tile(i,j))
+        return
+
+    def calcDistances(self, agentID=None, ignoreObstacles=False, customGrid=None):
         """
         Calculates distances in the environment.
 
@@ -375,6 +366,7 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             list: Distance data.
         """
+        customGrid
         data = dict()
         if agentID is not None:
             entity = self.entities[agentID]
