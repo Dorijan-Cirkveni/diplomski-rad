@@ -19,10 +19,12 @@ class Subgrid:
 
 
 class DynamicGridEnvironment(GridEnvironment):
-    def __init__(self, grid: Grid2D, subgrids: list[Subgrid], entities: list[GridEntity] = None,
+    def __init__(self, baseGrid: Grid2D, subgrids: list[Subgrid], entities: list[GridEntity] = None,
                  activeEntities: set = None, tileTypes: list[PlaneTile] = None, extraData: dict = None):
-        super().__init__(grid, entities, activeEntities, tileTypes, extraData)
+        super().__init__(baseGrid, entities, activeEntities, tileTypes, extraData)
         self.subgrids = subgrids
+        self.currentGrid: [Grid2D, None] = None
+        self.curTime: int = -1
 
     @staticmethod
     def getFromDict(raw: dict):
@@ -58,6 +60,28 @@ class DynamicGridEnvironment(GridEnvironment):
             entities.append(e.__copy__())
         new = DynamicGridEnvironment(newGrid, entities)
         return new
+
+    def get_tile(self, i, j=None, curtime=0):
+        if j is None:
+            i, j = i
+        if not Tinrange((i, j), self.grid.scale):
+            return None
+        if self.currentGrid is not None:
+            return self.currentGrid[i][j]
+        result = self.grid[i][j]
+        for subgrid in self.subgrids:
+            curstate: tuple = subgrid.getValue(curtime)
+            reltile = Tsub((i, j), curstate)
+            if Tinrange(reltile, subgrid.grid.scale):
+                result = subgrid.grid[reltile]
+        return result
+
+    def overlapCurrent(self, time=0):
+        full = self.grid.copy()
+        for subgrid in self.subgrids:
+            curOffset = subgrid.getValue(time)
+            full.overlap(subgrid.grid, curOffset)
+        return full
 
     def GenerateGroup(self, size, learning_aspects, requests: dict) -> list['GridEnvironment']:
         raise NotImplementedError

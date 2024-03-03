@@ -34,11 +34,11 @@ class Grid2D:
         return
 
     @staticmethod
-    def getFromDict(raw:dict):
-        dimensions=raw['dimensions']
-        grid=raw.get('grid',[])
-        default=raw.get('default',0)
-        return Grid2D(dimensions,grid,default)
+    def getFromDict(raw: dict):
+        dimensions = raw['dimensions']
+        grid = raw.get('grid', [])
+        default = raw.get('default', 0)
+        return Grid2D(dimensions, grid, default)
 
     def __copy__(self):
         """
@@ -210,6 +210,19 @@ class Grid2D:
             for j in range(bottom[1], top[1]):
                 self.M[i + offset[0]][j + offset[1]] = other[i][j]
         return
+
+    def text_display(self, guide, specialSpots: dict = None,
+                     translateSpecial=lambda n:chr(ord('A')+n)):
+        res = []
+        for i, E in enumerate(self.M):
+            s = ""
+            for j, e in enumerate(E):
+                val = guide[e]
+                if specialSpots and (i, j) in specialSpots:
+                    val = translateSpecial(specialSpots[(i,j)])
+                s += str(val)
+            res.append(s)
+        return "\n".join(res)
 
 
 def main():

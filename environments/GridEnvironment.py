@@ -355,7 +355,7 @@ class GridEnvironment(itf.iEnvironment):
                 func(self.get_tile(i,j))
         return
 
-    def calcDistances(self, agentID=None, ignoreObstacles=False, customGrid=None):
+    def calcDistances(self, agentID=None, ignoreObstacles=False):
         """
         Calculates distances in the environment.
 
@@ -366,7 +366,6 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             list: Distance data.
         """
-        customGrid
         data = dict()
         if agentID is not None:
             entity = self.entities[agentID]
@@ -430,30 +429,32 @@ class GridEnvironment(itf.iEnvironment):
         M = disfor[str(agentID) + "_" + str(ignoreObstacles)]
         return M[position[0]][position[1]]
 
-    def get_tile(self, i, j=None):
+    def get_tile(self, i, j=None, curtime=0):
         """
         Gets the tile at the specified position.
 
         Args:
             i (int or tuple): Row index or position coordinates.
             j (int, optional): Column index. Defaults to None.
+            curtime (int): Time (iteration number). Not used in base class, defaults to 0.
 
         Returns:
             int: Tile value.
         """
         if j is None:
             i, j = i
-        if i not in range(self.grid.scale[0]) or j not in range(self.grid.scale[1]):
+        if not Tinrange((i,j),self.grid.scale):
             return None
         return self.grid[i][j]
 
-    def is_tile_movable(self, tilePos, agentData):
+    def is_tile_movable(self, tilePos, agentData, curtime=0):
         """
         Checks if the tile is movable.
 
         Args:
             tilePos (tuple): Tile position coordinates.
             agentData: Agent data.
+            curtime (int): Time (iteration number). Not used in base class, defaults to 0.
 
         Returns:
             bool: True if the tile is movable, False otherwise.
@@ -567,7 +568,7 @@ class GridEnvironment(itf.iEnvironment):
                     val = "E"
                 s += str(val)
             res.append(s)
-        return "\n".join(res)
+        return self.grid.text_display(guide,self.taken)
 
     def getEnvData(self, entityID=None):
         """
