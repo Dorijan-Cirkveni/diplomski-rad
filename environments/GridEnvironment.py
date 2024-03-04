@@ -162,13 +162,14 @@ class GridEntity(itf.iEntity):
         relativeTo = self.get(self.LOCATION, (0, 0))
         if not self.properties.get(self.S_mirror, False):
             data['agent_last_action'] = dict()
-        if "grid" not in data:
-            raise Exception("Not sending grid data properly!")
         gridData: Grid2D = data.pop("grid")
         if self.S_blind in self.states:
             gridData = Grid2D(gridData.scale, defaultValue=-1)
-        elif self.P_visionlimit in self.properties:
-            gridData.applyManhatLimit(relativeTo, self.properties[self.P_visionlimit])
+        else:
+            if "grid" not in data:
+                raise Exception("Not sending grid data properly!")
+            if self.P_visionlimit in self.properties:
+                gridData.applyManhatLimit(relativeTo, self.properties[self.P_visionlimit])
         if self.S_relativepos in self.states:
             newdata = dict()
             for k, v in data.items():
@@ -256,12 +257,12 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             Grid2D: Assembled grid.
         """
-        grid_raw=dict()
-        grid_raw['dimensions']=tuple(raw.get("scale", [20, 20]))
+        grid_raw = dict()
+        grid_raw['dimensions'] = tuple(raw.get("scale", [20, 20]))
         if 'grid' in raw:
-            grid_raw['grid']=raw['grid']
-        grid_raw['default']=raw.get('default',0)
-        grid=Grid2D.getFromDict(grid_raw)
+            grid_raw['grid'] = raw['grid']
+        grid_raw['default'] = raw.get('default', 0)
+        grid = Grid2D.getFromDict(grid_raw)
         shapes = raw.get("shapes", {})
         for type_V, V in shapes.items():
             if type_V == "rectangles":
@@ -272,7 +273,7 @@ class GridEnvironment(itf.iEnvironment):
         return grid
 
     @staticmethod
-    def getInputFromDict(raw:dict):
+    def getInputFromDict(raw: dict):
         agentDict = GridEnvironment.getAgentDict(raw)
         grid = GridEnvironment.assembleGrid(raw)
         agents = []
@@ -290,7 +291,8 @@ class GridEnvironment(itf.iEnvironment):
             entities.append(entity)
 
         active.update(set(raw.pop("activeEntities", [])))
-        return grid,entities,active
+        return grid, entities, active
+
     @staticmethod
     def getFromDict(raw: dict):
         """
@@ -302,7 +304,7 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             GridEnvironment: Created GridEnvironment object.
         """
-        grid,entities,active=GridEnvironment.getInputFromDict(raw)
+        grid, entities, active = GridEnvironment.getInputFromDict(raw)
         res = GridEnvironment(
             grid=grid,
             entities=entities,
@@ -348,11 +350,11 @@ class GridEnvironment(itf.iEnvironment):
         self.tileData["disFor"] = disfor
         return
 
-    def applyFromGrid(self,func):
-        scale=self.grid.scale
+    def applyFromGrid(self, func):
+        scale = self.grid.scale
         for i in range(scale[0]):
             for j in range(scale[1]):
-                func(self.get_tile(i,j))
+                func(self.get_tile(i, j))
         return
 
     def calcDistances(self, agentID=None, ignoreObstacles=False):
@@ -443,7 +445,7 @@ class GridEnvironment(itf.iEnvironment):
         """
         if j is None:
             i, j = i
-        if not Tinrange((i,j),self.grid.scale):
+        if not Tinrange((i, j), self.grid.scale):
             return None
         return self.grid[i][j]
 
@@ -482,7 +484,7 @@ class GridEnvironment(itf.iEnvironment):
         movability = tile.checkIfLethal(agentData)
         return movability
 
-    def view_direction(self, position, direction: tuple, opaque=None):
+    def view_direction(self, position, direction: tuple, grid: Grid2D, opaque=None):
         """
         Views in the specified direction.
 
@@ -501,7 +503,6 @@ class GridEnvironment(itf.iEnvironment):
         VO_dec = util_mngr.VisionOctant()
         distance = 0
         used_any = True
-        RES = dict()
         while used_any:
             distance += 1
             start = Tadd(position, util_mngr.reverseIf((distance * sig, 0), axis == 1))
@@ -527,7 +528,7 @@ class GridEnvironment(itf.iEnvironment):
                 # print(temp, "".join([str(el[1]) for el in L]), vis_inc)
                 for i in range(len(vis_inc)):
                     if vis_inc[i]:
-                        RES[L[i][0]] = L[i][1]
+                        grid[L[i][0]] = L[i][1]
             if VO_dec.lines:
                 used_any = True
                 L = [(start, scheck)]
@@ -546,8 +547,7 @@ class GridEnvironment(itf.iEnvironment):
                 # print(temp, "".join([str(el[1]) for el in L]), vis_dec)
                 for i in range(len(vis_dec)):
                     if vis_dec[i]:
-                        RES[L[i][0]] = L[i][1]
-        return RES
+                        grid[L[i][0]] = L[i][1]
 
     def text_display(self, guide):
         """
@@ -568,7 +568,7 @@ class GridEnvironment(itf.iEnvironment):
                     val = "E"
                 s += str(val)
             res.append(s)
-        return self.grid.text_display(guide,self.taken)
+        return self.grid.text_display(guide, self.taken)
 
     def getEnvData(self, entityID=None):
         """
@@ -588,19 +588,19 @@ class GridEnvironment(itf.iEnvironment):
         if entity is None:
             return None  # Intended error
         location = entity.get(entity.LOCATION, None)
-        if entity.isInState(entity.S_blind):
-            return None
         if entity.get(entity.S_allseeing, False):
+            data["grid"] = self.grid.copy()
             for i in range(self.grid.scale[0]):
                 for j in range(self.grid.scale[1]):
                     data[(i, j)] = self.get_tile(i, j)
         else:
+            gridData = Grid2D(self.grid.scale, defaultValue=-1)
             viewdirs = entity.get(entity.P_viewdirections, 15)
             for i, direction in enumerate(V2DIRS):
                 if viewdirs & (1 << i) == 0:
                     continue
-                D = self.view_direction(location, direction)
-                data.update(D)
+                self.view_direction(location, direction, gridData)
+            data["grid"] = gridData
         for _, otherID in self.entityPriority:
             if otherID == entityID:
                 continue
@@ -641,7 +641,7 @@ class GridEnvironment(itf.iEnvironment):
             entityID (int, optional): ID of the entity. Defaults to None.
 
         Returns:
-            tuple: Grid and agent display data.
+            dict: Grid and agent display data.
         """
         if entityID is None:
             agents = dict()
@@ -650,22 +650,19 @@ class GridEnvironment(itf.iEnvironment):
             return self.grid, agents
         entityID: int
         if self.entities[entityID] is None:
-            return None, "Entity terminated"
+            return {"msg": "Entity terminated"}
         entity: GridEntity = self.entities[entityID]
         if entity.isInState(entity.S_blind):
-            return None, "Entity blinded"
+            return {"msg": "Entity blinded"}
         data = self.getEnvData(entityID)
-        grid = [[-1 for _ in E] for E in self.grid]
-        for E in data:
-            if type(E) != tuple or len(E) != 2:
-                continue
-            grid[E[0]][E[1]] = self.get_tile(E)
+        grid = data['grid']
         agents = dict()
         for E in self.taken.keys():
-            if E not in data:
+            if grid[E]==-1:
                 continue
             self.getAgentDisplay(agents, E)
-        return grid, agents
+        data['agents']=agents
+        return data # TODO check all implementations
 
     def getMoves(self, entityID=None, customLocation=None) -> list[tuple]:
         """
@@ -831,6 +828,7 @@ class GridEnvironment(itf.iEnvironment):
         Runs the environment.
         """
         return
+
     def GenerateGroup(self, size, learning_aspects, requests: dict) -> list['GridEnvironment']:
         """
         Generates a group of entities.
@@ -852,7 +850,8 @@ class GridEnvironment(itf.iEnvironment):
         """
         raise NotImplementedError
 
-    def GenerateSetGroups(self, size, learning_aspects: dict, requests: dict, ratio=None) -> list[list['GridEnvironment']]:
+    def GenerateSetGroups(self, size, learning_aspects: dict, requests: dict, ratio=None) -> list[
+        list['GridEnvironment']]:
         """
         Generates multiple groups of entities based on specified learning aspects and requests.
 
@@ -887,8 +886,6 @@ class GridEnvironment(itf.iEnvironment):
         for i, groupSize in enumerate(ratio):
             X.append(self.GenerateGroup(groupSize, learning_aspects, requests))
         return X
-
-
 
 
 def readPlaneEnvironment(json_str, index, agentDict=None) -> GridEnvironment:

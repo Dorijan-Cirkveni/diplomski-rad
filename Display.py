@@ -5,6 +5,7 @@ from definitions import *
 import interfaces as itf
 from util import TupleDotOperations as tdo
 import environments.EnvironmentManager as env_mngr
+from util.Grid2D import *
 
 GridEnvironment = env_mngr.grid_env.GridEnvironment
 
@@ -196,8 +197,8 @@ class GridDisplay:
             part: iButton
             part.draw(screen)
 
-        viewpoint:iButton=self.buttons["viewpoint"]
-        viewpoint.text="Viewpoint: {}".format(self.obsAgent)
+        viewpoint: iButton = self.buttons["viewpoint"]
+        viewpoint.text = "Viewpoint: {}".format(self.obsAgent)
 
         pygame.display.flip()
 
@@ -236,11 +237,14 @@ class GridDisplay:
 
     def draw_frame(self, delay=0):
         self.draw_buttons()
-        grid, agents = self.grid.getDisplayData(self.obsAgent)
+        data:dict = self.grid.getDisplayData(self.obsAgent)
+        grid:Grid2D=data.get('grid',None)
+        agents:dict=data.get('agents',dict())
         if grid is None:
-            self.term_screen.text = agents
+            self.term_screen.text = data.get("msg","Missing message")
             self.term_screen.draw(self.screen)
         else:
+            print(grid.text_display(" FWGGGGGGGGX"))
             for row_coordinate, row_content in enumerate(grid):
                 row_tiles = [e for e in row_content if isinstance(e, int)]
                 row_agents = {}
@@ -380,6 +384,15 @@ def GridTest(file, ind):
     testGI.run()
 
 
+ALLFILES = {
+    "base": "test_json/basic_tests.json",
+    "maze": "test_json/basic_maze_tests.json",
+    "mirror": "test_json/mirror_tests.json",
+    "allcats": "test_json/all_categories.json",
+    "null": "null"
+}
+
+
 def GT1(ind=0):
     return GridTest("test_json/basic_tests.json", ind)
 
@@ -394,16 +407,23 @@ def MazeTest():
     testGI.run()
 
 
-def commandRun():
-    categories = {"base": GridTest, "maze": MazeTest}
+def CommandRun(commandList=None):
+    if commandList is None:
+        commandList = []
+    commandList.reverse()
     while True:
-        command = input(">>>").split()
+        command = (commandList.pop() if commandList else input(">>>")).split()
         if command[0] == "exit":
             return
+        filename=command[0]
+        if filename in ALLFILES:
+            filename=ALLFILES[filename]
+        index=int(command[1])
+        GridTest(filename,index)
 
 
 def main():
-    GT1(4)
+    CommandRun(["mirror 0"])
 
 
 if __name__ == "__main__":

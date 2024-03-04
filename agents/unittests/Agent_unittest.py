@@ -1,3 +1,4 @@
+import copy
 import unittest
 from agents.Agent import *
 

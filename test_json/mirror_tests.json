@@ -1,0 +1,30 @@
+[
+  {
+  "envType": "grid",
+  "name": "Mirror Test 0",
+  "scale": [25,25],
+  "shapes": {
+    "rectangles": [
+      [0, 23, 24, 23, 1],
+      [12,0,12,24,6],
+      [0,0,24,24,2]
+    ]
+  },
+  "grid": [[],[],[],[],[0,1,2,3,4,5]],
+  "agent": [
+    ["RAA","42132143212132141241212"],
+    ["MIRROR","0"]
+  ],
+  "entities": [
+    {"id": 0, "displays": [0,1,2,3], "curdis": 3,
+      "properties": {"loc": [2, 5], "viewdir": 10},
+      "states": []
+    },
+    {"id": 1, "displays": [0,1,2,3], "curdis": 3, "properties": {"image": "blue", "loc": [15, 10]}}
+  ],
+  "activeEntities": [0],
+  "passiveMoveLimit": 1,
+  "effects": [["blind",5,1,0]],
+  "null": null
+}
+]
