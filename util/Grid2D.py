@@ -36,7 +36,7 @@ class Grid2D:
     @staticmethod
     def getFromDict(raw: dict):
         dimensions = raw['dimensions']
-        grid = raw.get('return_grid', [])
+        grid = raw.get('grid', [])
         default = raw.get('default', 0)
         return Grid2D(dimensions, grid, default)
 
