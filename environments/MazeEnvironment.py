@@ -7,11 +7,11 @@ import util.mazes as mazes
 
 def rect(E, grid):
     """
-    Draw a rectangle on the grid with the given value.
+    Draw a rectangle on the return_grid with the given value.
 
     Args:
         E (tuple): A tuple containing the coordinates and the value of the rectangle.
-        grid (list): The grid on which to draw the rectangle.
+        grid (list): The return_grid on which to draw the rectangle.
 
     Returns:
         None
@@ -49,7 +49,7 @@ class MazeEnvironment(GridEnvironment):
         Initialize the MazeEnvironment.
 
         Args:
-            scale (tuple): The scale of the grid.
+            scale (tuple): The scale of the return_grid.
             start (tuple): The starting position.
             idealGoal (tuple): The ideal goal position.
             maze_seed (int): The seed for generating the maze.
@@ -134,7 +134,7 @@ class DualMazeEnvironment(GridEnvironment):
         Initialize the DualMazeEnvironment.
 
         Args:
-            scale (tuple): The scale of the grid.
+            scale (tuple): The scale of the return_grid.
             start (tuple): The starting position.
             goal (tuple): The goal position.
             maze_seed (int): The seed for generating the maze.

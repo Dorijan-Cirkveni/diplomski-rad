@@ -238,13 +238,13 @@ class GridDisplay:
     def draw_frame(self, delay=0):
         self.draw_buttons()
         data:dict = self.grid.getDisplayData(self.obsAgent)
-        grid:Grid2D=data.get('grid',None)
+        grid:Grid2D=data.get('return_grid',None)
         agents:dict=data.get('agents',dict())
         if grid is None:
             self.term_screen.text = data.get("msg","Missing message")
             self.term_screen.draw(self.screen)
         else:
-            # print(grid.text_display(" FWGGGGGGGGX"))
+            # print(return_grid.text_display(" FWGGGGGGGGX"))
             for row_coordinate, row_content in enumerate(grid):
                 row_tiles = [e for e in row_content if isinstance(e, int)]
                 row_agents = {}
@@ -336,7 +336,7 @@ class GridInteractive:
                      agentTypes: list[GridElementDisplay]
                      ):
         if self.grid is None:
-            print("Load a grid first!")
+            print("Load a return_grid first!")
         self.grid: GridEnvironment
         self.display = GridDisplay(self.grid, elementTypes, agentTypes, None)
         self.display.place_buttons()

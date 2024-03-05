@@ -8,16 +8,16 @@ WRAP_BOTH = 3
 
 class Grid2D:
     """
-    Class representing a 2D grid.
+    Class representing a 2D return_grid.
     """
 
     def __init__(self, dimensions: tuple, M: list[list] = None, defaultValue=0):
         """
-        Initialize a 2D grid with given dimensions.
+        Initialize a 2D return_grid with given dimensions.
 
-        :param dimensions: tuple: The dimensions of the grid in the format (rows, columns).
-        :param M: list[list], optional: Optional initial grid values. Defaults to None.
-        :param defaultValue: Default value for grid cells. Defaults to 0.
+        :param dimensions: tuple: The dimensions of the return_grid in the format (rows, columns).
+        :param M: list[list], optional: Optional initial return_grid values. Defaults to None.
+        :param defaultValue: Default value for return_grid cells. Defaults to 0.
 
         :raises Exception: If dimensions tuple dimensions are not 2.
         """
@@ -36,15 +36,15 @@ class Grid2D:
     @staticmethod
     def getFromDict(raw: dict):
         dimensions = raw['dimensions']
-        grid = raw.get('grid', [])
+        grid = raw.get('return_grid', [])
         default = raw.get('default', 0)
         return Grid2D(dimensions, grid, default)
 
     def __copy__(self):
         """
-        Create a deep copy of the grid.
+        Create a deep copy of the return_grid.
 
-        :return: Grid2D: A copy of the grid object.
+        :return: Grid2D: A copy of the return_grid object.
         """
         newG2D = Grid2D((0, 0))
         newG2D.scale = self.scale
@@ -59,15 +59,15 @@ class Grid2D:
 
     def copy(self):
         """
-        Alias for __copy__ method. (Create a deep copy of the grid.)
+        Alias for __copy__ method. (Create a deep copy of the return_grid.)
 
-        :return: Grid2D: A copy of the grid object.
+        :return: Grid2D: A copy of the return_grid object.
         """
         return self.__copy__()
 
     def __getitem__(self, item):
         """
-        Get an item from the grid.
+        Get an item from the return_grid.
 
         :param item: Integer or tuple index.
 
@@ -76,7 +76,7 @@ class Grid2D:
         -a tile value if type(item) is a tuple
 
         :raises Exception: If index is neither integer nor tuple.
-        :raises Exception: If index is out of grid bounds.
+        :raises Exception: If index is out of return_grid bounds.
         :raises Exception: If tuple index dimensions are not 2.
         """
         if type(item) == int:
@@ -85,20 +85,20 @@ class Grid2D:
             if len(item) != 2:
                 raise Exception("Index tuple dimensions must be 2, not {}".format(len(item)))
             if not Tinrange(item, self.scale):
-                raise Exception("Index {} not in grid {}".format(item, self.scale))
+                raise Exception("Index {} not in return_grid {}".format(item, self.scale))
             return self.M[item[0]][item[1]]
         raise Exception("Index must be int or tuple, not {}".format(type(item)))
 
     def __setitem__(self, key, value):
         """
-        Set an item in the grid.
+        Set an item in the return_grid.
 
         :param key: Integer or tuple index.
         :param value: Value to be set.
 
         :raises Exception: For an integer index, if column insertion value is not a list.
         :raises Exception: For a tuple index, if its dimensions are not 2.
-        :raises Exception: If the index is out of grid bounds.
+        :raises Exception: If the index is out of return_grid bounds.
         """
         if type(key) == int:
             if type(value) != list:
@@ -112,7 +112,7 @@ class Grid2D:
             if len(key) != 2:
                 print("Index tuple dimensions must be 2, not {}".format(len(key)))
             if not Tinrange(key, self.scale):
-                raise Exception("Index {} not in grid {}".format(key, self.scale))
+                raise Exception("Index {} not in return_grid {}".format(key, self.scale))
             self.M[key[0]][key[1]] = value
             return
         raise Exception("Index must be int or tuple, not {}".format(type(key)))
@@ -122,11 +122,11 @@ class Grid2D:
         Get neighboring indices of a given key.
 
         :param key: tuple: The key for which neighbors are to be found.
-        :param wrapAround: int, optional: Option for wrapping around the grid edges. Defaults to WRAP_NONE.
+        :param wrapAround: int, optional: Option for wrapping around the return_grid edges. Defaults to WRAP_NONE.
 
         :return: list: List of neighboring indices.
 
-        :notes: Assumes grid is a torus if wrapAround is specified.
+        :notes: Assumes return_grid is a torus if wrapAround is specified.
         """
         neighbours = Tneighbours(key)
         res = []
@@ -144,11 +144,11 @@ class Grid2D:
 
     def apply(self, func: callable):
         """
-        Apply a function to each element in the grid in place, then return self.
+        Apply a function to each element in the return_grid in place, then return self.
 
         :param func: callable: Function to be applied.
 
-        :return: Grid2D: The modified grid object.
+        :return: Grid2D: The modified return_grid object.
         """
         for i, E in enumerate(self.M):
             for j, f in enumerate(E):
@@ -157,11 +157,11 @@ class Grid2D:
 
     def makeNew(self, func: callable):
         """
-        Create a new grid by applying a function to each element in the grid.
+        Create a new return_grid by applying a function to each element in the return_grid.
 
         :param func: callable: Function to be applied.
 
-        :return: Grid2D: A new grid object with the function applied to each element.
+        :return: Grid2D: A new return_grid object with the function applied to each element.
         """
         newGrid = self.copy()
         return newGrid.apply(func)
@@ -171,11 +171,11 @@ class Grid2D:
 
     def hasTileOfIndex(self, E: tuple):
         """
-        Check if the grid contains a tile at the given index.
+        Check if the return_grid contains a tile at the given index.
 
         :param E: tuple: Index tuple.
 
-        :return: bool: True if the grid contains a tile at the given index, False otherwise.
+        :return: bool: True if the return_grid contains a tile at the given index, False otherwise.
         """
         return Tinrange(E, self.scale)
 

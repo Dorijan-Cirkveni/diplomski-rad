@@ -13,10 +13,10 @@ tile_counter = util_mngr.Counter()
 
 def rect(E, grid):
     """
-    Draw a rectangle on the grid with the provided value.
+    Draw a rectangle on the return_grid with the provided value.
 
     :param E: tuple: Coordinates and value for the rectangle (y1, x1, y2, x2, v).
-    :param grid: Grid2D: The grid to draw the rectangle on.
+    :param grid: Grid2D: The return_grid to draw the rectangle on.
     """
     if len(E) != 5:
         raise Exception("Bad rect data length!")
@@ -113,7 +113,7 @@ counter = util_mngr.Counter()
 
 class GridEntity(itf.iEntity):
     """
-    A class representing an entity in a grid environment.
+    A class representing an entity in a return_grid environment.
     """
     S_blind = "blind"
     S_allseeing = "allsee"
@@ -162,12 +162,12 @@ class GridEntity(itf.iEntity):
         relativeTo = self.get(self.LOCATION, (0, 0))
         if not self.properties.get(self.S_mirror, False):
             data['agent_last_action'] = dict()
-        gridData: Grid2D = data.pop("grid")
+        gridData: Grid2D = data.pop("return_grid")
         if self.S_blind in self.states:
             gridData = Grid2D(gridData.scale, defaultValue=-1)
         else:
             if gridData is None:
-                raise Exception("Not sending grid data properly!")
+                raise Exception("Not sending return_grid data properly!")
             if self.P_visionlimit in self.properties:
                 gridData.applyManhatLimit(relativeTo, self.properties[self.P_visionlimit])
         if self.S_relativepos in self.states:
@@ -196,7 +196,7 @@ class GridEntity(itf.iEntity):
 
 class GridEnvironment(itf.iEnvironment):
     """
-    A class representing a grid environment.
+    A class representing a return_grid environment.
     """
 
     # Constants representing directions
@@ -205,20 +205,21 @@ class GridEnvironment(itf.iEnvironment):
     dir_left = 2
     dir_right = 3
 
-    def __init__(self, grid: Grid2D, entities: list[GridEntity] = None,
+    def __init__(self, grid: Grid2D, viewedGrid: Grid2D=None, entities: list[GridEntity] = None,
                  activeEntities: set = None, tileTypes: list[PlaneTile] = None, extraData: dict = None):
         """
         Initializes a new GridEnvironment instance.
 
         Args:
-            grid (Grid2D): The grid representing the environment.
+            grid (Grid2D): The return_grid representing the environment.
             entities (list[GridEntity], optional): List of entities in the environment. Defaults to None.
             activeEntities (set, optional): Set of active entity IDs. Defaults to None.
             tileTypes (list[PlaneTile], optional): List of tile types. Defaults to None.
             extraData (dict, optional): Extra data for the environment. Defaults to None.
         """
         super().__init__(entities, activeEntities, extraData=extraData)
-        self.grid: Grid2D = grid
+        self.solidGrid: Grid2D = grid
+        self.viewedGrid: Grid2D = grid if viewedGrid is None else viewedGrid
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
         self.tileData = {"disFor": dict()}
         self.taken = dict()
@@ -250,18 +251,18 @@ class GridEnvironment(itf.iEnvironment):
     @staticmethod
     def assembleGrid(raw):
         """
-        Static method to assemble the grid from raw data.
+        Static method to assemble the return_grid from raw data.
 
         Args:
-            raw: Raw data containing grid information.
+            raw: Raw data containing return_grid information.
 
         Returns:
-            Grid2D: Assembled grid.
+            Grid2D: Assembled return_grid.
         """
         grid_raw = dict()
         grid_raw['dimensions'] = tuple(raw.get("scale", [20, 20]))
-        if 'grid' in raw:
-            grid_raw['grid'] = raw['grid']
+        if 'return_grid' in raw:
+            grid_raw['return_grid'] = raw['return_grid']
         grid_raw['default'] = raw.get('default', 0)
         grid = Grid2D.getFromDict(grid_raw)
         shapes = raw.get("shapes", {})
@@ -272,6 +273,17 @@ class GridEnvironment(itf.iEnvironment):
                         continue
                     rect(tuple(e), grid.M)
         return grid
+
+    @staticmethod
+    def getCustomTileup(raw):
+        X = []
+        for el in raw:
+            if type(el) == int:
+                X.append(PlaneTile(el))
+            elif type(el) == tuple:
+                el: tuple
+                tileBase, tileExceptions = el
+                X.append(PlaneTile(tileBase,tileExceptions))
 
     @staticmethod
     def getInputFromDict(raw: dict):
@@ -316,12 +328,12 @@ class GridEnvironment(itf.iEnvironment):
 
     def getScale(self):
         """
-        Returns the scale (size) of the grid.
+        Returns the scale (size) of the return_grid.
 
         Returns:
             tuple: Grid scale (number of rows, number of columns).
         """
-        return self.grid.scale
+        return self.solidGrid.scale
 
     def __copy__(self):
         """
@@ -330,13 +342,17 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             GridEnvironment: Copy of the current GridEnvironment instance.
         """
-        newGrid = self.grid.__copy__()
+        newGrid = self.solidGrid.__copy__()
+        newViewedGrid = None if self.viewedGrid is self.solidGrid else self.viewedGrid.copy()
         entities = []
         for e in self.entities:
             e: GridEntity
             entities.append(e.__copy__())
-        new = GridEnvironment(newGrid, entities)
+        new = GridEnvironment(newGrid, newViewedGrid, entities) # TODO finish copy function
         return new
+
+    def chooseGrid(self,viewed:bool):
+        return self.viewedGrid if viewed else self.solidGrid
 
     def setDistances(self, M, agentID=None):
         """
@@ -351,11 +367,12 @@ class GridEnvironment(itf.iEnvironment):
         self.tileData["disFor"] = disfor
         return
 
-    def applyFromGrid(self, func):
-        scale = self.grid.scale
+    def applyFromGrid(self, func, viewed=False):
+        grid=self.chooseGrid(viewed)
+        scale = grid.scale
         for i in range(scale[0]):
             for j in range(scale[1]):
-                func(self.get_tile(i, j))
+                func(self.get_tile((i, j),viewed))
         return
 
     def calcDistances(self, agentID=None, ignoreObstacles=False):
@@ -376,7 +393,7 @@ class GridEnvironment(itf.iEnvironment):
             data = entity.properties
         temp = []
         M = []
-        for i, E in enumerate(self.grid):
+        for i, E in enumerate(self.solidGrid):
             L = []
             for j, F in enumerate(E):
                 entry = None
@@ -398,7 +415,7 @@ class GridEnvironment(itf.iEnvironment):
                 moves = self.getMoves(agentID)
                 for move in moves:
                     newpos = Tadd(E, move)
-                    newtiletype = self.get_tile(newpos)
+                    newtiletype = self.get_tile(newpos,False)
                     if newtiletype is None:
                         continue
                     tile = self.tileTypes[newtiletype]
@@ -423,7 +440,7 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             int: Position value.
         """
-        tile = self.get_tile(position)
+        tile = self.get_tile(position,False)
         if tile is None:
             return None
         disfor = self.tileData['disFor']
@@ -432,25 +449,24 @@ class GridEnvironment(itf.iEnvironment):
         M = disfor[str(agentID) + "_" + str(ignoreObstacles)]
         return M[position[0]][position[1]]
 
-    def get_tile(self, i, j=None, curtime=0):
+    def get_tile(self, E:tuple, viewed:bool, curtime=0):
         """
         Gets the tile at the specified position.
 
         Args:
-            i (int or tuple): Row index or position coordinates.
-            j (int, optional): Column index. Defaults to None.
+            E (tuple): Position coordinates.
+            viewed (bool): Whether the tile is from viewed return_grid or solid return_grid.
             curtime (int): Time (iteration number). Not used in base class, defaults to 0.
 
         Returns:
             int: Tile value.
         """
-        if j is None:
-            i, j = i
-        if not Tinrange((i, j), self.grid.scale):
+        grid:Grid2D=self.chooseGrid(viewed)
+        if not Tinrange(E, grid.scale):
             return None
-        return self.grid[i][j]
+        return grid[E]
 
-    def is_tile_movable(self, tilePos, agentData, curtime=0):
+    def is_tile_movable(self, tilePos, agentData, viewable=False, curtime=0):
         """
         Checks if the tile is movable.
 
@@ -462,14 +478,14 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             bool: True if the tile is movable, False otherwise.
         """
-        tileID = self.get_tile(tilePos)
+        tileID = self.get_tile(tilePos,viewable)
         if tileID is None:
             return False
         tile = self.tileTypes[tileID]
         movability = tile.checkIfMovable(agentData)
         return movability
 
-    def is_tile_lethal(self, tilePos, agentData):
+    def is_tile_lethal(self, tilePos, agentData, viewable=False):
         """
         Checks if the tile is lethal.
 
@@ -480,12 +496,12 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             bool: True if the tile is lethal, False otherwise.
         """
-        tileID = self.get_tile(tilePos)
+        tileID = self.get_tile(tilePos,viewable)
         tile = self.tileTypes[tileID]
         movability = tile.checkIfLethal(agentData)
         return movability
 
-    def view_direction(self, position, direction: tuple, grid: Grid2D, opaque=None):
+    def view_direction(self, position, direction: tuple, return_grid: Grid2D, opaque=None, viewable=True):
         """
         Views in the specified direction.
 
@@ -507,7 +523,7 @@ class GridEnvironment(itf.iEnvironment):
         while used_any:
             distance += 1
             start = Tadd(position, util_mngr.reverseIf((distance * sig, 0), axis == 1))
-            scheck = self.get_tile(start)
+            scheck = self.get_tile(start,viewable)
             # print(start, scheck)
             if scheck is None:
                 break
@@ -521,7 +537,7 @@ class GridEnvironment(itf.iEnvironment):
                         i * (1 - axis)
                     )
                     temp = Tadd(start, diff)
-                    val = self.get_tile(temp)
+                    val = self.get_tile(temp,viewable)
                     if val is None:
                         break
                     L.append((temp, val))
@@ -529,7 +545,7 @@ class GridEnvironment(itf.iEnvironment):
                 # print(temp, "".join([str(el[1]) for el in L]), vis_inc)
                 for i in range(len(vis_inc)):
                     if vis_inc[i]:
-                        grid[L[i][0]] = L[i][1]
+                        return_grid[L[i][0]] = L[i][1]
             if VO_dec.lines:
                 used_any = True
                 L = [(start, scheck)]
@@ -540,7 +556,7 @@ class GridEnvironment(itf.iEnvironment):
                         i * (1 - axis)
                     )
                     temp = Tsub(start, diff)
-                    val = self.get_tile(temp)
+                    val = self.get_tile(temp,viewable)
                     if val is None:
                         break
                     L.append((temp, val))
@@ -548,28 +564,20 @@ class GridEnvironment(itf.iEnvironment):
                 # print(temp, "".join([str(el[1]) for el in L]), vis_dec)
                 for i in range(len(vis_dec)):
                     if vis_dec[i]:
-                        grid[L[i][0]] = L[i][1]
+                        return_grid[L[i][0]] = L[i][1]
 
-    def text_display(self, guide):
+    def text_display(self, guide, viewable:bool):
         """
-        Generates a text display of the grid.
+        Generates a text display of the return_grid.
 
         Args:
             guide: Guide for displaying tiles.
 
         Returns:
-            str: Text representation of the grid.
+            str: Text representation of the return_grid.
         """
-        res = []
-        for i, E in enumerate(self.grid):
-            s = ""
-            for j, e in enumerate(E):
-                val = guide[e]
-                if (i, j) in self.taken:
-                    val = "E"
-                s += str(val)
-            res.append(s)
-        return self.grid.text_display(guide, self.taken)
+        grid=self.chooseGrid(viewable)
+        return grid.text_display(guide, self.taken)
 
     def getEnvData(self, entityID=None):
         """
@@ -590,7 +598,7 @@ class GridEnvironment(itf.iEnvironment):
             return None  # Intended error
         location = entity.get(entity.LOCATION, None)
         if entity.get(entity.S_allseeing, False):
-            data["grid"] = self.grid.copy()
+            data["return_grid"] = self.grid.copy()
             for i in range(self.grid.scale[0]):
                 for j in range(self.grid.scale[1]):
                     data[(i, j)] = self.get_tile(i, j)
@@ -601,7 +609,7 @@ class GridEnvironment(itf.iEnvironment):
                 if viewdirs & (1 << i) == 0:
                     continue
                 self.view_direction(location, direction, gridData)
-            data["grid"] = gridData
+            data["return_grid"] = gridData
         for _, otherID in self.entityPriority:
             if otherID == entityID:
                 continue
@@ -648,7 +656,7 @@ class GridEnvironment(itf.iEnvironment):
             agents = dict()
             for E in self.taken.keys():
                 self.getAgentDisplay(agents, E)
-            return {"grid":self.grid, "agents":agents}
+            return {"return_grid": self.grid, "agents": agents}
         entityID: int
         if self.entities[entityID] is None:
             return {"msg": "Entity terminated"}
@@ -656,14 +664,14 @@ class GridEnvironment(itf.iEnvironment):
         if entity.isInState(entity.S_blind):
             return {"msg": "Entity blinded"}
         data = self.getEnvData(entityID)
-        grid = data['grid']
+        grid = data['return_grid']
         agents = dict()
         for E in self.taken.keys():
-            if grid[E]==-1:
+            if grid[E] == -1:
                 continue
             self.getAgentDisplay(agents, E)
-        data['agents']=agents
-        return data # TODO check all implementations
+        data['agents'] = agents
+        return data  # TODO check all implementations
 
     def getMoves(self, entityID=None, customLocation=None) -> list[tuple]:
         """
@@ -891,7 +899,7 @@ class GridEnvironment(itf.iEnvironment):
 
 def readPlaneEnvironment(json_str, index, agentDict=None) -> GridEnvironment:
     """
-    Reads a grid-based environment from JSON data and returns a GridEnvironment object.
+    Reads a return_grid-based environment from JSON data and returns a GridEnvironment object.
 
     Args:
         json_str (str): The JSON string containing environment data.

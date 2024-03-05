@@ -41,13 +41,13 @@ class TestGrid2D(unittest.TestCase):
 
 class TestGrid2DCopy(unittest.TestCase):
     def test_copy(self):
-        # Create a sample grid
+        # Create a sample return_grid
         original_grid = Grid2D((3, 3), [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 
-        # Make a copy of the original grid
+        # Make a copy of the original return_grid
         copied_grid = original_grid.__copy__()
 
-        # Assert that the copied grid is indeed a separate object
+        # Assert that the copied return_grid is indeed a separate object
         self.assertIsNot(copied_grid, original_grid)
 
         # Assert that dimensions are copied correctly
