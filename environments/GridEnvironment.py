@@ -166,7 +166,7 @@ class GridEntity(itf.iEntity):
         if self.S_blind in self.states:
             gridData = Grid2D(gridData.scale, defaultValue=-1)
         else:
-            if "grid" not in data:
+            if gridData is None:
                 raise Exception("Not sending grid data properly!")
             if self.P_visionlimit in self.properties:
                 gridData.applyManhatLimit(relativeTo, self.properties[self.P_visionlimit])
@@ -190,7 +190,8 @@ class GridEntity(itf.iEntity):
         """
         if self.properties.get(self.S_frozen, False):
             actions = dict()
-        return self.agent.performAction(actions)
+        res = self.agent.performAction(actions)
+        return res
 
 
 class GridEnvironment(itf.iEnvironment):
@@ -647,7 +648,7 @@ class GridEnvironment(itf.iEnvironment):
             agents = dict()
             for E in self.taken.keys():
                 self.getAgentDisplay(agents, E)
-            return self.grid, agents
+            return {"grid":self.grid, "agents":agents}
         entityID: int
         if self.entities[entityID] is None:
             return {"msg": "Entity terminated"}

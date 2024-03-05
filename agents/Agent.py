@@ -1,3 +1,4 @@
+import definitions
 import interfaces as itf
 
 
@@ -60,9 +61,9 @@ class MirrorAgent(itf.iAgent):
 
         :param data: Data received from the environment.
         """
-        data = data.get("agent_last_action", dict())
-        data = data.get(self.mirroredAgent, None)
-        self.agent_data = data
+        curdata = data.get("agent_current_action", dict())
+        MAdata = curdata.get(self.mirroredAgent, None)
+        self.agent_data = MAdata
         return
 
     def performAction(self, actions):
@@ -72,6 +73,7 @@ class MirrorAgent(itf.iAgent):
         :param actions: Available actions.
         :return: object: Action to be performed.
         """
+        print(self.agent_data,self.actionMirrors)
         action = self.actionMirrors.get(self.agent_data, self.agent_data)
         return action
 
@@ -86,17 +88,20 @@ class MirrorAgent(itf.iAgent):
         return newMirror
 
 
-def intMAFactory(actionMirrors):
-    """
-    Factory function to create MirrorAgent instances with preset action mirrors.
-
-    :param actionMirrors: Dictionary mapping original actions to mirrored actions.
-    :return: function: Factory function for creating MirrorAgent instances.
-    """
-    def MakeMirrorAgent(mirroredAgent):
-        return MirrorAgent(mirroredAgent, actionMirrors)
-
-    return MakeMirrorAgent
+def MakeMirrorAgent(raw_data:dict):
+    keywords={
+        "O":[0,1,2,3,4],
+        "X":[1,0,2,3,4],
+        "Y":[0,1,3,2,4],
+        "B":[1,0,3,2,4]
+    }
+    mirrored_ID = raw_data.get('source',0)
+    actionbase=definitions.ACTIONS
+    MA_list=raw_data.get('actions',[0,1,2,3,4])
+    if MA_list in keywords:
+        MA_list= keywords[MA_list]
+    actions={actionbase[i]:actionbase[e] for i,e in enumerate(MA_list)}
+    return MirrorAgent(mirrored_ID, actions)
 
 
 class RecordedActionsAgent(itf.iAgent):
@@ -152,6 +157,7 @@ def initRAAFactory(translation):
     :param translation: Translation of actions.
     :return: function: Factory function for creating RecordedActionsAgent instances.
     """
+
     def initRAA(s="4213214321"):
         actions = []
         for e in s:
@@ -260,7 +266,6 @@ class GraphicManualInputAgent(itf.iAgent):
         return self.cur
 
     def __copy__(self):
-
         """
 
         Creates a copy of the GraphicManualInputAgent.

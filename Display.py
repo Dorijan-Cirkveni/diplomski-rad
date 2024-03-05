@@ -244,7 +244,7 @@ class GridDisplay:
             self.term_screen.text = data.get("msg","Missing message")
             self.term_screen.draw(self.screen)
         else:
-            print(grid.text_display(" FWGGGGGGGGX"))
+            # print(grid.text_display(" FWGGGGGGGGX"))
             for row_coordinate, row_content in enumerate(grid):
                 row_tiles = [e for e in row_content if isinstance(e, int)]
                 row_agents = {}

@@ -78,7 +78,8 @@ class iEnvironment:
         for ID, entity in enumerate(self.entities):
             priority = entity.getPriority()
             self.entityPriority.append((priority, ID))
-        self.entityPriority.sort()
+        self.entityPriority.sort(reverse=True)
+        self.runData=dict()
 
     @staticmethod
     def getFromDict(raw: dict):
@@ -137,27 +138,27 @@ class iEnvironment:
 
     def runIteration(self, curIter=0):
         D = dict()
-        self.data['agent_current_action'] = D
+        self.runData['agent_current_action'] = D
         cur_prio = 0
         cur_D = dict()
+        self.runData['agent_last_action'] = D
         for ent_prio, entityID in self.entityPriority:
             entity = self.entities[entityID]
-            entity: Entity
             if entity is None:
                 continue
-            if ent_prio > cur_prio:
+            if ent_prio != cur_prio:
                 D.update(cur_D)
                 cur_D = dict()
                 cur_prio = ent_prio
             envData = self.getEnvData(entityID)
             if envData is None:
                 envData={}
-            entity.receiveEnvironmentData(envData)
+            self.runData.update(envData)
+            entity.receiveEnvironmentData(self.runData)
             move = self.getMoves(entityID)
             chosenAction = entity.performAction(move)
             cur_D[entityID] = chosenAction
         D.update(cur_D)
-        self.data['agent_last_action'] = D
         self.runChanges(D)
         self.applyEffects(curIter)
 

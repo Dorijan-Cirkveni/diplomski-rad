@@ -13,14 +13,18 @@
   "grid": [[],[],[],[],[0,1,2,3,4,5]],
   "agent": [
     ["RAA","42132143212132141241212"],
-    ["MIRROR","0"]
+    ["MIRROR",{"source": 0,"actions": "Y"}]
   ],
   "entities": [
     {"id": 0, "displays": [0,1,2,3], "curdis": 3,
       "properties": {"loc": [2, 5], "viewdir": 10},
       "states": []
     },
-    {"id": 1, "displays": [0,1,2,3], "curdis": 3, "properties": {"image": "blue", "loc": [15, 10]}}
+    {"id": 1,
+      "displays": [0,1,2,3], "curdis": 3, "properties": {
+      "image": "red", "priority": -1, "loc": [15, 10]
+    }
+    }
   ],
   "activeEntities": [0],
   "passiveMoveLimit": 1,
