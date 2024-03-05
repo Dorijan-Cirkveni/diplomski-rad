@@ -205,7 +205,7 @@ class GridEnvironment(itf.iEnvironment):
     dir_left = 2
     dir_right = 3
 
-    def __init__(self, grid: Grid2D, viewedGrid: Grid2D=None, entities: list[GridEntity] = None,
+    def __init__(self, grid: Grid2D, viewedGrid: Grid2D = None, entities: list[GridEntity] = None,
                  activeEntities: set = None, tileTypes: list[PlaneTile] = None, extraData: dict = None):
         """
         Initializes a new GridEnvironment instance.
@@ -283,7 +283,7 @@ class GridEnvironment(itf.iEnvironment):
             elif type(el) == tuple:
                 el: tuple
                 tileBase, tileExceptions = el
-                X.append(PlaneTile(tileBase,tileExceptions))
+                X.append(PlaneTile(tileBase, tileExceptions))
 
     @staticmethod
     def getInputFromDict(raw: dict):
@@ -348,10 +348,10 @@ class GridEnvironment(itf.iEnvironment):
         for e in self.entities:
             e: GridEntity
             entities.append(e.__copy__())
-        new = GridEnvironment(newGrid, newViewedGrid, entities) # TODO finish copy function
+        new = GridEnvironment(newGrid, newViewedGrid, entities)  # TODO finish copy function
         return new
 
-    def chooseGrid(self,viewed:bool):
+    def chooseGrid(self, viewed: bool):
         return self.viewedGrid if viewed else self.solidGrid
 
     def setDistances(self, M, agentID=None):
@@ -368,11 +368,11 @@ class GridEnvironment(itf.iEnvironment):
         return
 
     def applyFromGrid(self, func, viewed=False):
-        grid=self.chooseGrid(viewed)
+        grid = self.chooseGrid(viewed)
         scale = grid.scale
         for i in range(scale[0]):
             for j in range(scale[1]):
-                func(self.get_tile((i, j),viewed))
+                func(self.get_tile((i, j), viewed))
         return
 
     def calcDistances(self, agentID=None, ignoreObstacles=False):
@@ -415,7 +415,7 @@ class GridEnvironment(itf.iEnvironment):
                 moves = self.getMoves(agentID)
                 for move in moves:
                     newpos = Tadd(E, move)
-                    newtiletype = self.get_tile(newpos,False)
+                    newtiletype = self.get_tile(newpos, False)
                     if newtiletype is None:
                         continue
                     tile = self.tileTypes[newtiletype]
@@ -440,7 +440,7 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             int: Position value.
         """
-        tile = self.get_tile(position,False)
+        tile = self.get_tile(position, False)
         if tile is None:
             return None
         disfor = self.tileData['disFor']
@@ -449,7 +449,7 @@ class GridEnvironment(itf.iEnvironment):
         M = disfor[str(agentID) + "_" + str(ignoreObstacles)]
         return M[position[0]][position[1]]
 
-    def get_tile(self, E:tuple, viewed:bool, curtime=0):
+    def get_tile(self, E: tuple, viewed: bool, curtime=0):
         """
         Gets the tile at the specified position.
 
@@ -461,7 +461,7 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             int: Tile value.
         """
-        grid:Grid2D=self.chooseGrid(viewed)
+        grid: Grid2D = self.chooseGrid(viewed)
         if not Tinrange(E, grid.scale):
             return None
         return grid[E]
@@ -478,7 +478,7 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             bool: True if the tile is movable, False otherwise.
         """
-        tileID = self.get_tile(tilePos,viewable)
+        tileID = self.get_tile(tilePos, viewable)
         if tileID is None:
             return False
         tile = self.tileTypes[tileID]
@@ -496,7 +496,7 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             bool: True if the tile is lethal, False otherwise.
         """
-        tileID = self.get_tile(tilePos,viewable)
+        tileID = self.get_tile(tilePos, viewable)
         tile = self.tileTypes[tileID]
         movability = tile.checkIfLethal(agentData)
         return movability
@@ -523,7 +523,7 @@ class GridEnvironment(itf.iEnvironment):
         while used_any:
             distance += 1
             start = Tadd(position, util_mngr.reverseIf((distance * sig, 0), axis == 1))
-            scheck = self.get_tile(start,viewable)
+            scheck = self.get_tile(start, viewable)
             # print(start, scheck)
             if scheck is None:
                 break
@@ -537,7 +537,7 @@ class GridEnvironment(itf.iEnvironment):
                         i * (1 - axis)
                     )
                     temp = Tadd(start, diff)
-                    val = self.get_tile(temp,viewable)
+                    val = self.get_tile(temp, viewable)
                     if val is None:
                         break
                     L.append((temp, val))
@@ -556,7 +556,7 @@ class GridEnvironment(itf.iEnvironment):
                         i * (1 - axis)
                     )
                     temp = Tsub(start, diff)
-                    val = self.get_tile(temp,viewable)
+                    val = self.get_tile(temp, viewable)
                     if val is None:
                         break
                     L.append((temp, val))
@@ -566,28 +566,22 @@ class GridEnvironment(itf.iEnvironment):
                     if vis_dec[i]:
                         return_grid[L[i][0]] = L[i][1]
 
-    def text_display(self, guide, viewable:bool):
+    def text_display(self, guide, viewable: bool):
         """
         Generates a text display of the return_grid.
-
-        Args:
-            guide: Guide for displaying tiles.
-
-        Returns:
-            str: Text representation of the return_grid.
+        :param guide: Guide for displaying tiles.
+        :param viewable: Text representation of the return_grid.
+        :return:
         """
-        grid=self.chooseGrid(viewable)
+        grid = self.chooseGrid(viewable)
         return grid.text_display(guide, self.taken)
 
-    def getEnvData(self, entityID=None):
+    def getEnvData(self, entityID: [int, None] = None):
         """
         Gets environment data.
 
-        Args:
-            entityID (int, optional): ID of the entity. Defaults to None.
-
-        Returns:
-            dict: Environment data.
+        :param entityID: ID of the entity. Defaults to None.
+        :return: Environment data.
         """
         data = dict()
         self.entities: list
