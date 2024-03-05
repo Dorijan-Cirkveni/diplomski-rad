@@ -62,8 +62,8 @@ class iButton:
 
 
 class Button(iButton):
-    def __init__(self, color, text, original_dimensions, runLambda):
-        self.runLambda = runLambda
+    def __init__(self, color, text, original_dimensions, runLambda=None):
+        self.runLambda = runLambda if runLambda is not None else (lambda:text)
         super().__init__(color, text, original_dimensions)
 
     def draw(self, screen):
@@ -118,10 +118,23 @@ class Joystick(iButton):
 
 
 class GridDisplay:
+    """
+    A class that represents a grid display.
+    """
     def __init__(self, grid: env_mngr.grid_env.GridEnvironment, elementTypes: list, agentTypes: list,
                  obsAgent: [int, None],
                  screenV=(800, 800),
                  gridscreenV=(600, 600), name="Untitled Grid Simulation"):
+        """
+
+        :param grid:
+        :param elementTypes:
+        :param agentTypes:
+        :param obsAgent:
+        :param screenV:
+        :param gridscreenV:
+        :param name:
+        """
         self.grid = grid
         gridV = self.grid.getScale()
         self.elementTypes: list[GridElementDisplay] = elementTypes
@@ -136,6 +149,7 @@ class GridDisplay:
         self.screen = None
         self.buttons = {}
         self.obsAgent = obsAgent
+        self.viewable = False
         self.iteration = 0
         self.bottom_text = ">"
         self.term_screen = Button((100, 100, 255), "NULL", (0, 0) + self.gridscreenV, lambda x: None)
@@ -155,6 +169,9 @@ class GridDisplay:
         self.obsAgent = None
         return (0, 0), 0
 
+    def toggle_viewable(self):
+        self.viewable=not self.viewable
+
     def show_display(self):
         pygame.init()
         self.screen = pygame.display.set_mode(self.screenV)
@@ -165,17 +182,27 @@ class GridDisplay:
 
         for num, e in enumerate(["Run iteration", "Run 10 iterations", "Run 100 iterations",
                                  "Run all iterations", "Exit"]):
-            test = Button((100, 0, 0), e, (5, 10 + 60 * num, 190, 50), lambda: e)
+            test = Button((100, 0, 0), e, (5, 10 + 60 * num, 190, 50))
             test.place((self.gridscreenV[0], 0))
             self.buttons["button" + e] = test
-
-        test = Joystick((100, 0, 0), (200, 0, 0), "text???")
-        test.place((650, 400), (1, 1))
-        self.buttons["joystick"] = test
 
         test = Button((100, 0, 0), "Viewpoint: {}".format(self.obsAgent), (5, 10 + 300, 190, 50), self.change_obs_agent)
         test.place((self.gridscreenV[0], 0))
         self.buttons["viewpoint"] = test
+
+        test = Button(
+            (100, 0, 0),
+            "Grid mode: "+["Real","Observed"][self.viewable],
+            (5, 10 + 360, 190, 50),
+            self.toggle_viewable
+        )
+        test.place((self.gridscreenV[0], 0))
+        self.buttons["viewable"] = test
+
+        test = Joystick((100, 0, 0), (200, 0, 0), "text???")
+        test.place((650, 450), (1, 1))
+        self.buttons["joystick"] = test
+
         return
 
     def draw_buttons(self):
@@ -238,7 +265,7 @@ class GridDisplay:
     def draw_frame(self, delay=0):
         self.draw_buttons()
         data:dict = self.grid.getDisplayData(self.obsAgent)
-        grid:Grid2D=data.get('return_grid',None)
+        grid:Grid2D=data.get('grid',None)
         agents:dict=data.get('agents',dict())
         if grid is None:
             self.term_screen.text = data.get("msg","Missing message")

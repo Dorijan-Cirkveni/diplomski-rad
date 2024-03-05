@@ -162,7 +162,7 @@ class GridEntity(itf.iEntity):
         relativeTo = self.get(self.LOCATION, (0, 0))
         if not self.properties.get(self.S_mirror, False):
             data['agent_last_action'] = dict()
-        gridData: Grid2D = data.pop("return_grid")
+        gridData: Grid2D = data.pop("grid")
         if self.S_blind in self.states:
             gridData = Grid2D(gridData.scale, defaultValue=-1)
         else:
@@ -514,7 +514,7 @@ class GridEnvironment(itf.iEnvironment):
         :param direction: Direction vector.
         :param return_grid:
         :param opaque: List of opaque tiles. Defaults to None.
-        :param viewable: 
+        :param viewable:
         """
         if opaque is None:
             opaque = default_opaque
@@ -636,7 +636,7 @@ class GridEnvironment(itf.iEnvironment):
         agents[E] = imageID
         return
 
-    def getDisplayData(self, entityID=None):
+    def getDisplayData(self, entityID=None, viewed=True):
         """
         Gets the display data.
 
@@ -650,7 +650,7 @@ class GridEnvironment(itf.iEnvironment):
             agents = dict()
             for E in self.taken.keys():
                 self.getAgentDisplay(agents, E)
-            return {"grid": self.viewedGrid, "agents": agents}
+            return {"grid": self.chooseGrid(viewed), "agents": agents}
         entityID: int
         if self.entities[entityID] is None:
             return {"msg": "Entity terminated"}
