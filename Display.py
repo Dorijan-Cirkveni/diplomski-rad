@@ -172,6 +172,12 @@ class GridDisplay:
     def toggle_viewable(self):
         self.viewable=not self.viewable
 
+    def make_jump_iteration(self,count):
+        def jump_iteration():
+            return None,count
+        return jump_iteration
+
+
     def show_display(self):
         pygame.init()
         self.screen = pygame.display.set_mode(self.screenV)
@@ -180,11 +186,15 @@ class GridDisplay:
 
     def place_buttons(self):
 
-        for num, e in enumerate(["Run iteration", "Run 10 iterations", "Run 100 iterations",
-                                 "Run all iterations", "Exit"]):
-            test = Button((100, 0, 0), e, (5, 10 + 60 * num, 190, 50))
+        for num, e in enumerate([10,100,1000,10000]):
+            text="Run {} iteration(s)".format(e)
+            test = Button((100, 0, 0), e, (5, 10 + 60 * num, 190, 50),self.make_jump_iteration(e))
             test.place((self.gridscreenV[0], 0))
-            self.buttons["button" + e] = test
+            self.buttons["button " + e] = test
+
+        test = Button((100, 0, 0), "Exit".format(self.obsAgent), (5, 10 + 240, 190, 50), self.exit)
+        test.place((self.gridscreenV[0], 0))
+        self.buttons["button Exit"] = test
 
         test = Button((100, 0, 0), "Viewpoint: {}".format(self.obsAgent), (5, 10 + 300, 190, 50), self.change_obs_agent)
         test.place((self.gridscreenV[0], 0))
@@ -296,6 +306,41 @@ class GridDisplay:
                 continue
             agent: GraphicManualInputAgent
             agent.cur = action
+    def processEvent(self,event,pastMove):
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type != pygame.MOUSEBUTTONDOWN:
+            continue
+        updateImage = True
+        for name, element in self.buttons.items():
+            element: iButton
+            isClicked = element.is_clicked(event)
+            if not isClicked:
+                continue
+            ret = element.run(event)
+            if type(ret)!=tuple:
+                result,runIter=pastMove,ret
+                break
+            result, runIter = ret
+            if result is not None:
+                self.apply_manual_action_to_agents(action=result)
+            break
+        return running, updateImage,
+
+    def runCycle(self):
+        runIter = 0
+        updateImage = False
+        for event in pygame.event.get():
+        if runIter != 0:
+            for i in range(runIter):
+                self.iteration += 1
+                self.grid.runIteration(self.iteration)
+            if self.grid.isWin():
+                status = True
+            self.show_iter(status)
+        if updateImage:
+            self.draw_frame()
+            self.draw_buttons()
 
     def run(self):
         self.place_buttons()
@@ -306,32 +351,6 @@ class GridDisplay:
         self.draw_frame()
         self.draw_buttons()
         while running:
-            runIter = 0
-            updateImage = False
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    updateImage = True
-                    for name, element in self.buttons.items():
-                        element: iButton
-                        isClicked = element.is_clicked(event)
-                        if isClicked:
-                            ret = element.run(event)
-                            result, runIter = ret
-                            if result is not None:
-                                self.apply_manual_action_to_agents(action=result)
-                            break
-            if runIter != 0:
-                for i in range(runIter):
-                    self.iteration += 1
-                    self.grid.runIteration(self.iteration)
-                if self.grid.isWin():
-                    status = True
-                self.show_iter(status)
-            if updateImage:
-                self.draw_frame()
-                self.draw_buttons()
 
         pygame.quit()
 
@@ -448,9 +467,24 @@ def CommandRun(commandList=None):
         index=int(command[1])
         GridTest(filename,index)
 
+def DebugRun():
+    X=[
+        ("base", 2),
+        ("maze", 1),
+        ("mirror", 1),
+        ("allcats", 0),
+        ("null", 0)
+       ]
+    commands=[]
+    for (short,count) in X:
+        for i in range(count):
+            commands.append("{} {}".format(short,i))
+    CommandRun(commands)
+
 
 def main():
-    CommandRun(["mirror 0"])
+    DebugRun()
+    # CommandRun(["mirror 0"])
 
 
 if __name__ == "__main__":
