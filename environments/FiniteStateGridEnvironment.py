@@ -1,3 +1,11 @@
+from GridEnvironment import *
+
+
+class FSGridEnvironment(GridEnvironment):
+    def __init__(self, grids):
+
+
+
 
 def main():
     return

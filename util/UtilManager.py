@@ -1,6 +1,9 @@
 from collections import deque
 
 
+def
+
+
 class Counter:
     def __init__(self, value: float = 0):
         self.value = value - 1

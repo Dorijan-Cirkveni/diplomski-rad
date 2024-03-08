@@ -3,16 +3,18 @@ import bisect
 from environments.GridEnvironment import *
 
 
-class SubEnv:
-    def __init__(self, grid: Grid2D, route: list[tuple[int, int]]):
-        self.grid: Grid2D = grid
+class Subgrid:
+    def __init__(self, solidGrid: Grid2D, visualGrid: Grid2D, route: list[tuple[int, int]]):
+        self.solidGrid: Grid2D = solidGrid
+        self.visualGrid: Grid2D = visualGrid
         self.route: list[tuple[int, int]] = route
         self.period = len(self.route)
 
     def __copy__(self):
-        newGrid = self.grid.copy()
+        newGrid = self.solidGrid.copy()
+        newVisualGrid = self.visualGrid.copy()
         newRoute = self.route.copy()
-        return Subgrid(newGrid, newRoute)
+        return Subgrid(newGrid,newVisualGrid, newRoute)
 
     def getValue(self, time):
         return self.route[time % self.period]
@@ -49,7 +51,8 @@ class DynamicGridEnvironment(GridEnvironment):
         return DynamicGridEnvironment(grid, subgrids, entities, active)
 
     def __copy__(self):
-        newGrid = self.grid.__copy__()
+        newSGrid = self.solidGrid.__copy__()
+        newVGrid = self.viewedGrid.__copy__()
         newSubgrids = []
         for e in self.subgrids:
             e: Subgrid
@@ -58,17 +61,17 @@ class DynamicGridEnvironment(GridEnvironment):
         for e in self.entities:
             e: GridEntity
             entities.append(e.__copy__())
-        new = DynamicGridEnvironment(newGrid, entities)
+        new = DynamicGridEnvironment(newSGrid,newVGrid, entities)
         return new
 
     def get_tile(self, i, j=None, curtime=0):
         if j is None:
             i, j = i
-        if not Tinrange((i, j), self.grid.scale):
+        if not Tinrange((i, j), self.solidGrid.scale):
             return None
         if self.currentGrid is not None:
             return self.currentGrid[i][j]
-        result = self.grid[i][j]
+        result = self.solidGrid[i][j]
         for subgrid in self.subgrids:
             curstate: tuple = subgrid.getValue(curtime)
             reltile = Tsub((i, j), curstate)

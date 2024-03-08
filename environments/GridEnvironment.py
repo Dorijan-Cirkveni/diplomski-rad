@@ -249,7 +249,7 @@ class GridEnvironment(itf.iEnvironment):
         return agentDict
 
     @staticmethod
-    def assembleGrid(raw):
+    def assembleGrid(raw, visual=False):
         """
         Static method to assemble a Grid2D object from raw data.
 
@@ -275,6 +275,33 @@ class GridEnvironment(itf.iEnvironment):
         return grid
 
     @staticmethod
+    def assembleDualGrid(raw):
+        """
+        Static method to assemble a Grid2D object from raw data.
+
+        Args:
+            raw: Raw data containing grid information.
+
+        Returns:
+            Grid2D: Assembled grid.
+        """
+        grid_raw = dict()
+        grid_raw['dimensions'] = tuple(raw.get("scale", [20, 20]))
+        if 'grid' in raw:
+            grid_raw['grid'] = raw['grid']
+        grid_raw['default'] = raw.get('default', 0)
+        grid = Grid2D.getFromDict(grid_raw)
+        shapes = raw.get("shapes", {})
+        for type_V, V in shapes.items():
+            if type_V == "rectangles":
+                for e in V:
+                    if not e:
+                        continue
+                    rect(tuple(e), grid.M)
+        visualGrid=
+        return grid,visualGrid
+
+    @staticmethod
     def getCustomTileup(raw):
         """
         Generate custom set of tiles for
@@ -293,7 +320,7 @@ class GridEnvironment(itf.iEnvironment):
     @staticmethod
     def getInputFromDict(raw: dict):
         agentDict = GridEnvironment.getAgentDict(raw)
-        grid = GridEnvironment.assembleGrid(raw)
+        grid = GridEnvironment.assembleGrid(raw.get("grid"))
         agents = []
         entities = []
         active = set()
