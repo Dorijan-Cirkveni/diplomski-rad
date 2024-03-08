@@ -167,10 +167,11 @@ class GridDisplay:
                 self.obsAgent = curAgent
                 return (0, 0), 0
         self.obsAgent = None
-        return (0, 0), 0
+        return 0
 
     def toggle_viewable(self):
         self.viewable=not self.viewable
+        return 0
 
     def make_jump_iteration(self,count):
         def jump_iteration():
@@ -187,12 +188,12 @@ class GridDisplay:
     def place_buttons(self):
 
         for num, e in enumerate([10,100,1000,10000]):
-            text="Run {} iteration(s)".format(e)
-            test = Button((100, 0, 0), e, (5, 10 + 60 * num, 190, 50),self.make_jump_iteration(e))
+            text="Run {} times".format(e)
+            test = Button((100, 0, 0), text, (5, 10 + 60 * num, 190, 50),self.make_jump_iteration(e))
             test.place((self.gridscreenV[0], 0))
-            self.buttons["button " + e] = test
+            self.buttons["button " + text] = test
 
-        test = Button((100, 0, 0), "Exit".format(self.obsAgent), (5, 10 + 240, 190, 50), self.exit)
+        test = Button((100, 0, 0), "Exit".format(self.obsAgent), (5, 10 + 240, 190, 50))
         test.place((self.gridscreenV[0], 0))
         self.buttons["button Exit"] = test
 
@@ -306,44 +307,12 @@ class GridDisplay:
                 continue
             agent: GraphicManualInputAgent
             agent.cur = action
-    def processEvent(self,event,pastMove):
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type != pygame.MOUSEBUTTONDOWN:
-            continue
-        updateImage = True
-        for name, element in self.buttons.items():
-            element: iButton
-            isClicked = element.is_clicked(event)
-            if not isClicked:
-                continue
-            ret = element.run(event)
-            if type(ret)!=tuple:
-                result,runIter=pastMove,ret
-                break
-            result, runIter = ret
-            if result is not None:
-                self.apply_manual_action_to_agents(action=result)
-            break
-        return running, updateImage,
-
-    def runCycle(self):
-        runIter = 0
-        updateImage = False
-        for event in pygame.event.get():
-        if runIter != 0:
-            for i in range(runIter):
-                self.iteration += 1
-                self.grid.runIteration(self.iteration)
-            if self.grid.isWin():
-                status = True
-            self.show_iter(status)
-        if updateImage:
-            self.draw_frame()
-            self.draw_buttons()
+    def ProcessEvent(self,event,updateImage,pastMove):
+        return running, updateImage, pastMove
 
     def run(self):
         self.place_buttons()
+        pastMove=(0,0)
         running = True
         status = None  # win=True, loss=False, ongoing=None
         self.show_iter()
@@ -351,7 +320,41 @@ class GridDisplay:
         self.draw_frame()
         self.draw_buttons()
         while running:
-
+            runIter = 0
+            updateImage = False
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type != pygame.MOUSEBUTTONDOWN:
+                    break
+                updateImage = True
+                for name, element in self.buttons.items():
+                    element: iButton
+                    isClicked = element.is_clicked(event)
+                    if not isClicked:
+                        continue
+                    ret = element.run(event)
+                    if type(ret) != tuple:
+                        result, runIter = pastMove, ret
+                        break
+                    result, runIter = ret
+                    if result is not None:
+                        self.apply_manual_action_to_agents(action=result)
+                    break
+            if not running:
+                break
+            if runIter != 0:
+                for i in range(runIter):
+                    self.iteration += 1
+                    self.grid.runIteration(self.iteration)
+                    if i%100==99:
+                        print("Iteration {}/{}".format(i+1,runIter))
+                if self.grid.isWin():
+                    status = True
+                self.show_iter(status)
+            if updateImage:
+                self.draw_frame()
+                self.draw_buttons()
         pygame.quit()
 
 

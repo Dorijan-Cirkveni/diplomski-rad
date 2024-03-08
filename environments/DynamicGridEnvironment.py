@@ -3,7 +3,7 @@ import bisect
 from environments.GridEnvironment import *
 
 
-class Subgrid:
+class SubEnv:
     def __init__(self, grid: Grid2D, route: list[tuple[int, int]]):
         self.grid: Grid2D = grid
         self.route: list[tuple[int, int]] = route

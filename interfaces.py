@@ -51,7 +51,7 @@ class iEntity:
     def getPriority(self):
         return self.properties.get("priority", 0)
 
-    def isInState(self,state):
+    def isInState(self, state):
         return state in self.states
 
     def get(self, key, default):
@@ -79,7 +79,7 @@ class iEnvironment:
             priority = entity.getPriority()
             self.entityPriority.append((priority, ID))
         self.entityPriority.sort(reverse=True)
-        self.runData=dict()
+        self.runData = dict()
 
     @staticmethod
     def getFromDict(raw: dict):
@@ -92,7 +92,7 @@ class iEnvironment:
         raise NotImplementedError
 
     def getValue(self, agentID=None):
-        entity: Entity = self.entities[agentID]
+        entity: iEntity = self.entities[agentID]
         return entity.properties
 
     def getEnvData(self, agentID=None):
@@ -104,12 +104,12 @@ class iEnvironment:
     def runChanges(self, moves):
         raise NotImplementedError
 
-    def applyEffect(self,effect,remove=False):
-        isState=type(effect)==str
+    def applyEffect(self, effect, remove=False):
+        isState = type(effect) == str
         for entity in self.entities:
             if entity is None:
                 continue
-            entity:Entity
+            entity: iEntity
             if isState:
                 if remove:
                     entity.states.remove(effect)
@@ -117,24 +117,20 @@ class iEnvironment:
                     entity.states.add(effect)
             else:
                 if remove:
-                    entity.states.pop(effect[0])
+                    entity.properties.pop(effect[0])
                 else:
-                    entity.properties[effect[0]]=effect[1]
+                    entity.properties[effect[0]] = effect[1]
 
     def applyEffects(self, curIter=0):
         for (effect, start, uptime, downtime) in self.effects:
-            if curIter<start:
-                print(curIter,"<",start)
-                continue
             if downtime == 0:
-                k = 0 if curIter==start else -1
+                k = 0 if curIter == start else -1
             else:
-                k = (curIter - start) % (uptime+downtime)
-            print((effect,start,uptime,downtime),curIter,k)
+                k = (curIter - start) % (uptime + downtime)
             if k == 0:
-                self.applyEffect(effect,False)
+                self.applyEffect(effect, False)
             elif k == uptime:
-                self.applyEffect(effect,True)
+                self.applyEffect(effect, True)
 
     def runIteration(self, curIter=0):
         D = dict()
@@ -152,7 +148,7 @@ class iEnvironment:
                 cur_prio = ent_prio
             envData = self.getEnvData(entityID)
             if envData is None:
-                envData={}
+                envData = {}
             self.runData.update(envData)
             entity.receiveEnvironmentData(self.runData)
             move = self.getMoves(entityID)
