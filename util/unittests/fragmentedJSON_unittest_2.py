@@ -45,7 +45,8 @@ class TestImportFragmentedJSON(unittest.TestCase):
         files = {main_file: '{"key1": "<EXT>fragment1.json"}', "fragment1.json": '{}'}
 
         with self.assertRaises(FragmentedJSONException):
-            ImportFragmentedJSON(main_file, files)
+            res=ImportFragmentedJSON(main_file, files)
+            print(res)
 
 
 if __name__ == "__main__":
