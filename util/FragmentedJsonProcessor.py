@@ -31,7 +31,7 @@ def FragmentDefaultNameRule(s: str):
 def DecipherFragment(s: str):
     F = s.split("|")
     name = F[0][5:]
-    indices = [] if len(F) == 0 else json.loads(F[1])
+    indices = [] if len(F) == 1 else json.loads(F[1])
     return name, indices
 
 
@@ -76,25 +76,23 @@ def MakeMissingFilesException(missingFiles: dict):
     raise FragmentedJSONException("Missing files: " + mexc)
 
 
-def ImportFragmentedJSON(main_file):
+def ImportFragmentedJSON(main_file, opening_method=open):
     read_files = dict()
-    unread_files = [(None, None, main_file)]
+    unread_files = [main_file]
     all_fragments = []
     missingFiles = dict()
     while unread_files:
-        arch_file, arch_track, cur_file = unread_files.pop()
+        cur_file = unread_files.pop()
         working = True
         json_raw = None
-        if not os.path.isfile(cur_file):
+        if opening_method is open and not os.path.isfile(cur_file):
             working = False
         if working:
-            file = open(cur_file, 'r')
+            file = opening_method(cur_file, 'r')
             json_raw = file.read()
             file.close()
         if not working:  # Redundancy intentional for future exception handling
-            L = missingFiles.get(cur_file, [])
-            missingFiles[cur_file] = L
-            L.append(arch_file)
+            missingFiles[cur_file] = dict()
             continue
         json_obj = json.loads(json_raw)
         fragments = ProcessFragmentedJSON(json_obj)
@@ -102,9 +100,11 @@ def ImportFragmentedJSON(main_file):
         for arch, key, new_fragment in fragments:
             fragment_name, fragment_indices = DecipherFragment(new_fragment)
             if new_fragment not in read_files:
-                unread_files.append(fragment_name)
+                unread_files.append(())
             all_fragments.append((arch, key, fragment_name, fragment_indices))
     if missingFiles:
+        for (arch, key, fragment_name, fragment_indices) in all_fragments:
+            if fragment_name not in 
         raise MakeMissingFilesException(missingFiles)
     for (arch, key, fragment_name, fragment_indices) in all_fragments:
         target_fragment = read_files[fragment_name]
