@@ -1,5 +1,6 @@
 import json
 import os
+from collections import defaultdict
 
 
 class FragmentedJSONException(Exception):
@@ -69,62 +70,52 @@ def MakeMissingFilesException(missingFiles: dict):
     """
     MFM = []
     for e, V in missingFiles.items():
-        exc = "{} (Referenced in: {})"
-        lis = ", ".join(V)
+        if len(V) == 1 and V[0] == 'ROOT':
+            exc = "{} (Root file)"
+            lis = None
+        else:
+            exc = "{} (Referenced in: {})"
+            lis = ", ".join(V)
         MFM.append(exc.format(e, lis))
     mexc = "; ".join(MFM)
     raise FragmentedJSONException("Missing files: " + mexc)
 
 
-def ImportFragmentedJSON(main_file, opening_method=open):
-    read_files = dict()
-    unread_files = [main_file]
+def ImportFragmentedJSON(main_file:str, files:dict):
+    read_files = set()
+    unread_files: list[tuple[str, str]] = [("ROOT", main_file)]
     all_fragments = []
-    missingFiles = dict()
+    missingFiles = defaultdict(list)
     while unread_files:
-        cur_file = unread_files.pop()
-        working = True
-        json_raw = None
-        if opening_method is open and not os.path.isfile(cur_file):
-            working = False
-        if working:
-            file = opening_method(cur_file, 'r')
-            json_raw = file.read()
-            file.close()
-        if not working:  # Redundancy intentional for future exception handling
-            missingFiles[cur_file] = dict()
-            continue
+        arch_file, cur_file = unread_files.pop()
+        json_raw=files[cur_file]
         json_obj = json.loads(json_raw)
+        read_files.add(cur_file)
         fragments = ProcessFragmentedJSON(json_obj)
-        read_files[cur_file] = json_obj
         for arch, key, new_fragment in fragments:
             fragment_name, fragment_indices = DecipherFragment(new_fragment)
-            if new_fragment not in read_files:
-                unread_files.append(())
+            if fragment_name in read_files:
+                continue
+            if fragment_name not in files:
+                missingFiles[cur_file].append(arch_file)
+                continue
+            unread_files.append((cur_file, fragment_name))
             all_fragments.append((arch, key, fragment_name, fragment_indices))
     if missingFiles:
-        for (arch, key, fragment_name, fragment_indices) in all_fragments:
-            if fragment_name not in 
         raise MakeMissingFilesException(missingFiles)
     for (arch, key, fragment_name, fragment_indices) in all_fragments:
-        target_fragment = read_files[fragment_name]
+        target_fragment = files[fragment_name]
         for i, e_key in enumerate(fragment_indices):
             if e_key not in target_fragment:
                 raise FragmentedJSONException("Missing {}(index #{}) in fragment {}".format(i, e_key, fragment_name))
             target_fragment = target_fragment[e_key]
         arch[key] = target_fragment
-    return
+    return files[main_file]
 
 
 def main():
-    root = {
-        "key1": "<EXT>fragment1.json",
-        "key2": ["<EXT>fragment2.json", "value2"],
-        "key3": "<EXT>fragment3.json"
-    }
-    fragments = ProcessFragmentedJSON(root)
-    for E in fragments:
-        print(E)
+    raw = ImportFragmentedJSON("../util/unittests/test.json")
+    print(raw)
     return
 
 

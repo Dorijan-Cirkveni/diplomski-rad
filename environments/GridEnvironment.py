@@ -1,4 +1,5 @@
 import json
+import os.path
 
 from definitions import *
 from agents import AgentManager
@@ -6,6 +7,7 @@ import interfaces as itf
 from util import UtilManager as util_mngr
 from util.Grid2D import Grid2D
 from util.TupleDotOperations import *
+from util.FragmentedJsonProcessor import ImportFragmentedJSON
 
 # Counter for assigning unique identifiers to different types of tiles
 tile_counter = util_mngr.Counter()
@@ -298,7 +300,7 @@ class GridEnvironment(itf.iEnvironment):
                     if not e:
                         continue
                     rect(tuple(e), grid.M)
-        visualGrid=
+        visualGrid=grid
         return grid,visualGrid
 
     @staticmethod
@@ -983,4 +985,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    print()
+    X=ImportFragmentedJSON(os.path.abspath("../")+"\\util\\unittests\\test.json")

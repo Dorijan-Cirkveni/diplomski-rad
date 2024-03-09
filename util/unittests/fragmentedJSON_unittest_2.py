@@ -1,6 +1,7 @@
 import unittest
 from util.FragmentedJsonProcessor import *
 from unittest.mock import mock_open, MagicMock
+from collections import defaultdict
 
 
 class TestImportFragmentedJSON(unittest.TestCase):
@@ -9,22 +10,23 @@ class TestImportFragmentedJSON(unittest.TestCase):
     def test_single_file_no_fragments(self):
         """Test importing a single JSON file with no fragments."""
         main_file = "test_file.json"
-        json_data = {"key1": "value1", "key2": [1, 2, 3]}
-        opening_method = mock_open(read_data=json.dumps(json_data))
+        files = {main_file: '{"key1": "value1", "key2": [1, 2, 3]}'}
 
-        with unittest.mock.patch("__main__.open", opening_method):
-            result = ImportFragmentedJSON(main_file, opening_method=opening_method)
+        result = ImportFragmentedJSON(main_file, files)
 
-        self.assertEqual(result, json_data)
+        expected_result = {"key1": "value1", "key2": [1, 2, 3]}
+        self.assertEqual(result, expected_result)
 
     def test_single_file_with_fragments(self):
         """Test importing a single JSON file with fragments."""
         main_file = "test_file.json"
-        json_data = {"key1": "<EXT>fragment1.json", "key2": "<EXT>fragment2.json"}
-        opening_method = mock_open(read_data=json.dumps(json_data))
+        files = {
+            main_file: '{"key1": "<EXT>fragment1.json", "key2": "<EXT>fragment2.json"}',
+            "fragment1.json": '{"nested_key": "nested_value"}',
+            "fragment2.json": '{"nested_key2": "nested_value2"}'
+        }
 
-        with unittest.mock.patch("__main__.open", opening_method):
-            result = ImportFragmentedJSON(main_file, opening_method=opening_method)
+        result = ImportFragmentedJSON(main_file, files)
 
         expected_result = {"key1": {"nested_key": "nested_value"}, "key2": {"nested_key2": "nested_value2"}}
         self.assertEqual(result, expected_result)
@@ -32,32 +34,19 @@ class TestImportFragmentedJSON(unittest.TestCase):
     def test_missing_fragment_file(self):
         """Test handling missing fragment files."""
         main_file = "test_file.json"
-        json_data = {"key1": "<EXT>missing_fragment.json"}
-        opening_method = mock_open(read_data=json.dumps(json_data))
+        files = {main_file: '{"key1": "<EXT>missing_fragment.json"}'}
 
-        with unittest.mock.patch("__main__.open", opening_method):
-            with self.assertRaises(FragmentedJSONException):
-                ImportFragmentedJSON(main_file, opening_method=opening_method)
+        with self.assertRaises(FragmentedJSONException):
+            ImportFragmentedJSON(main_file, files)
 
     def test_missing_nested_fragment_key(self):
         """Test handling missing nested fragment keys."""
         main_file = "test_file.json"
-        json_data = {"key1": "<EXT>fragment1.json"}
-        opening_method = mock_open(read_data=json.dumps(json_data))
+        files = {main_file: '{"key1": "<EXT>fragment1.json"}', "fragment1.json": '{}'}
 
-        with unittest.mock.patch("__main__.open", opening_method):
-            with self.assertRaises(FragmentedJSONException):
-                ImportFragmentedJSON(main_file, opening_method=opening_method)
+        with self.assertRaises(FragmentedJSONException):
+            ImportFragmentedJSON(main_file, files)
 
 
 if __name__ == "__main__":
     unittest.main()
-
-
-
-def main():
-    return
-
-
-if __name__ == "__main__":
-    main()
