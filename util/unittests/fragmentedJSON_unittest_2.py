@@ -35,7 +35,7 @@ class TestImportFragmentedJSON(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_partial_file_fragment(self):
-        """Test importing a single JSON file with fragments where """
+        """Test importing a single JSON file with fragments where only a part of the fragment"""
         main_file = "test_file.json"
         files = {
             main_file: '''

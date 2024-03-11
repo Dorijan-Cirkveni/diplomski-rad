@@ -1,9 +1,11 @@
 import json
 import os.path
+import pprint
 
 from definitions import *
 from agents import AgentManager
 import interfaces as itf
+from test_json.test_json_manager import ImportManagedJSON
 from util import UtilManager as util_mngr
 from util.Grid2D import Grid2D
 from util.TupleDotOperations import *
@@ -985,5 +987,6 @@ def main():
 
 
 if __name__ == "__main__":
-    print()
-    X=ImportFragmentedJSON(os.path.abspath("../")+"\\util\\unittests\\test.json")
+    X=ImportManagedJSON('g_base')
+    prpr=pprint.PrettyPrinter(indent=4)
+    prpr.pprint(X)

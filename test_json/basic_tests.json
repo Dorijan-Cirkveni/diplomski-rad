@@ -2,15 +2,7 @@
 {
   "envType": "grid",
   "name": "Environment Test 1",
-  "scale": [25,25],
-  "shapes": {
-    "rectangles": [
-      [0, 18, 19, 19, 1],
-      [0, 0, 19, 19, 2],
-      [6, 2, 10, 4, 2]
-    ]
-  },
-  "grid": [[],[],[],[],[0,1,2,3,4,5]],
+  "grid": "<EXT>g_base|0",
   "agent": [
     ["RAA","42132143212132141241212"],
     ["BOX",""]
@@ -31,14 +23,7 @@
 {
   "envType": "grid",
   "name": "Environment Test 2",
-  "scale": [20,20],
-  "shapes": {
-    "rectangles": [
-      [0, 18, 19, 19, 1],
-      [0, 0, 19, 19, 2],
-      [2, 2, 4, 4, 2]
-    ]
-  },
+  "grid": "<EXT>g_base|0",
   "agent": [
     ["RAA","4213214321"]
   ],
