@@ -34,6 +34,27 @@ class TestImportFragmentedJSON(unittest.TestCase):
         expected_result = {"key1": {"nested_key": "nested_value"}, "key2": {"nested_key2": "nested_value2"}}
         self.assertEqual(result, expected_result)
 
+    def test_partial_file_fragment(self):
+        """Test importing a single JSON file with fragments where """
+        main_file = "test_file.json"
+        files = {
+            main_file: '''
+            {
+                "key1": "<EXT>fragment1.json|nested_key]",
+                "key2": "<EXT>fragment2.json"
+            }
+            ''',
+            "fragment1.json": '{"nested_key": "nested_value"}',
+            "fragment2.json": '{"nested_key2": "nested_value2"}'
+        }
+        for e,v in files.items():
+            files[e]=json.loads(v)
+
+        result = ImportFragmentedJSON(main_file, files)
+
+        expected_result = {"key1": "nested_value", "key2": {"nested_key2": "nested_value2"}}
+        self.assertEqual(result, expected_result)
+
     def test_missing_fragment_file(self):
         """Test handling missing fragment files."""
         main_file = "test_file.json"

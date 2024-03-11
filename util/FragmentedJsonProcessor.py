@@ -32,8 +32,7 @@ def FragmentDefaultNameRule(s: str):
 def DecipherFragment(s: str):
     F = s.split("|")
     name = F[0][5:]
-    indices = [] if len(F) == 1 else json.loads(F[1])
-    return name, indices
+    return name, F[1:]
 
 
 def ProcessFragmentedJSON(root, fragmentNameRule=FragmentDefaultNameRule):
@@ -105,8 +104,16 @@ def ImportFragmentedJSON(main_file:str, files:dict):
     for (arch, key, fragment_name, fragment_indices) in all_fragments:
         target_fragment = files[fragment_name]
         for i, e_key in enumerate(fragment_indices):
+            if type(target_fragment)==list:
+                if not e_key.isdigit():
+                    msg="Attempting to use non-integer \"{}\" ({}, index {}) as list index in fragment{}"
+                    raise FragmentedJSONException(msg.format(e_key, fragment_indices, i, fragment_name))
+            e_key:str
+            if e_key.isdigit():
+                temp_key=int(e_key)
             if e_key not in target_fragment:
-                raise FragmentedJSONException("Missing {}(index #{}) in fragment {}".format(i, e_key, fragment_name))
+                msg="Missing {}({}, index #{}) in fragment {}"
+                raise FragmentedJSONException(msg.format(e_key, fragment_indices, i, fragment_name))
             target_fragment = target_fragment[e_key]
         arch[key] = target_fragment
     return files[main_file]
