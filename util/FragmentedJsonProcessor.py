@@ -88,8 +88,7 @@ def ImportFragmentedJSON(main_file:str, files:dict):
     missingFiles = defaultdict(list)
     while unread_files:
         arch_file, cur_file = unread_files.pop()
-        json_raw=files[cur_file]
-        json_obj = json.loads(json_raw)
+        json_obj = files[cur_file]
         read_files.add(cur_file)
         fragments = ProcessFragmentedJSON(json_obj)
         for arch, key, new_fragment in fragments:
@@ -112,10 +111,58 @@ def ImportFragmentedJSON(main_file:str, files:dict):
         arch[key] = target_fragment
     return files[main_file]
 
+def test_single_file_no_fragments():
+    """Test importing a single JSON file with no fragments."""
+    main_file = "test_file.json"
+    files = {main_file: json.loads('{"key1": "value1", "key2": [1, 2, 3]}')}
+
+    result = ImportFragmentedJSON(main_file, files)
+
+    expected_result = {"key1": "value1", "key2": [1, 2, 3]}
+    print(result,expected_result)
+
+def test_single_file_with_fragments():
+    """Test importing a single JSON file with fragments."""
+    main_file = "test_file.json"
+    files = {
+        main_file: '{"key1": "<EXT>fragment1.json", "key2": "<EXT>fragment2.json"}',
+        "fragment1.json": '{"nested_key": "nested_value"}',
+        "fragment2.json": '{"nested_key2": "nested_value2"}'
+    }
+
+    result = ImportFragmentedJSON(main_file, files)
+
+    expected_result = {"key1": {"nested_key": "nested_value"}, "key2": {"nested_key2": "nested_value2"}}
+    print(result,expected_result)
+
+def test_missing_fragment_file():
+    """Test handling missing fragment files."""
+    main_file = "test_file.json"
+    files = {main_file: '{"key1": "<EXT>missing_fragment.json"}'}
+
+    try:
+        res=ImportFragmentedJSON(main_file, files)
+        print(res,"HOW?")
+    except FragmentedJSONException as e:
+        print(e)
+
+def test_missing_nested_fragment_key():
+    """Test handling missing nested fragment keys."""
+    main_file = "test_file.json"
+    files = {main_file: '{"key1": "<EXT>fragment1.json"}', "fragment1.json": '{}'}
+
+    try:
+        res=ImportFragmentedJSON(main_file, files)
+        print(res,"HOW?")
+    except FragmentedJSONException as e:
+        print(e)
+
 
 def main():
-    raw = ImportFragmentedJSON("../util/unittests/test.json")
-    print(raw)
+    test_single_file_no_fragments()
+    test_single_file_with_fragments()
+    test_missing_fragment_file()
+    test_missing_nested_fragment_key()
     return
 
 
