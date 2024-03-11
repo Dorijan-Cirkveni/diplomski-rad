@@ -80,7 +80,7 @@ def MakeMissingFilesException(missingFiles: dict):
     raise FragmentedJSONException("Missing files: " + mexc)
 
 
-def ImportFragmentedJSON(main_file:str, files:dict):
+def ImportFragmentedJSON(main_file: str, files: dict):
     read_files = set()
     unread_files: list[tuple[str, str]] = [("ROOT", main_file)]
     all_fragments = []
@@ -104,19 +104,23 @@ def ImportFragmentedJSON(main_file:str, files:dict):
     for (arch, key, fragment_name, fragment_indices) in all_fragments:
         target_fragment = files[fragment_name]
         for i, e_key in enumerate(fragment_indices):
-            if type(target_fragment)==list:
-                if not e_key.isdigit():
-                    msg="Attempting to use non-integer \"{}\" ({}, index {}) as list index in fragment{}"
+            e_key: str
+            if type(target_fragment) == list:
+                if not (e_key.isdigit() or e_key[0] in '+-' and e_key[1:].isdigit()):
+                    msg = "Attempting to use non-integer \"{}\" ({}, index {}) as list index in fragment{}"
                     raise FragmentedJSONException(msg.format(e_key, fragment_indices, i, fragment_name))
-            e_key:str
-            if e_key.isdigit():
-                temp_key=int(e_key)
-            if e_key not in target_fragment:
-                msg="Missing {}({}, index #{}) in fragment {}"
-                raise FragmentedJSONException(msg.format(e_key, fragment_indices, i, fragment_name))
+                e_key:int = int(e_key)
+            elif type(target_fragment) == dict:
+                if e_key not in target_fragment:
+                    msg = "Missing {}({}, index #{}) in fragment {}"
+                    raise FragmentedJSONException(msg.format(e_key, fragment_indices, i, fragment_name))
+            else:
+                raise FragmentedJSONException("Unrecognised structure (HOW?):{}".format(type(target_fragment)))
+            e_key: [str,int]
             target_fragment = target_fragment[e_key]
         arch[key] = target_fragment
     return files[main_file]
+
 
 def test_single_file_no_fragments():
     """Test importing a single JSON file with no fragments."""
@@ -126,7 +130,8 @@ def test_single_file_no_fragments():
     result = ImportFragmentedJSON(main_file, files)
 
     expected_result = {"key1": "value1", "key2": [1, 2, 3]}
-    print(result,expected_result)
+    print(result, expected_result)
+
 
 def test_single_file_with_fragments():
     """Test importing a single JSON file with fragments."""
@@ -140,7 +145,8 @@ def test_single_file_with_fragments():
     result = ImportFragmentedJSON(main_file, files)
 
     expected_result = {"key1": {"nested_key": "nested_value"}, "key2": {"nested_key2": "nested_value2"}}
-    print(result,expected_result)
+    print(result, expected_result)
+
 
 def test_missing_fragment_file():
     """Test handling missing fragment files."""
@@ -148,10 +154,11 @@ def test_missing_fragment_file():
     files = {main_file: '{"key1": "<EXT>missing_fragment.json"}'}
 
     try:
-        res=ImportFragmentedJSON(main_file, files)
-        print(res,"HOW?")
+        res = ImportFragmentedJSON(main_file, files)
+        print(res, "HOW?")
     except FragmentedJSONException as e:
         print(e)
+
 
 def test_missing_nested_fragment_key():
     """Test handling missing nested fragment keys."""
@@ -159,8 +166,8 @@ def test_missing_nested_fragment_key():
     files = {main_file: '{"key1": "<EXT>fragment1.json"}', "fragment1.json": '{}'}
 
     try:
-        res=ImportFragmentedJSON(main_file, files)
-        print(res,"HOW?")
+        res = ImportFragmentedJSON(main_file, files)
+        print(res, "HOW?")
     except FragmentedJSONException as e:
         print(e)
 

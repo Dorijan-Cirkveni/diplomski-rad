@@ -40,7 +40,7 @@ class TestImportFragmentedJSON(unittest.TestCase):
         files = {
             main_file: '''
             {
-                "key1": "<EXT>fragment1.json|nested_key]",
+                "key1": "<EXT>fragment1.json|nested_key",
                 "key2": "<EXT>fragment2.json"
             }
             ''',
