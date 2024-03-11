@@ -6,10 +6,42 @@ WRAP_SECOND = 2
 WRAP_BOTH = 3
 
 
+class iGridDrawElement:
+    def apply(self) -> list[tuple[int, int]]:
+        raise NotImplementedError
+
+
+class Rect(iGridDrawElement):
+    def __init__(self, L):
+        a, b, c, d, v = L
+        if c < a:
+            a, c = c, a
+        if d > b:
+            d, b = b, d
+        self.first = (a, b)
+        self.last = (c, d)
+        self.value = v
+
+    def apply(self) -> list[tuple[tuple[int, int], int]]:
+        a, b, c, d = self.first + self.last
+        RES = []
+        v = self.value
+        for dx in range(a, c + 1):
+            RES.append(((b, dx), v))
+            RES.append(((d, dx), v))
+        for dy in range(b, d + 1):
+            RES.append(((dy, a), v))
+            RES.append(((dy, c), v))
+        return RES
+
+
 class Grid2D:
     """
     Class representing a 2D return_grid.
     """
+    DRAW_ELEMENTS = {
+        "rect": Rect
+    }
 
     def __init__(self, dimensions: tuple, M: list[list] = None, defaultValue=0):
         """
@@ -33,12 +65,30 @@ class Grid2D:
                 E[j] = E2[j]
         return
 
+    def use_draw_element(self, element: iGridDrawElement):
+        for T, v in element.apply():
+            T: tuple
+            if self.hasTileOfIndex(T):
+                self[T] = v
+        return
+
     @staticmethod
     def getFromDict(raw: dict):
         dimensions = raw['dimensions']
         grid = raw.get('grid', [])
         default = raw.get('default', 0)
-        return Grid2D(dimensions, grid, default)
+        RES = Grid2D(dimensions, grid, default)
+        elements = raw.get("draw_elements")
+        for e, V in elements:
+            e: str
+            V: list[list]
+            if e not in Grid2D.DRAW_ELEMENTS:
+                raise Exception("Invalid element name!")
+            elType: type = Grid2D.DRAW_ELEMENTS[e]
+            for L in V:
+                elInstance: iGridDrawElement = elType(L)
+                RES.use_draw_element(elInstance)
+        return RES
 
     def __copy__(self):
         """
@@ -169,15 +219,19 @@ class Grid2D:
     def makeList(self, func: callable):
         return self.makeNew(func).M
 
-    def hasTileOfIndex(self, E: tuple):
+    def hasTileOfIndex(self, E: [tuple, int]):
         """
-        Check if the return_grid contains a tile at the given index.
+        Check if the return_grid contains a tile or  at the given index.
 
-        :param E: tuple: Index tuple.
+        :param E: [tuple, int]: Valid index.
 
         :return: bool: True if the return_grid contains a tile at the given index, False otherwise.
         """
-        return Tinrange(E, self.scale)
+        if type(E) == tuple:
+            return Tinrange(E, self.scale)
+        if type(E) == int:
+            return E in range(self.scale[0])
+        return False
 
     def applyManhatLimit(self, center: tuple, maxDistance, fog=-1):
         """
@@ -212,14 +266,14 @@ class Grid2D:
         return
 
     def text_display(self, guide, specialSpots: dict = None,
-                     translateSpecial=lambda n:chr(ord('A')+n)):
+                     translateSpecial=lambda n: chr(ord('A') + n)):
         res = []
         for i, E in enumerate(self.M):
             s = ""
             for j, e in enumerate(E):
                 val = guide[e]
                 if specialSpots and (i, j) in specialSpots:
-                    val = translateSpecial(specialSpots[(i,j)])
+                    val = translateSpecial(specialSpots[(i, j)])
                 s += str(val)
             res.append(s)
         return "\n".join(res)

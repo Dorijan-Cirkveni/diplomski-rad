@@ -253,59 +253,6 @@ class GridEnvironment(itf.iEnvironment):
         return agentDict
 
     @staticmethod
-    def assembleGrid(raw, visual=False):
-        """
-        Static method to assemble a Grid2D object from raw data.
-
-        Args:
-            raw: Raw data containing grid information.
-
-        Returns:
-            Grid2D: Assembled grid.
-        """
-        grid_raw = dict()
-        grid_raw['dimensions'] = tuple(raw.get("scale", [20, 20]))
-        if 'grid' in raw:
-            grid_raw['grid'] = raw['grid']
-        grid_raw['default'] = raw.get('default', 0)
-        grid = Grid2D.getFromDict(grid_raw)
-        shapes = raw.get("shapes", {})
-        for type_V, V in shapes.items():
-            if type_V == "rectangles":
-                for e in V:
-                    if not e:
-                        continue
-                    rect(tuple(e), grid.M)
-        return grid
-
-    @staticmethod
-    def assembleDualGrid(raw):
-        """
-        Static method to assemble a Grid2D object from raw data.
-
-        Args:
-            raw: Raw data containing grid information.
-
-        Returns:
-            Grid2D: Assembled grid.
-        """
-        grid_raw = dict()
-        grid_raw['dimensions'] = tuple(raw.get("scale", [20, 20]))
-        if 'grid' in raw:
-            grid_raw['grid'] = raw['grid']
-        grid_raw['default'] = raw.get('default', 0)
-        grid = Grid2D.getFromDict(grid_raw)
-        shapes = raw.get("shapes", {})
-        for type_V, V in shapes.items():
-            if type_V == "rectangles":
-                for e in V:
-                    if not e:
-                        continue
-                    rect(tuple(e), grid.M)
-        visualGrid=grid
-        return grid,visualGrid
-
-    @staticmethod
     def getCustomTileup(raw):
         """
         Generate custom set of tiles for
@@ -324,7 +271,13 @@ class GridEnvironment(itf.iEnvironment):
     @staticmethod
     def getInputFromDict(raw: dict):
         agentDict = GridEnvironment.getAgentDict(raw)
-        grid = GridEnvironment.assembleGrid(raw.get("grid"))
+        gridRaw = raw.get("grid")
+        grid = Grid2D.getFromDict(gridRaw)
+        if "visual_grid" in raw:
+            gridRaw = raw.get("grid")
+            visgrid = Grid2D.getFromDict(gridRaw)
+        else:
+            visgrid = grid
         agents = []
         entities = []
         active = set()
@@ -741,7 +694,7 @@ class GridEnvironment(itf.iEnvironment):
             bool: True if the entity was moved successfully, False otherwise.
         """
         ent: GridEntity = self.entities[entID]
-        grid:Grid2D=self.solidGrid
+        grid: Grid2D = self.solidGrid
         if ent is None:
             return True
         if not grid.hasTileOfIndex(destination):
@@ -822,7 +775,7 @@ class GridEnvironment(itf.iEnvironment):
                 continue
             val = self.getPositionValue(E)
             if val is None:
-                val = 10**9+7
+                val = 10 ** 9 + 7
             totalLoss.append(val)
         return evalMethod(totalLoss)
 
@@ -966,6 +919,7 @@ def main():
     """
     Main function to run the simulation and test the environment.
     """
+    data = ImportManagedJSON('t_base')
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     F = open("../test_json/basic_tests.json", "r")
     TESTS = F.read()
@@ -975,18 +929,16 @@ def main():
     Y = X.__copy__()
 
     print(PlaneTile.wall)
-    print(Y.text_display(guide,True))
-    print(Y.text_display(guide,False))
+    print(Y.text_display(guide, True))
+    print(Y.text_display(guide, False))
     # print(X.view_direction((15, 10), GridEnvironment.dir_up))
     for i in range(20):
         X.runIteration()
         print(X.taken)
-    print(X.text_display(guide,True))
-    print(X.text_display(guide,False))
+    print(X.text_display(guide, True))
+    print(X.text_display(guide, False))
     return
 
 
 if __name__ == "__main__":
-    X=ImportManagedJSON('g_base')
-    prpr=pprint.PrettyPrinter(indent=4)
-    prpr.pprint(X)
+    main()

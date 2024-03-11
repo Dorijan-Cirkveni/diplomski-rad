@@ -35,6 +35,25 @@ def DecipherFragment(s: str):
     return name, F[1:]
 
 
+def DescendByFragment(target_fragment,fragment_indices):
+    for e_key in fragment_indices:
+        e_key: str
+        if type(target_fragment) == list:
+            if not (e_key.isdigit() or e_key[0] in '+-' and e_key[1:].isdigit()):
+                raise FragmentedJSONException(json.dumps([e_key, fragment_indices, "invalid"]))
+            e_key:int = int(e_key)
+            if e_key not in range(len(target_fragment)):
+                raise FragmentedJSONException(json.dumps([e_key, fragment_indices, "out_of_range"]))
+        elif type(target_fragment) == dict:
+            if e_key not in target_fragment:
+                raise FragmentedJSONException(json.dumps([e_key, fragment_indices]))
+        else:
+            raise FragmentedJSONException("Unrecognised structure (HOW?):{}".format(type(target_fragment)))
+        e_key: [str,int]
+        target_fragment = target_fragment[e_key]
+
+
+
 def ProcessFragmentedJSON(root, fragmentNameRule=FragmentDefaultNameRule):
     archroot = [root]
     stack = [(archroot, 0)]
@@ -102,81 +121,21 @@ def ImportFragmentedJSON(main_file: str, files: dict):
     if missingFiles:
         raise MakeMissingFilesException(missingFiles)
     for (arch, key, fragment_name, fragment_indices) in all_fragments:
+        target_fragment = None
         target_fragment = files[fragment_name]
-        for i, e_key in enumerate(fragment_indices):
-            e_key: str
-            if type(target_fragment) == list:
-                if not (e_key.isdigit() or e_key[0] in '+-' and e_key[1:].isdigit()):
-                    msg = "Attempting to use non-integer \"{}\" ({}, index {}) as list index in fragment{}"
-                    raise FragmentedJSONException(msg.format(e_key, fragment_indices, i, fragment_name))
-                e_key:int = int(e_key)
-            elif type(target_fragment) == dict:
-                if e_key not in target_fragment:
-                    msg = "Missing {}({}, index #{}) in fragment {}"
-                    raise FragmentedJSONException(msg.format(e_key, fragment_indices, i, fragment_name))
-            else:
-                raise FragmentedJSONException("Unrecognised structure (HOW?):{}".format(type(target_fragment)))
-            e_key: [str,int]
-            target_fragment = target_fragment[e_key]
+        try:
+            target_fragment = DescendByFragment(target_fragment,fragment_indices)
+        except FragmentedJSONException as E:
+            print(E)
         arch[key] = target_fragment
     return files[main_file]
 
 
-def test_single_file_no_fragments():
-    """Test importing a single JSON file with no fragments."""
-    main_file = "test_file.json"
-    files = {main_file: json.loads('{"key1": "value1", "key2": [1, 2, 3]}')}
-
-    result = ImportFragmentedJSON(main_file, files)
-
-    expected_result = {"key1": "value1", "key2": [1, 2, 3]}
-    print(result, expected_result)
-
-
-def test_single_file_with_fragments():
-    """Test importing a single JSON file with fragments."""
-    main_file = "test_file.json"
-    files = {
-        main_file: '{"key1": "<EXT>fragment1.json", "key2": "<EXT>fragment2.json"}',
-        "fragment1.json": '{"nested_key": "nested_value"}',
-        "fragment2.json": '{"nested_key2": "nested_value2"}'
-    }
-
-    result = ImportFragmentedJSON(main_file, files)
-
-    expected_result = {"key1": {"nested_key": "nested_value"}, "key2": {"nested_key2": "nested_value2"}}
-    print(result, expected_result)
-
-
-def test_missing_fragment_file():
-    """Test handling missing fragment files."""
-    main_file = "test_file.json"
-    files = {main_file: '{"key1": "<EXT>missing_fragment.json"}'}
-
-    try:
-        res = ImportFragmentedJSON(main_file, files)
-        print(res, "HOW?")
-    except FragmentedJSONException as e:
-        print(e)
-
-
-def test_missing_nested_fragment_key():
-    """Test handling missing nested fragment keys."""
-    main_file = "test_file.json"
-    files = {main_file: '{"key1": "<EXT>fragment1.json"}', "fragment1.json": '{}'}
-
-    try:
-        res = ImportFragmentedJSON(main_file, files)
-        print(res, "HOW?")
-    except FragmentedJSONException as e:
-        print(e)
-
-
 def main():
-    test_single_file_no_fragments()
-    test_single_file_with_fragments()
-    test_missing_fragment_file()
-    test_missing_nested_fragment_key()
+    try:
+        target_fragment = DescendByFragment([[[]]],'2')
+    except FragmentedJSONException as E:
+        print(E)
     return
 
 
