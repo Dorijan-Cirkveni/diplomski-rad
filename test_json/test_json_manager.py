@@ -5,7 +5,7 @@ from util.FragmentedJsonProcessor import ImportFragmentedJSON
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 JSON_filenames = {
-    "g_base": "grids\\grid_templates.json",
+    "g_base": "grids\\basic_grids.json",
 
     "t_base": "basic_tests.json",
     "t_mirror": "mirror_tests.json",

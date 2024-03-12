@@ -94,6 +94,11 @@ class Grid2D:
                     continue
                 elInstance: iGridDrawElement = elType(L)
                 RES.use_draw_element(elInstance)
+        if "add" in raw:
+            L: list = raw["add"]
+            for subraw in L:
+                subgrid = Grid2D.getFromDict(subraw)
+                RES.overlap(subgrid, (0, 0))
         return RES
 
     def __copy__(self):
