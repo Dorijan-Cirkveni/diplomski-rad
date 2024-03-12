@@ -1,4 +1,5 @@
 import json
+from typing import Type
 
 from util import TupleDotOperations as tdo
 from util.Grid2D import Grid2D
@@ -82,7 +83,7 @@ class iEnvironment:
         self.runData = dict()
 
     @staticmethod
-    def getFromDict(raw: dict):
+    def getFromDict(raw: dict) -> Type['iEnvironment']:
         raise NotImplementedError
 
     def __copy__(self):

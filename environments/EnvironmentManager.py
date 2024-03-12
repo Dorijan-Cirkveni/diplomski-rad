@@ -13,7 +13,7 @@ envList = {
 }
 
 
-def readEnvironment(json_str, index, agentDict=None):
+def readEnvironment(jsonL:list, ind:int, agentDict=None):
     """
     Reads environment data from a JSON string and initializes the corresponding environment.
 
@@ -25,16 +25,12 @@ def readEnvironment(json_str, index, agentDict=None):
     """
     if agentDict is None:
         agentDict = agent_mngr.ALL_AGENTS
-
-    json_rawL: dict = json.loads(json_str)
-
-    if index not in range(-len(json_rawL), len(json_rawL)):
-        raise Exception("Invalid index {} for file with {} entries!".format(index, len(json_rawL)))
-
-    raw = json_rawL[index]
+    if ind not in range(-len(jsonL), len(jsonL)):
+        raise Exception("Invalid index {} for file with {} entries!".format(ind, len(jsonL)))
+    raw = jsonL[ind]
+    raw['agentDict'] = agentDict
     envTypeName = raw.get("envType", "return_grid")
     envType: itf.iEnvironment = envList.get(envTypeName, envList["return_grid"])
-    raw['agentDict'] = agentDict
     RES = envType.getFromDict(raw)
     return RES
 

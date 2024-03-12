@@ -33,12 +33,14 @@ def read_all_files(namedict: dict):
 JSON_data = read_all_files(JSON_filenames)
 
 
-def ImportManagedJSON(main_file):
+def ImportManagedJSON(main_file, files:dict=None):
     """
 
     :param main_file:
+    :param files:
     :return:
     """
+    files=JSON_data if files is None else files
     return ImportFragmentedJSON(main_file, JSON_data)
 
 

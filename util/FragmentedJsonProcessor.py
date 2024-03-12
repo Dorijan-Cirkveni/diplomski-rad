@@ -51,6 +51,7 @@ def DescendByFragment(target_fragment,fragment_indices):
             raise FragmentedJSONException("Unrecognised structure (HOW?):{}".format(type(target_fragment)))
         e_key: [str,int]
         target_fragment = target_fragment[e_key]
+    return target_fragment
 
 
 
@@ -121,7 +122,6 @@ def ImportFragmentedJSON(main_file: str, files: dict):
     if missingFiles:
         raise MakeMissingFilesException(missingFiles)
     for (arch, key, fragment_name, fragment_indices) in all_fragments:
-        target_fragment = None
         target_fragment = files[fragment_name]
         try:
             target_fragment = DescendByFragment(target_fragment,fragment_indices)

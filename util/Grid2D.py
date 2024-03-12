@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from util.TupleDotOperations import *
 
 WRAP_NONE = 0
@@ -16,22 +18,23 @@ class Rect(iGridDrawElement):
         a, b, c, d, v = L
         if c < a:
             a, c = c, a
-        if d > b:
+        if d < b:
             d, b = b, d
         self.first = (a, b)
         self.last = (c, d)
         self.value = v
 
     def apply(self) -> list[tuple[tuple[int, int], int]]:
-        a, b, c, d = self.first + self.last
-        RES = []
+        x1, y1 = self.first
+        x2, y2 = self.last
         v = self.value
-        for dx in range(a, c + 1):
-            RES.append(((b, dx), v))
-            RES.append(((d, dx), v))
-        for dy in range(b, d + 1):
-            RES.append(((dy, a), v))
-            RES.append(((dy, c), v))
+        RES = []
+        for dx in range(x1, x2 + 1):
+            RES.append(((dx, y1), v))
+            RES.append(((dx, y2), v))
+        for dy in range(y1, y2 + 1):
+            RES.append(((x1, dy), v))
+            RES.append(((x2, dy), v))
         return RES
 
 
@@ -42,6 +45,7 @@ class Grid2D:
     DRAW_ELEMENTS = {
         "rect": Rect
     }
+    CALLS = defaultdict(lambda e: 0)
 
     def __init__(self, dimensions: tuple, M: list[list] = None, defaultValue=0):
         """
@@ -74,18 +78,20 @@ class Grid2D:
 
     @staticmethod
     def getFromDict(raw: dict):
-        dimensions = raw['dimensions']
+        dimensions = raw['scale']
         grid = raw.get('grid', [])
         default = raw.get('default', 0)
         RES = Grid2D(dimensions, grid, default)
-        elements = raw.get("draw_elements")
-        for e, V in elements:
+        elements: dict = raw.get("shapes")
+        for e, V in elements.items():
             e: str
             V: list[list]
             if e not in Grid2D.DRAW_ELEMENTS:
                 raise Exception("Invalid element name!")
             elType: type = Grid2D.DRAW_ELEMENTS[e]
             for L in V:
+                if not L:
+                    continue
                 elInstance: iGridDrawElement = elType(L)
                 RES.use_draw_element(elInstance)
         return RES
@@ -96,6 +102,7 @@ class Grid2D:
 
         :return: Grid2D: A copy of the return_grid object.
         """
+        Grid2D.CALLS['copy'] += 1
         newG2D = Grid2D((0, 0))
         newG2D.scale = self.scale
         M = []
@@ -279,11 +286,13 @@ class Grid2D:
         return "\n".join(res)
 
 
+# [[(i * 2 + j) % 5 for j in range(10)] for i in range(10)]
 def main():
-    X = Grid2D((10, 10), [[(i * 2 + j) % 5 for j in range(10)] for i in range(10)])
-    X.applyManhatLimit((2, 7), 3)
-    for E in X.M:
-        print("".join([str(e + 1) for e in E]))
+    X = Grid2D((10, 10))
+    R = Rect([1, 1, 4, 4, 1])
+    print(R.first, R.last, R.value)
+    X.use_draw_element(R)
+    print(X.text_display('0123456789'))
     return
 
 

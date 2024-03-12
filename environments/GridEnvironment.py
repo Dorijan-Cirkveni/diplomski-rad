@@ -1,6 +1,7 @@
 import json
 import os.path
 import pprint
+from typing import Type
 
 from definitions import *
 from agents import AgentManager
@@ -230,7 +231,7 @@ class GridEnvironment(itf.iEnvironment):
         for ID, entity in enumerate(self.entities):
             entity: GridEntity
             name = entity.properties.get(entity.NAME, "Untitled")
-            location = entity.properties.get(entity.LOCATION, None)
+            location = entity.properties.get('loc', None)
             if location is None:
                 print("Unable to initialise Entity {} ({}) without location!".format(ID, name))
                 continue
@@ -876,7 +877,7 @@ class GridEnvironment(itf.iEnvironment):
         return X
 
 
-def readPlaneEnvironment(json_str, index, agentDict=None) -> GridEnvironment:
+def readPlaneEnvironment(jsonL, index:int, agentDict:dict=None) -> GridEnvironment:
     """
     Reads a grid-based environment from JSON data and returns a GridEnvironment object.
 
@@ -891,10 +892,9 @@ def readPlaneEnvironment(json_str, index, agentDict=None) -> GridEnvironment:
     """
     if agentDict is None:
         agentDict = AgentManager.ALL_AGENTS
-    json_rawL: dict = json.loads(json_str)
-    if index not in range(-len(json_rawL), len(json_rawL)):
-        raise Exception("Invalid index {} for file with {} entries!".format(index, len(json_rawL)))
-    raw = json_rawL[index]
+    if index not in range(-len(jsonL), len(jsonL)):
+        raise Exception("Invalid index {} for file with {} entries!".format(index, len(jsonL)))
+    raw = jsonL[index]
     raw['agentDict'] = agentDict
     RES = GridEnvironment.getFromDict(raw)
     return RES
@@ -921,11 +921,7 @@ def main():
     """
     data = ImportManagedJSON('t_base')
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
-    F = open("../test_json/basic_tests.json", "r")
-    TESTS = F.read()
-    F.close()
-    TXR = TESTS
-    X = readPlaneEnvironment(TXR, 0)
+    X = readPlaneEnvironment(data, 0)
     Y = X.__copy__()
 
     print(PlaneTile.wall)

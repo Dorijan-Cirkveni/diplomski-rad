@@ -1,8 +1,10 @@
+import cProfile
 import os
 import pygame
 
 from definitions import *
 import interfaces as itf
+from test_json.test_json_manager import ImportManagedJSON
 from util import TupleDotOperations as tdo
 import environments.EnvironmentManager as env_mngr
 from util.Grid2D import *
@@ -63,7 +65,7 @@ class iButton:
 
 class Button(iButton):
     def __init__(self, color, text, original_dimensions, runLambda=None):
-        self.runLambda = runLambda if runLambda is not None else (lambda:text)
+        self.runLambda = runLambda if runLambda is not None else (lambda: text)
         super().__init__(color, text, original_dimensions)
 
     def draw(self, screen):
@@ -121,6 +123,7 @@ class GridDisplay:
     """
     A class that represents a grid display.
     """
+
     def __init__(self, grid: env_mngr.grid_env.GridEnvironment, elementTypes: list, agentTypes: list,
                  obsAgent: [int, None],
                  screenV=(800, 800),
@@ -170,14 +173,14 @@ class GridDisplay:
         return 0
 
     def toggle_viewable(self):
-        self.viewable=not self.viewable
+        self.viewable = not self.viewable
         return 0
 
-    def make_jump_iteration(self,count):
+    def make_jump_iteration(self, count):
         def jump_iteration():
-            return None,count
-        return jump_iteration
+            return None, count
 
+        return jump_iteration
 
     def show_display(self):
         pygame.init()
@@ -187,9 +190,9 @@ class GridDisplay:
 
     def place_buttons(self):
 
-        for num, e in enumerate([10,100,1000,10000]):
-            text="Run {} times".format(e)
-            test = Button((100, 0, 0), text, (5, 10 + 60 * num, 190, 50),self.make_jump_iteration(e))
+        for num, e in enumerate([10, 100, 1000, 10000]):
+            text = "Run {} times".format(e)
+            test = Button((100, 0, 0), text, (5, 10 + 60 * num, 190, 50), self.make_jump_iteration(e))
             test.place((self.gridscreenV[0], 0))
             self.buttons["button " + text] = test
 
@@ -203,7 +206,7 @@ class GridDisplay:
 
         test = Button(
             (100, 0, 0),
-            "Grid mode: "+["Real","Observed"][self.viewable],
+            "Grid mode: " + ["Real", "Observed"][self.viewable],
             (5, 10 + 360, 190, 50),
             self.toggle_viewable
         )
@@ -275,11 +278,11 @@ class GridDisplay:
 
     def draw_frame(self, delay=0):
         self.draw_buttons()
-        data:dict = self.grid.getDisplayData(self.obsAgent)
-        grid:Grid2D=data.get('grid',None)
-        agents:dict=data.get('agents',dict())
+        data: dict = self.grid.getDisplayData(self.obsAgent)
+        grid: Grid2D = data.get('grid', None)
+        agents: dict = data.get('agents', dict())
         if grid is None:
-            self.term_screen.text = data.get("msg","Missing message")
+            self.term_screen.text = data.get("msg", "Missing message")
             self.term_screen.draw(self.screen)
         else:
             # print(return_grid.text_display(" FWGGGGGGGGX"))
@@ -307,12 +310,10 @@ class GridDisplay:
                 continue
             agent: GraphicManualInputAgent
             agent.cur = action
-    def ProcessEvent(self,event,updateImage,pastMove):
-        return running, updateImage, pastMove
 
     def run(self):
         self.place_buttons()
-        pastMove=(0,0)
+        pastMove = (0, 0)
         running = True
         status = None  # win=True, loss=False, ongoing=None
         self.show_iter()
@@ -335,6 +336,8 @@ class GridDisplay:
                         continue
                     ret = element.run(event)
                     if type(ret) != tuple:
+                        if ret is 'Exit':
+                            running = False
                         result, runIter = pastMove, ret
                         break
                     result, runIter = ret
@@ -347,8 +350,8 @@ class GridDisplay:
                 for i in range(runIter):
                     self.iteration += 1
                     self.grid.runIteration(self.iteration)
-                    if i%100==99:
-                        print("Iteration {}/{}".format(i+1,runIter))
+                    if i % 100 == 99:
+                        print("Iteration {}/{}".format(i + 1, runIter))
                 if self.grid.isWin():
                     status = True
                 self.show_iter(status)
@@ -367,18 +370,14 @@ class GridInteractive:
         self.grid = gridEnv.__copy__()
 
     def load_grid_from_raw(self, json_raw):
-        grid = env_mngr.readEnvironment("[{}]".format(json_raw), 0)
+        grid = env_mngr.readEnvironment([json_raw], 0)
         self.grid: GridEnvironment = grid
         return True
 
-    def load_grid_from_file(self, filename, index=0):
-        if os.path.isfile(filename):
-            with open(filename, 'r') as file:
-                json_raw = file.read()
-                grid = env_mngr.readEnvironment(json_raw, index)
-                self.grid: GridEnvironment = grid
-                return True
-        raise Exception("Error: File '{}' not found.".format(filename))
+    def load_grid_from_fragment(self, filename: str, index=0, source: dict = None):
+        rawL: list = ImportManagedJSON(filename, source)
+        grid = env_mngr.readEnvironment(rawL, index)
+        self.grid = grid
 
     def init_display(self,
                      elementTypes: list[GridElementDisplay],
@@ -399,7 +398,7 @@ class GridInteractive:
 
 def runInteractive(file, ind):
     testGI = GridInteractive()
-    testGI.load_grid_from_file(file, ind)
+    testGI.load_grid_from_fragment(file, ind)
     grid: GridEnvironment = testGI.grid
     grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
 
@@ -425,21 +424,12 @@ agent_grid = [GridElementDisplay("grid_tiles/{}.png".format(e.format("Agent")), 
 
 def GridTest(file, ind):
     testGI = GridInteractive()
-    testGI.load_grid_from_file(file, ind)
+    testGI.load_grid_from_fragment(file, ind)
     grid: GridEnvironment = testGI.grid
     grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
 
     testGI.init_display(element_grid, agent_grid)
     testGI.run()
-
-
-ALLFILES = {
-    "base": "test_json/basic_tests.json",
-    "maze": "test_json/basic_maze_tests.json",
-    "mirror": "test_json/mirror_tests.json",
-    "allcats": "test_json/all_categories.json",
-    "null": "null"
-}
 
 
 def GT1(ind=0):
@@ -448,7 +438,7 @@ def GT1(ind=0):
 
 def MazeTest():
     testGI = GridInteractive()
-    testGI.load_grid_from_file("test_json/basic_maze_tests.json", 1)
+    testGI.load_grid_from_fragment("test_json/basic_maze_tests.json", 1)
     grid: GridEnvironment = testGI.grid
     grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
 
@@ -456,38 +446,57 @@ def MazeTest():
     testGI.run()
 
 
-def CommandRun(commandList=None):
+def CustomTest(file, ind, preimported_raw: list = None):
+    testGI = GridInteractive()
+    testGI.load_grid_from_fragment(file, ind)
+    if preimported_raw is None:
+        preimported_raw = ImportManagedJSON(file)
+    grid: GridEnvironment = env_mngr.readEnvironment(preimported_raw, ind)
+    grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
+
+    testGI.init_display(element_grid, agent_grid)
+    testGI.run()
+    print(Grid2D.CALLS)
+
+
+def CommandRun(commandList: list[tuple[str, int]] = None):
     if commandList is None:
         commandList = []
     commandList.reverse()
     while True:
-        command = (commandList.pop() if commandList else input(">>>")).split()
+        if commandList:
+            command = commandList.pop()
+        else:
+            craw = input(">>>").split(" ")
+            X = []
+            X.append(craw[0])
+            for i in range(1, len(craw)):
+                X.append(int(craw[i]))
+            command = tuple(X)
         if command[0] == "exit":
             return
-        filename=command[0]
-        if filename in ALLFILES:
-            filename=ALLFILES[filename]
-        index=int(command[1])
-        GridTest(filename,index)
+        if len(command) == 2:
+            CustomTest(command[0], command[1])
+        elif len(command) == 3:
+            for i in range(command[1], command[2]):
+                CustomTest(command[0], i)
+
 
 def DebugRun():
-    X=[
-        ("base", 2),
-        ("maze", 1),
-        ("mirror", 1),
-        ("allcats", 0),
-        ("null", 0)
-       ]
-    commands=[]
-    for (short,count) in X:
-        for i in range(count):
-            commands.append("{} {}".format(short,i))
-    CommandRun(commands)
+    X = [
+        ("t_base", 0, 2),
+        ("t_maze", 0, 1),
+        ("t_mirror", 0, 0),
+        ("t_allcats", 0, 1),
+        ("t_null", 0)
+    ]
+    CommandRun(X)
 
 
 def main():
-    DebugRun()
-    # CommandRun(["mirror 0"])
+    cProfile.run("CustomTest('t_base',0)")
+    # DebugRun()
+    # CommandRun([("mirror", 0)])
 
 
 if __name__ == "__main__":
