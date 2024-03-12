@@ -374,10 +374,13 @@ class GridInteractive:
         self.grid: GridEnvironment = grid
         return True
 
-    def load_grid_from_fragment(self, filename: str, index=0, source: dict = None):
+    def load_grid_from_fragment(self, filename: str, index=0, source: dict = None,checkValidity=False):
         rawL: list = ImportManagedJSON(filename, source)
+        if checkValidity and index not in range(len(rawL)):
+            return False
         grid = env_mngr.readEnvironment(rawL, index)
         self.grid = grid
+        return True
 
     def init_display(self,
                      elementTypes: list[GridElementDisplay],
@@ -422,41 +425,16 @@ agent_GL = ["red{}", "yellow{}", "green{}", "blue{}", "box"]
 agent_grid = [GridElementDisplay("grid_tiles/{}.png".format(e.format("Agent")), (0, -0.3), (1, 1.5)) for e in agent_GL]
 
 
-def GridTest(file, ind):
-    testGI = GridInteractive()
-    testGI.load_grid_from_fragment(file, ind)
-    grid: GridEnvironment = testGI.grid
-    grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
-
-    testGI.init_display(element_grid, agent_grid)
-    testGI.run()
-
-
-def GT1(ind=0):
-    return GridTest("test_json/basic_tests.json", ind)
-
-
-def MazeTest():
-    testGI = GridInteractive()
-    testGI.load_grid_from_fragment("test_json/basic_maze_tests.json", 1)
-    grid: GridEnvironment = testGI.grid
-    grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
-
-    testGI.init_display(element_grid, agent_grid)
-    testGI.run()
-
-
 def CustomTest(file, ind, preimported_raw: list = None):
     testGI = GridInteractive()
-    testGI.load_grid_from_fragment(file, ind)
-    if preimported_raw is None:
-        preimported_raw = ImportManagedJSON(file)
-    grid: GridEnvironment = env_mngr.readEnvironment(preimported_raw, ind)
-    grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
+    success=testGI.load_grid_from_fragment(file, ind)
+    if not success:
+        return False
+    testGI.grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
 
     testGI.init_display(element_grid, agent_grid)
     testGI.run()
-    print(Grid2D.CALLS)
+    return True
 
 
 def CommandRun(commandList: list[tuple[str, int]] = None):
@@ -467,27 +445,27 @@ def CommandRun(commandList: list[tuple[str, int]] = None):
         if commandList:
             command = commandList.pop()
         else:
-            craw = input(">>>").split(" ")
-            X = []
-            X.append(craw[0])
-            for i in range(1, len(craw)):
-                X.append(int(craw[i]))
-            command = tuple(X)
-        if command[0] == "exit":
+            command = input(">>>").split(" ")
+        command.reverse()
+        name=command.pop()
+        if name == "exit":
             return
-        if len(command) == 2:
-            CustomTest(command[0], command[1])
-        elif len(command) == 3:
-            for i in range(command[1], command[2]):
-                CustomTest(command[0], i)
+        while command:
+            cur=command.pop()
+            if cur=="index":
+                ind=int(command.pop())
+                CustomTest(name,ind)
+            elif cur=="range":
+                start=0
 
 
 def DebugRun():
+    forAll=["agent", ]
     X = [
-        ("t_maze", 0),
-        ("t_base", 0, 2),
-        ("t_mirror", 0, 0),
-        ("t_allcats", 0, 1),
+        ("t_maze", "index", 0),
+        ("t_base", "range", 0, 2),
+        ("t_mirror", "range", 0, 0),
+        ("t_allcats", "range", 0, 1),
         ("t_null", 0)
     ]
     CommandRun(X)

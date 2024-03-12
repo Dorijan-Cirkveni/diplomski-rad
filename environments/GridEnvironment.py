@@ -798,7 +798,8 @@ class GridEnvironment(itf.iEnvironment):
             newAgents (list[itf.iAgent]): List of new agents.
         """
         for E in self.activeEntities:
-            self.entities[E].agent = newAgents[E]
+            ent:GridEntity=self.entities[E]
+            ent.agent = newAgents[E]
         return
 
     def step(self, moves: dict):

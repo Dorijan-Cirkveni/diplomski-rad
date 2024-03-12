@@ -45,7 +45,6 @@ class Grid2D:
     DRAW_ELEMENTS = {
         "rect": Rect
     }
-    CALLS = defaultdict(lambda e: 0)
 
     def __init__(self, dimensions: tuple, M: list[list] = None, defaultValue=0):
         """
@@ -107,7 +106,6 @@ class Grid2D:
 
         :return: Grid2D: A copy of the return_grid object.
         """
-        Grid2D.CALLS['copy'] += 1
         newG2D = Grid2D((0, 0))
         newG2D.scale = self.scale
         M = []
