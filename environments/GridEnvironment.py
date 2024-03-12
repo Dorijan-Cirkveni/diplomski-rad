@@ -167,7 +167,7 @@ class GridEntity(itf.iEntity):
         relativeTo = self.get(self.LOCATION, (0, 0))
         if not self.properties.get(self.S_mirror, False):
             data['agent_last_action'] = dict()
-        gridData: Grid2D = data.pop("grid")
+        gridData: Grid2D = data.get("grid")
         if self.S_blind in self.states:
             gridData = Grid2D(gridData.scale, defaultValue=-1)
         else:
@@ -283,17 +283,17 @@ class GridEnvironment(itf.iEnvironment):
         entities = []
         active = set()
 
-        for (a_type, a_raw) in raw.pop("agent", []):
+        for (a_type, a_raw) in raw.get("agent", []):
             agents.append(agentDict[a_type](a_raw))
 
-        for entity_data in raw.pop("entities", []):
+        for entity_data in raw.get("entities", []):
             ID = entity_data.get("id", None)
             if ID is None:
                 raise Exception("Entity agent ID must be specified!")
             entity = GridEntity.getFromDict(entity_data, agents[int(ID)])
             entities.append(entity)
 
-        active.update(set(raw.pop("activeEntities", [])))
+        active.update(set(raw.get("activeEntities", [])))
         return grid, entities, active
 
     @staticmethod

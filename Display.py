@@ -484,8 +484,8 @@ def CommandRun(commandList: list[tuple[str, int]] = None):
 
 def DebugRun():
     X = [
+        ("t_maze", 0),
         ("t_base", 0, 2),
-        ("t_maze", 0, 1),
         ("t_mirror", 0, 0),
         ("t_allcats", 0, 1),
         ("t_null", 0)
@@ -494,8 +494,8 @@ def DebugRun():
 
 
 def main():
-    cProfile.run("CustomTest('t_base',0)")
-    # DebugRun()
+    # cProfile.run("CustomTest('t_base',0)")
+    DebugRun()
     # CommandRun([("mirror", 0)])
 
 

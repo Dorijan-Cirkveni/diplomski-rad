@@ -76,21 +76,21 @@ class MazeEnvironment(GridEnvironment):
         Returns:
             MazeEnvironment: A MazeEnvironment object.
         """
-        agentDict = raw.pop("agentDict", None)
+        agentDict = raw.get("agentDict", None)
         agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
 
-        (a_type, a_raw) = raw.pop("agent", ["BOX", ""])
+        (a_type, a_raw) = raw.get("agent", ["BOX", ""])
         agent = agentDict[a_type](a_raw)
         if "entity" not in raw:
             raise Exception("Must have entity!")
-        entity_data = raw.pop("entity")
+        entity_data = raw.get("entity")
         entity = GridEntity.getFromDict(entity_data, agent)
 
         res = MazeEnvironment(
-            tuple(raw.pop("scale", [25, 25])),
-            tuple(raw.pop("start", [12, 0])),
-            tuple(raw.pop("goal", [12, 14])),
-            raw.pop("seed", 0),
+            tuple(raw.get("scale", [25, 25])),
+            tuple(raw.get("start", [12, 0])),
+            tuple(raw.get("goal", [12, 14])),
+            raw.get("seed", 0),
             entity,
             extraData=raw
         )
