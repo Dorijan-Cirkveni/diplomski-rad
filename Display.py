@@ -325,7 +325,6 @@ class GridDisplay:
             updateImage = False
             events=pygame.event.get()
             for event in events:
-                print(event)
                 if event.type in (pygame.QUIT,pygame.WINDOWCLOSE):
                     running = False
                     break
@@ -439,8 +438,10 @@ def CustomTest(file, ind, preimported_raw: list = None):
     testGI.run()
     return True
 
+def CustomTestWithCommands
 
-def CommandRun(commandList: list[tuple[str, int]] = None):
+
+def CommandRun(commandList: list[tuple[str, int]] = None, ):
     if commandList is None:
         commandList = []
     commandList.reverse()
@@ -459,19 +460,22 @@ def CommandRun(commandList: list[tuple[str, int]] = None):
                 ind=int(command.pop())
                 CustomTest(name,ind)
             elif cur=="range":
-                start=0
+                start=int(command.pop())
+                end=int(command.pop())
+            elif cur=="agent":
+
 
 
 def DebugRun():
     forAll=["agent", ]
     X = [
-        ("t_maze", "index", 0),
-        ("t_base", "range", 0, 2),
-        ("t_mirror", "range", 0, 0),
+        ("t_maze", ("index", 0)),
+        ("t_base", ("range", 0, 2)),
+        # ("t_mirror", ("range", 0, 0)),
         ("t_allcats", "range", 0, 1),
         ("t_null", 0)
     ]
-    CommandRun(X)
+    CommandRun(X,forAll)
 
 
 def main():
