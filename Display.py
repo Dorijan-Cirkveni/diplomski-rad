@@ -323,9 +323,12 @@ class GridDisplay:
         while running:
             runIter = 0
             updateImage = False
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+            events=pygame.event.get()
+            for event in events:
+                print(event)
+                if event.type in (pygame.QUIT,pygame.WINDOWCLOSE):
                     running = False
+                    break
                 if event.type != pygame.MOUSEBUTTONDOWN:
                     break
                 updateImage = True
@@ -336,7 +339,7 @@ class GridDisplay:
                         continue
                     ret = element.run(event)
                     if type(ret) != tuple:
-                        if ret is 'Exit':
+                        if ret == 'Exit':
                             running = False
                         result, runIter = pastMove, ret
                         break
@@ -443,7 +446,7 @@ def CommandRun(commandList: list[tuple[str, int]] = None):
     commandList.reverse()
     while True:
         if commandList:
-            command = commandList.pop()
+            command = list(commandList.pop())
         else:
             command = input(">>>").split(" ")
         command.reverse()
