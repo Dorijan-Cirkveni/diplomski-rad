@@ -323,9 +323,9 @@ class GridDisplay:
         while running:
             runIter = 0
             updateImage = False
-            events=pygame.event.get()
+            events = pygame.event.get()
             for event in events:
-                if event.type in (pygame.QUIT,pygame.WINDOWCLOSE):
+                if event.type in (pygame.QUIT, pygame.WINDOWCLOSE):
                     running = False
                     break
                 if event.type != pygame.MOUSEBUTTONDOWN:
@@ -376,7 +376,7 @@ class GridInteractive:
         self.grid: GridEnvironment = grid
         return True
 
-    def load_grid_from_fragment(self, filename: str, index=0, source: dict = None,checkValidity=False):
+    def load_grid_from_fragment(self, filename: str, index=0, source: dict = None, checkValidity=False):
         rawL: list = ImportManagedJSON(filename, source)
         if checkValidity and index not in range(len(rawL)):
             return False
@@ -429,7 +429,7 @@ agent_grid = [GridElementDisplay("grid_tiles/{}.png".format(e.format("Agent")), 
 
 def CustomTest(file, ind, preimported_raw: list = None):
     testGI = GridInteractive()
-    success=testGI.load_grid_from_fragment(file, ind)
+    success = testGI.load_grid_from_fragment(file, ind)
     if not success:
         return False
     testGI.grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
@@ -438,7 +438,30 @@ def CustomTest(file, ind, preimported_raw: list = None):
     testGI.run()
     return True
 
-def CustomTestWithCommands
+
+def CustomTestWithCommands(file, ind, commandStack: list = []):
+    testGI = GridInteractive()
+    success = testGI.load_grid_from_fragment(file, ind)
+    if not success:
+        return False
+    while True:
+        if commandStack:
+            command = list(commandStack.pop())
+        else:
+            command = input(">>>").split(" ")
+        if type(command) == str:
+            if command == "exit":
+                break
+            if command == "run":
+                testGI.run()
+        else:
+            name = command[0]
+
+    testGI.grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
+
+    testGI.init_display(element_grid, agent_grid)
+
+    return True
 
 
 def CommandRun(commandList: list[tuple[str, int]] = None, ):
@@ -451,23 +474,21 @@ def CommandRun(commandList: list[tuple[str, int]] = None, ):
         else:
             command = input(">>>").split(" ")
         command.reverse()
-        name=command.pop()
+        name = command.pop()
         if name == "exit":
             return
         while command:
-            cur=command.pop()
-            if cur=="index":
-                ind=int(command.pop())
-                CustomTest(name,ind)
-            elif cur=="range":
-                start=int(command.pop())
-                end=int(command.pop())
-            elif cur=="agent":
-
+            cur = command.pop()
+            if cur == "index":
+                ind = int(command.pop())
+                CustomTest(name, ind)
+            elif cur == "range":
+                start = int(command.pop())
+                end = int(command.pop())
 
 
 def DebugRun():
-    forAll=["agent", ]
+    forAll = ["agent", ]
     X = [
         ("t_maze", ("index", 0)),
         ("t_base", ("range", 0, 2)),
@@ -475,7 +496,7 @@ def DebugRun():
         ("t_allcats", "range", 0, 1),
         ("t_null", 0)
     ]
-    CommandRun(X,forAll)
+    CommandRun(X, forAll)
 
 
 def main():

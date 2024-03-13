@@ -294,7 +294,7 @@ class GridEnvironment(itf.iEnvironment):
             entities.append(entity)
 
         active.update(set(raw.get("activeEntities", [])))
-        return grid, entities, active
+        return grid, visgrid, entities, active
 
     @staticmethod
     def getFromDict(raw: dict):
@@ -307,9 +307,10 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             GridEnvironment: Created GridEnvironment object.
         """
-        grid, entities, active = GridEnvironment.getInputFromDict(raw)
+        grid, visgrid, entities, active = GridEnvironment.getInputFromDict(raw)
         res = GridEnvironment(
             grid=grid,
+            viewedGrid=visgrid,
             entities=entities,
             activeEntities=active,
             extraData=raw

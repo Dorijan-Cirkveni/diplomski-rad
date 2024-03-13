@@ -237,14 +237,13 @@ class GraphicManualInputAgent(itf.iAgent):
     Represents an agent that takes manual input from the user using a graphical interface.
     """
 
-    def __init__(self, watchedDimensions, actions):
+    def __init__(self, actions=None):
         """
         Initializes the GraphicManualInputAgent.
 
         :param watchedDimensions: Dimensions of the watched area.
         :param actions: Available actions.
         """
-        self.watchedDimensions = watchedDimensions
         self.actions = actions
         self.cur = self.actions[-1]
 
