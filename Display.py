@@ -7,6 +7,7 @@ import interfaces as itf
 from test_json.test_json_manager import ImportManagedJSON
 from util import TupleDotOperations as tdo
 import environments.EnvironmentManager as env_mngr
+import agents.AgentManager as ag_mngr
 from util.Grid2D import *
 
 GridEnvironment = env_mngr.grid_env.GridEnvironment
@@ -439,7 +440,20 @@ def CustomTest(file, ind, preimported_raw: list = None):
     return True
 
 
-def CustomTestWithCommands(file, ind, commandStack: list = []):
+def CustomTestWithCommands(file, ind, commandStack=None,
+                           testMode=False,printOutput=None):
+    """
+
+    :param file:
+    :param ind:
+    :param commandStack:
+    :param testMode:
+    :param printOutput:
+    :return:
+    """
+    printOutput=print if printOutput is None else printOutput
+    if commandStack is None:
+        commandStack = []
     testGI = GridInteractive()
     success = testGI.load_grid_from_fragment(file, ind)
     if not success:
@@ -447,56 +461,103 @@ def CustomTestWithCommands(file, ind, commandStack: list = []):
     while True:
         if commandStack:
             command = list(commandStack.pop())
+            print("Running command {}".format(command))
         else:
-            command = input(">>>").split(" ")
-        if type(command) == str:
-            if command == "exit":
-                break
-            if command == "run":
+            command = input("Input command: ").split(" ")
+        name = command[0]
+        if name == "exit":
+            break
+        if name == "run":
+            if testMode:
+                printOutput("(This is where the simulation would run)")
+            else:
+                testGI.init_display(element_grid, agent_grid)
                 testGI.run()
-        else:
-            name = command[0]
-
-    testGI.grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
-
-    testGI.init_display(element_grid, agent_grid)
-
+        if name == "agent":
+            agentName = command[1]
+            agentData = command[2]
+            agentMaker = ag_mngr.ALL_AGENTS[agentName]
+            agent = agentMaker(agentData)
+            if testMode:
+                printOutput("(This is where the agents would be set to {} {})".format(agentName,agentData))
+            else:
+                testGI.grid.changeActiveEntityAgents([agent])
     return True
 
 
-def CommandRun(commandList: list[tuple[str, int]] = None, ):
+def BulkTestWithCommands(file, rangeData: tuple[int, int], commandStack: list,
+                         testMode=False, printOutput:callable=None):
+    printOutput=print if printOutput is None else printOutput
+    for ind in range(rangeData[0], rangeData[1]):
+        success = CustomTestWithCommands(file, ind, commandStack.copy(),
+                                         testMode=testMode,printOutput=printOutput)
+        if not success:
+            print("Interrupting on {} due to early failure/end of file")
+    return
+
+
+def CommandRun(commandList: list[str] = None,
+               testMode=False, printOutput:callable=None):
+    printOutput=print if printOutput is None else printOutput
     if commandList is None:
         commandList = []
     commandList.reverse()
+    indCommandList = []
+    stackingIndCommands = False
     while True:
         if commandList:
-            command = list(commandList.pop())
+            command = commandList.pop().split()
         else:
-            command = input(">>>").split(" ")
-        command.reverse()
-        name = command.pop()
-        if name == "exit":
-            return
-        while command:
-            cur = command.pop()
-            if cur == "index":
-                ind = int(command.pop())
-                CustomTest(name, ind)
-            elif cur == "range":
-                start = int(command.pop())
-                end = int(command.pop())
+            command = input(">>>").split()
+        printOutput("Main command:",command)
+        n = len(command)
+        name = command[0]
+        if name == "individual":
+            if n == 2:
+                subcommand = command[1]
+                if subcommand == "wipe":
+                    indCommandList = []
+            stackingIndCommands = not stackingIndCommands
+            if stackingIndCommands:
+                continue
+        if stackingIndCommands:
+            indCommandList.append(command)
+            continue
+        if name == "run":
+            if n == 3:
+                file = command[1]
+                ind = int(command[2])
+                printOutput("Running:",file,ind)
+                CustomTestWithCommands(file,ind,indCommandList[::-1],
+                                       testMode=testMode,printOutput=printOutput)
+                continue
+            if n == 4:
+                file = command[1]
+                ind1 = int(command[2])
+                ind2 = int(command[3])
+                printOutput("Running in bulk:",file,ind1,ind2)
+                BulkTestWithCommands(file,(ind1,ind2),indCommandList[::-1],
+                                       testMode=testMode,printOutput=printOutput)
+                continue
+            printOutput("Invalid command length (need to be 3 or 4):",command)
+
 
 
 def DebugRun():
-    forAll = ["agent", ]
     X = [
-        ("t_maze", ("index", 0)),
-        ("t_base", ("range", 0, 2)),
-        # ("t_mirror", ("range", 0, 0)),
-        ("t_allcats", "range", 0, 1),
-        ("t_null", 0)
+        "individual",
+        "LEEROY JENKINS",
+        "individual wipe",
+        "individual",
+        "agent GMI None",
+        "run",
+        "exit",
+        "individual",
+        "run t_maze 0",
+        "run t_base 0 2",
+        "exit"
     ]
-    CommandRun(X, forAll)
+    CommandRun(X)
 
 
 def main():

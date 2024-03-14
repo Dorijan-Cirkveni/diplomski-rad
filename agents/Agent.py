@@ -244,7 +244,7 @@ class GraphicManualInputAgent(itf.iAgent):
         :param watchedDimensions: Dimensions of the watched area.
         :param actions: Available actions.
         """
-        self.actions = actions
+        self.actions = actions if actions not in (None,"","None") else definitions.ACTIONS
         self.cur = self.actions[-1]
 
     def receiveEnvironmentData(self, data):
