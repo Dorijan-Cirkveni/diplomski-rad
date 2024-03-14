@@ -274,7 +274,7 @@ class GraphicManualInputAgent(itf.iAgent):
         :return: GraphicManualInputAgent: A copy of the ManualInputAgent.
 
         """
-        return GraphicManualInputAgent(self.watchedDimensions, self.actions)
+        return GraphicManualInputAgent(self.actions)
 
 
 def main():
