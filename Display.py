@@ -248,8 +248,7 @@ class GridDisplay:
         self.bottom_text = new_text
 
     def show_iter(self, winStatus=None):
-        value = self.grid.evaluateActiveEntities()
-        s = "Current step:{}\nValue:{}".format(self.iteration, value)
+        s = "Current step:{}\nValue:{}".format(self.iteration, "Unchecked")
         if winStatus:
             s = "Win on step {}".format(self.iteration)
         self.change_text(s)

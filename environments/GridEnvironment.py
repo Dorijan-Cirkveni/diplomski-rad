@@ -340,101 +340,6 @@ class GridEnvironment(itf.iEnvironment):
     def chooseGrid(self, viewed: bool):
         return self.viewedGrid if viewed else self.solidGrid
 
-    def setDistances(self, M, agentID=None):
-        """
-        Sets distances in the environment.
-
-        Args:
-            M: Distances data.
-            agentID (int, optional): ID of the agent. Defaults to None.
-        """
-        disfor = self.tileData.get("disFor", dict())
-        disfor[agentID] = M
-        self.tileData["disFor"] = disfor
-        return
-
-    def applyFromGrid(self, func, viewed=False):
-        grid = self.chooseGrid(viewed)
-        scale = grid.scale
-        for i in range(scale[0]):
-            for j in range(scale[1]):
-                func(self.get_tile((i, j), viewed))
-        return
-
-    def calcDistances(self, agentID=None, ignoreObstacles=False):
-        """
-        Calculates distances in the environment.
-
-        Args:
-            agentID (int, optional): ID of the agent. Defaults to None.
-            ignoreObstacles (bool, optional): Whether to ignore obstacles. Defaults to False.
-
-        Returns:
-            list: Distance data.
-        """
-        data = dict()
-        if agentID is not None:
-            entity = self.entities[agentID]
-            entity: GridEntity
-            data = entity.properties
-        temp = []
-        M = []
-        for i, E in enumerate(self.solidGrid):
-            L = []
-            for j, F in enumerate(E):
-                entry = None
-                tile = self.tileTypes[F]
-                tile: PlaneTile
-                if tile.checkAgainst(data) == PlaneTile.goal:
-                    entry = 0
-                    temp.append((i, j))
-                L.append(entry)
-            M.append(L)
-        while temp:
-            newtemp = []
-            while temp:
-                E = temp.pop()
-                v = M[E[0]][E[1]]
-                if v is None:
-                    raise Exception("Cosmic Ray Error?")
-                v += 1
-                moves = self.getMoves(agentID)
-                for move in moves:
-                    newpos = Tadd(E, move)
-                    newtiletype = self.get_tile(newpos, False)
-                    if newtiletype is None:
-                        continue
-                    tile = self.tileTypes[newtiletype]
-                    tile: PlaneTile
-                    if M[newpos[0]][newpos[1]] is None:
-                        M[newpos[0]][newpos[1]] = v
-                        if self.is_tile_movable(newpos, data):
-                            newtemp.append(newpos)
-            temp = newtemp
-        self.tileData['disFor'][str(agentID) + "_" + str(ignoreObstacles)] = M
-        return M
-
-    def getPositionValue(self, position, agentID=None, ignoreObstacles=False):
-        """
-        Gets the position value.
-
-        Args:
-            position (tuple): Position coordinates.
-            agentID (int, optional): ID of the agent. Defaults to None.
-            ignoreObstacles (bool, optional): Whether to ignore obstacles. Defaults to False.
-
-        Returns:
-            int: Position value.
-        """
-        tile = self.get_tile(position, False)
-        if tile is None:
-            return None
-        disfor = self.tileData['disFor']
-        if agentID not in disfor:
-            self.calcDistances(agentID, ignoreObstacles)
-        M = disfor[str(agentID) + "_" + str(ignoreObstacles)]
-        return M[position[0]][position[1]]
-
     def get_tile(self, E: tuple, viewed: bool, curtime=0):
         """
         Gets the tile at the specified position.
@@ -452,14 +357,14 @@ class GridEnvironment(itf.iEnvironment):
             return None
         return grid[E]
 
-    def is_tile_movable(self, tilePos, agentData, viewable=False, curtime=0):
+    def is_tile_movable(self, tilePos, agentData, viewable=False):
         """
         Checks if the tile is movable.
 
         Args:
             tilePos (tuple): Tile position coordinates.
             agentData: Agent data.
-            curtime (int): Time (iteration number). Not used in base class, defaults to 0.
+            viewable: Whether the checker uses the viewed grid or the solid grid.
 
         Returns:
             bool: True if the tile is movable, False otherwise.
@@ -478,6 +383,7 @@ class GridEnvironment(itf.iEnvironment):
         Args:
             tilePos (tuple): Tile position coordinates.
             agentData: Agent data.
+            viewable: Whether the checker uses the viewed grid or the solid grid.
 
         Returns:
             bool: True if the tile is lethal, False otherwise.
@@ -756,26 +662,6 @@ class GridEnvironment(itf.iEnvironment):
             self.activeEntities -= {e}
         return
 
-    def evaluateActiveEntities(self, evalMethod: callable = lambda E: 0 if not E else -min(E)):
-        """
-        Evaluates active entities in the environment.
-
-        Args:
-            evalMethod (callable, optional): Evaluation method. Defaults to lambda E: 0 if not E else -min(E).
-
-        Returns:
-            int: Evaluation result.
-        """
-        totalLoss = []
-        for E, ID in self.taken.items():
-            if ID not in self.activeEntities:
-                continue
-            val = self.getPositionValue(E)
-            if val is None:
-                val = 10 ** 9 + 7
-            totalLoss.append(val)
-        return evalMethod(totalLoss)
-
     def isWin(self):
         """
         Checks if the environment represents a win state.
@@ -783,8 +669,18 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             bool: True if it's a win state, False otherwise.
         """
-        X = {self.getPositionValue(E, ID) for E, ID in self.taken.items() if ID in self.activeEntities}
-        return 0 in X
+        for ID in self.activeEntities:
+            ent: GridEntity = self.entities[ID]
+            entpos: tuple = ent.get(GridEntity.LOCATION, None)
+            if entpos is None:
+                continue
+            tileID = self.get_tile(entpos, False)
+            if tileID not in range(len(self.tileTypes)):
+                raise Exception("Tile index invalid!")
+            tile: PlaneTile = self.tileTypes[tileID]
+            if tile.checkAgainst(ent.properties) == PlaneTile.goal:
+                return True
+        return False
 
     def changeActiveEntityAgents(self, newAgents: list[itf.iAgent]):
         """

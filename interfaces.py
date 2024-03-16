@@ -89,9 +89,6 @@ class iEnvironment:
     def __copy__(self):
         raise NotImplementedError
 
-    def getPositionValue(self, position, agentID=None):
-        raise NotImplementedError
-
     def getValue(self, agentID=None):
         entity: iEntity = self.entities[agentID]
         return entity.properties
