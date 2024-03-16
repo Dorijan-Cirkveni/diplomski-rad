@@ -93,6 +93,28 @@ def adjustRatio(size, ratio):
     return adjRatio
 
 
+def AddValueToLayeredStruct(S: [dict, list], types: list[type], indices: list, value, mode: str):
+    stack = []
+    for i, e in enumerate(indices):
+        stack.append((S, e))
+        if type(S) == list:
+            if type(e) != int:
+                raise Exception("figure it out yourself")
+            if e not in range(len(S)):
+                raise Exception("figure it out yourself")
+        elif type(S) == dict:
+            S = S.get(e, types[i]())
+    if mode == "a":
+        if type(S) == list:
+            S.append(value)
+            value = S
+    while stack:
+        S, e = stack.pop()
+        S[e] = value
+        value = S
+    return
+
+
 def main():
     print(reverseIf((0, 1), 0 == 1), reverseIf((0, 1), 1 == 1))
     return

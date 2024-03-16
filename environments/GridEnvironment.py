@@ -1,8 +1,3 @@
-import json
-import os.path
-import pprint
-from typing import Type
-
 from definitions import *
 from agents import AgentManager
 import interfaces as itf
@@ -11,7 +6,6 @@ from util import UtilManager as util_mngr
 from util.VisionOctant import VisionOctant
 from util.Grid2D import Grid2D
 from util.TupleDotOperations import *
-from util.FragmentedJsonProcessor import ImportFragmentedJSON
 
 # Counter for assigning unique identifiers to different types of tiles
 tile_counter = util_mngr.Counter()
@@ -506,8 +500,8 @@ class GridEnvironment(itf.iEnvironment):
         if opaque is None:
             opaque = default_opaque
         (axis, sig) = int(direction[1] == 0), direction[0] + direction[1]
-        VO_inc = util_mngr.VisionOctant()
-        VO_dec = util_mngr.VisionOctant()
+        VO_inc = VisionOctant()
+        VO_dec = VisionOctant()
         distance = 0
         used_any = True
         while used_any:
@@ -800,7 +794,7 @@ class GridEnvironment(itf.iEnvironment):
             newAgents (list[itf.iAgent]): List of new agents.
         """
         for E in self.activeEntities:
-            ent:GridEntity=self.entities[E]
+            ent: GridEntity = self.entities[E]
             ent.agent = newAgents[E]
         return
 
@@ -880,13 +874,13 @@ class GridEnvironment(itf.iEnvironment):
         return X
 
 
-def readPlaneEnvironment(jsonL, index:int, agentDict:dict=None) -> GridEnvironment:
+def readPlaneEnvironment(jsonL, index: int, agentDict: dict = None) -> GridEnvironment:
     """
     Reads a grid-based environment from JSON data and returns a GridEnvironment object.
 
     Args:
-        json_str (str): The JSON string containing environment data.
-        index (int): The index of the environment to read from the JSON array.
+        jsonL (list): The list of plane environment data structures.
+        index (int): The index of the environment to read from jsonL:
         agentDict (dict, optional): A dictionary mapping agent types to agent classes.
             Defaults to None, in which case all agents are considered.
 
