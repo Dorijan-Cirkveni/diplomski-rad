@@ -12,6 +12,17 @@ class iAgent:
     def performAction(self, actions):
         raise NotImplementedError
 
+    def submitDataEntry(self, entryKey) -> tuple[bool, object]:
+        raise NotImplementedError
+
+    def submitData(self, dataEntries: list):
+        result = dict()
+        for entryKey in dataEntries:
+            entryExists, entryValue = self.submitDataEntry(entryKey)
+            if entryExists:
+                result[entryKey] = entryValue
+        return result
+
     def __copy__(self):
         raise NotImplementedError
 
