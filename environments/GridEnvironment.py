@@ -205,23 +205,31 @@ class GridEnvironment(itf.iEnvironment):
     dir_left = 2
     dir_right = 3
 
-    def __init__(self, grid: Grid2D, viewedGrid: Grid2D = None, entities: list[GridEntity] = None,
-                 activeEntities: set = None, tileTypes: list[PlaneTile] = None, extraData: dict = None):
+    def __init__(self, grids: dict,
+                 entities: list[GridEntity] = None, activeEntities: set = None,
+                 tileTypes: list[PlaneTile] = None, effectTypes: list = None,
+                 extraData: dict = None):
         """
         Initializes a new GridEnvironment instance.
 
         Args:
-            grid (Grid2D): The grid representing the environment.
+            grids (list[Grid2D]): List of grids that make up the environment, including:
+                - the mandatory solid grid
+                - the visual grid if illusions are used
+                - the effects grid if entities may be inflicted with special effects
             entities (list[GridEntity], optional): List of entities in the environment. Defaults to None.
             activeEntities (set, optional): Set of active entity IDs. Defaults to None.
             tileTypes (list[PlaneTile], optional): List of tile types. Defaults to None.
+            effectTypes (list, optional): List of effect types. Defaults to None.
             extraData (dict, optional): Extra data for the environment. Defaults to None.
         """
         super().__init__(entities, activeEntities, extraData=extraData)
-        self.solidGrid: Grid2D = grid
-        self.viewedGrid: Grid2D = grid if viewedGrid is None else viewedGrid
+        self.grids = grids
+        self.solidGrid: Grid2D = grids['grid']
+        self.viewedGrid: Grid2D = grids.get('viewed', self.solidGrid)
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
-        self.tileData = {"disFor": dict()}
+        self.effectTypes = [] if effectTypes is None else effectTypes
+
         self.taken = dict()
         for ID, entity in enumerate(self.entities):
             entity: GridEntity
@@ -266,6 +274,11 @@ class GridEnvironment(itf.iEnvironment):
 
     @staticmethod
     def getInputFromDict(raw: dict):
+        """
+
+        :param raw:
+        :return:
+        """
         agentDict = GridEnvironment.getAgentDict(raw)
         gridRaw = raw.get("grid")
         grid = Grid2D.getFromDict(gridRaw)
@@ -274,6 +287,9 @@ class GridEnvironment(itf.iEnvironment):
             visgrid = Grid2D.getFromDict(gridRaw)
         else:
             visgrid = grid
+        all_grids: dict = raw.get("all_grids")
+        all_grids["solid"] = grid
+        all_grids["viewed"] = visgrid
         agents = []
         entities = []
         active = set()
@@ -289,7 +305,7 @@ class GridEnvironment(itf.iEnvironment):
             entities.append(entity)
 
         active.update(set(raw.get("activeEntities", [])))
-        return grid, visgrid, entities, active
+        return all_grids, entities, active
 
     @staticmethod
     def getFromDict(raw: dict):
@@ -302,14 +318,8 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             GridEnvironment: Created GridEnvironment object.
         """
-        grid, visgrid, entities, active = GridEnvironment.getInputFromDict(raw)
-        res = GridEnvironment(
-            grid=grid,
-            viewedGrid=visgrid,
-            entities=entities,
-            activeEntities=active,
-            extraData=raw
-        )
+        envInput: tuple = GridEnvironment.getInputFromDict(raw)
+        res = GridEnvironment(*envInput)
         return res
 
     def getScale(self):
@@ -661,6 +671,15 @@ class GridEnvironment(itf.iEnvironment):
             self.entities[e] = None
             self.activeEntities -= {e}
         return
+
+    def evaluateActiveEntities(self, evalMethod: callable, indEvalMethod: callable):
+        X = []
+        for ID in self.activeEntities:
+            ent: GridEntity = self.entities[ID]
+            val = indEvalMethod(ent)
+            X.append(val)
+        res = evalMethod(X)
+        return res
 
     def isWin(self):
         """

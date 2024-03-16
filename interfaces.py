@@ -167,7 +167,7 @@ class iEnvironment:
         self.runChanges(D)
         self.applyEffects(curIter)
 
-    def evaluateActiveEntities(self, evalMethod: callable):
+    def evaluateActiveEntities(self, evalMethod: callable, indEvalMethod:callable):
         raise NotImplementedError
 
     def makeAgentTest(self, agent: iAgent):
