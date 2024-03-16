@@ -8,6 +8,7 @@ from agents import AgentManager
 import interfaces as itf
 from test_json.test_json_manager import ImportManagedJSON
 from util import UtilManager as util_mngr
+from util.VisionOctant import VisionOctant
 from util.Grid2D import Grid2D
 from util.TupleDotOperations import *
 from util.FragmentedJsonProcessor import ImportFragmentedJSON
