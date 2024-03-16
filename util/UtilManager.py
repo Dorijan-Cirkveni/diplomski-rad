@@ -95,8 +95,6 @@ def adjustRatio(size, ratio):
 
 def main():
     print(reverseIf((0, 1), 0 == 1), reverseIf((0, 1), 1 == 1))
-    testVisionOctant("0100|0010|1001|00000")
-    testVisionOctant("1000|0010|0001")
     return
 
 

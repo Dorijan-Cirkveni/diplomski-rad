@@ -58,6 +58,8 @@ def testVisionOctant(R):
 
 
 def main():
+    testVisionOctant("0100|0010|1001|00000")
+    testVisionOctant("1000|0010|0001")
     return
 
 
