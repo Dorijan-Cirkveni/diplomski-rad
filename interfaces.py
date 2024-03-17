@@ -19,6 +19,9 @@ class Effect:
         self.entities=entities
         self.active=False
 
+    def getDelta(self):
+        return self.duration if self.active else self.downtime
+
 
 class iAgent:
     def receiveEnvironmentData(self, data):
@@ -115,7 +118,7 @@ class iEnvironment:
     def __init__(self, entities:list, activeEntities:set, effectTypes:list[Effect],
                  extraData:dict=None):
         self.data = [extraData, {}][extraData is None]
-        self.effects: list = self.data.get("effects", [])
+        self.effects: list[Effect] = self.data.get("effects", [])
         self.effectTypes=effectTypes
         self.scheduledEffects=PriorityList()
         self.entities: list = [] if entities is None else entities
@@ -162,11 +165,10 @@ class iEnvironment:
 
     def runChanges(self, moves):
         raise NotImplementedError
-    
+
     def handleEffect(self, effect:Effect):
         remove=effect.active
         effect.active=not remove
-        isState = type(effect) == str
         IDs=effect.entities if effect.entities else [i for i in self.entities]
         entities=[]
         for ID in IDs:
@@ -180,16 +182,12 @@ class iEnvironment:
             for entity in entities:
                 entity.set(effect.value)
 
-    def applyEffects(self, curIter=0):
-        for (effect, start, uptime, downtime) in self.effects:
-            if downtime == 0:
-                k = 0 if curIter == start else -1
-            else:
-                k = (curIter - start) % (uptime + downtime)
-            if k == 0:
-                self.applyEffect(effect, False)
-            elif k == uptime:
-                self.applyEffect(effect, True)
+    def applyEffects(self):
+        dueEffects:list[tuple[object,list]]=self.scheduledEffects.popLowerThan(self.curIter)
+        for ((iter,prio),effect) in dueEffects:
+            effect:Effect
+            self.handleEffect(effect)
+            self.scheduledEffects.add((iter+effect.getDelta(),prio),effect)
 
     def runIteration(self, curIter=0):
         D = dict()

@@ -15,12 +15,12 @@ class PriorityList:
         self.allValues[key] = L
         heapq.heappush(self.keyHeap, key)
 
-    def popLowerThan(self, key):
+    def popLowerThan(self, key)->list[tuple[object,list]]:
         RES = []
         while self.keyHeap[0] < key:
             tkey = heapq.heappop(self.keyHeap)
             L = self.allValues.pop(tkey)
-            RES.extend(L)
+            RES.append((tkey,L))
         return RES
 
 
