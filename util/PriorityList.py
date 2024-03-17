@@ -16,6 +16,8 @@ class PriorityList:
         heapq.heappush(self.keyHeap, key)
 
     def popLowerThan(self, key)->list[tuple[object,list]]:
+        if not self.keyHeap:
+            return []
         RES = []
         while self.keyHeap[0] < key:
             tkey = heapq.heappop(self.keyHeap)

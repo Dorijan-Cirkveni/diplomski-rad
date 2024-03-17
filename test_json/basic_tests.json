@@ -2,7 +2,7 @@
 {
   "envType": "grid",
   "name": "Environment Test 1",
-  "grid": "<EXT>g_base|0",
+  "solid": "<EXT>g_base|0",
   "agent": [
     ["RAA","42132143212132141241212"],
     ["BOX",""]
@@ -23,7 +23,7 @@
 {
   "envType": "grid",
   "name": "Environment Test 2",
-  "grid": "<EXT>g_base|0",
+  "solid": "<EXT>g_base|0",
   "agent": [
     ["RAA","4213214321"]
   ],
@@ -38,7 +38,7 @@
 {
   "envType": "grid",
   "name": "Box Push Test 1",
-  "grid": "<EXT>g_base|2",
+  "solid": "<EXT>g_base|2",
   "agent": [
     ["RAA","42132143212132141241212"],
     ["BOX",""]
@@ -68,7 +68,7 @@
       [10,10,10,10,0]
     ]
   },
-  "grid":
+  "solid":
   [
   [],[],[],[],[],[],[],[],[],[],
   [0,0,0],
@@ -100,7 +100,7 @@
       [6, 2, 10, 4, 2]
     ]
   },
-  "grid": [[],[],[],[],[0,1,2,3,4,5]],
+  "solid": [[],[],[],[],[0,1,2,3,4,5]],
   "agent": [
     ["RAA","42132143212132141241212"],
     ["MIRROR","0"]

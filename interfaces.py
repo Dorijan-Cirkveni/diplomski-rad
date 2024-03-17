@@ -189,7 +189,11 @@ class iEnvironment:
             self.handleEffect(effect)
             self.scheduledEffects.add((iter+effect.getDelta(),prio),effect)
 
-    def runIteration(self, curIter=0):
+    def runIteration(self, curIter=None):
+        if curIter is None:
+            self.curIter+=1
+        else:
+            self.curIter=curIter
         D = dict()
         self.runData['agent_current_action'] = D
         cur_prio = 0
@@ -213,7 +217,7 @@ class iEnvironment:
             cur_D[entityID] = chosenAction
         D.update(cur_D)
         self.runChanges(D)
-        self.applyEffects(curIter)
+        self.applyEffects()
 
     def evaluateActiveEntities(self, evalMethod: callable, indEvalMethod:callable):
         raise NotImplementedError

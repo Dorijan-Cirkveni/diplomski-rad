@@ -223,9 +223,9 @@ class GridEnvironment(itf.iEnvironment):
             effectTypes (list, optional): List of effect types. Defaults to None.
             extraData (dict, optional): Extra data for the environment. Defaults to None.
         """
-        super().__init__(entities, activeEntities, extraData=extraData)
+        super().__init__(entities, activeEntities, effectTypes, extraData=extraData)
         self.grids = grids
-        self.solidGrid: Grid2D = grids['grid']
+        self.solidGrid: Grid2D = grids['solid']
         self.viewedGrid: Grid2D = grids.get('viewed', self.solidGrid)
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
         self.effectTypes = [] if effectTypes is None else effectTypes
@@ -280,14 +280,14 @@ class GridEnvironment(itf.iEnvironment):
         :return:
         """
         agentDict = GridEnvironment.getAgentDict(raw)
-        gridRaw = raw.get("grid")
+        gridRaw = raw["solid"]
         grid = Grid2D.getFromDict(gridRaw)
-        if "visual_grid" in raw:
-            gridRaw = raw.get("grid")
+        if "visual" in raw:
+            gridRaw = raw["visual"]
             visgrid = Grid2D.getFromDict(gridRaw)
         else:
             visgrid = grid
-        all_grids: dict = raw.get("all_grids")
+        all_grids: dict = raw.get("all_grids",dict())
         all_grids["solid"] = grid
         all_grids["viewed"] = visgrid
         agents = []
@@ -547,7 +547,7 @@ class GridEnvironment(itf.iEnvironment):
             agents = dict()
             for E in self.taken.keys():
                 self.getAgentDisplay(agents, E)
-            return {"grid": self.chooseGrid(viewed), "agents": agents}
+            return {"solid": self.chooseGrid(viewed), "agents": agents}
         entityID: int
         if self.entities[entityID] is None:
             return {"msg": "Entity terminated"}
@@ -555,7 +555,7 @@ class GridEnvironment(itf.iEnvironment):
         if entity.isInState(entity.S_blind):
             return {"msg": "Entity blinded"}
         data = self.getEnvData(entityID)
-        grid = data['grid']
+        grid = data['solid']
         agents = dict()
         for E in self.taken.keys():
             if grid[E] == -1:

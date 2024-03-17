@@ -63,7 +63,8 @@ class MazeEnvironment(GridEnvironment):
         self.idealGoal = idealGoal
         entity.set(entity.LOCATION, start)
         grid = mazes.CreateFullMaze(scale, start, idealGoal, maze_seed=maze_seed, tiles=[0, 2, 1])
-        super().__init__(grid, grid, [entity], {0}, tileTypes, extraData=extraData)
+        grids={'solid':grid}
+        super().__init__(grids, [entity], {0}, tileTypes, extraData=extraData)
 
     @staticmethod
     def getFromDict(raw: dict):
