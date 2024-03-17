@@ -3,6 +3,21 @@ from typing import Type
 
 from util import TupleDotOperations as tdo
 from util.Grid2D import Grid2D
+from util.PriorityList import PriorityList
+
+
+class Effect:
+    """
+
+    """
+    def __init__(self, value, duration:int=-1, downtime:int=-1, entities=None):
+        if entities is None:
+            entities = {}
+        self.value=value
+        self.duration=duration
+        self.downtime=downtime
+        self.entities=entities
+        self.active=False
 
 
 class iAgent:
@@ -66,12 +81,28 @@ class iEntity:
     def isInState(self, state):
         return state in self.states
 
-    def get(self, key, default):
+    def get(self, key, default=None):
+        if type(key)==tuple:
+            key,default=key
+        if key in self.states:
+            return True
         return self.properties.get(key, default)
 
-    def set(self, key, value):
+    def set(self, key, value=None):
+        if type(key)==tuple:
+            key,value=key
+        if value is None:
+            self.states.add(key)
         self.properties[key] = value
         return
+
+    def pop(self,key,default=None):
+        if type(key)==tuple:
+            key,default=key
+        if key in self.states:
+            self.states.remove(key)
+        return self.properties.pop(key, default)
+
 
     def getDisplay(self):
         return self.displays[self.curdis]
@@ -81,9 +112,12 @@ class iEntity:
 
 
 class iEnvironment:
-    def __init__(self, entities, activeEntities, extraData=None):
+    def __init__(self, entities:list, activeEntities:set, effectTypes:list[Effect],
+                 extraData:dict=None):
         self.data = [extraData, {}][extraData is None]
         self.effects: list = self.data.get("effects", [])
+        self.effectTypes=effectTypes
+        self.scheduledEffects=PriorityList()
         self.entities: list = [] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
         self.entityPriority = []
@@ -92,6 +126,7 @@ class iEnvironment:
             self.entityPriority.append((priority, ID))
         self.entityPriority.sort(reverse=True)
         self.runData = dict()
+        self.curIter = 0
 
     @staticmethod
     def getFromDict(raw: dict) -> Type['iEnvironment']:
@@ -99,6 +134,21 @@ class iEnvironment:
 
     def __copy__(self):
         raise NotImplementedError
+
+    def scheduleEffect(self, time, value, duration, period, entities=None, schedule=0):
+        """
+        Schedule an effect.
+        :param time: Iteration in which the effect is scheduled.
+        :param value: The effect.
+        :param duration: How long the effect lasts.
+        :param period: How long until the effect reoccurs.
+        :param entities:
+        :param schedule: Effect priority. The lower the value, the higher the priority.
+        """
+        if entities is None:
+            entities = {}
+        effect=Effect(value,duration,period,entities)
+        self.scheduledEffects.add((time,schedule),effect)
 
     def getValue(self, agentID=None):
         entity: iEntity = self.entities[agentID]
@@ -112,23 +162,23 @@ class iEnvironment:
 
     def runChanges(self, moves):
         raise NotImplementedError
-
-    def applyEffect(self, effect, remove=False):
+    
+    def handleEffect(self, effect:Effect):
+        remove=effect.active
+        effect.active=not remove
         isState = type(effect) == str
-        for entity in self.entities:
-            if entity is None:
+        IDs=effect.entities if effect.entities else [i for i in self.entities]
+        entities=[]
+        for ID in IDs:
+            ent:iEntity=self.entities[ID]
+            if ent is None:
                 continue
-            entity: iEntity
-            if isState:
-                if remove:
-                    entity.states.remove(effect)
-                else:
-                    entity.states.add(effect)
-            else:
-                if remove:
-                    entity.properties.pop(effect[0])
-                else:
-                    entity.properties[effect[0]] = effect[1]
+        if remove:
+            for entity in entities:
+                entity.pop(effect.value)
+        else:
+            for entity in entities:
+                entity.set(effect.value)
 
     def applyEffects(self, curIter=0):
         for (effect, start, uptime, downtime) in self.effects:
