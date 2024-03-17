@@ -279,7 +279,7 @@ class GridDisplay:
     def draw_frame(self, delay=0):
         self.draw_buttons()
         data: dict = self.grid.getDisplayData(self.obsAgent)
-        grid: Grid2D = data.get('solid', None)
+        grid: Grid2D = data.get('grid', None)
         agents: dict = data.get('agents', dict())
         if grid is None:
             self.term_screen.text = data.get("msg", "Missing message")

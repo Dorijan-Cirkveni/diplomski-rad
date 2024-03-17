@@ -476,9 +476,9 @@ class GridEnvironment(itf.iEnvironment):
         grid = self.chooseGrid(viewable)
         return grid.text_display(guide, self.taken)
 
-    def getEnvData(self, entityID: [int, None] = None):
+    def getEnvData(self, entityID: [int, None] = None, viewed=True):
         """
-        Gets environment data.
+        Gets environment data for entity.
 
         :param entityID: ID of the entity. Defaults to None.
         :return: Environment data.
@@ -536,6 +536,7 @@ class GridEnvironment(itf.iEnvironment):
     def getDisplayData(self, entityID=None, viewed=True):
         """
         Gets the display data.
+        Not to be confused with getEnvData.
 
         Args:
             entityID (int, optional): ID of the entity. Defaults to None.
@@ -543,11 +544,12 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             dict: Grid and agent display data.
         """
+        gridKey=["solid","viewed"][viewed]
         if entityID is None:
             agents = dict()
             for E in self.taken.keys():
                 self.getAgentDisplay(agents, E)
-            return {"solid": self.chooseGrid(viewed), "agents": agents}
+            return {"grid": self.grids[gridKey], "agents": agents}
         entityID: int
         if self.entities[entityID] is None:
             return {"msg": "Entity terminated"}
