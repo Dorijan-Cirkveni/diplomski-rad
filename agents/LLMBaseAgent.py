@@ -5,7 +5,26 @@ from interfaces import iAgent
 
 
 class GPTAgent(iAgent):
-    def __init__(self):
+    def __init__(self,saveFile:str="",agentFile="",source="gpt2"):
+        self.saveFile:str=saveFile
+        self.agentFile:str=agentFile
+        self.source:str=source
+        self.tokenizer=None
+        self.model=None
+        if self.saveFile:
+
+        return
+    def receiveEnvironmentData(self, data):
+        raise NotImplementedError
+
+    def performAction(self, actions):
+        raise NotImplementedError
+
+    def submitDataEntry(self, entryKey) -> tuple[bool, object]:
+        raise NotImplementedError
+
+    def __copy__(self):
+        raise NotImplementedError
 
 
 
