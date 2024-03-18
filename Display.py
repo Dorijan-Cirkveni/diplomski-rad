@@ -155,6 +155,7 @@ class GridDisplay:
         self.obsAgent = obsAgent
         self.viewable = False
         self.iteration = 0
+        self.winStatus = (-1, None)
         self.bottom_text = ">"
         self.term_screen = Button((100, 100, 255), "NULL", (0, 0) + self.gridscreenV, lambda x: None)
         self.term_screen.place((0, 0))
@@ -175,6 +176,11 @@ class GridDisplay:
 
     def toggle_viewable(self):
         self.viewable = not self.viewable
+        button:Button=self.buttons["viewable"]
+        button.text="Grid mode: " + ["Real", "Observed"][self.viewable]
+        self.show_iter()
+        self.draw_frame()
+        self.draw_buttons()
         return 0
 
     def make_jump_iteration(self, count):
@@ -247,10 +253,13 @@ class GridDisplay:
     def change_text(self, new_text):
         self.bottom_text = new_text
 
-    def show_iter(self, winStatus=None):
+    def show_iter(self):
+        winStatus, winIndex = self.winStatus
         s = "Current step:{}\nValue:{}".format(self.iteration, "Unchecked")
-        if winStatus:
-            s = "Win on step {}".format(self.iteration)
+        if winStatus is True:
+            s = "Win on step {}".format(winIndex)
+        elif winStatus is False:
+            s = "Loss on step {}".format(winIndex)
         self.change_text(s)
 
     def draw_row(self, row_coordinate, row_tiles, row_agents):
@@ -278,7 +287,7 @@ class GridDisplay:
 
     def draw_frame(self, delay=0):
         self.draw_buttons()
-        data: dict = self.grid.getDisplayData(self.obsAgent)
+        data: dict = self.grid.getDisplayData(self.obsAgent,self.viewable)
         grid: Grid2D = data.get('grid', None)
         agents: dict = data.get('agents', dict())
         if grid is None:
@@ -315,7 +324,7 @@ class GridDisplay:
         self.place_buttons()
         pastMove = (0, 0)
         running = True
-        status = None  # win=True, loss=False, ongoing=None
+        self.winStatus=(None,-1)  # win=True, loss=False, ongoing=None
         self.show_iter()
         self.iteration = 0
         self.draw_frame()
@@ -354,10 +363,11 @@ class GridDisplay:
                     self.grid.runIteration(self.iteration)
                     if i % 100 == 99:
                         print("Iteration {}/{}".format(i + 1, runIter))
-                if self.grid.isWin():
-                    status = True
-                self.show_iter(status)
+                    if self.grid.isWin():
+                        self.winStatus=(True,self.iteration)
+                updateImage = True
             if updateImage:
+                self.show_iter()
                 self.draw_frame()
                 self.draw_buttons()
         pygame.quit()
@@ -405,7 +415,7 @@ def runInteractive(file, ind):
     testGI = GridInteractive()
     testGI.load_grid_from_fragment(file, ind)
     grid: GridEnvironment = testGI.grid
-    grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
+    grid.changeActiveEntityAgents([GraphicManualInputAgent()])
 
     testGI.init_display(element_grid, agent_grid)
     testGI.run()
@@ -440,7 +450,7 @@ def CustomTest(file, ind, preimported_raw: list = None):
 
 
 def CustomTestWithCommands(file, ind, commandStack=None,
-                           testMode=False,printOutput=None):
+                           testMode=False, printOutput=None):
     """
 
     :param file:
@@ -450,7 +460,7 @@ def CustomTestWithCommands(file, ind, commandStack=None,
     :param printOutput:
     :return:
     """
-    printOutput=print if printOutput is None else printOutput
+    printOutput = print if printOutput is None else printOutput
     if commandStack is None:
         commandStack = []
     testGI = GridInteractive()
@@ -478,26 +488,26 @@ def CustomTestWithCommands(file, ind, commandStack=None,
             agentMaker = ag_mngr.ALL_AGENTS[agentName]
             agent = agentMaker(agentData)
             if testMode:
-                printOutput("(This is where the agents would be set to {} {})".format(agentName,agentData))
+                printOutput("(This is where the agents would be set to {} {})".format(agentName, agentData))
             else:
                 testGI.grid.changeActiveEntityAgents([agent])
     return True
 
 
 def BulkTestWithCommands(file, rangeData: tuple[int, int], commandStack: list,
-                         testMode=False, printOutput:callable=None):
-    printOutput=print if printOutput is None else printOutput
+                         testMode=False, printOutput: callable = None):
+    printOutput = print if printOutput is None else printOutput
     for ind in range(rangeData[0], rangeData[1]):
         success = CustomTestWithCommands(file, ind, commandStack.copy(),
-                                         testMode=testMode,printOutput=printOutput)
+                                         testMode=testMode, printOutput=printOutput)
         if not success:
             print("Interrupting on {} due to early failure/end of file")
     return
 
 
 def CommandRun(commandList: list[str] = None,
-               testMode=False, printOutput:callable=None):
-    printOutput=print if printOutput is None else printOutput
+               testMode=False, printOutput: callable = None):
+    printOutput = print if printOutput is None else printOutput
     if commandList is None:
         commandList = []
     commandList.reverse()
@@ -508,7 +518,7 @@ def CommandRun(commandList: list[str] = None,
             command = commandList.pop().split()
         else:
             command = input(">>>").split()
-        printOutput("Main command:",command)
+        printOutput("Main command:", command)
         n = len(command)
         name = command[0]
         if name == "individual":
@@ -526,20 +536,19 @@ def CommandRun(commandList: list[str] = None,
             if n == 3:
                 file = command[1]
                 ind = int(command[2])
-                printOutput("Running:",file,ind)
-                CustomTestWithCommands(file,ind,indCommandList[::-1],
-                                       testMode=testMode,printOutput=printOutput)
+                printOutput("Running:", file, ind)
+                CustomTestWithCommands(file, ind, indCommandList[::-1],
+                                       testMode=testMode, printOutput=printOutput)
                 continue
             if n == 4:
                 file = command[1]
                 ind1 = int(command[2])
                 ind2 = int(command[3])
-                printOutput("Running in bulk:",file,ind1,ind2)
-                BulkTestWithCommands(file,(ind1,ind2),indCommandList[::-1],
-                                       testMode=testMode,printOutput=printOutput)
+                printOutput("Running in bulk:", file, ind1, ind2)
+                BulkTestWithCommands(file, (ind1, ind2), indCommandList[::-1],
+                                     testMode=testMode, printOutput=printOutput)
                 continue
-            printOutput("Invalid command length (need to be 3 or 4):",command)
-
+            printOutput("Invalid command length (need to be 3 or 4):", command)
 
 
 def DebugRun():

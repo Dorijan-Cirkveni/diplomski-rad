@@ -1,95 +1,125 @@
 [
-{
-  "envType": "grid",
-  "name": "Environment Test 1",
-  "solid": "<EXT>g_base|0",
-  "agent": [
-    ["RAA","42132143212132141241212"],
-    ["BOX",""]
-  ],
-  "entities": [
-    {"id": 0, "displays": [0,1,2,3], "curdis": 3,
-      "properties": {"loc": [2, 5], "viewdir": 10},
-      "states": []
+  {
+    "envType": "grid",
+    "name": "Environment Test 1",
+    "solid": "<EXT>g_base|0",
+    "viewed": "<EXT>g_base|1",
+    "agent": [
+      ["RAA","42132143212132141241212"],
+      ["BOX",""]
+    ],
+    "entities": [
+      {"id": 0, "displays": [0,1,2,3], "curdis": 3,
+        "properties": {"loc": [2, 5], "viewdir": 10},
+        "states": []
+      },
+      {"id": 1, "displays": [0,1,2,3], "curdis": 3, "properties": {"image": "blue", "loc": [15, 10]}}
+    ],
+    "activeEntities": [0],
+    "passiveMoveLimit": 1,
+    "effects": [["blind",5,1,0]],
+    "null": null
+  }
+  ,
+  {
+    "envType": "grid",
+    "name": "Environment Test 2",
+    "solid": "<EXT>g_base|0",
+    "agent": [
+      ["RAA","4213214321"]
+    ],
+    "entities": [
+      {"id": 0, "properties": {"loc": [15, 5], "viewup": true}}
+    ],
+    "activeEntities": [0],
+    "passiveMoveLimit": 1,
+    "null": null
+  }
+  ,
+  {
+    "envType": "grid",
+    "name": "Box Push Test 1",
+    "solid": "<EXT>g_base|2",
+    "agent": [
+      ["RAA","42132143212132141241212"],
+      ["BOX",""]
+    ],
+    "entities": [
+      {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties":
+        {"loc": [9, 8], "viewup": true, "viewdn": true, "viewle":  true, "viewri": true}
+      },
+      {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [10, 8]}},
+      {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [11, 8]}}
+    ],
+    "activeEntities": [0],
+    "passiveMoveLimit": 1,
+    "stopOnWin": false,
+    "null": null
+  }
+  ,
+  {
+    "envType": "grid",
+    "name": "Environment Test 3",
+    "scale": [20,20],
+    "shapes": {
+      "rectangles": [
+        [0, 18, 19, 19, 1],
+        [0, 0, 19, 19, 2],
+        [2, 8, 10, 12, 2],
+        [10,10,10,10,0]
+      ]
     },
-    {"id": 1, "displays": [0,1,2,3], "curdis": 3, "properties": {"image": "blue", "loc": [15, 10]}}
-  ],
-  "activeEntities": [0],
-  "passiveMoveLimit": 1,
-  "effects": [["blind",5,1,0]],
-  "null": null
-}
-,
-{
-  "envType": "grid",
-  "name": "Environment Test 2",
-  "solid": "<EXT>g_base|0",
-  "agent": [
-    ["RAA","4213214321"]
-  ],
-  "entities": [
-    {"id": 0, "properties": {"loc": [15, 5], "viewup": true}}
-  ],
-  "activeEntities": [0],
-  "passiveMoveLimit": 1,
-  "null": null
-}
-,
-{
-  "envType": "grid",
-  "name": "Box Push Test 1",
-  "solid": "<EXT>g_base|2",
-  "agent": [
-    ["RAA","42132143212132141241212"],
-    ["BOX",""]
-  ],
-  "entities": [
-    {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties":
-      {"loc": [9, 8], "viewup": true, "viewdn": true, "viewle":  true, "viewri": true}
+    "solid":
+    [
+    [],[],[],[],[],[],[],[],[],[],
+    [0,0,0],
+    [],
+    [1,2,3,4,5,6,7]
+    ],
+    "agent": [
+      ["RAA","42132143212132141241212"],
+      ["BOX",""]
+    ],
+    "entities": [
+      {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [15, 5], "viewup": true, "viewdn": true}},
+      {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [15, 6]}},
+      {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [15, 11]}}
+    ],
+    "activeEntities": [0],
+    "passiveMoveLimit": 1,
+    "null": null
+  }
+  ,
+  {
+    "envType": "grid",
+    "name": "Mirror Test 0",
+    "scale": [25,25],
+    "shapes": {
+      "rectangles": [
+        [0, 18, 19, 19, 1],
+        [0, 0, 19, 19, 2],
+        [6, 2, 10, 4, 2]
+      ]
     },
-    {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [10, 8]}},
-    {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [11, 8]}}
-  ],
-  "activeEntities": [0],
-  "passiveMoveLimit": 1,
-  "stopOnWin": false,
-  "null": null
-}
-,
-{
-  "envType": "grid",
-  "name": "Environment Test 3",
-  "scale": [20,20],
-  "shapes": {
-    "rectangles": [
-      [0, 18, 19, 19, 1],
-      [0, 0, 19, 19, 2],
-      [2, 8, 10, 12, 2],
-      [10,10,10,10,0]
-    ]
-  },
-  "solid":
-  [
-  [],[],[],[],[],[],[],[],[],[],
-  [0,0,0],
-  [],
-  [1,2,3,4,5,6,7]
-  ],
-  "agent": [
-    ["RAA","42132143212132141241212"],
-    ["BOX",""]
-  ],
-  "entities": [
-    {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [15, 5], "viewup": true, "viewdn": true}},
-    {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [15, 6]}},
-    {"id": 1, "displays": [4], "curdis": 0, "properties": {"image": "blue", "loc": [15, 11]}}
-  ],
-  "activeEntities": [0],
-  "passiveMoveLimit": 1,
-  "null": null
-}
-,
-{
+    "solid": [[],[],[],[],[0,1,2,3,4,5]],
+    "agent": [
+      ["RAA","42132143212132141241212"],
+      ["MIRROR","0"]
+    ],
+    "entities": [
+      {"id": 0, "displays": [0,1,2,3], "curdis": 3,
+        "properties": {"loc": [2, 5], "viewdir": 10},
+        "states": []
+      },
+      {"id": 1, "displays": [0,1,2,3], "curdis": 3, "properties": {"image": "blue", "loc": [15, 10]}}
+    ],
+    "activeEntities": [0],
+    "passiveMoveLimit": 1,
+    "effects": [["blind",5,1,0]],
+    "null": null
+  }
+  ,
+  {
   "envType": "grid",
   "name": "Mirror Test 0",
   "scale": [25,25],
@@ -116,5 +146,5 @@
   "passiveMoveLimit": 1,
   "effects": [["blind",5,1,0]],
   "null": null
-}
+  }
 ]

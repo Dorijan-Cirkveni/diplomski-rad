@@ -1,6 +1,14 @@
 import torch
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
 
+from interfaces import iAgent
+
+
+class GPTAgent(iAgent):
+    def __init__(self):
+
+
+
 # Load pre-trained GPT-2 model and tokenizer
 print("Importing tokenizer...")
 tokenizer = GPT2Tokenizer.from_pretrained("gpt2")

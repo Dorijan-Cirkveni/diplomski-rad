@@ -215,7 +215,7 @@ class GridEnvironment(itf.iEnvironment):
         Args:
             grids (list[Grid2D]): List of grids that make up the environment, including:
                 - the mandatory solid grid
-                - the visual grid if illusions are used
+                - the viewed grid if illusions are used
                 - the effects grid if entities may be inflicted with special effects
             entities (list[GridEntity], optional): List of entities in the environment. Defaults to None.
             activeEntities (set, optional): Set of active entity IDs. Defaults to None.
@@ -282,8 +282,8 @@ class GridEnvironment(itf.iEnvironment):
         agentDict = GridEnvironment.getAgentDict(raw)
         gridRaw = raw["solid"]
         grid = Grid2D.getFromDict(gridRaw)
-        if "visual" in raw:
-            gridRaw = raw["visual"]
+        if "viewed" in raw:
+            gridRaw = raw["viewed"]
             visgrid = Grid2D.getFromDict(gridRaw)
         else:
             visgrid = grid
