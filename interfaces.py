@@ -33,6 +33,9 @@ class iAgent:
     def submitDataEntry(self, entryKey) -> tuple[bool, object]:
         raise NotImplementedError
 
+    def __copy__(self):
+        raise NotImplementedError
+
     def submitData(self, dataEntries: list):
         result = dict()
         for entryKey in dataEntries:
@@ -40,9 +43,6 @@ class iAgent:
             if entryExists:
                 result[entryKey] = entryValue
         return result
-
-    def __copy__(self):
-        raise NotImplementedError
 
 
 class iEntity:
