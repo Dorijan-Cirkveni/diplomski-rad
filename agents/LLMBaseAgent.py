@@ -7,37 +7,50 @@ from interfaces import iAgent
 
 
 class BaseGPTAgent(iAgent):
-    def __init__(self, saveFile: str = "", agentFile="", source="gpt2"):
+    def __init__(self, saveFile: str = "", agentFile="", source="gpt2", printProgress=False):
+        localprint=lambda x:None
+        if printProgress:
+            localprint=print
         self.saveFile: str = saveFile
         self.agentFile: str = agentFile
         self.source: str = source
         self.tokenizer = None
         self.model = None
+        tex,mex=False,False
         if saveFile:
-            self.LoadFromLocal(saveFile)
-        if self.model is None:
+            localprint("Attempting to load from local...")
+            tex,mex=self.LoadFromLocal(saveFile)
+            localprint(tex,mex)
+        if not mex:
+            localprint("Loading model from pretrained...")
             self.model = GPT2LMHeadModel.from_pretrained(source)
+            input("Continue?")
             if saveFile:
+                localprint("Saving model to {}...".format(saveFile))
                 self.model.save_pretrained(saveFile)
-        if self.tokenizer is None:
+        if not tex:
+            localprint("Loading tokenizer from pretrained...")
             self.tokenizer = GPT2Tokenizer.from_pretrained(source)
+            input("Continue?")
             if saveFile:
+                localprint("Saving tokenizer to {}...".format(saveFile))
                 self.tokenizer.save_pretrained(saveFile)
         return
 
     def LoadFromLocal(self, origin: str):
         if not os.path.exists(origin):
-            return False
+            return False,False
 
         tokenizer_path = os.path.join(origin, "tokenizer_config.json")
-        model_path = os.path.join(origin, "pytorch_model.bin")
+        model_path = os.path.join(origin, "model.safetensors")
 
-        if not (os.path.exists(tokenizer_path) and os.path.exists(model_path)):
-            return False
-
-        self.tokenizer = GPT2Tokenizer.from_pretrained(origin)
-        self.model = GPT2LMHeadModel.from_pretrained(origin)
-        return True
+        tokenizer_exists=os.path.exists(tokenizer_path)
+        model_exists=os.path.exists(model_path)
+        if tokenizer_exists:
+            self.tokenizer = GPT2Tokenizer.from_pretrained(origin)
+        if model_exists:
+            self.model = GPT2LMHeadModel.from_pretrained(origin)
+        return tokenizer_exists,model_exists
 
     def receiveEnvironmentData(self, data):
         raise NotImplementedError
@@ -54,7 +67,7 @@ class BaseGPTAgent(iAgent):
 
 # Load pre-trained GPT-2 model and tokenizer
 print("Importing...")
-agent=BaseGPTAgent("temp","gpt2")
+agent=BaseGPTAgent("LARGE_LLM_data","gpt2",printProgress=True)
 print("Done!")
 # Define input text
 input_text = input()
