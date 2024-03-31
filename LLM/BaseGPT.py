@@ -14,13 +14,19 @@ class BaseGPT:
         self.saveFile: str = saveFile
         self.agentFile: str = agentFile
         self.source: str = source
+
         self.tokenizer = None
         self.model = None
         tex,mex=False,False
-        if saveFile:
-            localprint("Attempting to load from local...")
-            tex,mex=self.LoadFromLocal(saveFile)
-            localprint(tex,mex)
+        for (localsource,name) in [(saveFile,"save"),(agentFile,"agent base")]:
+            if localsource:
+                localprint("Attempting to load from {}...".format(name))
+                temod,memod=self.LoadFromLocal(localsource,tex,mex)
+                if temod:
+                    self.tokenizer=temod
+                if memod:
+                    self.model=memod
+                localprint(tex,mex)
         if not mex:
             localprint("Loading model from pretrained...")
             self.model = GPT2LMHeadModel.from_pretrained(source)
@@ -37,20 +43,32 @@ class BaseGPT:
                 self.tokenizer.save_pretrained(saveFile)
         return
 
-    def LoadFromLocal(self, origin: str):
+    def LoadElement(self, origin: str, eltype:[GPT2LMHeadModel,GPT2Tokenizer], filename:str):
         if not os.path.exists(origin):
-            return False,False
+            return None
 
-        tokenizer_path = os.path.join(origin, "tokenizer_config.json")
-        model_path = os.path.join(origin, "model.safetensors")
+        path=os.path.join(origin, filename)
 
-        tokenizer_exists=os.path.exists(tokenizer_path)
-        model_exists=os.path.exists(model_path)
-        if tokenizer_exists:
-            self.tokenizer = GPT2Tokenizer.from_pretrained(origin)
-        if model_exists:
-            self.model = GPT2LMHeadModel.from_pretrained(origin)
-        return tokenizer_exists,model_exists
+        exists=os.path.exists(path)
+        if exists:
+            return eltype.from_pretrained(origin)
+        return None
+
+    def LoadFromLocal(self, origin: str,tex,mex):
+        if not os.path.exists(origin):
+            return None,None
+
+        X=[None,None]
+        T=[tex,mex]
+        I=[
+            (origin, GPT2Tokenizer, "tokenizer_config.json"),
+            (origin,GPT2LMHeadModel,"model.safetensors")
+        ]
+        for i,e in enumerate(I):
+            if T[i]:
+                continue
+            X[i]=self.LoadElement(*e)
+        return tuple(X)
 
     def __copy__(self):
         raise NotImplementedError
@@ -73,6 +91,7 @@ output = agent.model.generate(input_ids, max_length=50, num_return_sequences=1)
 # Decode and print output
 generated_text = agent.tokenizer.decode(output[0], skip_special_tokens=True)
 print(generated_text)
+
 
 
 def main():
