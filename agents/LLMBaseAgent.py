@@ -7,13 +7,16 @@ from interfaces import iAgent
 
 
 class BaseGPTAgent(iAgent):
-    def __init__(self, saveFile: str = "", agentFile="", source="gpt2", printProgress=False):
+    def __init__(self, saveFile: str = "", agentFile="",source="gpt2",
+                 modelType=GPT2LMHeadModel, tokenizerType=GPT2Tokenizer, printProgress=False):
         localprint=lambda x:None
         if printProgress:
             localprint=print
         self.saveFile: str = saveFile
         self.agentFile: str = agentFile
         self.source: str = source
+        self.modelType=modelType
+        self.tokenizerType=tokenizerType
         self.tokenizer = None
         self.model = None
         tex,mex=False,False
@@ -23,14 +26,14 @@ class BaseGPTAgent(iAgent):
             localprint(tex,mex)
         if not mex:
             localprint("Loading model from pretrained...")
-            self.model = GPT2LMHeadModel.from_pretrained(source)
+            self.model = self.modelType.from_pretrained(source)
             input("Continue?")
             if saveFile:
                 localprint("Saving model to {}...".format(saveFile))
                 self.model.save_pretrained(saveFile)
         if not tex:
             localprint("Loading tokenizer from pretrained...")
-            self.tokenizer = GPT2Tokenizer.from_pretrained(source)
+            self.tokenizer = self.tokenizerType.from_pretrained(source)
             input("Continue?")
             if saveFile:
                 localprint("Saving tokenizer to {}...".format(saveFile))
@@ -47,9 +50,9 @@ class BaseGPTAgent(iAgent):
         tokenizer_exists=os.path.exists(tokenizer_path)
         model_exists=os.path.exists(model_path)
         if tokenizer_exists:
-            self.tokenizer = GPT2Tokenizer.from_pretrained(origin)
+            self.tokenizer = self.tokenizerType.from_pretrained(origin)
         if model_exists:
-            self.model = GPT2LMHeadModel.from_pretrained(origin)
+            self.model = self.modelType.from_pretrained(origin)
         return tokenizer_exists,model_exists
 
     def receiveEnvironmentData(self, data):
