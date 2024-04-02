@@ -1,4 +1,5 @@
 import cProfile
+import json
 import os
 import pygame
 
@@ -329,6 +330,7 @@ class GridDisplay:
         self.iteration = 0
         self.draw_frame()
         self.draw_buttons()
+        print("->",self.grid.runData)
         while running:
             runIter = 0
             updateImage = False
@@ -365,6 +367,7 @@ class GridDisplay:
                         print("Iteration {}/{}".format(i + 1, runIter))
                     if self.grid.isWin():
                         self.winStatus=(True,self.iteration)
+                print("->",json.dumps(self.grid.runData))
                 updateImage = True
             if updateImage:
                 self.show_iter()

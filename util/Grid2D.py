@@ -1,3 +1,4 @@
+import json
 from collections import defaultdict
 
 from util.TupleDotOperations import *
@@ -67,6 +68,9 @@ class Grid2D:
             for j in range(min(len(E), len(E2))):
                 E[j] = E2[j]
         return
+
+    def default(self,o):
+        return json.dumps(self.M)
 
     def use_draw_element(self, element: iGridDrawElement):
         for T, v in element.apply():

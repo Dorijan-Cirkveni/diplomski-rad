@@ -486,7 +486,7 @@ class GridEnvironment(itf.iEnvironment):
         data = dict()
         self.entities: list
         if entityID not in range(len(self.entities)):
-            raise None
+            return None
         entity: GridEntity = self.entities[entityID]
         if entity is None:
             return None  # Intended error
