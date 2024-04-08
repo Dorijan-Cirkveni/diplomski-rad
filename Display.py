@@ -367,7 +367,8 @@ class GridDisplay:
                         print("Iteration {}/{}".format(i + 1, runIter))
                     if self.grid.isWin():
                         self.winStatus=(True,self.iteration)
-                print("->",json.dumps(self.grid.runData))
+                for e,v in self.grid.runData.items():
+                    print(e,type(v))
                 updateImage = True
             if updateImage:
                 self.show_iter()

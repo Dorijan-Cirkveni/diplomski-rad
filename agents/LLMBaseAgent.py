@@ -1,6 +1,5 @@
 import os.path
 
-import torch
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
 
 from interfaces import iAgent
@@ -8,7 +7,7 @@ from interfaces import iAgent
 
 class BaseGPTAgent(iAgent):
     def __init__(self, saveFile: str = "", agentFile="",source="gpt2",
-                 modelType=GPT2LMHeadModel, tokenizerType=GPT2Tokenizer, printProgress=False):
+                 modelType=GPT2LMHeadModel, tokenizerType=GPT2Tokenizer, printProgress=False, askInput=False):
         localprint=lambda x:None
         if printProgress:
             localprint=print
@@ -78,6 +77,7 @@ input_text = "Hello, how are you?" if not input_text else input_text
 
 # Tokenize input text
 input_ids = agent.tokenizer.encode(input_text, return_tensors="pt")
+print(input_ids)
 
 # Generate output sequence
 output = agent.model.generate(input_ids, max_length=50, num_return_sequences=1)

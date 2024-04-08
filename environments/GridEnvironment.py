@@ -491,8 +491,9 @@ class GridEnvironment(itf.iEnvironment):
         if entity is None:
             return None  # Intended error
         location = entity.get(entity.LOCATION, None)
+        gridData=None
         if entity.get(entity.S_allseeing, False):
-            data["grid"] = self.viewedGrid.copy()
+            gridData = self.viewedGrid.copy()
         else:
             gridData = Grid2D(self.getScale(), defaultValue=-1)
             viewdirs = entity.get(entity.P_viewdirections, 15)
@@ -500,7 +501,8 @@ class GridEnvironment(itf.iEnvironment):
                 if viewdirs & (1 << i) == 0:
                     continue
                 self.view_direction(location, direction, gridData)
-            data["grid"] = gridData
+        data["grid"]=gridData
+        entityData=dict()
         for _, otherID in self.entityPriority:
             if otherID == entityID:
                 continue
@@ -508,11 +510,12 @@ class GridEnvironment(itf.iEnvironment):
             if otherent is None:
                 continue
             otherloc = otherent.get(otherent.LOCATION, None)
-            if otherloc not in data:
+            if gridData[otherloc]==-1:
                 continue
-            data[otherID] = otherent.properties
-        if entity.get(entity.S_view_self, False):
-            data[entityID] = entity.properties
+            entityData[otherID] = otherent.properties
+        if entity.get(entity.S_view_self, True):
+            entityData[entityID] = entity.properties
+        data["entities"]=entityData
         return data
 
     def getAgentDisplay(self, agents: dict, E: tuple, ):
@@ -557,7 +560,7 @@ class GridEnvironment(itf.iEnvironment):
         if entity.isInState(entity.S_blind):
             return {"msg": "Entity blinded"}
         data = self.getEnvData(entityID)
-        grid = data['solid']
+        grid = data['grid']
         agents = dict()
         for E in self.taken.keys():
             if grid[E] == -1:
