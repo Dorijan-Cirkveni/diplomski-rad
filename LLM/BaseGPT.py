@@ -1,6 +1,7 @@
 import json
 import os.path
 
+import GridStateEncoder
 import torch
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
 
@@ -87,6 +88,20 @@ class BaseGPT:
     def InterpretInput(self,inputFull:dict):
         return json.dumps(inputFull)
 
+def tensorTest():
+    # Load pre-trained GPT-2 model and tokenizer
+    print("Importing...")
+    agent = BaseGPT("LARGE_LLM_data", "gpt2", printProgress=False)
+    print("Done!")
+    input_ids=GridStateEncoder.main()
+
+    # Generate output sequence
+    output = agent.model.generate(input_ids, max_length=100, num_return_sequences=1)
+
+    # Decode and print output
+    generated_text = agent.tokenizer.decode(output[0], skip_special_tokens=True)
+    print(generated_text)
+
 
 
 def main():
@@ -111,4 +126,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    tensorTest()
