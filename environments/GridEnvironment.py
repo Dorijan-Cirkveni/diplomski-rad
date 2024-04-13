@@ -706,18 +706,6 @@ class GridEnvironment(itf.iEnvironment):
                 return True
         return False
 
-    def changeActiveEntityAgents(self, newAgents: list[itf.iAgent]):
-        """
-        Changes active entity agents.
-
-        Args:
-            newAgents (list[itf.iAgent]): List of new agents.
-        """
-        for E in self.activeEntities:
-            ent: GridEntity = self.entities[E]
-            ent.agent = newAgents[E]
-        return
-
     def step(self, moves: dict):
         """
         Performs a step in the environment based on specified moves.

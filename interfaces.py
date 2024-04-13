@@ -10,14 +10,15 @@ class Effect:
     """
 
     """
-    def __init__(self, value, duration:int=-1, downtime:int=-1, entities=None):
+
+    def __init__(self, value, duration: int = -1, downtime: int = -1, entities=None):
         if entities is None:
             entities = {}
-        self.value=value
-        self.duration=duration
-        self.downtime=downtime
-        self.entities=entities
-        self.active=False
+        self.value = value
+        self.duration = duration
+        self.downtime = downtime
+        self.entities = entities
+        self.active = False
 
     def getDelta(self):
         return self.duration if self.active else self.downtime
@@ -85,27 +86,26 @@ class iEntity:
         return state in self.states
 
     def get(self, key, default=None):
-        if type(key)==tuple:
-            key,default=key
+        if type(key) == tuple:
+            key, default = key
         if key in self.states:
             return True
         return self.properties.get(key, default)
 
     def set(self, key, value=None):
-        if type(key)==tuple:
-            key,value=key
+        if type(key) == tuple:
+            key, value = key
         if value is None:
             self.states.add(key)
         self.properties[key] = value
         return
 
-    def pop(self,key,default=None):
-        if type(key)==tuple:
-            key,default=key
+    def pop(self, key, default=None):
+        if type(key) == tuple:
+            key, default = key
         if key in self.states:
             self.states.remove(key)
         return self.properties.pop(key, default)
-
 
     def getDisplay(self):
         return self.displays[self.curdis]
@@ -115,12 +115,12 @@ class iEntity:
 
 
 class iEnvironment:
-    def __init__(self, entities:list, activeEntities:set, effectTypes:list[Effect],
-                 extraData:dict=None):
+    def __init__(self, entities: list, activeEntities: set, effectTypes: list[Effect],
+                 extraData: dict = None):
         self.data = [extraData, {}][extraData is None]
         self.effects: list[Effect] = self.data.get("effects", [])
-        self.effectTypes=effectTypes
-        self.scheduledEffects=PriorityList()
+        self.effectTypes = effectTypes
+        self.scheduledEffects = PriorityList()
         self.entities: list = [] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
         self.entityPriority = []
@@ -138,6 +138,18 @@ class iEnvironment:
     def __copy__(self):
         raise NotImplementedError
 
+    def changeActiveEntityAgents(self, newAgents: list[iAgent]):
+        """
+        Changes active entity agents.
+
+        Args:
+            newAgents (list[itf.iAgent]): List of new agents.
+        """
+        for i, E in enumerate(self.activeEntities):
+            ent: iEntity = self.entities[E]
+            ent.agent = newAgents[i % len(newAgents)]
+        return
+
     def scheduleEffect(self, time, value, duration, period, entities=None, schedule=0):
         """
         Schedule an effect.
@@ -150,8 +162,8 @@ class iEnvironment:
         """
         if entities is None:
             entities = {}
-        effect=Effect(value,duration,period,entities)
-        self.scheduledEffects.add((time,schedule),effect)
+        effect = Effect(value, duration, period, entities)
+        self.scheduledEffects.add((time, schedule), effect)
 
     def getValue(self, agentID=None):
         entity: iEntity = self.entities[agentID]
@@ -166,13 +178,13 @@ class iEnvironment:
     def runChanges(self, moves):
         raise NotImplementedError
 
-    def handleEffect(self, effect:Effect):
-        remove=effect.active
-        effect.active=not remove
-        IDs=effect.entities if effect.entities else [i for i in self.entities]
-        entities=[]
+    def handleEffect(self, effect: Effect):
+        remove = effect.active
+        effect.active = not remove
+        IDs = effect.entities if effect.entities else [i for i in self.entities]
+        entities = []
         for ID in IDs:
-            ent:iEntity=self.entities[ID]
+            ent: iEntity = self.entities[ID]
             if ent is None:
                 continue
         if remove:
@@ -183,17 +195,17 @@ class iEnvironment:
                 entity.set(effect.value)
 
     def applyEffects(self):
-        dueEffects:list[tuple[object,list]]=self.scheduledEffects.popLowerThan(self.curIter)
-        for ((iter,prio),effect) in dueEffects:
-            effect:Effect
+        dueEffects: list[tuple[object, list]] = self.scheduledEffects.popLowerThan(self.curIter)
+        for ((iter, prio), effect) in dueEffects:
+            effect: Effect
             self.handleEffect(effect)
-            self.scheduledEffects.add((iter+effect.getDelta(),prio),effect)
+            self.scheduledEffects.add((iter + effect.getDelta(), prio), effect)
 
     def runIteration(self, curIter=None):
         if curIter is None:
-            self.curIter+=1
+            self.curIter += 1
         else:
-            self.curIter=curIter
+            self.curIter = curIter
         D = dict()
         self.runData['agent_current_action'] = D
         cur_prio = 0
@@ -219,12 +231,59 @@ class iEnvironment:
         self.runChanges(D)
         self.applyEffects()
 
-    def evaluateActiveEntities(self, evalMethod: callable, indEvalMethod:callable):
+    def isWin(self):
         raise NotImplementedError
+
+    def isLoss(self):
+        raise NotImplementedError
+
+    def run(self, agent: iAgent, timeLimit: int, timeoutWin: bool = True):
+        self.changeActiveEntityAgents([agent])
+        for i in range(timeLimit):
+            self.runIteration()
+            if self.isLoss():
+                return i, False
+            if self.isWin():
+                return i, True
+        return i, timeoutWin
 
     def makeAgentTest(self, agent: iAgent):
         def agentTest():
             curInstance = self.__copy__()
+
+    def evaluateActiveEntities(self, evalMethod: callable, indEvalMethod: callable):
+        raise NotImplementedError
+
+    def GenerateGroup(self, size, learning_aspects, requests: dict):
+        """
+        Generates a group of different environments.
+
+        Args:
+            size: The size of the group.
+            learning_aspects: The learning aspects for the group.
+            requests (dict): A dictionary of requests.
+
+        Raises:
+            NotImplementedError: This method is abstract and must be implemented to be used.
+
+        Returns:
+            list[GridEnvironment]: A list of GridEnvironment objects representing the generated group.
+        """
+        raise NotImplementedError
+
+    def GenerateSetGroups(self, size, learning_aspects: dict, requests: dict, ratio=None):
+        raise NotImplementedError
+
+    def GenerateGroupTest(self, groupsize, learning_aspects, requests: dict):
+        group = self.GenerateGroup(groupsize, learning_aspects, requests)
+        timelimit, timeoutWin = requests.get("timeMode", (100, True))
+
+        def agentTest(agent: iAgent, customFunc=):
+            results = []
+            for test in group:
+                test: iEnvironment
+                results.append(test.run(agent, timelimit, timeoutWin))
+
 
 
 class iTrainingMethod:
