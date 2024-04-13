@@ -237,6 +237,9 @@ class iEnvironment:
     def isLoss(self):
         raise NotImplementedError
 
+    def evaluate(self, results:list):
+        raise NotImplementedError
+
     def run(self, agent: iAgent, timeLimit: int, timeoutWin: bool = True):
         self.changeActiveEntityAgents([agent])
         for i in range(timeLimit):
@@ -246,10 +249,6 @@ class iEnvironment:
             if self.isWin():
                 return i, True
         return i, timeoutWin
-
-    def makeAgentTest(self, agent: iAgent):
-        def agentTest():
-            curInstance = self.__copy__()
 
     def evaluateActiveEntities(self, evalMethod: callable, indEvalMethod: callable):
         raise NotImplementedError
@@ -283,6 +282,9 @@ class iEnvironment:
             for test in group:
                 test: iEnvironment
                 results.append(test.run(agent, timelimit, timeoutWin))
+            final_results=self.evaluate(results)
+            return final_results
+        return agentTest
 
 
 
