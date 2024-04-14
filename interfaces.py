@@ -1,8 +1,8 @@
 import json
 from typing import Type
 
-from util import TupleDotOperations as tdo
-from util.Grid2D import Grid2D
+# from util import TupleDotOperations as tdo
+# from util.Grid2D import Grid2D
 from util.PriorityList import PriorityList
 
 
@@ -25,7 +25,24 @@ class Effect:
 
 
 class iAgent:
+    """
+    A template for an agent that controls one or more entities.
+    """
+    defaultInput=None
+    @staticmethod
+    def fromString(s):
+        """
+        Creates agent from string.
+        :param s: The string.
+        :return: The agent.
+        """
+        raise NotImplementedError
+
     def receiveEnvironmentData(self, data):
+        """
+
+        :param data:
+        """
         raise NotImplementedError
 
     def performAction(self, actions):
@@ -248,7 +265,7 @@ class iEnvironment:
                 return i, False
             if self.isWin():
                 return i, True
-        return i, timeoutWin
+        return timeLimit+1, timeoutWin
 
     def evaluateActiveEntities(self, evalMethod: callable, indEvalMethod: callable):
         raise NotImplementedError
@@ -277,7 +294,7 @@ class iEnvironment:
         group = self.GenerateGroup(groupsize, learning_aspects, requests)
         timelimit, timeoutWin = requests.get("timeMode", (100, True))
 
-        def agentTest(agent: iAgent, customFunc=):
+        def agentTest(agent: iAgent):
             results = []
             for test in group:
                 test: iEnvironment

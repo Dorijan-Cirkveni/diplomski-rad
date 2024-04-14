@@ -489,8 +489,8 @@ def CustomTestWithCommands(file, ind, commandStack=None,
         if name == "agent":
             agentName = command[1]
             agentData = command[2]
-            agentMaker = ag_mngr.ALL_AGENTS[agentName]
-            agent = agentMaker(agentData)
+            agentMaker:itf.iAgent = ag_mngr.ALL_AGENTS[agentName]
+            agent = agentMaker.fromString(agentData)
             if testMode:
                 printOutput("(This is where the agents would be set to {} {})".format(agentName, agentData))
             else:
@@ -561,7 +561,7 @@ def DebugRun():
         "LEEROY JENKINS",
         "individual wipe",
         "individual",
-        "agent GMI None",
+        "agent MI {}",
         "run",
         "exit",
         "individual",

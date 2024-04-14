@@ -1,5 +1,8 @@
+import json
+
 import definitions
 import interfaces as itf
+from util.Grid2D import Grid2D
 
 
 class BoxAgent(itf.iAgent):
@@ -7,11 +10,22 @@ class BoxAgent(itf.iAgent):
     Represents an agent that does nothing.
     """
 
+    defaultInput = ""
+
     def __init__(self):
         """
         Initializes the BoxAgent.
         """
         super().__init__()
+
+    @staticmethod
+    def fromString(s):
+        """
+        Creates agent from string.
+        :param s: The string.
+        :return: The agent.
+        """
+        return BoxAgent()
 
     def receiveEnvironmentData(self, data):
         """
@@ -37,11 +51,21 @@ class BoxAgent(itf.iAgent):
         """
         return BoxAgent()
 
+    def submitDataEntry(self, entryKey) -> tuple[bool, object]:
+        """
+
+        :param entryKey:
+        :return:
+        """
+        return False, None
+
 
 class MirrorAgent(itf.iAgent):
     """
     Represents an agent that mirrors another agent's actions with possible action mapping.
     """
+
+    defaultInput = "0 O"
 
     def __init__(self, mirroredAgent, actionMirrors: dict = None):
         """
@@ -54,6 +78,34 @@ class MirrorAgent(itf.iAgent):
         self.mirroredAgent = mirroredAgent
         self.actionMirrors = {} if actionMirrors is None else actionMirrors
         self.agent_data = None
+
+    @staticmethod
+    def fromString(s):
+        """
+        Creates agent from string.
+        :param s: The string, in "<int> <character/list of integers>
+        :return: The agent.
+        """
+        if not type(s) == str:
+            raise Exception("Must be string!")
+        L = s.split()
+        if not str.isdigit(L[0]):
+            raise Exception("First part must be integer!")
+        mirrored_ID = int(L[0])
+        keywords = {
+            "O": [0, 1, 2, 3, 4],
+            "X": [1, 0, 2, 3, 4],
+            "Y": [0, 1, 3, 2, 4],
+            "B": [1, 0, 3, 2, 4]
+        }
+        actionbase = definitions.ACTIONS
+        MA_list = L[1]
+        if MA_list in keywords:
+            MA_list = keywords[MA_list]
+        else:
+            MA_list = json.loads(MA_list)
+        actions = {actionbase[i]: actionbase[e] for i, e in enumerate(MA_list)}
+        return MirrorAgent(mirrored_ID, actions)
 
     def receiveEnvironmentData(self, data):
         """
@@ -73,7 +125,7 @@ class MirrorAgent(itf.iAgent):
         :param actions: Available actions.
         :return: object: Action to be performed.
         """
-        print(self.agent_data,self.actionMirrors)
+        print(self.agent_data, self.actionMirrors)
         action = self.actionMirrors.get(self.agent_data, self.agent_data)
         return action
 
@@ -88,26 +140,12 @@ class MirrorAgent(itf.iAgent):
         return newMirror
 
 
-def MakeMirrorAgent(raw_data:dict):
-    keywords={
-        "O":[0,1,2,3,4],
-        "X":[1,0,2,3,4],
-        "Y":[0,1,3,2,4],
-        "B":[1,0,3,2,4]
-    }
-    mirrored_ID = raw_data.get('source',0)
-    actionbase=definitions.ACTIONS
-    MA_list=raw_data.get('actions',[0,1,2,3,4])
-    if MA_list in keywords:
-        MA_list= keywords[MA_list]
-    actions={actionbase[i]:actionbase[e] for i,e in enumerate(MA_list)}
-    return MirrorAgent(mirrored_ID, actions)
-
-
 class RecordedActionsAgent(itf.iAgent):
     """
     Represents an agent that plays predefined actions in a loop.
     """
+
+    defaultInput = "0011223344"
 
     def __init__(self, actions):
         """
@@ -117,6 +155,24 @@ class RecordedActionsAgent(itf.iAgent):
         """
         self.i = 0
         self.actions = actions
+
+    @staticmethod
+    def fromString(s: str):
+        """
+        Creates agent from string.
+        :param s: The string.
+        :return: The agent.
+        """
+        translation = definitions.ACTIONS
+        if "|" in s:
+            L = s.split("|")
+            s = L[0]
+            translation = json.loads(L[1])
+        actions = []
+        for e in s:
+            i = int(e)
+            actions.append(translation[i % len(translation)])
+        return RecordedActionsAgent(actions)
 
     def receiveEnvironmentData(self, data):
         """
@@ -150,27 +206,17 @@ class RecordedActionsAgent(itf.iAgent):
         return new
 
 
-def initRAAFactory(translation):
-    """
-    Factory function to create RecordedActionsAgent instances with predefined action translations.
-
-    :param translation: Translation of actions.
-    :return: function: Factory function for creating RecordedActionsAgent instances.
-    """
-
-    def initRAA(s="4213214321"):
-        actions = []
-        for e in s:
-            i = int(e)
-            actions.append(translation[i % len(translation)])
-        return RecordedActionsAgent(actions)
-
-    return initRAA
-
-
 class ManualInputAgent(itf.iAgent):
     """
     Represents an agent that takes manual input from the user.
+    """
+
+    defaultInput = """
+{
+  "mindim": [-4,-4],
+  "maxdim": [4,4],
+  "isrelative": true
+}
     """
 
     def __init__(self, watchedDimensions, actions, guide):
@@ -185,27 +231,48 @@ class ManualInputAgent(itf.iAgent):
         self.actions = actions
         self.guide = guide
 
+    @staticmethod
+    def fromString(s):
+        """
+        Creates agent from string.
+        :param s: The string.
+        :return: The agent.
+        """
+        data: dict = json.loads(ManualInputAgent.defaultInput)
+        newdata: dict = json.loads(s)
+        data.update(newdata)
+        watchedDimensions = [tuple(data["mindim"]), tuple(data["maxdim"])]
+        actions = data.get("actions", definitions.ACTIONS)
+        guide = data.get("guide", "0123456789EX")
+        return ManualInputAgent(watchedDimensions, actions, guide)
+
     def receiveEnvironmentData(self, data):
         """
         Receives environment data.
 
         :param data: Data received from the environment.
         """
+        to_print = ["", "Tile layout:"]
+        '''
         (y1, y2), (x1, x2) = self.watchedDimensions
-        print()
-        print("Tile layout:")
         for i in range(y1, y2 + 1):
             s = ''
             for j in range(x1, x2 + 1):
                 val = self.guide[(i, j)]
                 s += str(val)
-            print(s)
+        '''
+        if "grid" in data:
+            grid: Grid2D = data['grid']
+            gridraw = grid.text_display(self.guide)
+            to_print.append(gridraw)
         D = data.get("taken", dict())
         if D:
             for position, agentData in D.items():
-                print("Agent on position {} with properties {}".format(position, agentData))
+                s = "Agent on position {} with properties {}".format(position, agentData)
+                to_print.append(s)
         else:
-            print("No visible agents")
+            to_print.append("No visible agents")
+        print("\n".join(to_print))
         return
 
     def performAction(self, actions):
@@ -219,7 +286,7 @@ class ManualInputAgent(itf.iAgent):
         for i, e in enumerate(self.actions):
             X.append("{}:{}".format(i, e))
         actions = ",".join(X)
-        actionID = input("Action?({})")
+        actionID = input("Action?({})".format(actions))
         cur = self.actions[actionID]
         return cur
 
@@ -231,11 +298,20 @@ class ManualInputAgent(itf.iAgent):
         """
         return ManualInputAgent(self.watchedDimensions, self.actions, self.guide)
 
+    def submitDataEntry(self, entryKey) -> tuple[bool, object]:
+        """
+        Unused.
+        :param entryKey:
+        """
+        pass
+
 
 class GraphicManualInputAgent(itf.iAgent):
     """
     Represents an agent that takes manual input from the user using a graphical interface.
     """
+
+    defaultInput = "{}"
 
     def __init__(self, actions=None):
         """
@@ -244,8 +320,19 @@ class GraphicManualInputAgent(itf.iAgent):
         :param watchedDimensions: Dimensions of the watched area.
         :param actions: Available actions.
         """
-        self.actions = actions if actions not in (None,"","None") else definitions.ACTIONS
+        self.actions = actions if actions not in (None, "", "None") else definitions.ACTIONS
         self.cur = self.actions[-1]
+
+    @staticmethod
+    def fromString(s):
+        """
+        Creates agent from string.
+        :param s: The string.
+        :return: The agent.
+        """
+        data: dict = json.loads(s)
+        actions = data.get("actions", definitions.ACTIONS)
+        return GraphicManualInputAgent(actions)
 
     def receiveEnvironmentData(self, data):
         """

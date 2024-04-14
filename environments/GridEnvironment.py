@@ -1,5 +1,5 @@
 from definitions import *
-from agents import AgentManager
+from agents import Agent
 import interfaces as itf
 from test_json.test_json_manager import ImportManagedJSON
 from util import UtilManager as util_mngr
@@ -295,7 +295,9 @@ class GridEnvironment(itf.iEnvironment):
         active = set()
 
         for (a_type, a_raw) in raw.get("agent", []):
-            agents.append(agentDict[a_type](a_raw))
+            agentType:itf.iAgent=agentDict[a_type]
+            agent=agentType.fromString(a_raw)
+            agents.append(agent)
 
         for entity_data in raw.get("entities", []):
             ID = entity_data.get("id", None)
@@ -677,6 +679,9 @@ class GridEnvironment(itf.iEnvironment):
             self.activeEntities -= {e}
         return
 
+    def runEnvChanges(self):
+        return
+
     def evaluateActiveEntities(self, evalMethod: callable, indEvalMethod: callable):
         X = []
         for ID in self.activeEntities:
@@ -714,13 +719,7 @@ class GridEnvironment(itf.iEnvironment):
             moves (dict): Dictionary containing entity movements.
         """
         self.runChanges(moves)
-        self.run()
-        return
-
-    def run(self):
-        """
-        Runs the environment.
-        """
+        self.runEnvChanges()
         return
 
     def GenerateGroup(self, size, learning_aspects, requests: dict) -> list['GridEnvironment']:
