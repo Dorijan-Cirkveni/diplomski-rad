@@ -3,29 +3,44 @@ import bisect
 from environments.GridEnvironment import *
 
 
-class Subgrid:
-    def __init__(self, solidGrid: Grid2D, visualGrid: Grid2D, route: list[tuple[int, int]]):
-        self.solidGrid: Grid2D = solidGrid
-        self.visualGrid: Grid2D = visualGrid
-        self.route: list[tuple[int, int]] = route
-        self.period = len(self.route)
+class GridRoutine:
+    """
 
-    def __copy__(self):
-        newGrid = self.solidGrid.copy()
-        newVisualGrid = self.visualGrid.copy()
-        newRoute = self.route.copy()
-        return Subgrid(newGrid,newVisualGrid, newRoute)
+    """
+    def __init__(self, grids: list[Grid2D], sequence: list[int], loop: bool):
+        self.grids = grids
+        self.sequence = sequence
+        self.loop = loop
 
-    def getValue(self, time):
-        return self.route[time % self.period]
+    @staticmethod
+    def getFromDict(raw: dict):
+        grids_raw: list = raw["grids"]
+        sequence = raw.get("seq", [i for i in range(len(grids_raw))])
+        loop = raw["loop"]
+        grids = [Grid2D.getFromDict(el) for el in grids_raw]
+        return GridRoutine(grids, sequence, loop)
+
+    def getCurGrid(self, itid):
+        n = len(self.sequence)
+        if itid >= n:
+            if self.loop:
+                itid %= n
+            else:
+                itid = n - 1
+        return self.grids[self.sequence[itid]]
 
 
 class DynamicGridEnvironment(GridEnvironment):
-    def __init__(self, baseGrid: Grid2D, subgrids: list[Subgrid], entities: list[GridEntity] = None,
-                 activeEntities: set = None, tileTypes: list[PlaneTile] = None, extraData: dict = None):
-        super().__init__(baseGrid, entities, activeEntities, tileTypes, extraData)
-        self.subgrids = subgrids
-        self.currentGrid: [Grid2D, None] = None
+    def __init__(self, grids: dict,
+                 entities: list[GridEntity] = None, activeEntities: set = None,
+                 tileTypes: list[PlaneTile] = None, effectTypes: list = None,
+                 extraData: dict = None):
+        self.dynamicGrids = grids
+        self.grids = {}
+        for e, v in grids.items():
+            v: GridRoutine
+            self.grids[e] = v.getCurGrid(0)
+        super().__init__(grids, entities, activeEntities, tileTypes, extraData)
         self.curTime: int = -1
 
     @staticmethod
@@ -39,16 +54,9 @@ class DynamicGridEnvironment(GridEnvironment):
         Returns:
             GridEnvironment: Created GridEnvironment object.
         """
-        grid, entities, active = GridEnvironment.getInputFromDict(raw)
-        raw_subgrids = raw.get("subgrids", [])
-        subgrids = []
-        for raw_subgrid in raw_subgrids:
-            raw_subgrid: dict
-            grid = super().assembleGrid(raw_subgrid)
-            routine = raw_subgrid.get('routine', None)
-            subgrid = Subgrid(grid, routine)
-            subgrids.append(subgrid)
-        return DynamicGridEnvironment(grid, subgrids, entities, active)
+        envInput: tuple = GridEnvironment.getInputFromDict(raw)
+        res = GridEnvironment(*envInput)
+        return res
 
     def __copy__(self):
         newSGrid = self.solidGrid.__copy__()
@@ -61,7 +69,7 @@ class DynamicGridEnvironment(GridEnvironment):
         for e in self.entities:
             e: GridEntity
             entities.append(e.__copy__())
-        new = DynamicGridEnvironment(newSGrid,newVGrid, entities)
+        new = DynamicGridEnvironment(newSGrid, newVGrid, entities)
         return new
 
     def get_tile(self, i, j=None, curtime=0):

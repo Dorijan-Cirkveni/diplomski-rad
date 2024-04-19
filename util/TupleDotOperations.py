@@ -1,3 +1,6 @@
+import random
+
+
 def Toper(T1, T2, oper):
     if len(T1) != len(T2):
         raise Exception("Bad length:{}!={}".format(T1, T2))
@@ -5,6 +8,17 @@ def Toper(T1, T2, oper):
     for i in range(len(T2)):
         X.append(oper(T1[i], T2[i]))
     return tuple(X)
+
+
+def Trandom(Tmin:tuple, Tmax:tuple=None, seeder:random.Random=None, inclusive:bool=False):
+    if seeder is None:
+        seeder=random.Random()
+    if Tmax is None:
+        Tmax=Tmin
+        Tmin=(0,0)
+    if not inclusive:
+        Tmax=Tsub(Tmax,(1,1))
+    return Toper(Tmin,Tmax,lambda A,B:random.randint(A,B))
 
 
 def Tmin(T1, T2):

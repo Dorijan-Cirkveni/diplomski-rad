@@ -7,9 +7,9 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 JSON_filenames = {
     "g_base": "grids\\basic_grids.json",
 
-    "t_base": "basic_tests.json",
+    "tb_base": "basic\\basic_tests.json",
     "t_mirror": "mirror_tests.json",
-    "t_maze": "basic_maze_tests.json",
+    "tb_maze": "basic\\basic_maze_tests.json",
     "t_allcat": "all_categories.json",
     "null": "sandbox.json"
 }
@@ -49,8 +49,7 @@ def ImportManagedJSON(main_file, files:dict=None, applyToMain=False):
 
 
 def main():
-    for e in JSON_data:
-        print(type(e))
+    ImportManagedJSON("tb_base")
     return
 
 

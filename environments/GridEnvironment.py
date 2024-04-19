@@ -1,8 +1,9 @@
 from definitions import *
-from agents import Agent
+from agents import AgentManager
 import interfaces as itf
 from test_json.test_json_manager import ImportManagedJSON
 from util import UtilManager as util_mngr
+from util.GridRoutine import GridRoutine
 from util.VisionOctant import VisionOctant
 from util.Grid2D import Grid2D
 from util.TupleDotOperations import *
@@ -57,9 +58,9 @@ class PlaneTile:
         """
         Check if the tile reacts to the given agent data.
 
-        :param agentData: dict: Data representing the agent.
+        :param agentData: dict: Data representing the agent
 
-        :return: int: Decision regarding how the tile reacts to the agent.
+        :return: int: Decision regarding how the tile reacts to the agent
         """
         decision = self.default
         for (condition, value) in self.agentExceptions:
@@ -273,6 +274,23 @@ class GridEnvironment(itf.iEnvironment):
                 X.append(PlaneTile(tileBase, tileExceptions))
 
     @staticmethod
+    def getGridRoutinesFromDict(raw: dict):
+        gridRaw = raw["solid"]
+        grid = GridRoutine.getFromDict(gridRaw)
+        if "viewed" in raw:
+            gridRaw = raw["viewed"]
+            visgrid = GridRoutine.getFromDict(gridRaw)
+        else:
+            visgrid = grid
+        all_grids: dict = raw.get("all_grids", dict())
+        for e, v in all_grids.items():
+            v: dict
+            all_grids[e] = GridRoutine.getFromDict(v)
+        all_grids["solid"] = grid
+        all_grids["viewed"] = visgrid
+        return all_grids
+
+    @staticmethod
     def getInputFromDict(raw: dict):
         """
 
@@ -280,23 +298,21 @@ class GridEnvironment(itf.iEnvironment):
         :return:
         """
         agentDict = GridEnvironment.getAgentDict(raw)
-        gridRaw = raw["solid"]
-        grid = Grid2D.getFromDict(gridRaw)
-        if "viewed" in raw:
-            gridRaw = raw["viewed"]
-            visgrid = Grid2D.getFromDict(gridRaw)
-        else:
-            visgrid = grid
-        all_grids: dict = raw.get("all_grids",dict())
-        all_grids["solid"] = grid
-        all_grids["viewed"] = visgrid
+        all_routines = GridEnvironment.getGridRoutinesFromDict(raw)
+        all_grids = {}
+        for e, v in all_routines.items():
+            all_grids[e] = v.getCurGrid(0)
+        for e in all_grids:
+            v: GridRoutine = all_routines[e]
+            if len(v.grids) == 0:
+                all_routines.pop(e)
         agents = []
         entities = []
         active = set()
 
         for (a_type, a_raw) in raw.get("agent", []):
-            agentType:itf.iAgent=agentDict[a_type]
-            agent=agentType.fromString(a_raw)
+            agentType: itf.iAgent = agentDict[a_type]
+            agent = agentType.fromString(a_raw)
             agents.append(agent)
 
         for entity_data in raw.get("entities", []):
@@ -306,8 +322,14 @@ class GridEnvironment(itf.iEnvironment):
             entity = GridEntity.getFromDict(entity_data, agents[int(ID)])
             entities.append(entity)
 
+        tiles = None
+
+        effects = None
+
+        extraData = {"routines": all_routines, "name": raw.get("name","Untitled")}
+
         active.update(set(raw.get("activeEntities", [])))
-        return all_grids, entities, active
+        return all_grids, entities, active, tiles, effects, extraData
 
     @staticmethod
     def getFromDict(raw: dict):
@@ -493,7 +515,7 @@ class GridEnvironment(itf.iEnvironment):
         if entity is None:
             return None  # Intended error
         location = entity.get(entity.LOCATION, None)
-        gridData=None
+        gridData = None
         if entity.get(entity.S_allseeing, False):
             gridData = self.viewedGrid.copy()
         else:
@@ -503,8 +525,8 @@ class GridEnvironment(itf.iEnvironment):
                 if viewdirs & (1 << i) == 0:
                     continue
                 self.view_direction(location, direction, gridData)
-        data["grid"]=gridData
-        entityData=dict()
+        data["grid"] = gridData
+        entityData = dict()
         for _, otherID in self.entityPriority:
             if otherID == entityID:
                 continue
@@ -512,12 +534,12 @@ class GridEnvironment(itf.iEnvironment):
             if otherent is None:
                 continue
             otherloc = otherent.get(otherent.LOCATION, None)
-            if gridData[otherloc]==-1:
+            if gridData[otherloc] == -1:
                 continue
             entityData[otherID] = otherent.properties
         if entity.get(entity.S_view_self, True):
             entityData[entityID] = entity.properties
-        data["entities"]=entityData
+        data["entities"] = entityData
         return data
 
     def getAgentDisplay(self, agents: dict, E: tuple, ):
@@ -549,7 +571,7 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             dict: Grid and agent display data.
         """
-        gridKey=["solid","viewed"][viewed]
+        gridKey = ["solid", "viewed"][viewed]
         if entityID is None:
             agents = dict()
             for E in self.taken.keys():
@@ -680,6 +702,12 @@ class GridEnvironment(itf.iEnvironment):
         return
 
     def runEnvChanges(self):
+        routines = self.data.get("routines", {})
+        for e,v in routines.items():
+            newgrid:Grid2D=v.getCurGrid(self.curIter)
+            self.grids[e]=newgrid
+        self.solidGrid=self.grids["solid"]
+        self.viewedGrid=self.grids["viewed"]
         return
 
     def evaluateActiveEntities(self, evalMethod: callable, indEvalMethod: callable):
@@ -742,43 +770,6 @@ class GridEnvironment(itf.iEnvironment):
             list[GridEnvironment]: A list of GridEnvironment objects representing the generated group.
         """
         raise NotImplementedError
-
-    def GenerateSetGroups(self, size, learning_aspects: dict, requests: dict, ratio=None) -> list[
-        list['GridEnvironment']]:
-        """
-        Generates multiple groups of entities based on specified learning aspects and requests.
-
-        Args:
-            size: The total size of all groups combined.
-            learning_aspects (dict): A dictionary containing learning aspects for each group.
-            requests (dict): A dictionary of requests.
-            ratio (list[int], optional): A list representing the ratio of sizes for each group.
-                Defaults to None, in which case a default ratio of [60, 20, 20] is used.
-
-        Returns:
-            list[list[GridEnvironment]]: A list containing groups of GridEnvironment objects.
-
-        """
-        if ratio is None:
-            ratio = [60, 20, 20]
-        ratio = util_mngr.adjustRatio(size, ratio)
-        X = []
-        LA = [dict() for _ in ratio]
-        for k, V in learning_aspects.items():
-            V: list[tuple]
-            L = []
-            LV = []
-            for (v, count) in V:
-                L.append(v)
-                LV.append(count)
-            LV = util_mngr.adjustRatio(size, LV)
-            curind = 0
-            curleft = LV[0]
-            for i, e in enumerate(ratio):
-                pass  # TODO
-        for i, groupSize in enumerate(ratio):
-            X.append(self.GenerateGroup(groupSize, learning_aspects, requests))
-        return X
 
 
 def readPlaneEnvironment(jsonL, index: int, agentDict: dict = None) -> GridEnvironment:

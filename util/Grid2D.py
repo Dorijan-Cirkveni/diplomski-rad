@@ -69,7 +69,7 @@ class Grid2D:
                 E[j] = E2[j]
         return
 
-    def default(self,o):
+    def default(self, o):
         return json.dumps(self.M)
 
     def use_draw_element(self, element: iGridDrawElement):
@@ -99,9 +99,11 @@ class Grid2D:
                 RES.use_draw_element(elInstance)
         if "add" in raw:
             L: list = raw["add"]
-            for subraw in L:
+            for sublist in L:
+                subraw = sublist["grid"]
+                offset = tuple(sublist.get("offset", [0, 0]))
                 subgrid = Grid2D.getFromDict(subraw)
-                RES.overlap(subgrid, (0, 0))
+                RES.overlap(subgrid, offset)
         return RES
 
     def __copy__(self):
@@ -181,7 +183,15 @@ class Grid2D:
             return
         raise Exception("Index must be int or tuple, not {}".format(type(key)))
 
-    def get_neighbours(self, key: tuple, wrapAround=WRAP_NONE):
+    def get_current(self, _: int):
+        """
+
+        :param _:
+        :return:
+        """
+        return self
+
+    def get_neighbours(self, key: tuple, wrapAround=WRAP_NONE, checkUsable:set=None):
         """
         Get neighboring indices of a given key.
 
@@ -202,6 +212,8 @@ class Grid2D:
             if neigh[1] != trueNeigh[1]:
                 diff += 2
             if diff & (3 ^ wrapAround) != 0:
+                continue
+            if checkUsable and self[trueNeigh] not in checkUsable:
                 continue
             res.append(trueNeigh)
         return res
@@ -278,6 +290,11 @@ class Grid2D:
             for j in range(bottom[1], top[1]):
                 self.M[i + offset[0]][j + offset[1]] = other[i][j]
         return
+
+    def unique_values(self):
+        S=set()
+        self.apply(lambda e:[S.add(e),e][1])
+        return S
 
     def text_display(self, guide, specialSpots: dict = None,
                      translateSpecial=lambda n: chr(ord('A') + n)):

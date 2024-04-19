@@ -286,7 +286,7 @@ class ManualInputAgent(itf.iAgent):
         for i, e in enumerate(self.actions):
             X.append("{}:{}".format(i, e))
         actions = ",".join(X)
-        actionID = input("Action?({})".format(actions))
+        actionID = int(input("Action?({})".format(actions)))
         cur = self.actions[actionID]
         return cur
 

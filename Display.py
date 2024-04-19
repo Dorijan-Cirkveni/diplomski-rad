@@ -129,7 +129,7 @@ class GridDisplay:
     def __init__(self, grid: env_mngr.grid_env.GridEnvironment, elementTypes: list, agentTypes: list,
                  obsAgent: [int, None],
                  screenV=(800, 800),
-                 gridscreenV=(600, 600), name="Untitled Grid Simulation"):
+                 gridscreenV=(600, 600)):
         """
 
         :param grid:
@@ -150,7 +150,7 @@ class GridDisplay:
         tileV1 = min(tdo.Tfdiv(gridscreenV, gridV))
         self.tileV = (tileV1, tileV1)
 
-        self.name = name
+        self.name = grid.name
         self.screen = None
         self.buttons = {}
         self.obsAgent = obsAgent
@@ -374,6 +374,7 @@ class GridDisplay:
                 self.show_iter()
                 self.draw_frame()
                 self.draw_buttons()
+                print("Running image...")
         pygame.quit()
 
 
@@ -471,6 +472,7 @@ def CustomTestWithCommands(file, ind, commandStack=None,
     success = testGI.load_grid_from_fragment(file, ind)
     if not success:
         return False
+    printOutput(file, ind, testGI.grid)
     while True:
         if commandStack:
             command = list(commandStack.pop())
@@ -561,12 +563,11 @@ def DebugRun():
         "LEEROY JENKINS",
         "individual wipe",
         "individual",
-        "agent MI {}",
+        "agent GMI {}",
         "run",
         "exit",
         "individual",
-        "run t_base 0 2",
-        "run t_maze 0",
+        "run tb_maze 0",
         "exit"
     ]
     CommandRun(X)

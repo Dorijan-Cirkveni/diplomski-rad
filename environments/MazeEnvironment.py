@@ -63,7 +63,7 @@ class MazeEnvironment(GridEnvironment):
         self.idealGoal = idealGoal
         entity.set(entity.LOCATION, start)
         grid = mazes.CreateFullMaze(scale, start, idealGoal, maze_seed=maze_seed, tiles=[0, 2, 1])
-        grids={'solid':grid}
+        grids = {'solid': grid, 'viewed': grid}
         super().__init__(grids, [entity], {0}, tileTypes, extraData=extraData)
 
     @staticmethod
@@ -87,11 +87,20 @@ class MazeEnvironment(GridEnvironment):
         entity_data = raw.get("entity")
         entity = GridEntity.getFromDict(entity_data, agent)
 
+        ranseed = raw.get("seed", random.randint(0, 1 << 32 - 1))
+        randomizer: random.Random = random.Random(ranseed)
+        scale = tuple(raw.get("scale", [25, 25]))
+        start = raw.get("start", None)
+        if start is None:
+            start = [randomizer.randint(0, scale[0] - 1), randomizer.randint(0, scale[0] - 1)]
+        goal = raw.get("goal", None)
+        if goal is None:
+            goal = [randomizer.randint(0, scale[0] - 1), randomizer.randint(0, scale[0] - 1)]
         res = MazeEnvironment(
-            tuple(raw.get("scale", [25, 25])),
-            tuple(raw.get("start", [12, 0])),
-            tuple(raw.get("goal", [12, 14])),
-            raw.get("seed", 0),
+            scale,
+            tuple(start),
+            tuple(goal),
+            ranseed,
             entity,
             extraData=raw
         )

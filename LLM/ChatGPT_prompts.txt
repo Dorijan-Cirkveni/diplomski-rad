@@ -1,0 +1,25 @@
+Imagine you're in charge of guiding a virtual agent through a 2D grid-based environment.
+The grid consists of various tiles:
+- 'X' denotes invisible tiles
+- numbers represent different types of tiles
+- an agent is represented by 'E'
+Your goal is to analyze each environment and suggest the appropriate action for the agent to take,
+considering the layout, obstacles, and other relevant information.
+
+Here's how it works:
+
+'X': Unknown tile
+'0': Empty tile
+'1': Goal tile
+'2': Wall tile
+'E': Agent
+Your task is to provide an integer representing the desired direction for the agent's next move:
+
+0: Move up
+1: Move down
+2: Move left
+3: Move right
+4: Do nothing
+No diagonal movements are allowed.
+
+Now, let's analyze the environment and determine the best action for the agent!

@@ -1,5 +1,7 @@
 import random
 from collections import deque
+
+import util.UtilManager
 from util.Grid2D import Grid2D
 from util.TupleDotOperations import *
 
@@ -26,55 +28,109 @@ def CreateFullMaze(dimensions, start: tuple, idealGoal: tuple, maze_seed, tiles=
             if values[i] == 1:
                 continue
             nexQ.append(E)
+    M[start] = tiles[2]
     M[bestGoal[1]] = tiles[2]
     return M
 
+def CheckDual(side,values,curE,dualLinkCount,dual):
+    ret=False
+    if 3 - side in values:
+        if dualLinkCount > 0:
+            dual.append(curE)
+            dualLinkCount -= 1
+            ret=True
+    return ret,dualLinkCount
 
-def CreateDualMaze(dimensions, start, end, maze_seed, tiles=(0, 2, 1), stepOdds=0.9, allowLoops=False, dualLinkCount=1):
-    M = Grid2D(dimensions, defaultValue=-1)
+def CreateDualMazeInner(dimensions, start, end, maze_seed, tiles=(0, 2, 1), stepOdds=0.9, allowLoops=False, dualLinkCount=1):
+    M = Grid2D(dimensions, defaultValue=-1) # defaults to null
     nexQ = deque()
     nexQ.append((start, 1))
     nexQ.append((end, 2))
     randomizer = random.Random(maze_seed)
-    dual=[]
+    dual = []
     while nexQ:
-        curE,side = nexQ.popleft()
-        if M[curE] > 0:
+        curE, side = nexQ.popleft()
+        if M[curE] >= 0:
             continue
+        M[curE] = side
+
         EN = M.get_neighbours(curE)
         values = [M[E] for E in EN]
         usedCount = sum([e > 0 for e in values])
-        M[curE] = 0
         if randomizer.random() > stepOdds:
             continue
-        if usedCount > 1 and not allowLoops:
-            if 3-side in values:
-                if dualLinkCount > 0:
-                    dual.append(curE)
-                    dualLinkCount -= 1
-                else:
-                    continue
-            else:
+        if usedCount > 1:
+            ret,dualLinkCount=CheckDual(side, values, curE, dualLinkCount, dual)
+            if not ret:
                 continue
         M[curE] = side
         for i, E in enumerate(EN):
             if values[i] >= 0:
                 continue
-            nexQ.append((E,side))
-    for E in M:
-        print(E)
-    print(dualLinkCount,dual)
+            nexQ.append((E, side))
     M.apply(lambda x: tiles[x == 0])
+    M[start] = tiles[2]
     M[end] = tiles[2]
     for E in dual:
-        M[E]+=4
+        M[E] += 4
+    return M
+
+def CreateDualMaze(dimensions, start, end, maze_seed, tiles=(0, 2, 1), stepOdds=0.9, allowLoops=False, dualLinkCount=1):
+    M=CreateDualMazeInner(dimensions,start,end,maze_seed,tiles,stepOdds,allowLoops,dualLinkCount)
+    M.apply(lambda e:[0,2,2,0,0][e])
     return M
 
 
+def bestPossibleScore(grid: Grid2D, start: tuple, goal: tuple, passables=None, mark=None):
+    if passables is None:
+        passables = {0, 1}
+    Q = [(start, 0)]
+    found = {start}
+    while Q:
+        E, count = Q.pop()
+        if E == goal:
+            return count
+        if mark is not None:
+            grid[E]=mark
+        neigh = grid.get_neighbours(E, checkUsable=passables)
+        for F in neigh:
+            if F not in found:
+                Q.append((F, count + 1))
+                found.add(F)
+    return -1
+
+def generate_test(seed:int, showcrit:callable):
+    rand = random.Random(seed)
+    size=(10,10)
+    start = Trandom(size, seeder=rand)
+    end = Trandom(size, seeder=rand)
+    res:Grid2D = CreateDualMazeInner(size, start, end, seed)
+    score=bestPossibleScore(res,start,end,mark=3)
+    if showcrit(start,end,res,score):
+        print(seed)
+        print(start, end)
+        print(res.unique_values())
+        print(res.text_display("01234"))
+        print(score)
+        input()
+        res.apply(lambda e:[2,2,0,0,0][e])
+        score=bestPossibleScore(res,start,end,mark=3)
+        print(res.unique_values())
+        print(res.text_display("01234"))
+        print(score)
+        input()
+    return score
+
+
 def main():
-    res = CreateFullMaze((25, 25), (12, 1), (12, 24), 42)
-    for E in res:
-        print("".join([" "[e] for e in E]))
+    fullscore=0
+    rand=random.Random()
+    def doShow(*args):
+        return args[-1]==-1
+    for i in range(1000):
+        res=generate_test(rand.randint(0,1<<31),doShow)
+        fullscore+=int(res!=-1)
+    print(fullscore/1000)
     return
 
 

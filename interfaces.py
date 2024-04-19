@@ -4,6 +4,7 @@ from typing import Type
 # from util import TupleDotOperations as tdo
 # from util.Grid2D import Grid2D
 from util.PriorityList import PriorityList
+import util.UtilManager as util_mngr
 
 
 class Effect:
@@ -134,6 +135,7 @@ class iEntity:
 class iEnvironment:
     def __init__(self, entities: list, activeEntities: set, effectTypes: list[Effect],
                  extraData: dict = None):
+        self.name=extraData.get("name","Untitled")
         self.data = [extraData, {}][extraData is None]
         self.effects: list[Effect] = self.data.get("effects", [])
         self.effectTypes = effectTypes
@@ -195,6 +197,9 @@ class iEnvironment:
     def runChanges(self, moves):
         raise NotImplementedError
 
+    def step(self, moves):
+        raise NotImplementedError
+
     def handleEffect(self, effect: Effect):
         remove = effect.active
         effect.active = not remove
@@ -245,7 +250,7 @@ class iEnvironment:
             chosenAction = entity.performAction(move)
             cur_D[entityID] = chosenAction
         D.update(cur_D)
-        self.runChanges(D)
+        self.step(D)
         self.applyEffects()
 
     def isWin(self):
@@ -287,8 +292,42 @@ class iEnvironment:
         """
         raise NotImplementedError
 
-    def GenerateSetGroups(self, size, learning_aspects: dict, requests: dict, ratio=None):
-        raise NotImplementedError
+    def GenerateSetGroups(self, size, learning_aspects: dict, requests: dict, ratio=None) -> list[
+        list['iEnvironment']]:
+        """
+        Generates multiple groups of entities based on specified learning aspects and requests.
+
+        Args:
+            size: The total size of all groups combined.
+            learning_aspects (dict): A dictionary containing learning aspects for each group.
+            requests (dict): A dictionary of requests.
+            ratio (list[int], optional): A list representing the ratio of sizes for each group.
+                Defaults to None, in which case a default ratio of [60, 20, 20] is used.
+
+        Returns:
+            list[list[GridEnvironment]]: A list containing groups of GridEnvironment objects.
+
+        """
+        if ratio is None:
+            ratio = [60, 20, 20]
+        ratio = util_mngr.adjustRatio(size, ratio)
+        X = []
+        LA = [dict() for _ in ratio]
+        for k, V in learning_aspects.items():
+            V: list[tuple]
+            L = []
+            LV = []
+            for (v, count) in V:
+                L.append(v)
+                LV.append(count)
+            LV = util_mngr.adjustRatio(size, LV)
+            curind = 0
+            curleft = LV[0]
+            for i, e in enumerate(ratio):
+                pass  # TODO
+        for i, groupSize in enumerate(ratio):
+            X.append(self.GenerateGroup(groupSize, learning_aspects, requests))
+        return X
 
     def GenerateGroupTest(self, groupsize, learning_aspects, requests: dict):
         group = self.GenerateGroup(groupsize, learning_aspects, requests)
