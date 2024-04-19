@@ -10,7 +10,7 @@
   }
 ,
   {
-    "envType": "mazeBasic",
+    "envType": "mazeDual",
     "mazeInit": "dual_source_BFS",
     "name": "Maze Test (Dual Generation Method)",
     "scale": [25,25],

@@ -5,62 +5,45 @@ from util.FragmentedJsonProcessor import ImportFragmentedJSON
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-JSON_filenames = {
-    "g_base": "basic_grids.json",
-
-    "tb_base": "basic_tests.json",
-    "tb_maze": "basic_maze_tests.json",
-    "t_maze1": "maze_tests_1.json",
-
-    "t_mirror": "mirror_tests.json",
-
-    "t_allcat": "all_categories.json",
-
-    "null": "sandbox.json"
-}
-
 
 import os
 
-def search_files(maindir: str, filenames: set[str]) -> dict:
+def search_files(maindir: str, extension:str=".json") -> dict:
     """
-    Search for files with specified filenames in the given directory and its subdirectories.
+    Search for files with a specified extension in the given directory and its subdirectories.
 
     :param maindir: The main directory to start the search.
-    :param filenames: A set of filenames to search for.
+    :param extension: Chosen extension, defaults to .json
     :return: A dictionary containing the found filenames as keys and their paths as values.
     """
     result = {}
 
+    k=-len(extension)
     for root, dirs, files in os.walk(maindir):
         for file in files:
-            if file in filenames:
-                result[file] = os.path.join(root, file)
+            if file.endswith(extension):
+                result[file[:k]] = os.path.join(root, file)
 
     return result
 
 
 
-def read_all_files(namedict: dict):
-    paths:dict=search_files(current_dir,set(namedict.values()))
+def read_all_files():
+    paths:dict=search_files(current_dir)
     resdict = dict()
-    for e, v in namedict.items():
-        if v not in paths:
-            raise Exception("File {} missing!".format(v))
-        v2=paths[v]
-        filepath = os.path.join(current_dir, v2)
+    for name, filepath in paths.items():
         F = open(filepath, 'r')
         raw = F.read()
         F.close()
         try:
             processed = json.loads(raw)
-            resdict[e] = processed
+            resdict[name] = processed
         except json.decoder.JSONDecodeError as err:
-            print(v, err)
+            print(filepath, err)
     return resdict
 
 
-JSON_data = read_all_files(JSON_filenames)
+JSON_data = read_all_files()
 
 
 def ImportManagedJSON(main_file, files: dict = None, applyToMain=False):
@@ -79,10 +62,10 @@ def ImportManagedJSON(main_file, files: dict = None, applyToMain=False):
 
 
 def main():
-    path = os.path.normpath(current_dir)
-    res = path.split(os.sep)
-    print(res)
-    # ImportManagedJSON("tb_base")
+    res1=ImportManagedJSON("t_maze_0")[0]
+    res2=ImportManagedJSON("t_maze_1")[0]
+    print(json.dumps(res1))
+    print(json.dumps(res2))
     return
 
 

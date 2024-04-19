@@ -9,6 +9,7 @@ import agents.AgentManager as agent_mngr
 # Dictionary mapping environment names to their respective environment classes
 envList = {
     "mazeBasic": maze_env.MazeEnvironment,
+    "mazeDual": maze_env.DualMazeEnvironment,
     "return_grid": grid_env.GridEnvironment
 }
 

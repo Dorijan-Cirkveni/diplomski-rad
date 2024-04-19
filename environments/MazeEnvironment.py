@@ -157,6 +157,7 @@ class DualMazeEnvironment(GridEnvironment):
         self.start = start
         entity.set(entity.LOCATION, start)
         grid_M = mazes.CreateDualMaze(scale, start, goal, maze_seed)
+        grids=
 
         super().__init__(Grid2D(scale, grid_M), [entity], {0}, tileTypes, data)
 
@@ -187,7 +188,8 @@ class DualMazeEnvironment(GridEnvironment):
             tuple(raw.get("start", [12, 0])),
             tuple(raw.get("goal", [12, 14])),
             raw.get("seed", 0),
-            entity
+            entity,
+            data=raw
         )
         return res
 

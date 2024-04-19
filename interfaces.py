@@ -135,8 +135,8 @@ class iEntity:
 class iEnvironment:
     def __init__(self, entities: list, activeEntities: set, effectTypes: list[Effect],
                  extraData: dict = None):
-        self.name=extraData.get("name","Untitled")
         self.data = [extraData, {}][extraData is None]
+        self.name=self.data.get("name","Untitled")
         self.effects: list[Effect] = self.data.get("effects", [])
         self.effectTypes = effectTypes
         self.scheduledEffects = PriorityList()

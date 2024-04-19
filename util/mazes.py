@@ -28,7 +28,6 @@ def CreateFullMaze(dimensions, start: tuple, idealGoal: tuple, maze_seed, tiles=
             if values[i] == 1:
                 continue
             nexQ.append(E)
-    M[start] = tiles[2]
     M[bestGoal[1]] = tiles[2]
     return M
 
@@ -43,11 +42,10 @@ def CheckDual(side,values,curE,dualLinkCount,dual):
 
 def CreateDualMazeInner(dimensions, start, end, maze_seed, tiles=(0, 2, 1), stepOdds=0.9, allowLoops=False, dualLinkCount=1):
     M = Grid2D(dimensions, defaultValue=-1) # defaults to null
-    nexQ = deque()
-    nexQ.append((start, 1))
-    nexQ.append((end, 2))
+    nexQ = deque([(start, 1),(end, 2)])
     randomizer = random.Random(maze_seed)
     dual = []
+
     while nexQ:
         curE, side = nexQ.popleft()
         if M[curE] >= 0:
@@ -59,17 +57,19 @@ def CreateDualMazeInner(dimensions, start, end, maze_seed, tiles=(0, 2, 1), step
         usedCount = sum([e > 0 for e in values])
         if randomizer.random() > stepOdds:
             continue
+
+        ret=True
         if usedCount > 1:
             ret,dualLinkCount=CheckDual(side, values, curE, dualLinkCount, dual)
-            if not ret:
-                continue
+        if not ret:
+            continue
+
         M[curE] = side
         for i, E in enumerate(EN):
-            if values[i] >= 0:
-                continue
-            nexQ.append((E, side))
+            if values[i] < 0:
+                nexQ.append((E, side))
+    print(M.text_display("01234567"))
     M.apply(lambda x: tiles[x == 0])
-    M[start] = tiles[2]
     M[end] = tiles[2]
     for E in dual:
         M[E] += 4
@@ -105,20 +105,19 @@ def generate_test(seed:int, showcrit:callable):
     start = Trandom(size, seeder=rand)
     end = Trandom(size, seeder=rand)
     res:Grid2D = CreateDualMazeInner(size, start, end, seed)
-    score=bestPossibleScore(res,start,end,mark=3)
-    if showcrit(start,end,res,score):
-        print(seed)
-        print(start, end)
-        print(res.unique_values())
-        print(res.text_display("01234"))
-        print(score)
-        input()
-        res.apply(lambda e:[2,2,0,0,0][e])
-        score=bestPossibleScore(res,start,end,mark=3)
-        print(res.unique_values())
-        print(res.text_display("01234"))
-        print(score)
-        input()
+    score=bestPossibleScore(res,start,end)
+    print(seed)
+    print(start, end)
+    print(res.unique_values())
+    print(res.text_display("01234"))
+    print(score)
+    input()
+    res.apply(lambda e:[2,2,0,0,0][e])
+    score=bestPossibleScore(res,start,end)
+    print(res.unique_values())
+    print(res.text_display("01234"))
+    print(score)
+    input()
     return score
 
 

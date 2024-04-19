@@ -228,7 +228,7 @@ def ImportFragmentedJSON(main_file: str, files: dict):
         except FragmentedJSONException as E:
             print(E)
         arch[key] = target_fragment
-    ExtendAllApplicable(main_file)
+    ExtendAllApplicable(files[main_file])
     return files[main_file]
 
 
@@ -247,7 +247,7 @@ def main():
             DA[i] = e1
         if e2:
             DB[i] = e2
-    DA["<EXTEND_C>"] = DB
+    DA["<EXTEND>"] = DB
     print(DA,DB)
     ExtendAllApplicable(DA)
     print(DA,DB)
