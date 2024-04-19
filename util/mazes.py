@@ -40,7 +40,7 @@ def CheckDual(side,values,curE,dualLinkCount,dual):
             ret=True
     return ret,dualLinkCount
 
-def CreateDualMazeInner(dimensions, start, end, maze_seed, tiles=(0, 2, 1), stepOdds=0.9, allowLoops=False, dualLinkCount=1):
+def CreateDualMaze(dimensions, start, end, maze_seed, tiles=(0, 2, 1), stepOdds=0.9, allowLoops=False, dualLinkCount=1):
     M = Grid2D(dimensions, defaultValue=-1) # defaults to null
     nexQ = deque([(start, 1),(end, 2)])
     randomizer = random.Random(maze_seed)
@@ -50,34 +50,28 @@ def CreateDualMazeInner(dimensions, start, end, maze_seed, tiles=(0, 2, 1), step
         curE, side = nexQ.popleft()
         if M[curE] >= 0:
             continue
-        M[curE] = side
+        M[curE] = 0 # Set to wall by default
 
         EN = M.get_neighbours(curE)
         values = [M[E] for E in EN]
         usedCount = sum([e > 0 for e in values])
         if randomizer.random() > stepOdds:
-            continue
+            continue # Remains wall
 
         ret=True
         if usedCount > 1:
             ret,dualLinkCount=CheckDual(side, values, curE, dualLinkCount, dual)
         if not ret:
-            continue
+            continue # Dual link failed
 
-        M[curE] = side
+        M[curE] = side # Tile clear
         for i, E in enumerate(EN):
             if values[i] < 0:
                 nexQ.append((E, side))
-    print(M.text_display("01234567"))
+    print(start,end)
     M.apply(lambda x: tiles[x == 0])
-    M[end] = tiles[2]
-    for E in dual:
-        M[E] += 4
-    return M
-
-def CreateDualMaze(dimensions, start, end, maze_seed, tiles=(0, 2, 1), stepOdds=0.9, allowLoops=False, dualLinkCount=1):
-    M=CreateDualMazeInner(dimensions,start,end,maze_seed,tiles,stepOdds,allowLoops,dualLinkCount)
-    M.apply(lambda e:[0,2,2,0,0][e])
+    print(M.unique_values())
+    M[end] = tiles[2] # Mark as goal
     return M
 
 

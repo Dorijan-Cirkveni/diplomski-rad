@@ -7,6 +7,7 @@ from util.GridRoutine import GridRoutine
 from util.VisionOctant import VisionOctant
 from util.Grid2D import Grid2D
 from util.TupleDotOperations import *
+from util.debug.ExceptionCatchers import AssertInputTypes
 
 # Counter for assigning unique identifiers to different types of tiles
 tile_counter = util_mngr.Counter()
@@ -228,6 +229,7 @@ class GridEnvironment(itf.iEnvironment):
         self.grids = grids
         self.solidGrid: Grid2D = grids['solid']
         self.viewedGrid: Grid2D = grids.get('viewed', self.solidGrid)
+        self.grids["viewed"]=self.viewedGrid
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
         self.effectTypes = [] if effectTypes is None else effectTypes
 
@@ -437,6 +439,7 @@ class GridEnvironment(itf.iEnvironment):
         :param opaque: List of opaque tiles. Defaults to None.
         :param viewable:
         """
+        AssertInputTypes([(position,tuple,True),(direction,tuple,True),(return_grid,Grid2D,True)])
         if opaque is None:
             opaque = default_opaque
         (axis, sig) = int(direction[1] == 0), direction[0] + direction[1]
@@ -515,7 +518,9 @@ class GridEnvironment(itf.iEnvironment):
         entity: GridEntity = self.entities[entityID]
         if entity is None:
             return None  # Intended error
-        location = entity.get(entity.LOCATION, None)
+        location:tuple = entity.get(entity.LOCATION, None)
+        if type(location)!=tuple:
+            raise Exception(f"Location must be a tuple, not {type(location)}!")
         gridData = None
         if entity.get(entity.S_allseeing, False):
             gridData = self.viewedGrid.copy()

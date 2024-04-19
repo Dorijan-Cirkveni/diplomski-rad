@@ -75,6 +75,10 @@ class iEntity:
         self.properties = dict() if properties is None else properties
         self.agent = agent
 
+    def getFromDict(raw: dict):
+        raise NotImplementedError
+
+
     def __repr__(self):
         entity_dict = {
             'states': self.states,

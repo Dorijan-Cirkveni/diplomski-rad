@@ -177,11 +177,12 @@ class DualMazeEnvironment(GridEnvironment):
         (a_type, a_raw) = raw.get("agent", ["BOX", ""])
         agent = agentDict[a_type](a_raw)
         entity_data = raw.get("entity", {})
+        states = entity_data.get("states", dict())
         properties = entity_data.get("properties", dict())
         properties['loc'] = tuple(properties.get('loc', [5, 5]))
         displays = entity_data.get("displays", [0])
         curdis = entity_data.get("curdis", 0)
-        entity = GridEntity(agent, displays, curdis, properties)
+        entity = GridEntity(agent, displays, curdis, states=states, properties=properties)
 
         res = DualMazeEnvironment(
             tuple(raw.get("scale", [25, 25])),
