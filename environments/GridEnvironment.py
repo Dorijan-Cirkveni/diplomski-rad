@@ -427,7 +427,7 @@ class GridEnvironment(itf.iEnvironment):
         movability = tile.checkIfLethal(agentData)
         return movability
 
-    def view_direction(self, position, direction: tuple, return_grid: Grid2D, opaque=None, viewable=True):
+    def view_direction(self, position:tuple, direction: tuple, return_grid: Grid2D, opaque=None, viewable=True):
         """
         Views in the specified direction.
 
@@ -446,7 +446,8 @@ class GridEnvironment(itf.iEnvironment):
         used_any = True
         while used_any:
             distance += 1
-            start = Tadd(position, util_mngr.reverseIf((distance * sig, 0), axis == 1))
+            addable = util_mngr.reverseIf((distance * sig, 0), axis == 1)
+            start = Tadd(position, addable)
             scheck = self.get_tile(start, viewable)
             # print(start, scheck)
             if scheck is None:
