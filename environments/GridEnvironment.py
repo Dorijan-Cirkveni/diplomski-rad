@@ -225,13 +225,14 @@ class GridEnvironment(itf.iEnvironment):
             effectTypes (list, optional): List of effect types. Defaults to None.
             extraData (dict, optional): Extra data for the environment. Defaults to None.
         """
+        if effectTypes is None:
+            effectTypes=extraData.get("effects",[])
         super().__init__(entities, activeEntities, effectTypes, extraData=extraData)
         self.grids = grids
         self.solidGrid: Grid2D = grids['solid']
         self.viewedGrid: Grid2D = grids.get('viewed', self.solidGrid)
         self.grids["viewed"]=self.viewedGrid
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
-        self.effectTypes = [] if effectTypes is None else effectTypes
 
         self.taken = dict()
         for ID, entity in enumerate(self.entities):
