@@ -1,7 +1,7 @@
 [
   {
     "envType": "grid",
-    "name": "Environment Test 1",
+    "name": "Environment Base 1",
     "solid": "<EXT>g_base|0",
     "viewed": "<EXT>g_base|0",
     "agent": [
@@ -23,7 +23,7 @@
   ,
   {
     "envType": "grid",
-    "name": "Environment Test 2",
+    "name": "Environment Base 2",
     "solid": "<EXT>g_base|0",
     "agent": [
       ["RAA","4213214321"]
@@ -38,7 +38,7 @@
   ,
   {
     "envType": "grid",
-    "name": "Box Push Test 1",
+    "name": "Box Push Test Base 1",
     "solid": "<EXT>g_base|2",
     "agent": [
       ["RAA","42132143212132141241212"],

@@ -159,7 +159,7 @@ class DualMazeEnvironment(GridEnvironment):
         grid_M:Grid2D = mazes.CreateDualMaze(scale, start, goal, maze_seed)
         grids={"solid":grid_M}
 
-        super().__init__(grids, [entity], {0}, tileTypes, data)
+        super().__init__(grids, [entity], {0}, tileTypes, extraData=data)
 
     @staticmethod
     def getFromDict(raw: dict):

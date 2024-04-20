@@ -567,8 +567,9 @@ def DebugRun():
         "run",
         "exit",
         "individual",
-        "run t_maze_0 1",
-        "run t_maze_1 1",
+        "run t_base 0",
+        "run t_maze_0 0",
+        "run t_maze_1 0",
         "exit"
     ]
     CommandRun(X)

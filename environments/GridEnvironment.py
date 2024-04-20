@@ -329,9 +329,10 @@ class GridEnvironment(itf.iEnvironment):
         effects = None
 
         extraData = {"routines": all_routines, "name": raw.get("name","Untitled")}
+        raw.update(extraData)
 
         active.update(set(raw.get("activeEntities", [])))
-        return all_grids, entities, active, tiles, effects, extraData
+        return all_grids, entities, active, tiles, effects
 
     @staticmethod
     def getFromDict(raw: dict):
@@ -345,7 +346,7 @@ class GridEnvironment(itf.iEnvironment):
             GridEnvironment: Created GridEnvironment object.
         """
         envInput: tuple = GridEnvironment.getInputFromDict(raw)
-        res = GridEnvironment(*envInput)
+        res = GridEnvironment(*envInput,extraData=raw)
         return res
 
     def getScale(self):
