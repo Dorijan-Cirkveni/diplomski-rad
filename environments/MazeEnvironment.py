@@ -67,7 +67,7 @@ class MazeEnvironment(GridEnvironment):
         super().__init__(grids, [entity], {0}, tileTypes, extraData=extraData)
 
     @staticmethod
-    def getFromDict(raw: dict):
+    def raw_init(raw: dict):
         """
         Create a MazeEnvironment object from a dictionary.
 
@@ -85,7 +85,7 @@ class MazeEnvironment(GridEnvironment):
         if "entity" not in raw:
             raise Exception("Must have entity!")
         entity_data = raw.get("entity")
-        entity = GridEntity.getFromDict(entity_data, agent)
+        entity = GridEntity.raw_init(entity_data, agent)
 
         ranseed = raw.get("seed", random.randint(0, 1 << 32 - 1))
         randomizer: random.Random = random.Random(ranseed)
@@ -162,7 +162,7 @@ class DualMazeEnvironment(GridEnvironment):
         super().__init__(grids, [entity], {0}, tileTypes, extraData=data)
 
     @staticmethod
-    def getFromDict(raw: dict):
+    def raw_init(raw: dict):
         """
         Create a DualMazeEnvironment object from a dictionary.
 

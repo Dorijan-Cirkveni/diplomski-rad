@@ -32,7 +32,7 @@ def readEnvironment(jsonL:list, ind:int, agentDict=None):
     raw['agentDict'] = agentDict
     envTypeName = raw.get("envType", "return_grid")
     envType: itf.iEnvironment = envList.get(envTypeName, envList["return_grid"])
-    RES = envType.getFromDict(raw)
+    RES = envType.raw_init(raw)
     return RES
 
 

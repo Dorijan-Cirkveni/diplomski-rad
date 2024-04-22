@@ -101,7 +101,7 @@ class iEntity:
         self.agent = agent
 
     @staticmethod
-    def getFromDict(raw: dict):
+    def raw_init(raw: dict):
         """
 
         :param raw:
@@ -186,7 +186,11 @@ class iEnvironment:
         self.curIter = 0
 
     @staticmethod
-    def getFromDict(raw: dict) -> Type['iEnvironment']:
+    def raw_init(raw: dict) -> Type['iEnvironment']:
+        """
+
+        :param raw:
+        """
         raise NotImplementedError
 
     def __copy__(self):

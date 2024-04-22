@@ -80,7 +80,7 @@ input_ids = agent.tokenizer.encode(input_text, return_tensors="pt")
 print(input_ids)
 
 # Generate output sequence
-output = agent.model.generate(input_ids, max_length=50, num_return_sequences=1)
+output = agent.model.raw_init(input_ids, max_length=50, num_return_sequences=1)
 
 # Decode and print output
 generated_text = agent.tokenizer.decode(output[0], skip_special_tokens=True)

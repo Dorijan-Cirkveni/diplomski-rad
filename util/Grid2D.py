@@ -80,7 +80,12 @@ class Grid2D:
         return
 
     @staticmethod
-    def getFromDict(raw: dict):
+    def raw_init(raw: dict):
+        """
+
+        :param raw:
+        :return:
+        """
         dimensions = raw['scale']
         grid = raw.get('grid', [])
         default = raw.get('default', 0)
@@ -102,7 +107,7 @@ class Grid2D:
             for sublist in L:
                 subraw = sublist["grid"]
                 offset = tuple(sublist.get("offset", [0, 0]))
-                subgrid = Grid2D.getFromDict(subraw)
+                subgrid = Grid2D.raw_init(subraw)
                 RES.overlap(subgrid, offset)
         return RES
 

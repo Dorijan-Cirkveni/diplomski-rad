@@ -96,7 +96,7 @@ def tensorTest():
     input_ids=GridStateEncoder.main()
 
     # Generate output sequence
-    output = agent.model.generate(input_ids, max_length=100, num_return_sequences=1)
+    output = agent.model.raw_init(input_ids, max_length=100, num_return_sequences=1)
 
     # Decode and print output
     generated_text = agent.tokenizer.decode(output[0], skip_special_tokens=True)
@@ -117,7 +117,7 @@ def main():
     input_ids = agent.tokenizer.encode(input_text, return_tensors="pt")
 
     # Generate output sequence
-    output = agent.model.generate(input_ids, max_length=200, num_return_sequences=1)
+    output = agent.model.raw_init(input_ids, max_length=200, num_return_sequences=1)
 
     # Decode and print output
     generated_text = agent.tokenizer.decode(output[0], skip_special_tokens=True)
@@ -161,7 +161,7 @@ No diagonal movements are allowed.
 
         input("Command input encoded:"+str(input_ids))
         # Generate output sequence
-        output = agent.model.generate(input_ids, max_length=200, num_return_sequences=1)
+        output = agent.model.raw_init(input_ids, max_length=200, num_return_sequences=1)
 
         input("Output generated:"+str(output))
         # Decode and print output

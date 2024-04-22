@@ -134,7 +134,7 @@ class GridEntity(itf.iEntity):
         super().__init__(agent, displays, curdis, states, properties)
 
     @staticmethod
-    def getFromDict(entity_data:dict):
+    def raw_init(entity_data:dict):
         """
         Initialize a GridEntity object from dictionary data.
 
@@ -207,9 +207,11 @@ class GridEnvironment(itf.iEnvironment):
     dir_left = 2
     dir_right = 3
 
-    def __init__(self, grids: dict,
+    def __init__(self, gridRoutines: dict[str,GridRoutine],
                  entities: list[GridEntity] = None, activeEntities: set = None,
-                 tileTypes: list[PlaneTile] = None, effectTypes: list = None,
+                 tileTypes: list[PlaneTile] = None,
+                 effectTypes: list = None,
+                 effects: dict = None,
                  extraData: dict = None):
         """
         Initializes a new GridEnvironment instance.
@@ -228,10 +230,13 @@ class GridEnvironment(itf.iEnvironment):
         if effectTypes is None:
             effectTypes=extraData.get("effects",[])
         super().__init__(entities, activeEntities, effectTypes, extraData=extraData)
-        self.grids = grids
-        self.solidGrid: Grid2D = grids['solid']
-        self.viewedGrid: Grid2D = grids.get('viewed', self.solidGrid)
-        self.grids["viewed"]=self.viewedGrid
+        if "viewed" not in gridRoutines:
+            gridRoutines["viewed"]=gridRoutines["solid"].copy()
+        self.gridRoutines=gridRoutines
+        self.getCurGrids()
+        self.solidGrid: Grid2D = None
+        self.viewedGrid: Grid2D = None
+
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
 
         self.taken = dict()
@@ -246,22 +251,7 @@ class GridEnvironment(itf.iEnvironment):
         return
 
     @staticmethod
-    def getAgentDict(raw):
-        """
-        Static method to extract the agent dictionary from raw data.
-
-        Args:
-            raw: Raw data containing agent dictionary information.
-
-        Returns:
-            dict: Agent dictionary.
-        """
-        agentDict = raw.get("agentDict", None)
-        agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
-        return agentDict
-
-    @staticmethod
-    def getCustomTileup(raw):
+    def generateCustomTileup(raw):
         """
         Generate custom set of tiles for
 
@@ -279,16 +269,16 @@ class GridEnvironment(itf.iEnvironment):
     @staticmethod
     def getGridRoutinesFromDict(raw: dict):
         gridRaw = raw["solid"]
-        grid = GridRoutine.getFromDict(gridRaw)
+        grid = GridRoutine.raw_init(gridRaw)
         if "viewed" in raw:
             gridRaw = raw["viewed"]
-            visgrid = GridRoutine.getFromDict(gridRaw)
+            visgrid = GridRoutine.raw_init(gridRaw)
         else:
             visgrid = grid
         all_grids: dict = raw.get("all_grids", dict())
         for e, v in all_grids.items():
             v: dict
-            all_grids[e] = GridRoutine.getFromDict(v)
+            all_grids[e] = GridRoutine.raw_init(v)
         all_grids["solid"] = grid
         all_grids["viewed"] = visgrid
         return all_grids
@@ -300,7 +290,7 @@ class GridEnvironment(itf.iEnvironment):
         :param raw:
         :return:
         """
-        agentDict = GridEnvironment.getAgentDict(raw)
+        agentDict = raw.get("agentDict", AgentManager.ALL_AGENTS)
         all_routines = GridEnvironment.getGridRoutinesFromDict(raw)
         all_grids = {e:v.getCurGrid(0) for e,v in all_routines.items()}
         [all_routines.pop(e) for e in all_grids if len(all_routines[e].grids) == 0]
@@ -317,7 +307,7 @@ class GridEnvironment(itf.iEnvironment):
             ID = entity_data.get("id", None)
             if ID is None:
                 raise Exception("Entity agent ID must be specified!")
-            entity = GridEntity.getFromDict(entity_data)
+            entity = GridEntity.raw_init(entity_data)
             entity.agent=agents[int(ID)]
             entities.append(entity)
 
@@ -341,7 +331,7 @@ class GridEnvironment(itf.iEnvironment):
         return all_grids, entities, active, tiles, effects
 
     @staticmethod
-    def getFromDict(raw: dict):
+    def raw_init(raw: dict):
         """
         Static method to create a GridEnvironment object from dictionary data.
 
@@ -354,15 +344,6 @@ class GridEnvironment(itf.iEnvironment):
         envInput: tuple = GridEnvironment.getInputFromDict(raw)
         res = GridEnvironment(*envInput,extraData=raw)
         return res
-
-    def getScale(self):
-        """
-        Returns the scale (size) of the grid.
-
-        Returns:
-            tuple: Grid scale (number of rows, number of columns).
-        """
-        return self.solidGrid.scale
 
     def __copy__(self):
         """
@@ -379,6 +360,20 @@ class GridEnvironment(itf.iEnvironment):
             entities.append(e.__copy__())
         new = GridEnvironment(newGrid, newViewedGrid, entities)  # TODO finish copy function
         return new
+
+    #   ------------------------------------------------------------------------
+    #   Getters from class object
+    #   ------------------------------------------------------------------------
+
+    def getScale(self):
+        """
+        Returns the scale (size) of the grid.
+
+        Returns:
+            tuple: Grid scale (number of rows, number of columns).
+        """
+        return self.solidGrid.scale
+
 
     def chooseGrid(self, viewed: bool):
         return self.viewedGrid if viewed else self.solidGrid
@@ -804,7 +799,7 @@ def readPlaneEnvironment(jsonL, index: int, agentDict: dict = None) -> GridEnvir
         raise Exception("Invalid index {} for file with {} entries!".format(index, len(jsonL)))
     raw = jsonL[index]
     raw['agentDict'] = agentDict
-    RES = GridEnvironment.getFromDict(raw)
+    RES = GridEnvironment.raw_init(raw)
     return RES
 
 

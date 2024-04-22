@@ -8,13 +8,13 @@ class GridRoutine:
         self.loop = loop
 
     @staticmethod
-    def getFromDict(raw: dict):
+    def raw_init(raw: dict):
         if "grids" not in raw:
-            return GridRoutine([Grid2D.getFromDict(raw)],[0],False)
+            return GridRoutine([Grid2D.raw_init(raw)], [0], False)
         grids_raw: list = raw["grids"]
         sequence = raw.get("seq", [i for i in range(len(grids_raw))])
         loop = raw["loop"]
-        grids = [Grid2D.getFromDict(el) for el in grids_raw]
+        grids = [Grid2D.raw_init(el) for el in grids_raw]
         return GridRoutine(grids, sequence, loop)
 
     def getCurGrid(self, itid):
