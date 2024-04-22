@@ -1,3 +1,4 @@
+import agents.Agent
 from definitions import *
 from agents import AgentManager
 import interfaces as itf
@@ -133,12 +134,11 @@ class GridEntity(itf.iEntity):
         super().__init__(agent, displays, curdis, states, properties)
 
     @staticmethod
-    def getFromDict(entity_data, agent: itf.iAgent):
+    def getFromDict(entity_data:dict):
         """
         Initialize a GridEntity object from dictionary data.
 
         :param entity_data: dict: Data representing the entity.
-        :param agent: iAgent: The agent associated with the entity.
 
         :return: GridEntity: Initialized GridEntity object.
         """
@@ -150,7 +150,7 @@ class GridEntity(itf.iEntity):
         displays = entity_data.get("displays", [0])
         curdis = entity_data.get("curdis", 0)
         states = set(entity_data.get("states", []))
-        entity = GridEntity(agent, displays, curdis, states, properties)
+        entity = GridEntity(agents.Agent.BoxAgent(), displays, curdis, states, properties)
         return entity
 
     def receiveEnvironmentData(self, data: dict):
@@ -302,13 +302,8 @@ class GridEnvironment(itf.iEnvironment):
         """
         agentDict = GridEnvironment.getAgentDict(raw)
         all_routines = GridEnvironment.getGridRoutinesFromDict(raw)
-        all_grids = {}
-        for e, v in all_routines.items():
-            all_grids[e] = v.getCurGrid(0)
-        for e in all_grids:
-            v: GridRoutine = all_routines[e]
-            if len(v.grids) == 0:
-                all_routines.pop(e)
+        all_grids = {e:v.getCurGrid(0) for e,v in all_routines.items()}
+        [all_routines.pop(e) for e in all_grids if len(all_routines[e].grids) == 0]
         agents = []
         entities = []
         active = set()
@@ -322,12 +317,22 @@ class GridEnvironment(itf.iEnvironment):
             ID = entity_data.get("id", None)
             if ID is None:
                 raise Exception("Entity agent ID must be specified!")
-            entity = GridEntity.getFromDict(entity_data, agents[int(ID)])
+            entity = GridEntity.getFromDict(entity_data)
+            entity.agent=agents[int(ID)]
             entities.append(entity)
 
         tiles = None
 
-        effects = None
+        effects = {}
+        for effallraw in raw.get("effects",[]):
+            if len(effallraw)!=2:
+                raise Exception("ayo pizza's here")
+            offset,effraw=effallraw
+            effects[offset]=itf.Effect.getFromList(effraw)
+
+        effects = []
+        for effraw in raw.get("effect_types",[]):
+            effects.append(itf.Effect.getFromList(effraw))
 
         extraData = {"routines": all_routines, "name": raw.get("name","Untitled")}
         raw.update(extraData)
@@ -366,8 +371,8 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             GridEnvironment: Copy of the current GridEnvironment instance.
         """
-        newGrid = self.solidGrid.__copy__()
-        newViewedGrid = None if self.viewedGrid is self.solidGrid else self.viewedGrid.copy()
+        newRoutines=self.data.get("ro")
+        newgrids={}
         entities = []
         for e in self.entities:
             e: GridEntity

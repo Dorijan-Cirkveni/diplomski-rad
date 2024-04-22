@@ -7,19 +7,43 @@ from util.PriorityList import PriorityList
 import util.UtilManager as util_mngr
 
 
+def getValuesFromDict(raw, meta_args: list) -> list:
+    args = []
+    for key in meta_args:
+        if type(key) == tuple:
+            key, null = key
+            args.append(raw.get(key, null))
+            continue
+        if key not in raw:
+            raise Exception("Value {} missing from data structure {}!".format(key, raw))
+        args.append(raw[key])
+    return args
+
+
 class Effect:
     """
 
     """
 
-    def __init__(self, value, duration: int = -1, downtime: int = -1, entities=None):
-        if entities is None:
-            entities = {}
+    def __init__(self, value, duration: int = -1, downtime: int = -1, entities: set[int] = None,
+                 othercrit: dict = None):
         self.value = value
         self.duration = duration
         self.downtime = downtime
-        self.entities = entities
+        self.entities = {} if entities is None else entities
+        self.otherCriteria = {} if othercrit is None else othercrit
         self.active = False
+
+    @staticmethod
+    def getFromList(raw):
+        val = [None, 10, 0, [], {}]
+        if not raw:
+            raise Exception("Must have effect name!")
+        for i in range(len(raw)):
+            val[i]=raw[i]
+        if type(val[3]) == int:
+            val[3] = {val[3]}
+        return Effect(*tuple(val))
 
     def getDelta(self):
         return self.duration if self.active else self.downtime
@@ -29,7 +53,8 @@ class iAgent:
     """
     A template for an agent that controls one or more entities.
     """
-    defaultInput=None
+    defaultInput = None
+
     @staticmethod
     def fromString(s):
         """
@@ -75,9 +100,13 @@ class iEntity:
         self.properties = dict() if properties is None else properties
         self.agent = agent
 
+    @staticmethod
     def getFromDict(raw: dict):
-        raise NotImplementedError
+        """
 
+        :param raw:
+        """
+        raise NotImplementedError
 
     def __repr__(self):
         entity_dict = {
@@ -140,10 +169,12 @@ class iEnvironment:
     def __init__(self, entities: list, activeEntities: set, effectTypes: list[Effect],
                  extraData: dict = None):
         self.data = [extraData, {}][extraData is None]
-        self.name=self.data.get("name","Untitled")
+        self.name = self.data.get("name", "Untitled")
         self.effects: list[Effect] = self.data.get("effects", [])
         self.effectTypes = effectTypes
         self.scheduledEffects = PriorityList()
+        for eff in self.effects:
+            self.scheduleEffect()
         self.entities: list = [] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
         self.entityPriority = []
@@ -173,19 +204,13 @@ class iEnvironment:
             ent.agent = newAgents[i % len(newAgents)]
         return
 
-    def scheduleEffect(self, time, value, duration, period, entities=None, schedule=0):
+    def scheduleEffect(self, time, effect:Effect, schedule=0):
         """
         Schedule an effect.
         :param time: Iteration in which the effect is scheduled.
-        :param value: The effect.
-        :param duration: How long the effect lasts.
-        :param period: How long until the effect reoccurs.
-        :param entities:
-        :param schedule: Effect priority. The lower the value, the higher the priority.
+        :param effect: The effect.
+        :param schedule: Effect application schedule. Effects are applied in ascending order.
         """
-        if entities is None:
-            entities = {}
-        effect = Effect(value, duration, period, entities)
         self.scheduledEffects.add((time, schedule), effect)
 
     def getValue(self, agentID=None):
@@ -219,6 +244,9 @@ class iEnvironment:
         else:
             for entity in entities:
                 entity.set(effect.value)
+
+    def setEffects(self, effects):
+        return
 
     def applyEffects(self):
         dueEffects: list[tuple[object, list]] = self.scheduledEffects.popLowerThan(self.curIter)
@@ -263,7 +291,7 @@ class iEnvironment:
     def isLoss(self):
         raise NotImplementedError
 
-    def evaluate(self, results:list):
+    def evaluate(self, results: list):
         raise NotImplementedError
 
     def run(self, agent: iAgent, timeLimit: int, timeoutWin: bool = True):
@@ -274,7 +302,7 @@ class iEnvironment:
                 return i, False
             if self.isWin():
                 return i, True
-        return timeLimit+1, timeoutWin
+        return timeLimit + 1, timeoutWin
 
     def evaluateActiveEntities(self, evalMethod: callable, indEvalMethod: callable):
         raise NotImplementedError
@@ -342,10 +370,10 @@ class iEnvironment:
             for test in group:
                 test: iEnvironment
                 results.append(test.run(agent, timelimit, timeoutWin))
-            final_results=self.evaluate(results)
+            final_results = self.evaluate(results)
             return final_results
-        return agentTest
 
+        return agentTest
 
 
 class iTrainingMethod:
