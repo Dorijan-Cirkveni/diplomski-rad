@@ -154,7 +154,7 @@ class GridDisplay:
         self.screen = None
         self.buttons = {}
         self.obsAgent = obsAgent
-        self.viewable = False
+        self.gridType = "solid"
         self.iteration = 0
         self.winStatus = (-1, None)
         self.bottom_text = ">"
@@ -176,9 +176,18 @@ class GridDisplay:
         return 0
 
     def toggle_viewable(self):
-        self.viewable = not self.viewable
-        button:Button=self.buttons["viewable"]
-        button.text="Grid mode: " + ["Real", "Observed"][self.viewable]
+        K=self.grid.grids
+        if not K:
+            raise Exception("This environment has no grid data!")
+        if self.gridType in K:
+            V=list(K.keys())
+            V.sort()
+            curind=(V.index(self.gridType)+1)%len(V)
+            self.gridType=V[curind]
+        else:
+            self.gridType=min(K.keys())
+        button:Button=self.buttons["changetype"]
+        button.text="Grid mode: " + self.gridType
         self.show_iter()
         self.draw_frame()
         self.draw_buttons()
@@ -214,12 +223,12 @@ class GridDisplay:
 
         test = Button(
             (100, 0, 0),
-            "Grid mode: " + ["Real", "Observed"][self.viewable],
+            "Grid mode: " + self.gridType,
             (5, 10 + 360, 190, 50),
             self.toggle_viewable
         )
         test.place((self.gridscreenV[0], 0))
-        self.buttons["viewable"] = test
+        self.buttons["changetype"] = test
 
         test = Joystick((100, 0, 0), (200, 0, 0), "text???")
         test.place((650, 450), (1, 1))
@@ -288,7 +297,7 @@ class GridDisplay:
 
     def draw_frame(self, delay=0):
         self.draw_buttons()
-        data: dict = self.grid.getDisplayData(self.obsAgent,self.viewable)
+        data: dict = self.grid.getDisplayData(self.obsAgent,self.gridType)
         grid: Grid2D = data.get('grid', None)
         agents: dict = data.get('agents', dict())
         if grid is None:

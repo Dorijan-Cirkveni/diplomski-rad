@@ -63,8 +63,11 @@ class MazeEnvironment(GridEnvironment):
         self.idealGoal = idealGoal
         entity.set(entity.LOCATION, start)
         grid = mazes.CreateFullMaze(scale, start, idealGoal, maze_seed=maze_seed, tiles=[0, 2, 1])
-        grids = {'solid': grid, 'viewed': grid}
-        super().__init__(grids, [entity], {0}, tileTypes, extraData=extraData)
+        gro=GridRoutine([grid],[])
+        grids = {'solid': gro, 'viewed': gro.__copy__()}
+        effect_types = [itf.Effect.init_raw(e) for e in extraData.get("effect_types", [])]
+        effects = [itf.EffectTime.init_raw(e) for e in extraData.get("effects", [])]
+        super().__init__(grids, [entity], {0}, tileTypes, effect_types, effects, extraData=extraData)
 
     @staticmethod
     def raw_init(raw: dict):
@@ -85,7 +88,8 @@ class MazeEnvironment(GridEnvironment):
         if "entity" not in raw:
             raise Exception("Must have entity!")
         entity_data = raw.get("entity")
-        entity = GridEntity.raw_init(entity_data, agent)
+        entity = GridEntity.raw_init(entity_data)
+        entity.agent=agent
 
         ranseed = raw.get("seed", random.randint(0, 1 << 32 - 1))
         randomizer: random.Random = random.Random(ranseed)

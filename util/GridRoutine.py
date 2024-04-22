@@ -6,7 +6,7 @@ class GridRoutine:
     A set of grids in a chronological sequence.
     """
 
-    def __init__(self, grids: list[Grid2D], sequence: list[int], loop: bool):
+    def __init__(self, grids: list[Grid2D], sequence: list[int], loop: bool = True):
         self.grids = grids
         self.sequence = sequence
         self.loop = loop
