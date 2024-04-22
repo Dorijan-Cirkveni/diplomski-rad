@@ -7,7 +7,16 @@ from util.PriorityList import PriorityList
 import util.UtilManager as util_mngr
 
 
-def getValuesFromDict(raw, meta_args: list) -> list:
+def getValuesFromDict(raw:dict, meta_args: list, arg_types=None) -> list:
+    """
+    Get a list of values from a dictionary, throw an exception if they are absent or their type doesn't match.
+    :param raw:
+    :param meta_args:
+    :param arg_types:
+    :return:
+    """
+    if arg_types is None:
+        arg_types = {}
     args = []
     for key in meta_args:
         if type(key) == tuple:
@@ -15,14 +24,35 @@ def getValuesFromDict(raw, meta_args: list) -> list:
             args.append(raw.get(key, null))
             continue
         if key not in raw:
-            raise Exception("Value {} missing from data structure {}!".format(key, raw))
+            exc="Value {} ({}) missing from data structure {}!"
+            uns="Unspecified"
+            raise Exception(exc.format(key, arg_types.get(key,uns), raw))
         args.append(raw[key])
     return args
 
 
-class Effect:
+class iRawInit:
     """
+    Base interface for classes that can be initialised from a JSON string.
+    """
+    @staticmethod
+    def init_raw(raw):
+        """
 
+        :param raw:
+        """
+        raise NotImplementedError
+
+    def __copy__(self):
+        raise NotImplementedError
+
+    def copy(self):
+        raise NotImplementedError
+
+
+class Effect(iRawInit):
+    """
+    An effect applied to an entity.
     """
 
     def __init__(self, value, duration: int = -1, downtime: int = -1, entities: set[int] = None,
@@ -35,7 +65,7 @@ class Effect:
         self.active = False
 
     @staticmethod
-    def getFromList(raw):
+    def init_raw(raw):
         val = [None, 10, 0, [], {}]
         if not raw:
             raise Exception("Must have effect name!")
@@ -45,8 +75,25 @@ class Effect:
             val[3] = {val[3]}
         return Effect(*tuple(val))
 
+    def __copy__(self):
+        return Effect(self.value,self.duration,self.downtime,self.entities.copy(),self.otherCriteria.deepcopy())
+
+    def copy(self):
+        return self.__copy__()
+
     def getDelta(self):
         return self.duration if self.active else self.downtime
+
+class EffectTime(iRawInit):
+    def __init__(self,time,effect:Effect):
+        self.time = time
+        self.effect = effect
+
+    @staticmethod
+    def init_raw(raw:list):
+        if len(raw)!=0:
+            raise Exception("Must be list!")
+        return EffectTime(raw[0],Effect.init_raw(raw[1]))
 
 
 class iAgent:
@@ -75,6 +122,9 @@ class iAgent:
         raise NotImplementedError
 
     def submitDataEntry(self, entryKey) -> tuple[bool, object]:
+        raise NotImplementedError
+
+    def copy(self):
         raise NotImplementedError
 
     def __copy__(self):
@@ -166,15 +216,22 @@ class iEntity:
 
 
 class iEnvironment:
-    def __init__(self, entities: list, activeEntities: set, effectTypes: list[Effect],
+    """
+    Base class interface for a test environment.
+    """
+    def __init__(self, entities: list, activeEntities: set, effectTypes: list[Effect], effects:list[EffectTime],
                  extraData: dict = None):
+        if effectTypes is None:
+            effectTypes=[]
+        if effects is None:
+            effects=[]
         self.data = [extraData, {}][extraData is None]
         self.name = self.data.get("name", "Untitled")
-        self.effects: list[Effect] = self.data.get("effects", [])
         self.effectTypes = effectTypes
         self.scheduledEffects = PriorityList()
-        for eff in self.effects:
-            self.scheduleEffect()
+        for eff in effects:
+            eff:EffectTime
+            self.scheduleEffect(eff.time,eff.effect)
         self.entities: list = [] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
         self.entityPriority = []
