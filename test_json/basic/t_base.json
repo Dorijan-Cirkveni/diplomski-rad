@@ -2,7 +2,7 @@
   {
     "envType": "grid",
     "name": "Environment Base 1",
-    "solid": "<EXT>g_base|0",
+    "solid": {"grids": ["<EXT>g_base|0","<EXT>g_base|1"],"loop": true},
     "viewed": "<EXT>g_base|0",
     "agent": [
       ["RAA","42132143212132141241212"],
