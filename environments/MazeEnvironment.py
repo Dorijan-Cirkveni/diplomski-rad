@@ -33,7 +33,7 @@ def rect(E, grid):
 
 
 mazeCreators = {
-
+    ""
 }
 
 
