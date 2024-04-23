@@ -9,8 +9,7 @@ import agents.AgentManager as agent_mngr
 # Dictionary mapping environment names to their respective environment classes
 envList = {
     "mazeBasic": maze_env.MazeEnvironment,
-    "mazeDual": maze_env.DualMazeEnvironment,
-    "return_grid": grid_env.GridEnvironment
+    "grid": grid_env.GridEnvironment
 }
 
 
@@ -27,11 +26,11 @@ def readEnvironment(jsonL:list, ind:int, agentDict=None):
     if agentDict is None:
         agentDict = agent_mngr.ALL_AGENTS
     if ind not in range(-len(jsonL), len(jsonL)):
-        raise Exception("Invalid index {} for file with {} entries!".format(ind, len(jsonL)))
+        return None
     raw = jsonL[ind]
     raw['agentDict'] = agentDict
-    envTypeName = raw.get("envType", "return_grid")
-    envType: itf.iEnvironment = envList.get(envTypeName, envList["return_grid"])
+    envTypeName = raw["envType"]
+    envType: itf.iEnvironment = envList[envTypeName]
     RES = envType.raw_init(raw)
     return RES
 

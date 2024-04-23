@@ -2,7 +2,7 @@
   {
     "envType": "mazeBasic",
     "mazeInit": "mono_source_BFS",
-    "name": "Maze Test (Basic Generation Method)",
+    "name": "Maze Test (No Blind)",
     "scale": [25,25],
     "agent": ["RAA","42132143212132141241212"],
     "entity": {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [2, 5], "viewdir": 15}},
@@ -10,12 +10,16 @@
   }
 ,
   {
-    "envType": "mazeDual",
+    "envType": "mazeBasic",
     "mazeInit": "dual_source_BFS",
-    "name": "Maze Test (Dual Generation Method)",
+    "name": "Maze Test (Blinking)",
     "scale": [25,25],
     "agent": ["RAA","42132143212132141241212"],
     "entity": {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [2, 5], "viewdir": 15}},
+    "effects": [
+      [5,["blind",1,1]]
+    ],
+
     "null":0
   }
 ,

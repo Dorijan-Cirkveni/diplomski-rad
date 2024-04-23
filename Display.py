@@ -405,6 +405,8 @@ class GridInteractive:
         if checkValidity and index not in range(len(rawL)):
             return False
         grid = env_mngr.readEnvironment(rawL, index)
+        if grid is None:
+            return False
         self.grid = grid
         return True
 
@@ -516,7 +518,7 @@ def BulkTestWithCommands(file, rangeData: tuple[int, int], commandStack: list,
         success = CustomTestWithCommands(file, ind, commandStack.copy(),
                                          testMode=testMode, printOutput=printOutput)
         if not success:
-            print("Interrupting on {} due to early failure/end of file")
+            print("Interrupting on {} due to early failure/end of file".format(ind))
     return
 
 
@@ -584,8 +586,8 @@ def DebugRun():
         "exit",
         "individual",
         "run t_base 0",
-        "run t_maze_0 0",
-        "run t_maze_1 0",
+        "run t_maze_0 0 999",
+        "run t_maze_1 0 999",
         "exit"
     ]
     CommandRun(X)
