@@ -533,6 +533,13 @@ def CommandRun(commandList: list[str] = None,
             command = commandList.pop().split()
         else:
             command = input(">>>").split()
+        if not command:
+            while "Y" not in command and "N" not in command:
+                command = input("Quit? [Y/Y]")
+                command=command.upper()
+            if "Y" in command:
+                break
+            continue
         printOutput("Main command:", command)
         n = len(command)
         name = command[0]

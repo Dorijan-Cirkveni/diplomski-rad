@@ -647,7 +647,9 @@ class GridEnvironment(itf.iEnvironment):
                 goodMoves.append(direction)
         return goodMoves
 
-    def updateGrids(self, itID=0):
+    def updateGrids(self, itID=None):
+        if itID is None:
+            itID=self.curIter
         for key, routine in self.gridRoutines.items():
             routine: GridRoutine
             self.grids[key] = routine.getCurGrid(itID)

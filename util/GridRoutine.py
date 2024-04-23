@@ -45,7 +45,9 @@ class GridRoutine:
                 itid %= n
             else:
                 itid = n - 1
-        return self.grids[self.sequence[itid]]
+        chosenSequence=self.sequence[itid]
+        chosenGrid=self.grids[chosenSequence]
+        return chosenGrid
 
 
 def main():
