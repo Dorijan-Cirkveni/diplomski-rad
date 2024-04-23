@@ -33,8 +33,7 @@ def rect(E, grid):
 
 
 mazeCreators = {
-    "mono_source_BFS": mazes.CreateFullMaze,
-    "dual_source_BFS": mazes.CreateDualMaze
+
 }
 
 
