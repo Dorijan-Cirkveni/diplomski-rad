@@ -17,6 +17,9 @@
     ],
     "activeEntities": [0],
     "passiveMoveLimit": 1,
+    "effects": [
+      [5,["blind",1,0]]
+    ],
     "null": null
   }
   ,
@@ -114,9 +117,6 @@
     ],
     "activeEntities": [0],
     "passiveMoveLimit": 1,
-    "effects": [
-      [5,["blind",1,0]]
-    ],
     "null": null
   }
   ,

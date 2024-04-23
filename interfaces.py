@@ -7,7 +7,7 @@ from util.PriorityList import PriorityList
 import util.UtilManager as util_mngr
 
 
-def getValuesFromDict(raw:dict, meta_args: list, arg_types=None) -> list:
+def getValuesFromDict(raw: dict, meta_args: list, arg_types=None) -> list:
     """
     Get a list of values from a dictionary, throw an exception if they are absent or their type doesn't match.
     :param raw:
@@ -24,9 +24,9 @@ def getValuesFromDict(raw:dict, meta_args: list, arg_types=None) -> list:
             args.append(raw.get(key, null))
             continue
         if key not in raw:
-            exc="Value {} ({}) missing from data structure {}!"
-            uns="Unspecified"
-            raise Exception(exc.format(key, arg_types.get(key,uns), raw))
+            exc = "Value {} ({}) missing from data structure {}!"
+            uns = "Unspecified"
+            raise Exception(exc.format(key, arg_types.get(key, uns), raw))
         args.append(raw[key])
     return args
 
@@ -35,6 +35,7 @@ class iRawInit:
     """
     Base interface for classes that can be initialised from a JSON string.
     """
+
     @staticmethod
     def init_raw(raw):
         """
@@ -70,13 +71,22 @@ class Effect(iRawInit):
         if not raw:
             raise Exception("Must have effect name!")
         for i in range(len(raw)):
-            val[i]=raw[i]
+            val[i] = raw[i]
         if type(val[3]) == int:
             val[3] = {val[3]}
         return Effect(*tuple(val))
 
+    def __repr__(self):
+        isVanilla = True
+        if self.entities:
+            isVanilla = False
+        if self.otherCriteria:
+            isVanilla = False
+        T = (self.value, self.duration, self.downtime, "un" * isVanilla + "conditional")
+        return "({},{}/{},{})".format(*T)
+
     def __copy__(self):
-        return Effect(self.value,self.duration,self.downtime,self.entities.copy(),self.otherCriteria.deepcopy())
+        return Effect(self.value, self.duration, self.downtime, self.entities.copy(), self.otherCriteria.copy())
 
     def copy(self):
         return self.__copy__()
@@ -84,16 +94,15 @@ class Effect(iRawInit):
     def getDelta(self):
         return self.duration if self.active else self.downtime
 
+
 class EffectTime(iRawInit):
-    def __init__(self,time,effect:Effect):
+    def __init__(self, time, effect: Effect):
         self.time = time
         self.effect = effect
 
     @staticmethod
-    def init_raw(raw:list):
-        if len(raw)!=0:
-            raise Exception("Must be list!")
-        return EffectTime(raw[0],Effect.init_raw(raw[1]))
+    def init_raw(raw: list):
+        return EffectTime(raw[0], Effect.init_raw(raw[1]))
 
 
 class iAgent:
@@ -219,19 +228,20 @@ class iEnvironment:
     """
     Base class interface for a test environment.
     """
-    def __init__(self, entities: list, activeEntities: set, effectTypes: list[Effect], effects:list[EffectTime],
+
+    def __init__(self, entities: list, activeEntities: set, effectTypes: list[Effect], effects: list[EffectTime],
                  extraData: dict = None):
         if effectTypes is None:
-            effectTypes=[]
+            effectTypes = []
         if effects is None:
-            effects=[]
+            effects = []
         self.data = [extraData, {}][extraData is None]
         self.name = self.data.get("name", "Untitled")
         self.effectTypes = effectTypes
         self.scheduledEffects = PriorityList()
         for eff in effects:
-            eff:EffectTime
-            self.scheduleEffect(eff.time,eff.effect)
+            eff: EffectTime
+            self.scheduleEffect(eff.time, eff.effect)
         self.entities: list = [] if entities is None else entities
         self.activeEntities = set() if activeEntities is None else activeEntities
         self.entityPriority = []
@@ -265,13 +275,15 @@ class iEnvironment:
             ent.agent = newAgents[i % len(newAgents)]
         return
 
-    def scheduleEffect(self, time, effect:Effect, schedule=0):
+    def scheduleEffect(self, time, effect: Effect, schedule=0):
         """
         Schedule an effect.
         :param time: Iteration in which the effect is scheduled.
         :param effect: The effect.
         :param schedule: Effect application schedule. Effects are applied in ascending order.
         """
+        if type(effect) != Effect:
+            raise Exception("Effect must be effect, not {}".format(type(effect)))
         self.scheduledEffects.add((time, schedule), effect)
 
     def getValue(self, agentID=None):
@@ -293,12 +305,13 @@ class iEnvironment:
     def handleEffect(self, effect: Effect):
         remove = effect.active
         effect.active = not remove
-        IDs = effect.entities if effect.entities else [i for i in self.entities]
+        IDs = effect.entities if effect.entities else range(len(self.entities))
         entities = []
         for ID in IDs:
             ent: iEntity = self.entities[ID]
             if ent is None:
                 continue
+            entities.append(ent)
         if remove:
             for entity in entities:
                 entity.pop(effect.value)
@@ -310,11 +323,13 @@ class iEnvironment:
         return
 
     def applyEffects(self):
-        dueEffects: list[tuple[object, list]] = self.scheduledEffects.popLowerThan(self.curIter)
-        for ((iter, prio), effect) in dueEffects:
-            effect: Effect
-            self.handleEffect(effect)
-            self.scheduledEffects.add((iter + effect.getDelta(), prio), effect)
+        dueEffects: list[tuple[object, list[Effect]]]
+        dueEffects = self.scheduledEffects.popLowerThan(self.curIter)
+        for ((iter, prio), effectList) in dueEffects:
+            effectList: list[Effect]
+            for effect in effectList:
+                self.handleEffect(effect)
+                self.scheduledEffects.add((iter + effect.getDelta(), prio), effect)
 
     def runIteration(self, curIter=None):
         if curIter is None:
@@ -446,6 +461,8 @@ class iTrainingMethod:
 
 
 def main():
+    X = Effect("test")
+    print(X.__repr__())
     return
 
 
