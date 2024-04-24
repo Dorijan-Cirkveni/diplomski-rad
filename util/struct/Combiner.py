@@ -78,6 +78,31 @@ class ListCombineMethod(iCombineMethod):
         for i in range(lb):
             stack.append((self.A, i, self.A[i], B[i]))
 
+
+class DictCombineMethod(iCombineMethod):
+    def Extend(self, B):
+        self.A:dict
+        for e,v in B.items():
+            self.A[e]=self.A.get(e,v)
+        return self.A
+
+    def Overwrite(self, B):
+        self.A:dict
+        self.A.update(B)
+
+    def Replace(self, B):
+        self.A.clear()
+        self.A.extend(B)
+        return self.A
+
+    def Recur(self, B, stack):
+        la, lb = len(self.A), len(B)
+        if la < lb:
+            self.A.extend(B[la:lb])
+            lb = la
+        for i in range(lb):
+            stack.append((self.A, i, self.A[i], B[i]))
+
 methods={
 
 }
