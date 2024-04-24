@@ -41,8 +41,15 @@ class iCombineMethod:
         """
 
         :param B:
+        :param stack:
         """
         raise NotImplementedError
+
+    def main(self, type:int, B, stack):
+        D=[self.Extend,self.Overwrite,self.Replace,self.Recur]
+        if type==3:
+            return self.Recur(B,stack)
+        return D[type](B)
 
 
 class ListCombineMethod(iCombineMethod):
@@ -56,7 +63,7 @@ class ListCombineMethod(iCombineMethod):
             self.A.extend(B[la:lb])
             lb = la
         for i in range(lb):
-            A[i] = B[i]
+            self.A[i] = B[i]
 
     def Replace(self, B):
         self.A.clear()
@@ -71,6 +78,9 @@ class ListCombineMethod(iCombineMethod):
         for i in range(lb):
             stack.append((self.A, i, self.A[i], B[i]))
 
+methods={
+
+}
 
 
 def Combine(A, B, modes: dict):
@@ -82,15 +92,10 @@ def Combine(A, B, modes: dict):
         if tA != tB:
             arch[key] = B
         mode = modes.get((key, tA), RECUR)
-        if tA == list:
-            A: list
-            if mode in (EXTEND, REPLACE):
-                if mode == REPLACE:
-                    A.clear()
-                A.extend(B)
-            elif mode in (OVERWRITE, RECUR):
-            else:
-                raise Exception("oh no, cringe")
+        if tA not in methods:
+            arch[key]=tB
+        meth:ListCombineMethod=methods[tA]
+        meth.main(mode,B,cur)
 
 
 if __name__ == "__main__":

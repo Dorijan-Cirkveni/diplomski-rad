@@ -4,7 +4,7 @@ class InformationCompiler:
         self.cur_iter=0
         self.prev_iterations=dict()
     def absorb_data(self,new_data:dict):
-
+        for
 
 
 def main():
