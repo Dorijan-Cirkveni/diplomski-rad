@@ -69,16 +69,6 @@ class Grid2D:
                 E[j] = E2[j]
         return
 
-    def default(self, o):
-        return json.dumps(self.M)
-
-    def use_draw_element(self, element: iGridDrawElement):
-        for T, v in element.apply():
-            T: tuple
-            if self.hasTileOfIndex(T):
-                self[T] = v
-        return
-
     @staticmethod
     def raw_init(raw: dict):
         """
@@ -136,6 +126,28 @@ class Grid2D:
         """
         return self.__copy__()
 
+    def makeNew(self, func: callable):
+        """
+        Create a new return_grid by applying a function to each element in the return_grid.
+
+        :param func: callable: Function to be applied.
+
+        :return: Grid2D: A new return_grid object with the function applied to each element.
+        """
+        newGrid = self.copy()
+        return newGrid.apply(func)
+
+    # ---------------------------
+    # |                         |
+    # | Getters                 |
+    # |                         |
+    # ---------------------------
+
+    def unique_values(self):
+        S=set()
+        self.apply(lambda e:[S.add(e),e][1])
+        return S
+
     def __getitem__(self, item):
         """
         Get an item from the return_grid.
@@ -159,6 +171,39 @@ class Grid2D:
                 raise Exception("Index {} not in return_grid {}".format(item, self.scale))
             return self.M[item[0]][item[1]]
         raise Exception("Index must be int or tuple, not {}".format(type(item)))
+
+    def get_neighbours(self, key: tuple, wrapAround=WRAP_NONE, checkUsable:set=None):
+        """
+        Get neighboring indices of a given key.
+
+        :param key: tuple: The key for which neighbors are to be found.
+        :param wrapAround: int, optional: Option for wrapping around the return_grid edges. Defaults to WRAP_NONE.
+
+        :return: list: List of neighboring indices.
+
+        :notes: Assumes return_grid is a torus if wrapAround is specified.
+        """
+        neighbours = Tneighbours(key)
+        res = []
+        for neigh in neighbours:
+            trueNeigh = Tmod(neigh, self.scale)
+            diff = 0
+            if neigh[0] != trueNeigh[0]:
+                diff += 1
+            if neigh[1] != trueNeigh[1]:
+                diff += 2
+            if diff & (3 ^ wrapAround) != 0:
+                continue
+            if checkUsable and self[trueNeigh] not in checkUsable:
+                continue
+            res.append(trueNeigh)
+        return res
+
+    # ---------------------------
+    # |                         |
+    # | Setters                 |
+    # |                         |
+    # ---------------------------
 
     def __setitem__(self, key, value):
         """
@@ -188,40 +233,27 @@ class Grid2D:
             return
         raise Exception("Index must be int or tuple, not {}".format(type(key)))
 
-    def get_current(self, _: int):
-        """
+    def use_draw_element(self, element: iGridDrawElement):
+        for T, v in element.apply():
+            T: tuple
+            if self.hasTileOfIndex(T):
+                self[T] = v
+        return
 
-        :param _:
-        :return:
-        """
-        return self
-
-    def get_neighbours(self, key: tuple, wrapAround=WRAP_NONE, checkUsable:set=None):
-        """
-        Get neighboring indices of a given key.
-
-        :param key: tuple: The key for which neighbors are to be found.
-        :param wrapAround: int, optional: Option for wrapping around the return_grid edges. Defaults to WRAP_NONE.
-
-        :return: list: List of neighboring indices.
-
-        :notes: Assumes return_grid is a torus if wrapAround is specified.
-        """
-        neighbours = Tneighbours(key)
+    def text_display(self, guide, specialSpots: dict = None,
+                     translateSpecial=lambda n: chr(ord('A') + n)):
         res = []
-        for neigh in neighbours:
-            trueNeigh = Tmod(neigh, self.scale)
-            diff = 0
-            if neigh[0] != trueNeigh[0]:
-                diff += 1
-            if neigh[1] != trueNeigh[1]:
-                diff += 2
-            if diff & (3 ^ wrapAround) != 0:
-                continue
-            if checkUsable and self[trueNeigh] not in checkUsable:
-                continue
-            res.append(trueNeigh)
-        return res
+        for i, E in enumerate(self.M):
+            s = ""
+            for j, e in enumerate(E):
+                val = guide[e]
+                if specialSpots and (i, j) in specialSpots:
+                    val = translateSpecial(specialSpots[(i, j)])
+                s += str(val)
+            res.append(s)
+        return "\n".join(res)
+
+    ## Setters
 
     def apply(self, func: callable):
         """
@@ -235,20 +267,6 @@ class Grid2D:
             for j, f in enumerate(E):
                 E[j] = func(f)
         return self
-
-    def makeNew(self, func: callable):
-        """
-        Create a new return_grid by applying a function to each element in the return_grid.
-
-        :param func: callable: Function to be applied.
-
-        :return: Grid2D: A new return_grid object with the function applied to each element.
-        """
-        newGrid = self.copy()
-        return newGrid.apply(func)
-
-    def makeList(self, func: callable):
-        return self.makeNew(func).M
 
     def hasTileOfIndex(self, E: [tuple, int]):
         """
@@ -295,24 +313,6 @@ class Grid2D:
             for j in range(bottom[1], top[1]):
                 self.M[i + offset[0]][j + offset[1]] = other[i][j]
         return
-
-    def unique_values(self):
-        S=set()
-        self.apply(lambda e:[S.add(e),e][1])
-        return S
-
-    def text_display(self, guide, specialSpots: dict = None,
-                     translateSpecial=lambda n: chr(ord('A') + n)):
-        res = []
-        for i, E in enumerate(self.M):
-            s = ""
-            for j, e in enumerate(E):
-                val = guide[e]
-                if specialSpots and (i, j) in specialSpots:
-                    val = translateSpecial(specialSpots[(i, j)])
-                s += str(val)
-            res.append(s)
-        return "\n".join(res)
 
 
 # [[(i * 2 + j) % 5 for j in range(10)] for i in range(10)]

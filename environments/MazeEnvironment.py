@@ -9,6 +9,7 @@ class iMazeCreator:
     """
     A base method for a class used to create maze grids.
     """
+
     def __init__(self, scale: tuple, rand: random.Random):
         self.scale = scale
         self.rand = random.Random()
@@ -20,18 +21,16 @@ class iMazeCreator:
         """
         raise NotImplementedError
 
-    def create_maze(self, scale: tuple, start: tuple, rand: random.Random, tiles: tuple):
+    def create_maze(self, start: tuple, tiles: tuple = (2, 0, 1)):
         """
         Create a maze.
-        :param scale:
         :param start: A valid starting position.
-        :param rand:
         :param tiles:
         """
         raise NotImplementedError
 
     @staticmethod
-    def bestPossibleScore(grid: Grid2D, start: tuple, goal: tuple, passables:set, mark=None):
+    def bestPossibleScore(grid: Grid2D, start: tuple, goal: tuple, passables: set, mark=None):
         Q = [(start, 0)]
         found = {start}
         while Q:
@@ -41,7 +40,7 @@ class iMazeCreator:
             if mark is not None:
                 grid[E] = mark
             neigh = set(grid.get_neighbours(E, checkUsable=passables))
-            for F in neigh-found:
+            for F in neigh - found:
                 Q.append((F, count + 1))
                 found.add(F)
         return -1
@@ -53,15 +52,15 @@ class EvenMazeCreatorDFS(iMazeCreator):
         self.halfscale = Tfdiv(Tadd(self.scale, (1, 1)), (2, 2))
 
     def get_random_start(self):
-        return Tmul(Trandom((0, 0), self.halfscale, self.rand),(2,2))
+        return Tmul(Trandom((0, 0), self.halfscale, self.rand), (2, 2))
 
-    def create_layout(self, scale: tuple, start: tuple, rand: random.Random):
-        grid: Grid2D = Grid2D(scale)
+    def create_layout(self, start: tuple) -> tuple[Grid2D, dict]:
+        grid: Grid2D = Grid2D(self.scale)
         grid[start] = 1
-        L = [start]
-        leaves = set()
+        L: list[tuple] = [(None, start)]
+        ends = dict()
         while L:
-            cur = L[-1]
+            last, cur = L[-1]
             X = grid.get_neighbours(cur)
             print(cur, X)
             Y = []
@@ -71,21 +70,24 @@ class EvenMazeCreatorDFS(iMazeCreator):
                     continue
                 Y.append((E, E2))
             if not Y:
-                leaves.add(L.pop())
+                ends[cur] = last
                 continue
-            E, E2 = rand.choice(Y)
+            E, E2 = self.rand.choice(Y)
             grid[E] = 1
             grid[E2] = 1
-            L.append(E2)
-        return grid, leaves
+            L.append((E, E2))
+        X = grid.get_neighbours(start, checkUsable={1})
+        if len(X) == 1:
+            ends[start] = X[0]
+        return grid, ends
 
-    def create_maze(self, scale: tuple, start: tuple, rand: random.Random, tiles: tuple = (2, 0, 1)):
+    def create_maze(self, start: tuple, tiles: tuple = (2, 0, 1)):
         grid: Grid2D
-        leaves: set
-        grid, leaves = self.create_layout(scale, start, rand)
+        leaves: dict
+        grid, leaves = self.create_layout(start)
         L = list(leaves)
         L.sort()
-        goal = rand.choice(L)
+        goal = self.rand.choice(L)
         grid[goal] = 2
         grid.apply(lambda e: tiles[e])
         return grid
@@ -143,7 +145,7 @@ class MazeEnvironment(GridEnvironment):
         scale = tuple(raw.get("scale", [25, 25]))
         ranseed = raw.get("seed", random.randint(0, 1 << 32 - 1))
         randomizer: random.Random = random.Random(ranseed)
-        maze_type:iMazeCreator = EvenMazeCreatorDFS(scale,randomizer)
+        maze_type: iMazeCreator = EvenMazeCreatorDFS(scale, randomizer)
 
         agentDict = raw.get("agentDict", None)
         agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
