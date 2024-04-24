@@ -6,16 +6,45 @@ import util.mazes as mazes
 
 
 class iMazeCreator:
+    """
+    A base method for a class used to create maze grids.
+    """
     def __init__(self, scale: tuple, rand: random.Random):
         self.scale = scale
         self.rand = random.Random()
         self.rand.setstate(rand.getstate())
 
     def get_random_start(self):
+        """
+        Retrieve a valid starting position.
+        """
         raise NotImplementedError
 
     def create_maze(self, scale: tuple, start: tuple, rand: random.Random, tiles: tuple):
+        """
+        Create a maze.
+        :param scale:
+        :param start: A valid starting position.
+        :param rand:
+        :param tiles:
+        """
         raise NotImplementedError
+
+    @staticmethod
+    def bestPossibleScore(grid: Grid2D, start: tuple, goal: tuple, passables:set, mark=None):
+        Q = [(start, 0)]
+        found = {start}
+        while Q:
+            E, count = Q.pop()
+            if E == goal:
+                return count
+            if mark is not None:
+                grid[E] = mark
+            neigh = set(grid.get_neighbours(E, checkUsable=passables))
+            for F in neigh-found:
+                Q.append((F, count + 1))
+                found.add(F)
+        return -1
 
 
 class EvenMazeCreatorDFS(iMazeCreator):
