@@ -1,7 +1,4 @@
-import json
-from collections import defaultdict
-
-from util.TupleDotOperations import *
+from util.struct.TupleDotOperations import *
 
 WRAP_NONE = 0
 WRAP_FIRST = 1

@@ -1,5 +1,4 @@
-import random
-from util.TupleDotOperations import *
+from util.struct.TupleDotOperations import *
 import util.UtilManager as util_mngr
 
 

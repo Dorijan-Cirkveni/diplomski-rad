@@ -1,6 +1,6 @@
 import unittest
 # from TupleDotOperations import *  # Assuming TupleDotOperations works correctly
-from util.Grid2D import Grid2D
+from util.struct.Grid2D import Grid2D
 
 
 class TestGrid2D(unittest.TestCase):

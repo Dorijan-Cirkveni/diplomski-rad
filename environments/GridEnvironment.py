@@ -4,10 +4,10 @@ from agents import AgentManager
 import interfaces as itf
 from test_json.test_json_manager import ImportManagedJSON
 from util import UtilManager as util_mngr
-from util.GridRoutine import GridRoutine
+from util.struct.GridRoutine import GridRoutine
 from util.VisionOctant import VisionOctant
-from util.Grid2D import Grid2D
-from util.TupleDotOperations import *
+from util.struct.Grid2D import Grid2D
+from util.struct.TupleDotOperations import *
 from util.debug.ExceptionCatchers import AssertInputTypes
 
 # Counter for assigning unique identifiers to different types of tiles

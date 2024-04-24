@@ -1,15 +1,12 @@
-import cProfile
-import json
-import os
 import pygame
 
 from definitions import *
 import interfaces as itf
 from test_json.test_json_manager import ImportManagedJSON
-from util import TupleDotOperations as tdo
+from util.struct import TupleDotOperations as tdo
 import environments.EnvironmentManager as env_mngr
 import agents.AgentManager as ag_mngr
-from util.Grid2D import *
+from util.struct.Grid2D import *
 
 GridEnvironment = env_mngr.grid_env.GridEnvironment
 
@@ -580,19 +577,17 @@ def CommandRun(commandList: list[str] = None,
 def DebugRun():
     X = [
         "individual",
-        "LEEROY JENKINS",
-        "individual wipe",
-        "individual",
         "agent GMI {}",
         "run",
         "exit",
         "individual",
+    ]
+    CommandRun(X)
+    """
         "run t_base 0",
         "run t_maze_0 0 999",
         "run t_maze_1 0 999",
-        "exit"
-    ]
-    CommandRun(X)
+    """
 
 
 def main():

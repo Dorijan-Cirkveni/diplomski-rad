@@ -3,7 +3,7 @@ from typing import Type
 
 # from util import TupleDotOperations as tdo
 # from util.Grid2D import Grid2D
-from util.PriorityList import PriorityList
+from util.struct.PriorityList import PriorityList
 import util.UtilManager as util_mngr
 
 

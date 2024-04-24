@@ -1,5 +1,4 @@
-import random
-from util.TupleDotOperations import *
+from util.struct.TupleDotOperations import *
 
 
 def adjustRatio(size: int, ratio: list[float]) -> list[int]:

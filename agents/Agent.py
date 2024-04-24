@@ -2,7 +2,7 @@ import json
 
 import definitions
 import interfaces as itf
-from util.Grid2D import Grid2D
+from util.struct.Grid2D import Grid2D
 
 
 class BoxAgent(itf.iAgent):

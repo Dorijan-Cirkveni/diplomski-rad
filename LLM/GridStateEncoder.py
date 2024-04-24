@@ -1,7 +1,6 @@
-import numpy
 import torch
 
-from util.Grid2D import Grid2D
+from util.struct.Grid2D import Grid2D
 
 
 class GridStateEncoder:

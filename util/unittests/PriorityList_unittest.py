@@ -1,5 +1,5 @@
 import unittest
-from util.PriorityList import PriorityList
+from util.struct.PriorityList import PriorityList
 
 class TestPriorityList(unittest.TestCase):
     def test_add(self):
