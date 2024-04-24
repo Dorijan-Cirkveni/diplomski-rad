@@ -403,12 +403,12 @@ class GridInteractive:
     def load_grid_from_fragment(self, filename: str, index=0, source: dict = None, checkValidity=False):
         rawL: list = ImportManagedJSON(filename, source)
         if checkValidity and index not in range(len(rawL)):
-            return False
+            return "EOF"
         grid = env_mngr.readEnvironment(rawL, index)
         if grid is None:
-            return False
+            return "EOF"
         self.grid = grid
-        return True
+        return None
 
     def init_display(self,
                      elementTypes: list[GridElementDisplay],
@@ -480,9 +480,9 @@ def CustomTestWithCommands(file, ind, commandStack=None,
     if commandStack is None:
         commandStack = []
     testGI = GridInteractive()
-    success = testGI.load_grid_from_fragment(file, ind)
-    if not success:
-        return False
+    errmsg = testGI.load_grid_from_fragment(file, ind)
+    if errmsg is not None:
+        return errmsg
     printOutput(file, ind, testGI.grid)
     while True:
         if commandStack:
@@ -508,17 +508,19 @@ def CustomTestWithCommands(file, ind, commandStack=None,
                 printOutput("(This is where the agents would be set to {} {})".format(agentName, agentData))
             else:
                 testGI.grid.changeActiveEntityAgents([agent])
-    return True
+    return None
 
 
 def BulkTestWithCommands(file, rangeData: tuple[int, int], commandStack: list,
                          testMode=False, printOutput: callable = None):
     printOutput = print if printOutput is None else printOutput
     for ind in range(rangeData[0], rangeData[1]):
-        success = CustomTestWithCommands(file, ind, commandStack.copy(),
+        errmsg = CustomTestWithCommands(file, ind, commandStack.copy(),
                                          testMode=testMode, printOutput=printOutput)
-        if not success:
-            print("Interrupting on {} due to early failure/end of file".format(ind))
+        if errmsg:
+            print("Interrupting on {} due to {}".format(ind,errmsg))
+            if errmsg=="EOF":
+                break
     return
 
 

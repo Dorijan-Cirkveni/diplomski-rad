@@ -520,7 +520,7 @@ class GridEnvironment(itf.iEnvironment):
         :return:
         """
         grid = self.getGrid(gridType)
-        return grid.text_display(guide, self.taken)
+        return grid.get_text_display(guide, self.taken)
 
     def getEnvData(self, entityID: [int, None] = None, gridType=VIEWED):
         """

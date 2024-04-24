@@ -263,7 +263,7 @@ class ManualInputAgent(itf.iAgent):
         '''
         if "grid" in data:
             grid: Grid2D = data['grid']
-            gridraw = grid.text_display(self.guide)
+            gridraw = grid.get_text_display(self.guide)
             to_print.append(gridraw)
         D = data.get("taken", dict())
         if D:

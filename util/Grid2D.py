@@ -144,8 +144,8 @@ class Grid2D:
     # ---------------------------
 
     def unique_values(self):
-        S=set()
-        self.apply(lambda e:[S.add(e),e][1])
+        S = set()
+        self.apply(lambda e: [S.add(e), e][1])
         return S
 
     def __getitem__(self, item):
@@ -172,16 +172,14 @@ class Grid2D:
             return self.M[item[0]][item[1]]
         raise Exception("Index must be int or tuple, not {}".format(type(item)))
 
-    def get_neighbours(self, key: tuple, wrapAround=WRAP_NONE, checkUsable:set=None):
+    def get_neighbours(self, key: tuple, wrapAround=WRAP_NONE, checkUsable: set = None):
         """
         Get neighboring indices of a given key.
 
         :param key: tuple: The key for which neighbors are to be found.
         :param wrapAround: int, optional: Option for wrapping around the return_grid edges. Defaults to WRAP_NONE.
-
+        :param checkUsable: In case neighbours have to be of specific value.
         :return: list: List of neighboring indices.
-
-        :notes: Assumes return_grid is a torus if wrapAround is specified.
         """
         neighbours = Tneighbours(key)
         res = []
@@ -198,6 +196,72 @@ class Grid2D:
                 continue
             res.append(trueNeigh)
         return res
+
+    def get_traverse_narrow_path(self, start: tuple, first: tuple, valid: set):
+        last = start
+        for n in range(1, max(self.scale) ** 2):  # or just a really ginormous number lmao
+            if first == start:
+                return n, first, last
+            S = set(self.get_neighbours(first, checkUsable=valid))
+            S -= {last}
+            if len(S) != 1:
+                return n, first, last
+            last = first
+            first = min(S)
+
+    def process_paths(self, start: tuple, valid: set, tree: dict):
+        nex = set(self.get_neighbours(start))
+        if start not in tree:
+            tree[start] = dict()
+        nex -= set(tree[start])
+        new_points = set()
+        for first in nex:
+            E=self.get_traverse_narrow_path(start, first, valid)
+            n, end, last = E
+            tree[start][first] = end
+            if end not in tree:
+                tree[end] = dict()
+            tree[end][last] = first
+            new_points.add(end)
+        return new_points
+
+    def get_graph(self, valid: set, starting_points: dict):
+        tree = {e: dict() for e in starting_points}
+        curS: set = set(starting_points)
+        while curS:
+            nex:set = set()
+            for E in curS:
+                new_points:set = self.process_paths(E, valid, tree)
+                nex|=new_points
+            curS = nex
+        return tree
+
+    def get_text_display(self, guide, specialSpots: dict = None,
+                         translateSpecial=lambda n: chr(ord('A') + n)):
+        res = []
+        for i, E in enumerate(self.M):
+            s = ""
+            for j, e in enumerate(E):
+                val = guide[e]
+                if specialSpots and (i, j) in specialSpots:
+                    val = translateSpecial(specialSpots[(i, j)])
+                s += str(val)
+            res.append(s)
+        return "\n".join(res)
+
+    def hasTileOfIndex(self, E: [tuple, int]):
+        """
+        Check if the return_grid contains a tile or  at the given index.
+
+        :param E: [tuple, int]: Valid index.
+
+        :return: bool: True if the return_grid contains a tile at the given index, False otherwise.
+        """
+        if type(E) == tuple:
+            return Tinrange(E, self.scale)
+        if type(E) == int:
+            return E in range(self.scale[0])
+        return False
 
     # ---------------------------
     # |                         |
@@ -240,21 +304,6 @@ class Grid2D:
                 self[T] = v
         return
 
-    def text_display(self, guide, specialSpots: dict = None,
-                     translateSpecial=lambda n: chr(ord('A') + n)):
-        res = []
-        for i, E in enumerate(self.M):
-            s = ""
-            for j, e in enumerate(E):
-                val = guide[e]
-                if specialSpots and (i, j) in specialSpots:
-                    val = translateSpecial(specialSpots[(i, j)])
-                s += str(val)
-            res.append(s)
-        return "\n".join(res)
-
-    ## Setters
-
     def apply(self, func: callable):
         """
         Apply a function to each element in the return_grid in place, then return self.
@@ -267,20 +316,6 @@ class Grid2D:
             for j, f in enumerate(E):
                 E[j] = func(f)
         return self
-
-    def hasTileOfIndex(self, E: [tuple, int]):
-        """
-        Check if the return_grid contains a tile or  at the given index.
-
-        :param E: [tuple, int]: Valid index.
-
-        :return: bool: True if the return_grid contains a tile at the given index, False otherwise.
-        """
-        if type(E) == tuple:
-            return Tinrange(E, self.scale)
-        if type(E) == int:
-            return E in range(self.scale[0])
-        return False
 
     def applyManhatLimit(self, center: tuple, maxDistance, fog=-1):
         """
@@ -321,7 +356,7 @@ def main():
     R = Rect([1, 1, 4, 4, 1])
     print(R.first, R.last, R.value)
     X.use_draw_element(R)
-    print(X.text_display('0123456789'))
+    print(X.get_text_display('0123456789'))
     return
 
 

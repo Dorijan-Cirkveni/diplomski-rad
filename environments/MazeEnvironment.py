@@ -2,7 +2,6 @@ import random
 
 import agents.Agent
 from environments.GridEnvironment import *
-import util.mazes as mazes
 
 
 class iMazeCreator:
@@ -14,6 +13,16 @@ class iMazeCreator:
         self.scale = scale
         self.rand = random.Random()
         self.rand.setstate(rand.getstate())
+
+    def copy(self):
+        raise NotImplementedError
+
+    def reinit(self,scale:tuple, rand:random.Random):
+        new=self.copy()
+        new.scale=scale
+        new.rand=random.Random()
+        new.rand.setstate(rand.getstate())
+        return new
 
     def get_random_start(self):
         """
@@ -47,49 +56,89 @@ class iMazeCreator:
 
 
 class EvenMazeCreatorDFS(iMazeCreator):
+    """
+    Creates maze by treating even tiles as cells and others as walls.
+    """
     def __init__(self, scale: tuple, rand: random.Random):
         super().__init__(scale, rand)
         self.halfscale = Tfdiv(Tadd(self.scale, (1, 1)), (2, 2))
 
+    def copy(self):
+        """
+
+        :return:
+        """
+        new=EvenMazeCreatorDFS(self.scale,self.rand)
+        return new
+
     def get_random_start(self):
+        """
+
+        :return:
+        """
         return Tmul(Trandom((0, 0), self.halfscale, self.rand), (2, 2))
 
+    def step_create_layout(self,grid:Grid2D,L:list,ends:dict):
+        """
+
+        :param grid:
+        :param L:
+        :param ends:
+        :return:
+        """
+        last, cur = L[-1]
+        X = grid.get_neighbours(cur)
+        Y = []
+        for E in X:
+            E2 = Toper(cur, E, lambda A, B: B * 2 - A)
+            if grid[E2] == 1:
+                continue
+            Y.append((E, E2))
+        if not Y:
+            ends[cur] = last
+            L.pop()
+            return
+        E, E2 = self.rand.choice(Y)
+        grid[E] = 1
+        grid[E2] = 1
+        L.append((E, E2))
+
     def create_layout(self, start: tuple) -> tuple[Grid2D, dict]:
+        """
+
+        :param start:
+        :return:
+        """
         grid: Grid2D = Grid2D(self.scale)
         grid[start] = 1
         L: list[tuple] = [(None, start)]
         ends = dict()
         while L:
-            last, cur = L[-1]
-            X = grid.get_neighbours(cur)
-            print(cur, X)
-            Y = []
-            for E in X:
-                E2 = Toper(cur, E, lambda A, B: B * 2 - A)
-                if grid[E2] == 1:
-                    continue
-                Y.append((E, E2))
-            if not Y:
-                ends[cur] = last
-                continue
-            E, E2 = self.rand.choice(Y)
-            grid[E] = 1
-            grid[E2] = 1
-            L.append((E, E2))
+            self.step_create_layout(grid,L,ends)
         X = grid.get_neighbours(start, checkUsable={1})
         if len(X) == 1:
             ends[start] = X[0]
         return grid, ends
 
     def create_maze(self, start: tuple, tiles: tuple = (2, 0, 1)):
+        """
+
+        :param start:
+        :param tiles:
+        :return:
+        """
         grid: Grid2D
         leaves: dict
         grid, leaves = self.create_layout(start)
-        L = list(leaves)
-        L.sort()
-        goal = self.rand.choice(L)
+        tree=grid.get_graph({1},leaves)
+        goal = self.rand.choice(list(leaves))
         grid[goal] = 2
         grid.apply(lambda e: tiles[e])
+        for e,D in tree.items():
+            print(e)
+            grid[e]=3
+            for f,v in D.items():
+                print("\t",f,v)
         return grid
 
 
@@ -120,11 +169,11 @@ class MazeEnvironment(GridEnvironment):
         tiles: set = extraData.get("tiles", (0, 2, 1))
         rand = random.Random(maze_seed)
         self.start = start
-        self.mazeCreator = maze_creator
+        self.mazeCreator = maze_creator.reinit(scale, rand)
         if entity is None:
             entity = GridEntity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
         entity.set(entity.LOCATION, start)
-        grid = self.mazeCreator.create_maze(scale, start, rand, (2, 0, 1))
+        grid = self.mazeCreator.create_maze(start, (2, 0, 1))
         gro = GridRoutine([grid], [])
         grids = {'solid': gro, 'viewed': gro.__copy__()}
         effect_types = [itf.Effect.init_raw(e) for e in extraData.get("effect_types", [])]
