@@ -41,7 +41,7 @@ def rect(E, grid):
     return
 
 
-class PlaneTile:
+class Grid2DTile:
     """
     A class describing a plane tile and how it reacts to entities
     (whether it allows entities to enter its space unharmed, destroys them, prevents them from moving in...)
@@ -59,6 +59,20 @@ class PlaneTile:
     def __init__(self, defaultState, agentExceptions=None):
         self.default = defaultState
         self.agentExceptions = [] if agentExceptions is None else agentExceptions
+    
+    @staticmethod
+    def raw_init(self,raw):
+        """
+
+        :param self:
+        :param raw:
+        :return:
+        """
+        if len(raw)!=2:
+            raise Exception("Bad tile data size!")
+        default,aex=raw
+        aex:list
+        return Grid2DTile(default,aex)
 
     def __repr__(self):
         if not self.agentExceptions:
@@ -104,19 +118,19 @@ class PlaneTile:
         :return: bool: True if the tile is lethal, False otherwise.
         """
         decision = self.checkAgainst(agentData)
-        return decision in {PlaneTile.lethal, PlaneTile.lethalwall}
+        return decision in {Grid2DTile.lethal, Grid2DTile.lethalwall}
 
 
 defaultTileTypes = [
-    PlaneTile(PlaneTile.accessible),
-    PlaneTile(PlaneTile.goal),
-    PlaneTile(PlaneTile.wall),
-    PlaneTile(PlaneTile.curtain),
-    PlaneTile(PlaneTile.lethal),
-    PlaneTile(PlaneTile.lethalwall),
-    PlaneTile(PlaneTile.glass),
-    PlaneTile(PlaneTile.effect),
-    PlaneTile(PlaneTile.accessible, [("blue", PlaneTile.goal)])
+    Grid2DTile(Grid2DTile.accessible),
+    Grid2DTile(Grid2DTile.goal),
+    Grid2DTile(Grid2DTile.wall),
+    Grid2DTile(Grid2DTile.curtain),
+    Grid2DTile(Grid2DTile.lethal),
+    Grid2DTile(Grid2DTile.lethalwall),
+    Grid2DTile(Grid2DTile.glass),
+    Grid2DTile(Grid2DTile.effect),
+    Grid2DTile(Grid2DTile.accessible, [("blue", Grid2DTile.goal)])
 ]
 
 # Counter for assigning unique identifiers to different types of entities
@@ -141,6 +155,10 @@ class GridEntity(itf.iEntity):
     def __init__(self, agent: itf.iAgent, displays: list, curdis: int,
                  states: set = None, properties: dict = None):
         super().__init__(agent, displays, curdis, states, properties)
+
+    def copy(self):
+        newAgent=self.agent.copy()
+
 
     @staticmethod
     def raw_init(entity_data: dict):
@@ -218,7 +236,7 @@ class GridEnvironment(itf.iEnvironment):
 
     def __init__(self, gridRoutines: dict[str, GridRoutine],
                  entities: list[GridEntity], activeEntities: set,
-                 tileTypes: list[PlaneTile],
+                 tileTypes: list[Grid2DTile],
                  effectTypes: list[itf.Effect],
                  effects: list[itf.EffectTime],
                  extraData: dict):
@@ -232,7 +250,7 @@ class GridEnvironment(itf.iEnvironment):
                 - the effects grid if entities may be inflicted with special effects
             entities (list[GridEntity], optional): List of entities in the environment. Defaults to None.
             activeEntities (set, optional): Set of active entity IDs. Defaults to None.
-            tileTypes (list[PlaneTile], optional): List of tile types. Defaults to None.
+            tileTypes (list[Grid2DTile], optional): List of tile types. Defaults to None.
             effectTypes (list, optional): List of effect types. Defaults to None.
             effects (dict, optional): List of effecs scheduled upon initialization.
             extraData (dict, optional): Extra data for the environment. Defaults to None.
@@ -277,11 +295,11 @@ class GridEnvironment(itf.iEnvironment):
         X = []
         for el in raw:
             if type(el) == int:
-                X.append(PlaneTile(el))
+                X.append(Grid2DTile(el))
             elif type(el) == tuple:
                 el: tuple
                 tileBase, tileExceptions = el
-                X.append(PlaneTile(tileBase, tileExceptions))
+                X.append(Grid2DTile(tileBase, tileExceptions))
 
     @staticmethod
     def getGridRoutinesFromDict(raw: dict):
@@ -328,8 +346,8 @@ class GridEnvironment(itf.iEnvironment):
             entities.append(entity)
 
         tiles = defaultTileTypes
-        effect_types = [itf.Effect.init_raw(e) for e in raw.get("effect_types", [])]
-        effects = [itf.EffectTime.init_raw(e) for e in raw.get("effects", [])]
+        effect_types = [itf.Effect.raw_init(e) for e in raw.get("effect_types", [])]
+        effects = [itf.EffectTime.raw_init(e) for e in raw.get("effects", [])]
 
         extraData = {"name": raw.get("name", "Untitled")}
         raw.update(extraData)
@@ -771,8 +789,8 @@ class GridEnvironment(itf.iEnvironment):
             tileID = self.get_tile(entpos, VIEWED)
             if tileID not in range(len(self.tileTypes)):
                 raise Exception("Tile index invalid!")
-            tile: PlaneTile = self.tileTypes[tileID]
-            if tile.checkAgainst(ent.properties) == PlaneTile.goal:
+            tile: Grid2DTile = self.tileTypes[tileID]
+            if tile.checkAgainst(ent.properties) == Grid2DTile.goal:
                 return True
         return False
 
@@ -843,31 +861,37 @@ def readPlaneEnvironment(jsonL, index: int, agentDict: dict = None) -> GridEnvir
     return RES
 
 
-default_opaque = {PlaneTile.wall, PlaneTile.curtain, PlaneTile.lethalwall, PlaneTile.curtain}
-default_movable = {PlaneTile.goal, PlaneTile.curtain, PlaneTile.lethal, PlaneTile.accessible, PlaneTile.effect}
+default_opaque = {Grid2DTile.wall, Grid2DTile.curtain, Grid2DTile.lethalwall, Grid2DTile.curtain}
+default_movable = {Grid2DTile.goal, Grid2DTile.curtain, Grid2DTile.lethal, Grid2DTile.accessible, Grid2DTile.effect}
 keys = {
-    "wall": PlaneTile.wall,
-    "curt": PlaneTile.curtain,
-    "leth": PlaneTile.lethal,
-    "lewa": PlaneTile.lethalwall,
-    "goal": PlaneTile.goal,
-    "acce": PlaneTile.accessible,
-    "glas": PlaneTile.glass,
-    "effe": PlaneTile.effect
+    "wall": Grid2DTile.wall,
+    "curt": Grid2DTile.curtain,
+    "leth": Grid2DTile.lethal,
+    "lewa": Grid2DTile.lethalwall,
+    "goal": Grid2DTile.goal,
+    "acce": Grid2DTile.accessible,
+    "glas": Grid2DTile.glass,
+    "effe": Grid2DTile.effect
 }
 global_moves = [(0, 0)] + V2DIRS
+
+
+def testFN():
+    test=Grid2DTile(0,[[1,1]])
+    print(test.default,test.agentExceptions)
 
 
 def main():
     """
     Main function to run the simulation and test the environment.
     """
+    testFN()
     data = ImportManagedJSON('t_base')
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     X = readPlaneEnvironment(data, 0)
     Y = X.__copy__()
 
-    print(PlaneTile.wall)
+    print(Grid2DTile.wall)
     print(Y.text_display(guide, True))
     print(Y.text_display(guide, False))
     # print(X.view_direction((15, 10), GridEnvironment.dir_up))

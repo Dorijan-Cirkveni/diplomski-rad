@@ -37,7 +37,7 @@ class iRawInit:
     """
 
     @staticmethod
-    def init_raw(raw):
+    def raw_init(raw):
         """
 
         :param raw:
@@ -66,7 +66,7 @@ class Effect(iRawInit):
         self.active = False
 
     @staticmethod
-    def init_raw(raw):
+    def raw_init(raw):
         val = [None, 10, 0, [], {}]
         if not raw:
             raise Exception("Must have effect name!")
@@ -101,8 +101,8 @@ class EffectTime(iRawInit):
         self.effect = effect
 
     @staticmethod
-    def init_raw(raw: list):
-        return EffectTime(raw[0], Effect.init_raw(raw[1]))
+    def raw_init(raw: list):
+        return EffectTime(raw[0], Effect.raw_init(raw[1]))
 
 
 class iAgent:

@@ -176,8 +176,8 @@ class MazeEnvironment(GridEnvironment):
         grid = self.mazeCreator.create_maze(start, (2, 0, 1))
         gro = GridRoutine([grid], [])
         grids = {'solid': gro, 'viewed': gro.__copy__()}
-        effect_types = [itf.Effect.init_raw(e) for e in extraData.get("effect_types", [])]
-        effects = [itf.EffectTime.init_raw(e) for e in extraData.get("effects", [])]
+        effect_types = [itf.Effect.raw_init(e) for e in extraData.get("effect_types", [])]
+        effects = [itf.EffectTime.raw_init(e) for e in extraData.get("effects", [])]
         super().__init__(grids, [entity], {0}, tileTypes, effect_types, effects, extraData=extraData)
 
     @staticmethod
