@@ -12,20 +12,19 @@ class BoxAgent(itf.iAgent):
 
     defaultInput = ""
 
+    @staticmethod
+    def from_string(s):
+        """
+
+        :param s:
+        """
+        return BoxAgent()
+
     def __init__(self):
         """
         Initializes the BoxAgent.
         """
         super().__init__()
-
-    @staticmethod
-    def fromString(s):
-        """
-        Creates agent from string.
-        :param s: The string.
-        :return: The agent.
-        """
-        return BoxAgent()
 
     def receiveEnvironmentData(self, data):
         """
@@ -42,14 +41,6 @@ class BoxAgent(itf.iAgent):
         :param actions: Actions to be performed.
         """
         return None
-
-    def __copy__(self):
-        """
-        Creates a copy of the BoxAgent.
-
-        :return: BoxAgent: A copy of the BoxAgent.
-        """
-        return BoxAgent()
 
     def submitDataEntry(self, entryKey) -> tuple[bool, object]:
         """
@@ -80,7 +71,7 @@ class MirrorAgent(itf.iAgent):
         self.agent_data = None
 
     @staticmethod
-    def fromString(s):
+    def from_string(s):
         """
         Creates agent from string.
         :param s: The string, in "<int> <character/list of integers>
@@ -129,17 +120,6 @@ class MirrorAgent(itf.iAgent):
         action = self.actionMirrors.get(self.agent_data, self.agent_data)
         return action
 
-    def __copy__(self):
-        """
-        Creates a copy of the MirrorAgent.
-
-        :return: MirrorAgent: A copy of the MirrorAgent.
-        """
-        newMirrors = self.actionMirrors.copy()
-        newMirror = MirrorAgent(self.mirroredAgent, newMirrors)
-        return newMirror
-
-
 class RecordedActionsAgent(itf.iAgent):
     """
     Represents an agent that plays predefined actions in a loop.
@@ -157,7 +137,7 @@ class RecordedActionsAgent(itf.iAgent):
         self.actions = actions
 
     @staticmethod
-    def fromString(s: str):
+    def from_string(s: str):
         """
         Creates agent from string.
         :param s: The string.
@@ -195,16 +175,6 @@ class RecordedActionsAgent(itf.iAgent):
             self.i = 0
         return cur
 
-    def __copy__(self):
-        """
-        Creates a copy of the RecordedActionsAgent.
-
-        :return: RecordedActionsAgent: A copy of the RecordedActionsAgent.
-        """
-        new = RecordedActionsAgent(self.actions[::])
-        new.i = self.i
-        return new
-
 
 class ManualInputAgent(itf.iAgent):
     """
@@ -232,7 +202,7 @@ class ManualInputAgent(itf.iAgent):
         self.guide = guide
 
     @staticmethod
-    def fromString(s):
+    def from_string(s):
         """
         Creates agent from string.
         :param s: The string.
@@ -290,14 +260,6 @@ class ManualInputAgent(itf.iAgent):
         cur = self.actions[actionID]
         return cur
 
-    def __copy__(self):
-        """
-        Creates a copy of the ManualInputAgent.
-
-        :return: ManualInputAgent: A copy of the ManualInputAgent.
-        """
-        return ManualInputAgent(self.watchedDimensions, self.actions, self.guide)
-
     def submitDataEntry(self, entryKey) -> tuple[bool, object]:
         """
         Unused.
@@ -324,7 +286,7 @@ class GraphicManualInputAgent(itf.iAgent):
         self.cur = self.actions[-1]
 
     @staticmethod
-    def fromString(s):
+    def from_string(s):
         """
         Creates agent from string.
         :param s: The string.
@@ -350,18 +312,6 @@ class GraphicManualInputAgent(itf.iAgent):
         :return: object: Action to be performed.
         """
         return self.cur
-
-    def __copy__(self):
-        """
-
-        Creates a copy of the GraphicManualInputAgent.
-
-
-
-        :return: GraphicManualInputAgent: A copy of the ManualInputAgent.
-
-        """
-        return GraphicManualInputAgent(self.actions)
 
 
 def main():

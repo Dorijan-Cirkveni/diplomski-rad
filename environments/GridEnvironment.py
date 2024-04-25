@@ -193,7 +193,7 @@ class GridEntity(itf.iEntity):
             data['agent_last_action'] = dict()
         gridData: Grid2D = data.get("grid")
         if self.S_blind in self.states:
-            gridData = Grid2D(gridData.scale, defaultValue=-1)
+            gridData = Grid2D(gridData.scale, default=-1)
         else:
             if gridData is None:
                 raise Exception("Not sending return_grid data properly!")
@@ -333,9 +333,9 @@ class GridEnvironment(itf.iEnvironment):
         agents = []
         entities = []
         active = set()
-        for (a_type, a_raw) in raw.get("agent", []):
+        for (a_type, a_str) in raw.get("agent", []):
             agentType: itf.iAgent = agentDict[a_type]
-            agent = agentType.fromString(a_raw)
+            agent = agentType.from_string(a_str)
             agents.append(agent)
         for entity_data in raw.get("entities", []):
             ID = entity_data.get("id", None)
@@ -369,24 +369,6 @@ class GridEnvironment(itf.iEnvironment):
         envInput: tuple = GridEnvironment.getInputFromDict(raw)
         res = GridEnvironment(*envInput, extraData=raw)
         return res
-
-    def __copy__(self):
-        """
-        Creates a copy of the GridEnvironment object.
-
-        Returns:
-            GridEnvironment: Copy of the current GridEnvironment instance.
-        """
-        newRoutines = {e: v.__copy__() for e, v in self.gridRoutines.items()}
-        newEntities = [e.copy() for e in self.entities]
-        newActive = self.activeEntities.copy()
-        newTileTypes = None if self.tileTypes is defaultTileTypes else self.tileTypes.copy()
-        newEffectTypes = [e.copy() for e in self.effectTypes]
-        newEffects = [e.copy() for e in self.effects]
-        extraData: dict = self.data.copy()
-        new = GridEnvironment(newRoutines, newEntities, newActive,
-                              newTileTypes, newEffectTypes, newEffects, extraData)  # TODO finish copy function
-        return new
 
     #   ------------------------------------------------------------------------
     #   Getters from class object
@@ -563,7 +545,7 @@ class GridEnvironment(itf.iEnvironment):
         if entity.get(entity.S_allseeing, False):
             gridData = self.viewedGrid.copy()
         else:
-            gridData = Grid2D(self.getScale(), defaultValue=-1)
+            gridData = Grid2D(self.getScale(), default=-1)
             viewdirs = entity.get(entity.P_viewdirections, 15)
             for i, direction in enumerate(V2DIRS):
                 if viewdirs & (1 << i) == 0:
@@ -786,11 +768,13 @@ class GridEnvironment(itf.iEnvironment):
             entpos: tuple = ent.get(GridEntity.LOCATION, None)
             if entpos is None:
                 continue
-            tileID = self.get_tile(entpos, VIEWED)
+            tileID = self.get_tile(entpos, SOLID)
             if tileID not in range(len(self.tileTypes)):
                 raise Exception("Tile index invalid!")
             tile: Grid2DTile = self.tileTypes[tileID]
-            if tile.checkAgainst(ent.properties) == Grid2DTile.goal:
+            curtile=tile.checkAgainst(ent.properties)
+            print(self.curIter,curtile)
+            if curtile == Grid2DTile.goal:
                 return True
         return False
 
@@ -892,14 +876,14 @@ def main():
     Y = X.__copy__()
 
     print(Grid2DTile.wall)
-    print(Y.text_display(guide, True))
-    print(Y.text_display(guide, False))
+    print(Y.text_display(guide, SOLID))
+    print(Y.text_display(guide, VIEWED))
     # print(X.view_direction((15, 10), GridEnvironment.dir_up))
     for i in range(20):
         X.runIteration()
         print(X.taken)
-    print(X.text_display(guide, True))
-    print(X.text_display(guide, False))
+    print(X.text_display(guide, SOLID))
+    print(X.text_display(guide, VIEWED))
     return
 
 

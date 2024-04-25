@@ -1,5 +1,7 @@
+import inspect
 import json
-from typing import Type
+from copy import deepcopy
+# from typing import Type
 
 # from util import TupleDotOperations as tdo
 # from util.Grid2D import Grid2D
@@ -37,26 +39,127 @@ class iRawInit:
     """
 
     @staticmethod
-    def raw_init(raw):
+    def from_string(s):
+        """
+
+        :param s:
+        """
+        raise NotImplementedError
+
+    @classmethod
+    def raw_init(cls, raw: [dict, list]):
         """
 
         :param raw:
         """
-        raise NotImplementedError
+        params=inspect.signature(cls.__init__).parameters
+        parkeys=[(e,params[e].default) for e in list(params)[1:]]
+        print(parkeys)
+        if type(raw) == dict:
+            pro_d: dict
+            pro_d = cls.raw_process_dict(raw, parkeys)
+            cls: callable
+            result = cls(**pro_d)
+        elif type(raw) == list:
+            pro_l: list
+            pro_l = cls.raw_process_list(raw, parkeys)
+            cls: callable
+            result = cls(*pro_l)
+        else:
+            raise NotImplementedError
+        result:iRawDictInit
+        result.raw_post_init()
+        return result
+
+    def raw_post_init(self):
+        return
+
+    @staticmethod
+    def raw_process_dict(raw: dict, params:list):
+        """
+
+        :param raw:
+        :param params:
+        :return:
+        """
+        D=dict()
+        for e,v in params:
+            print(type(v))
+        return {e:raw.get(e,v) for e,v in params}
+
+    @staticmethod
+    def raw_process_list(raw: list, params:list) -> list:
+        """
+
+        :param raw:
+        :param params:
+        :return:
+        """
+        n=len(raw)
+        if n<len(params) and params[n][1]==inspect.Parameter.empty:
+            X=[e for e in params if e[1]==inspect.Parameter.empty]
+            raise Exception("Not enough parameters ({}/{})!".format(n,len(X)))
+        X=[e[1] for e in params]
+        for i in range(n):
+            X[i]=raw[i]
+        return raw
 
     def __copy__(self):
-        raise NotImplementedError
+        cls = self.__class__
+        result = cls.__new__(cls)
+        result.__dict__.update(self.__dict__)
+        return result
 
     def copy(self):
-        raise NotImplementedError
+        """
+
+        :return:
+        """
+        return self.__copy__()
+
+    def __deepcopy__(self, memodict=None):
+        if memodict is None:
+            memodict = {}
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memodict[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memodict))
+        return result
 
 
-class Effect(iRawInit):
+class iRawDictInit(iRawInit):
+    """
+    Interface exclusive to dictionaries.
+    """
+    @staticmethod
+    def raw_process_list(raw: list, params:list) -> list:
+        """
+
+        :param raw:
+        """
+        raise Exception("Must be dictionary, not list!")
+
+
+class iRawListInit(iRawInit):
+    """
+    Interface exclusive to lists.
+    """
+    @staticmethod
+    def raw_process_dict(raw: dict, params:list):
+        """
+
+        :param raw:
+        """
+        raise Exception("Must be list, not dictionary!")
+
+
+class Effect(iRawListInit):
     """
     An effect applied to an entity.
     """
 
-    def __init__(self, value, duration: int = -1, downtime: int = -1, entities: set[int] = None,
+    def __init__(self, value, duration: int = 10, downtime: int = 0, entities: set[int] = None,
                  othercrit: dict = None):
         self.value = value
         self.duration = duration
@@ -66,7 +169,14 @@ class Effect(iRawInit):
         self.active = False
 
     @staticmethod
-    def raw_init(raw):
+    def raw_process_list(raw: list, params:list) -> list:
+        """
+
+        :param raw:
+        :param params:
+        :return:
+        """
+        iRawListInit.raw_process_list(raw,params)
         val = [None, 10, 0, [], {}]
         if not raw:
             raise Exception("Must have effect name!")
@@ -74,7 +184,7 @@ class Effect(iRawInit):
             val[i] = raw[i]
         if type(val[3]) == int:
             val[3] = {val[3]}
-        return Effect(*tuple(val))
+        return val
 
     def __repr__(self):
         isVanilla = True
@@ -83,42 +193,35 @@ class Effect(iRawInit):
         if self.otherCriteria:
             isVanilla = False
         T = (self.value, self.duration, self.downtime, "un" * isVanilla + "conditional")
-        return "({},{}/{},{})".format(*T)
-
-    def __copy__(self):
-        return Effect(self.value, self.duration, self.downtime, self.entities.copy(), self.otherCriteria.copy())
-
-    def copy(self):
-        return self.__copy__()
+        return "[{},{}/{},{}]".format(*T)
 
     def getDelta(self):
         return self.duration if self.active else self.downtime
 
 
-class EffectTime(iRawInit):
+class EffectTime(iRawListInit):
+    """
+    Time at which an effect takes place, alongside with the effect itself.
+    """
     def __init__(self, time, effect: Effect):
         self.time = time
         self.effect = effect
 
     @staticmethod
-    def raw_init(raw: list):
-        return EffectTime(raw[0], Effect.raw_init(raw[1]))
+    def raw_process_list(raw: list, params:list) -> list:
+        """
+
+        :param raw:
+        """
+        raw[1] = Effect.raw_init(raw[1])
+        return raw
 
 
-class iAgent:
+class iAgent(iRawInit):
     """
     A template for an agent that controls one or more entities.
     """
     defaultInput = None
-
-    @staticmethod
-    def fromString(s):
-        """
-        Creates agent from string.
-        :param s: The string.
-        :return: The agent.
-        """
-        raise NotImplementedError
 
     def receiveEnvironmentData(self, data):
         """
@@ -133,12 +236,6 @@ class iAgent:
     def submitDataEntry(self, entryKey) -> tuple[bool, object]:
         raise NotImplementedError
 
-    def copy(self):
-        raise NotImplementedError
-
-    def __copy__(self):
-        raise NotImplementedError
-
     def submitData(self, dataEntries: list):
         result = dict()
         for entryKey in dataEntries:
@@ -148,7 +245,7 @@ class iAgent:
         return result
 
 
-class iEntity:
+class iEntity(iRawDictInit):
     NAME = "name"
 
     def __init__(self, agent: iAgent, displays: list, curdis: int,
@@ -159,14 +256,6 @@ class iEntity:
         self.properties = dict() if properties is None else properties
         self.agent = agent
 
-    @staticmethod
-    def raw_init(raw: dict):
-        """
-
-        :param raw:
-        """
-        raise NotImplementedError
-
     def __repr__(self):
         entity_dict = {
             'states': self.states,
@@ -176,12 +265,6 @@ class iEntity:
             'curdis': self.curdis
         }
         return json.dumps(entity_dict, indent=2)
-
-    def __copy__(self):
-        newAgent = self.agent.__copy__()
-        newStates = self.states.copy()
-        newProps = self.properties.copy()
-        return iEntity(newAgent, self.displays, self.curdis, newStates, newProps)
 
     def receiveEnvironmentData(self, data: dict):
         raise NotImplementedError
@@ -224,7 +307,7 @@ class iEntity:
         self.curdis = curdis
 
 
-class iEnvironment:
+class iEnvironment(iRawDictInit):
     """
     Base class interface for a test environment.
     """
@@ -239,7 +322,7 @@ class iEnvironment:
         self.name = self.data.get("name", "Untitled")
         self.effectTypes = effectTypes
         self.scheduledEffects = PriorityList()
-        self.effects=effects
+        self.effects = effects
         for eff in effects:
             eff: EffectTime
             self.scheduleEffect(eff.time, eff.effect)
@@ -252,17 +335,6 @@ class iEnvironment:
         self.entityPriority.sort(reverse=True)
         self.runData = dict()
         self.curIter = 0
-
-    @staticmethod
-    def raw_init(raw: dict) -> Type['iEnvironment']:
-        """
-
-        :param raw:
-        """
-        raise NotImplementedError
-
-    def __copy__(self):
-        raise NotImplementedError
 
     def changeActiveEntityAgents(self, newAgents: list[iAgent]):
         """
@@ -462,8 +534,13 @@ class iTrainingMethod:
 
 
 def main():
-    X = Effect("test")
-    print(X.__repr__())
+    X = Effect("test", 1, 1)
+    s = X.__repr__()
+    print(s)
+    L = ["test", 1, 1]
+    print(L)
+    Y = Effect.raw_init(L)
+    print(Y, Y.__repr__())
     return
 
 

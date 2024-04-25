@@ -11,7 +11,7 @@ class mainSystem:
 
     def runEnvironment(self,environment:itf.iEnvironment,agents:list[itf.iAgent]):
         for agent in agents:
-            instance=environment.__copy__()
+            instance=environment.__deepcopy__()
 
     def train(self,agentsAndMethods:list[tuple[itf.iAgent,itf.iTrainingMethod]]):
         return

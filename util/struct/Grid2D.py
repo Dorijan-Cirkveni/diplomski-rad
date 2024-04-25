@@ -1,3 +1,4 @@
+from interfaces import iRawInit, iRawDictInit
 from util.struct.TupleDotOperations import *
 
 WRAP_NONE = 0
@@ -36,7 +37,7 @@ class Rect(iGridDrawElement):
         return RES
 
 
-class Grid2D:
+class Grid2D(iRawDictInit):
     """
     Class representing a 2D return_grid.
     """
@@ -44,84 +45,77 @@ class Grid2D:
         "rect": Rect
     }
 
-    def __init__(self, dimensions: tuple, M: list[list] = None, defaultValue=0):
+    def __init__(self, scale: tuple, M: list[list] = None, default=0,
+                 shapes:dict=None, add:list=None):
         """
         Initialize a 2D return_grid with given dimensions.
 
-        :param dimensions: tuple: The dimensions of the return_grid in the format (rows, columns).
+        :param scale: tuple: The dimensions of the return_grid in the format (rows, columns).
         :param M: list[list], optional: Optional initial return_grid values. Defaults to None.
-        :param defaultValue: Default value for return_grid cells. Defaults to 0.
+        :param default: Default value for return_grid cells. Defaults to 0.
 
         :raises Exception: If dimensions tuple dimensions are not 2.
         """
-        self.scale = dimensions
-        if len(dimensions) != 2:
-            raise Exception("Dimensions tuple dimensions must be 2, not {}".format(len(dimensions)))
-        self.M = [[defaultValue for __ in range(dimensions[1])] for _ in range(dimensions[0])]
-        if M is None:
+        shapes=shapes if shapes else {}
+        add=add if add else []
+        self.scale = scale
+        if len(scale) != 2:
+            raise Exception("Dimensions tuple scale must be 2, not {}".format(len(scale)))
+        self.M = [[default for __ in range(scale[1])] for _ in range(scale[0])]
+        self.fill_init(M)
+        self.shapes=shapes
+        self.add=add
+        return
+
+    def fill_init(self,M):
+        """
+
+        :param M:
+        :return:
+        """
+        if not M:
             return
-        for i in range(min(len(M[0]), dimensions[0])):
+        for i in range(min(len(M[0]), self.scale[0])):
             E, E2 = self.M[i], M[i]
             for j in range(min(len(E), len(E2))):
                 E[j] = E2[j]
-        return
 
     @staticmethod
-    def raw_init(raw: dict):
+    def raw_process_dict(raw: dict, params:list):
         """
 
         :param raw:
+        :param params:
         :return:
         """
-        dimensions = raw['scale']
-        grid = raw.get('grid', [])
-        default = raw.get('default', 0)
-        RES = Grid2D(dimensions, grid, default)
-        elements: dict = raw.get("shapes")
-        for e, V in elements.items():
-            e: str
-            V: list[list]
-            if e not in Grid2D.DRAW_ELEMENTS:
+        raw['M']=raw.pop('grid',[])
+        raw=iRawDictInit.raw_process_dict(raw,params)
+        return raw
+
+    def raw_post_init(self):
+        """
+        Add shapes and subgrids
+        """
+        for shapename,L in self.shapes.items():
+            if shapename not in Grid2D.DRAW_ELEMENTS:
                 raise Exception("Invalid element name!")
-            elType: type = Grid2D.DRAW_ELEMENTS[e]
-            for L in V:
-                if not L:
+            shapetype=Grid2D.DRAW_ELEMENTS[shapename]
+            for shapedata in L:
+                if not shapedata:
                     continue
-                elInstance: iGridDrawElement = elType(L)
-                RES.use_draw_element(elInstance)
-        if "add" in raw:
-            L: list = raw["add"]
-            for sublist in L:
-                subraw = sublist["grid"]
-                offset = tuple(sublist.get("offset", [0, 0]))
-                subgrid = Grid2D.raw_init(subraw)
-                RES.overlap(subgrid, offset)
-        return RES
+                shape=shapetype(shapedata)
+                self.use_draw_element(shape)
+        self.shapes.clear()
+        for sublist in self.add:
+            self.subraw_post_init(sublist)
+        self.add.clear()
 
-    def __copy__(self):
-        """
-        Create a deep copy of the return_grid.
+    def subraw_post_init(self,sublist):
+        subraw = sublist["grid"]
+        offset = tuple(sublist.get("offset", [0, 0]))
+        subgrid = Grid2D.raw_init(subraw)
+        self.overlap(subgrid, offset)
 
-        :return: Grid2D: A copy of the return_grid object.
-        """
-        newG2D = Grid2D((0, 0))
-        newG2D.scale = self.scale
-        M = []
-        for E in self.M:
-            E2 = []
-            for f in E:
-                E2.append(f)
-            M.append(E2)
-        newG2D.M = M
-        return newG2D
-
-    def copy(self):
-        """
-        Alias for __copy__ method. (Create a deep copy of the return_grid.)
-
-        :return: Grid2D: A copy of the return_grid object.
-        """
-        return self.__copy__()
 
     def makeNew(self, func: callable):
         """
@@ -131,7 +125,7 @@ class Grid2D:
 
         :return: Grid2D: A new return_grid object with the function applied to each element.
         """
-        newGrid = self.copy()
+        newGrid = self.__deepcopy__()
         return newGrid.apply(func)
 
     # ---------------------------
@@ -157,13 +151,13 @@ class Grid2D:
 
         :raises Exception: If index is neither integer nor tuple.
         :raises Exception: If index is out of return_grid bounds.
-        :raises Exception: If tuple index dimensions are not 2.
+        :raises Exception: If tuple index scale are not 2.
         """
         if type(item) == int:
             return self.M[item]
         if type(item) == tuple:
             if len(item) != 2:
-                raise Exception("Index tuple dimensions must be 2, not {}".format(len(item)))
+                raise Exception("Index tuple scale must be 2, not {}".format(len(item)))
             if not Tinrange(item, self.scale):
                 raise Exception("Index {} not in return_grid {}".format(item, self.scale))
             return self.M[item[0]][item[1]]
@@ -274,7 +268,7 @@ class Grid2D:
         :param value: Value to be set.
 
         :raises Exception: For an integer index, if column insertion value is not a list.
-        :raises Exception: For a tuple index, if its dimensions are not 2.
+        :raises Exception: For a tuple index, if its scale are not 2.
         :raises Exception: If the index is out of return_grid bounds.
         """
         if type(key) == int:
@@ -287,7 +281,7 @@ class Grid2D:
             return
         if type(key) == tuple:
             if len(key) != 2:
-                print("Index tuple dimensions must be 2, not {}".format(len(key)))
+                print("Index tuple scale must be 2, not {}".format(len(key)))
             if not Tinrange(key, self.scale):
                 raise Exception("Index {} not in return_grid {}".format(key, self.scale))
             self.M[key[0]][key[1]] = value

@@ -390,7 +390,7 @@ class GridInteractive:
         self.display: [GridDisplay, None] = None
 
     def load_grid(self, gridEnv: GridEnvironment):
-        self.grid = gridEnv.__copy__()
+        self.grid = gridEnv.__deepcopy__()
 
     def load_grid_from_raw(self, json_raw):
         grid = env_mngr.readEnvironment([json_raw], 0)
@@ -500,7 +500,7 @@ def CustomTestWithCommands(file, ind, commandStack=None,
             agentName = command[1]
             agentData = command[2]
             agentMaker:itf.iAgent = ag_mngr.ALL_AGENTS[agentName]
-            agent = agentMaker.fromString(agentData)
+            agent = agentMaker.from_string(agentData)
             if testMode:
                 printOutput("(This is where the agents would be set to {} {})".format(agentName, agentData))
             else:

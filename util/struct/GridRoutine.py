@@ -1,7 +1,8 @@
+from interfaces import iRawInit
 from util.struct.Grid2D import Grid2D
 
 
-class GridRoutine:
+class GridRoutine(iRawInit):
     """
     A set of grids in a chronological sequence.
     """
@@ -25,11 +26,6 @@ class GridRoutine:
         loop = raw["loop"]
         grids = [Grid2D.raw_init(el) for el in grids_raw]
         return GridRoutine(grids, sequence, loop)
-
-    def __copy__(self):
-        new_grids = [grid.copy() for grid in self.grids]
-        new_seq = self.sequence.copy()
-        return GridRoutine(new_grids, new_seq, self.loop)
 
     def getCurGrid(self, itid):
         """

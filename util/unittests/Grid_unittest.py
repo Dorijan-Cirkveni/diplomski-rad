@@ -50,7 +50,7 @@ class TestGrid2DCopy(unittest.TestCase):
         # Assert that the copied return_grid is indeed a separate object
         self.assertIsNot(copied_grid, original_grid)
 
-        # Assert that dimensions are copied correctly
+        # Assert that scale are copied correctly
         self.assertEqual(copied_grid.scale, original_grid.scale)
 
         # Assert that the content of the grids are the same

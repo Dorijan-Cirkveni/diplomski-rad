@@ -2,9 +2,10 @@ import random
 
 import agents.Agent
 from environments.GridEnvironment import *
+from interfaces import iRawInit
 
 
-class iMazeCreator:
+class iMazeCreator(iRawInit):
     """
     A base method for a class used to create maze grids.
     """
@@ -18,7 +19,7 @@ class iMazeCreator:
         raise NotImplementedError
 
     def reinit(self,scale:tuple, rand:random.Random):
-        new=self.copy()
+        new=self
         new.scale=scale
         new.rand=random.Random()
         new.rand.setstate(rand.getstate())

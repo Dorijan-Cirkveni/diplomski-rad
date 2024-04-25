@@ -20,7 +20,7 @@ class GridStateEncoder:
         entity_base:Grid2D=Grid2D(grid_base.scale)
         ebl0=len(entity_base[0])
         bases=[grid_base,entity_base]
-        other_bases: dict={e:Grid2D(grid_base.scale,defaultValue=v) for e,v in self.keys}
+        other_bases: dict={e:Grid2D(grid_base.scale, default=v) for e,v in self.keys}
         entities:dict=state.get('entities',{})
         for entID, entData in entities.items():
             entLoc=divmod(entID,ebl0)
@@ -49,7 +49,7 @@ def main():
     start_time = time.time()  # Start timer
 
     encoder = GridStateEncoder()
-    grid = Grid2D((20, 20), defaultValue=2)
+    grid = Grid2D((20, 20), default=2)
     test = {'grid': grid, 'entities': {0: {'loc': (15, 5), 'viewdir': 10}, 1: {'image': 'blue', 'loc': (15, 10)}}}
     res = encoder.encode(test)
 

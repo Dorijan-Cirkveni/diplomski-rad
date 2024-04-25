@@ -1,3 +1,5 @@
+import json
+
 import agents.Agent as base
 
 # import agents.NeuralNetworkAgent as NNA
@@ -20,7 +22,11 @@ def test_all_agent_inits():
         v: base.itf.iAgent
         if v.defaultInput is None:
             raise Exception("Default input for {} (key {}) not defined!".format(v, e))
-        res = v.fromString(v.defaultInput)
+        res=None
+        try:
+            res = v.from_string(v.defaultInput)
+        except NotImplementedError:
+            raise Exception("String initialisation for {} not implemented!".format(v))
         if type(res) != v:
             raise Exception("{} (key {}) does not give its own type when initialised from string,"
                             "giving a {} instead".format(type(v), e, type(res)))
