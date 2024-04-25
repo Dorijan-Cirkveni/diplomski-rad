@@ -335,12 +335,6 @@ class GridEnvironment(itf.iEnvironment):
         raw.update(extraData)
 
         active.update(set(raw.get("activeEntities", [])))
-        '''gridRoutines: dict[str, GridRoutine],
-                 entities: list[GridEntity], activeEntities: set,
-                 tileTypes: list[PlaneTile],
-                 effectTypes: list[itf.Effect],
-                 effects: list[itf.EffectTime],
-                 extraData: dict'''
         return all_routines, entities, active, tiles, effect_types, effects
 
     @staticmethod
