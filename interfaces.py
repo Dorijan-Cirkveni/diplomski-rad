@@ -239,6 +239,7 @@ class iEnvironment:
         self.name = self.data.get("name", "Untitled")
         self.effectTypes = effectTypes
         self.scheduledEffects = PriorityList()
+        self.effects=effects
         for eff in effects:
             eff: EffectTime
             self.scheduleEffect(eff.time, eff.effect)

@@ -1,3 +1,5 @@
+import json
+
 import agents.Agent
 from definitions import *
 from agents import AgentManager
@@ -57,6 +59,11 @@ class PlaneTile:
     def __init__(self, defaultState, agentExceptions=None):
         self.default = defaultState
         self.agentExceptions = [] if agentExceptions is None else agentExceptions
+
+    def __repr__(self):
+        if not self.agentExceptions:
+            return str(self.default)
+        return str(self.default)+" "+json.dumps(self.agentExceptions)
 
     def checkAgainst(self, agentData: dict):
         """
@@ -232,7 +239,7 @@ class GridEnvironment(itf.iEnvironment):
         """
 
         if effectTypes is None:
-            effectTypes = extraData.get("effects", [])
+            effectTypes = extraData.get("effectTypes", [])
         super().__init__(entities=entities,
                          activeEntities=activeEntities,
                          effectTypes=effectTypes,
