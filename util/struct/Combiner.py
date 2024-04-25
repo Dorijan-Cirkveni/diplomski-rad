@@ -1,20 +1,17 @@
-def main():
-    return
-
-
-EXTEND = 0
-OVERWRITE = 1
-REPLACE = 2
-RECUR = 3
-
-
 class iCombineMethod:
     """
     A method used to combine two data structures.
     """
+    EXTEND = 0
+    OVERWRITE = 1
+    REPLACE = 2
+    RECUR = 3
 
     def __init__(self, A):
         self.A = A
+
+    def reinit(self,A):
+        return __class__(A)
 
     def Extend(self, B):
         """
@@ -116,11 +113,23 @@ def Combine(A, B, modes: dict):
         tA, tB = type(A), type(B)
         if tA != tB:
             arch[key] = B
-        mode = modes.get((key, tA), RECUR)
+        mode = modes.get((key, tA), iCombineMethod.RECUR)
         if tA not in methods:
-            arch[key]=tB
-        meth:ListCombineMethod=methods[tA]
-        meth.main(mode,B,cur)
+            arch[key]=B
+        else:
+            meth:ListCombineMethod=methods[tA]
+            meth.reinit(arch)
+            meth.main(mode,B,cur)
+    return arch[0]
+
+
+def main():
+    A = {'a': [1,2,3], 'b': 2}
+    B = {'a': [1,2], 'c': 4}
+    modes = {('a', dict): iCombineMethod.REPLACE, ('b', int): iCombineMethod.OVERWRITE}
+    A2=Combine(A, B, modes)
+    print(A2)
+    return
 
 
 if __name__ == "__main__":
