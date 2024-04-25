@@ -2,7 +2,21 @@ import unittest
 from util.struct.Combiner import *
 
 class TestCombine(unittest.TestCase):
+    def test_combine_lists_extend(self):
+        A = [1, 2, 3]
+        B = [4, 5, 6]
+        modes = {(0, list): iCombineMethod.OVERWRITE}
+        A2=Combine(A, B, modes)
+        self.assertEqual(A2, [4, 5, 6])
+
     def test_combine_lists_overwrite(self):
+        A = [1, 2, 3]
+        B = [4, 5, 6]
+        modes = {(0, list): iCombineMethod.OVERWRITE}
+        A2=Combine(A, B, modes)
+        self.assertEqual(A2, [4, 5, 6])
+
+    def test_combine_lists_replace(self):
         A = [1, 2, 3]
         B = [4, 5, 6]
         modes = {(0, list): iCombineMethod.OVERWRITE}

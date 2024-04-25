@@ -6,6 +6,7 @@ class iCombineMethod:
     OVERWRITE = 1
     REPLACE = 2
     RECUR = 3
+    methods={}
 
     def __init__(self, A):
         self.A = A
@@ -57,15 +58,12 @@ class ListCombineMethod(iCombineMethod):
     def Overwrite(self, B):
         la, lb = len(self.A), len(B)
         if la < lb:
-            self.A.extend(B[la:lb])
             lb = la
         for i in range(lb):
             self.A[i] = B[i]
 
     def Replace(self, B):
-        self.A.clear()
-        self.A.extend(B)
-        return self.A
+        return B
 
     def Recur(self, B, stack):
         la, lb = len(self.A), len(B)
@@ -77,32 +75,27 @@ class ListCombineMethod(iCombineMethod):
 
 
 class DictCombineMethod(iCombineMethod):
-    def Extend(self, B):
+    def Extend(self, B:dict):
         self.A:dict
         for e,v in B.items():
             self.A[e]=self.A.get(e,v)
         return self.A
 
-    def Overwrite(self, B):
+    def Overwrite(self, B:dict):
         self.A:dict
         self.A.update(B)
 
     def Replace(self, B):
-        self.A.clear()
-        self.A.extend(B)
-        return self.A
+        return B
 
-    def Recur(self, B, stack):
+    def Recur(self, B:dict, stack):
         la, lb = len(self.A), len(B)
         if la < lb:
             self.A.extend(B[la:lb])
             lb = la
-        for i in range(lb):
-            stack.append((self.A, i, self.A[i], B[i]))
-
-methods={
-
-}
+        s={e for e in self.A if e in B}
+        for key in s:
+            stack.append((self.A, key, self.A[key], B[key]))
 
 
 def Combine(A, B, modes: dict):
@@ -114,10 +107,10 @@ def Combine(A, B, modes: dict):
         if tA != tB:
             arch[key] = B
         mode = modes.get((key, tA), iCombineMethod.RECUR)
-        if tA not in methods:
+        if tA not in iCombineMethod.methods:
             arch[key]=B
         else:
-            meth:ListCombineMethod=methods[tA]
+            meth:ListCombineMethod=iCombineMethod.methods[tA]
             meth.reinit(arch)
             meth.main(mode,B,cur)
     return arch[0]
