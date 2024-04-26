@@ -13,148 +13,157 @@ class iCombineMethod:
 
     def __init__(self, A):
         self.A = A
+        self.aid = id(A)
 
-    @staticmethod
-    def reinit(A):
-        """
+    def reset(self,A):
+        self.A = A
+        self.aid = id(A)
 
-        :param A:
-        :return:
-        """
-        return __class__(A)
-
-    def Extend(self, B, memodict=None):
+    def Extend(self, B, stack):
         """
 
         :param memodict:
         :param B:
         """
-        if memodict is None:
-            memodict = {}
         raise NotImplementedError
 
-    def Overwrite(self, B, memodict=None):
+    def Overwrite(self, B, stack):
         """
 
         :param memodict:
         :param B:
         """
-        if memodict is None:
-            memodict = {}
         raise NotImplementedError
 
-    def Replace(self, B, memodict=None):
+    def Replace(self, B, stack):
         """
 
         :param memodict:
         :param B:
         """
-        if memodict is None:
-            memodict = {}
         raise NotImplementedError
 
-    def Recur(self, B, stack, memodict=None):
+    def Recur(self, B, stack):
         """
 
         :param memodict:
         :param B:
         :param stack:
         """
-        if memodict is None:
-            memodict = {}
         raise NotImplementedError
 
     def main(self, type: int, B, stack, memodict=None):
         if memodict is None:
             memodict = {}
-        sid = id(self)
-        if sid in memodict:
-            return memodict[sid]
+        L = memodict.get(self.aid)
+        if self.aid in memodict:
+            return memodict[self.aid]
         D = [self.Extend, self.Overwrite, self.Replace, self.Recur]
-        if type == 3:
-            return self.Recur(B, stack)
-        result = D[type](B)
-        memodict[sid] = result
+        result = D[type](B,stack)
+        memodict[self.aid] = result
         return result
 
 
 class ListCombineMethod(iCombineMethod):
-    def Extend(self, B, memodict=None):
-        if memodict is None:
-            memodict = {}
+    def Extend(self, B, stack):
         self.A.extend(deepcopy(B))
         return self.A
 
-    def Overwrite(self, B, memodict={}):
+    def Overwrite(self, B, stack):
         la, lb = len(self.A), len(B)
         if la < lb:
             lb = la
         for i in range(lb):
             self.A[i] = deepcopy(B[i])
+        return self.A
 
-    def Replace(self, B, memodict={}):
+    def Replace(self, B, stack):
         B: list
         return deepcopy(B)
 
-    def Recur(self, B, stack, memodict={}):
+    def Recur(self, B, stack):
         la, lb = len(self.A), len(B)
         if la < lb:
             self.A.extend(B[la:lb])
             lb = la
         for i in range(lb):
             stack.append((self.A, i, self.A[i], B[i]))
+        return self.A
+
+
+iCombineMethod.methods[list] = ListCombineMethod([])
+
 
 class DictCombineMethod(iCombineMethod):
-    def Extend(self, B: dict, memodict):
+    def Extend(self, B, stack):
         self.A: dict
         for e, v in B.items():
             self.A[e] = self.A.get(e, v)
         return self.A
 
-    def Overwrite(self, B: dict, memodict={}):
-        self.A: dict
+    def Overwrite(self, B, stack):
         self.A.update(B)
+        return self.A
 
-    def Replace(self, B, memodict={}):
+    def Replace(self, B, stack):
         return B
 
-    def Recur(self, B: dict, stack, memodict={}):
-        la, lb = len(self.A), len(B)
-        if la < lb:
-            self.A.extend(B[la:lb])
-            lb = la
-        s = {e for e in self.A if e in B}
-        for key in s:
-            stack.append((self.A, key, self.A[key], B[key]))
+    def Recur(self, B: dict, stack):
+        for e,v in B.items():
+            if e not in self.A:
+                self.A[e]=v
+                continue
+            stack.append((self.A, e, self.A[e], v))
+        return self.A
 
+
+iCombineMethod.methods[dict] = DictCombineMethod([])
 
 
 def Combine(A, B, modes: dict):
-    arch = {"<MAIN>":A}
-    cur = [(arch, "<MAIN>", A, B)]
+    true_arch = {"<MAIN>": A}
+    cur = [(true_arch, "<MAIN>", A, B)]
     while cur:
         arch, key, A, B = cur.pop()
         tA, tB = type(A), type(B)
         if tA != tB:
             arch[key] = B
-        keymodes = modes.get(key, modes.get(None,{}))
-        mode=keymodes.get(tA,keymodes.get(None,iCombineMethod.RECUR))
         if tA not in iCombineMethod.methods:
             arch[key] = B
-        else:
-            meth: ListCombineMethod = iCombineMethod.methods[tA]
-            meth.reinit(arch)
-            meth.main(mode, B, cur)
-    return arch[0]
+            continue
+        keymodes = modes.get(key, modes.get(None, {}))
+        mode = keymodes.get(tA, keymodes.get(None, iCombineMethod.RECUR))
+        meth: ListCombineMethod = iCombineMethod.methods[tA]
+        meth.reset(A)
+        A = meth.main(mode, B, cur)
+        arch[key] = A
+    return true_arch["<MAIN>"]
 
-def main():
+
+def test_1(method,A=None,B=None):
     A = [1, 2, 3]
-    B = [4, 5, 6]
-    modes = {"<MAIN>": {None:iCombineMethod.OVERWRITE},None:{None:iCombineMethod.OVERWRITE}}
-    A2=Combine(A, B, modes)
-    modes = {('a', dict): iCombineMethod.REPLACE, ('b', int): iCombineMethod.OVERWRITE}
+    B = [4, 5, 6, 7]
+    modes = {"<MAINs>": {None: method}, None: {None: method}}
     A2 = Combine(A, B, modes)
     print(A2)
+
+def test_2(method,A=None,B=None):
+    A = [1, 2, 3, 4, 5]
+    B = [4, 5, 6, 7]
+    modes = {"<MAINs>": {None: method}, None: {None: method}}
+    A2 = Combine(A, B, modes)
+    print(A2)
+
+
+
+def main():
+    """
+
+    :return:
+    """
+    for i in range(4):
+        test_1(i)
+        test_2(i)
     return
 
 
