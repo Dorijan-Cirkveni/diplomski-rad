@@ -1,4 +1,4 @@
-from interfaces import iRawInit, iRawDictInit
+from util.struct.baseClasses import *
 from util.struct.TupleDotOperations import *
 
 WRAP_NONE = 0

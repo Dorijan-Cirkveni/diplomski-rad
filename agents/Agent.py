@@ -24,7 +24,7 @@ class BoxAgent(itf.iAgent):
         """
         Initializes the BoxAgent.
         """
-        super().__init__()
+        super().__init__(False)
 
     def receiveEnvironmentData(self, data):
         """
