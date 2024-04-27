@@ -79,7 +79,7 @@ input_text = "Hello, how are you?" if not input_text else input_text
 input_ids = agent.tokenizer.encode(input_text, return_tensors="pt")
 print(input_ids)
 
-# Generate output sequence
+# Generate output seq
 output = agent.model.raw_init(input_ids, max_length=50, num_return_sequences=1)
 
 # Decode and print output

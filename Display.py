@@ -536,7 +536,7 @@ def CommandRun(commandList: list[str] = None,
             command = input(">>>").split()
         if not command:
             while "Y" not in command and "N" not in command:
-                command = input("Quit? [Y/Y]")
+                command = input("Quit? [Y/N]")
                 command=command.upper()
             if "Y" in command:
                 break

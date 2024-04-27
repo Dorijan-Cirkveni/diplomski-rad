@@ -7,25 +7,19 @@ class GridRoutine(iRawInit):
     A set of grids in a chronological sequence.
     """
 
-    def __init__(self, grids: list[Grid2D], sequence: list[int], loop: bool = True):
+    def __init__(self, grids: list[Grid2D], seq: list[int] = None, loop: bool = True):
         self.grids = grids
-        self.sequence = sequence
+        self.seq = seq if seq else [i for i in range(len(grids))]
         self.loop = loop
 
     @staticmethod
-    def raw_init(raw: dict):
-        """
-
-        :param raw:
-        :return:
-        """
+    def raw_process_dict(raw: dict, params: list):
         if "grids" not in raw:
-            return GridRoutine([Grid2D.raw_init(raw)], [], True)
+            grid: Grid2D = Grid2D.raw_init(raw)
+            return {"grids": [grid], "seq": 0, "loop": True}
         grids_raw: list = raw["grids"]
-        sequence = raw.get("seq", [i for i in range(len(grids_raw))])
-        loop = raw["loop"]
-        grids = [Grid2D.raw_init(el) for el in grids_raw]
-        return GridRoutine(grids, sequence, loop)
+        raw["grids"] = [Grid2D.raw_init(el) for el in grids_raw]
+        return iRawInit.raw_process_dict(raw,params)
 
     def getCurGrid(self, itid):
         """
@@ -33,16 +27,16 @@ class GridRoutine(iRawInit):
         :param itid: Current iteration number.
         :return: Corresponding grid.
         """
-        if not self.sequence:
+        if not self.seq:
             return self.grids[0]
-        n = len(self.sequence)
+        n = len(self.seq)
         if itid >= n:
             if self.loop:
                 itid %= n
             else:
                 itid = n - 1
-        chosenSequence=self.sequence[itid]
-        chosenGrid=self.grids[chosenSequence]
+        chosenSequence = self.seq[itid]
+        chosenGrid = self.grids[chosenSequence]
         return chosenGrid
 
 

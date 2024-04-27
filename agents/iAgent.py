@@ -6,8 +6,10 @@ class iAgent(interfaces.iRawInit):
     """
 
     """
-    def __init__(self,useMemory:bool):
-        self.memory=InformationCompiler()
+
+    def __init__(self):
+        self.memory = InformationCompiler()
+
     """
     A template for an agent that controls one or more entities.
     """
@@ -18,23 +20,22 @@ class iAgent(interfaces.iRawInit):
     def from_string(s):
         pass
 
-
     def receiveEnvironmentData(self, data):
         """
 
         :param data:
         """
-        data:dict
+        data: dict
         self.memory.absorb_data(data)
 
     def performAction(self, actions):
         raise NotImplementedError
 
     def submitDataEntry(self, entryKey) -> tuple[bool, object]:
-        data=self.memory.current_data
+        data = self.memory.current_data
         if entryKey not in data:
-            return False,None
-        return True,data[entryKey]
+            return False, None
+        return True, data[entryKey]
 
     def submitData(self, dataEntries: list):
         result = dict()

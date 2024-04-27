@@ -24,7 +24,7 @@ class BoxAgent(itf.iAgent):
         """
         Initializes the BoxAgent.
         """
-        super().__init__(False)
+        super().__init__()
 
     def receiveEnvironmentData(self, data):
         """
@@ -133,6 +133,7 @@ class RecordedActionsAgent(itf.iAgent):
 
         :param actions: Predefined actions to be played.
         """
+        super().__init__()
         self.i = 0
         self.actions = actions
 
@@ -160,6 +161,7 @@ class RecordedActionsAgent(itf.iAgent):
 
         :param data: Data received from the environment.
         """
+        super().receiveEnvironmentData(data)
         return
 
     def performAction(self, actions):
@@ -197,6 +199,7 @@ class ManualInputAgent(itf.iAgent):
         :param actions: Available actions.
         :param guide: Guide for interpreting the environment data.
         """
+        super().__init__()
         self.watchedDimensions = watchedDimensions
         self.actions = actions
         self.guide = guide
@@ -222,6 +225,7 @@ class ManualInputAgent(itf.iAgent):
 
         :param data: Data received from the environment.
         """
+        super().receiveEnvironmentData(data)
         to_print = ["", "Tile layout:"]
         '''
         (y1, y2), (x1, x2) = self.watchedDimensions
@@ -279,9 +283,10 @@ class GraphicManualInputAgent(itf.iAgent):
         """
         Initializes the GraphicManualInputAgent.
 
-        :param watchedDimensions: Dimensions of the watched area.
+        # :param watchedDimensions: Dimensions of the watched area.
         :param actions: Available actions.
         """
+        super().__init__()
         self.actions = actions if actions not in (None, "", "None") else definitions.ACTIONS
         self.cur = self.actions[-1]
 

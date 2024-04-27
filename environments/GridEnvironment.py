@@ -1,5 +1,7 @@
 import json
+from copy import deepcopy
 
+from agents.iAgent import iAgent
 import agents.Agent
 from definitions import *
 from agents import AgentManager
@@ -14,8 +16,9 @@ from util.debug.ExceptionCatchers import AssertInputTypes
 
 # Counter for assigning unique identifiers to different types of tiles
 tile_counter = util_mngr.Counter()
-SOLID = "sol" + "id"
-VIEWED = "vie" + "wed"
+AGENTMEMORY = "agentmemory"
+SOLID = "solid"
+VIEWED = "viewed"
 
 
 def rect(E, grid):
@@ -265,7 +268,10 @@ class GridEnvironment(itf.iEnvironment):
                          extraData=extraData)
         self.entities: list[GridEntity]
         if VIEWED not in gridRoutines:
-            gridRoutines[VIEWED] = gridRoutines[SOLID].__copy__()
+            gridRoutines[VIEWED] = deepcopy(gridRoutines[SOLID])
+        if AGENTMEMORY in gridRoutines:
+            agmem=gridRoutines.pop(AGENTMEMORY)
+            self.init_agent_memory(agmem)
         self.gridRoutines = gridRoutines
         self.grids = dict()
         self.solidGrid = None
@@ -275,6 +281,17 @@ class GridEnvironment(itf.iEnvironment):
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
 
         self.taken = dict()
+        self.init_entity_locations()
+        return
+
+    def init_agent_memory(self,agmeme:GridRoutine):
+        agrid:Grid2D=agmeme.getCurGrid(0)
+        for entity in self.entities:
+            agent:iAgent=entity.agent
+            memory=agent.memory
+            memory.absorb_data({"grid":deepcopy(agrid)})
+
+    def init_entity_locations(self):
         for ID, entity in enumerate(self.entities):
             entity: GridEntity
             name = entity.properties.get(entity.NAME, "Untitled")
@@ -283,7 +300,6 @@ class GridEnvironment(itf.iEnvironment):
                 print("Unable to initialise Entity {} ({}) without location!".format(ID, name))
                 continue
             self.taken[location] = ID
-        return
 
     @staticmethod
     def generateCustomTileup(raw):
@@ -647,6 +663,10 @@ class GridEnvironment(itf.iEnvironment):
             if movability:
                 goodMoves.append(direction)
         return goodMoves
+
+    #   ------------------------------------------------------------------------
+    #   Setters / updaters / processors
+    #   ------------------------------------------------------------------------
 
     def updateGrids(self, itID=None):
         if itID is None:
