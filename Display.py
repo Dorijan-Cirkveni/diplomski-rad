@@ -173,16 +173,15 @@ class GridDisplay:
         return 0
 
     def toggle_viewable(self):
-        K=self.grid.grids
-        if not K:
+        V=list(self.grid.grids.keys())+["agentmemory"]
+        V.sort()
+        if not V:
             raise Exception("This environment has no grid data!")
-        if self.gridType in K:
-            V=list(K.keys())
-            V.sort()
+        if self.gridType in V:
             curind=(V.index(self.gridType)+1)%len(V)
             self.gridType=V[curind]
         else:
-            self.gridType=min(K.keys())
+            self.gridType=min(V)
         button:Button=self.buttons["changetype"]
         button.text="Grid mode: " + self.gridType
         self.show_iter()

@@ -617,14 +617,19 @@ class GridEnvironment(itf.iEnvironment):
             agents = dict()
             for E in self.taken.keys():
                 self.getAgentDisplay(agents, E)
+            if gridType not in self.grids:
+                return {"msg": "Grid type <{}> not found".format(gridType)}
             return {"grid": self.grids[gridType], "agents": agents}
         entityID: int
         if self.entities[entityID] is None:
             return {"msg": "Entity terminated"}
         entity: GridEntity = self.entities[entityID]
-        if entity.isInState(entity.S_blind):
-            return {"msg": "Entity blinded"}
-        data = self.getEnvData(entityID)
+        if gridType==AGENTMEMORY:
+            data=deepcopy(entity.agent.memory.current_data)
+        else:
+            if entity.isInState(entity.S_blind):
+                return {"msg": "Entity blinded"}
+            data = self.getEnvData(entityID)
         grid = data['grid']
         agents = dict()
         for E in self.taken.keys():
