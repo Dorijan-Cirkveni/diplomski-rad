@@ -5,32 +5,11 @@ from copy import deepcopy
 
 # from util import TupleDotOperations as tdo
 # from util.Grid2D import Grid2D
+from util.InformationCompiler import InformationCompiler
 from util.struct.PriorityList import PriorityList
 import util.UtilManager as util_mngr
 
-
-def getValuesFromDict(raw: dict, meta_args: list, arg_types=None) -> list:
-    """
-    Get a list of values from a dictionary, throw an exception if they are absent or their type doesn't match.
-    :param raw:
-    :param meta_args:
-    :param arg_types:
-    :return:
-    """
-    if arg_types is None:
-        arg_types = {}
-    args = []
-    for key in meta_args:
-        if type(key) == tuple:
-            key, null = key
-            args.append(raw.get(key, null))
-            continue
-        if key not in raw:
-            exc = "Value {} ({}) missing from data structure {}!"
-            uns = "Unspecified"
-            raise Exception(exc.format(key, arg_types.get(key, uns), raw))
-        args.append(raw[key])
-    return args
+from agents.iAgent import iAgent
 
 
 class iRawInit:
@@ -215,35 +194,6 @@ class EffectTime(iRawListInit):
         """
         raw[1] = Effect.raw_init(raw[1])
         return raw
-
-
-class iAgent(iRawInit):
-    """
-    A template for an agent that controls one or more entities.
-    """
-    defaultInput = None
-
-    def receiveEnvironmentData(self, data):
-        """
-
-        :param data:
-        """
-        raise NotImplementedError
-
-    def performAction(self, actions):
-        raise NotImplementedError
-
-    def submitDataEntry(self, entryKey) -> tuple[bool, object]:
-        raise NotImplementedError
-
-    def submitData(self, dataEntries: list):
-        result = dict()
-        for entryKey in dataEntries:
-            entryExists, entryValue = self.submitDataEntry(entryKey)
-            if entryExists:
-                result[entryKey] = entryValue
-        return result
-
 
 class iEntity(iRawDictInit):
     NAME = "name"

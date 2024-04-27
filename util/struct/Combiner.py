@@ -140,14 +140,14 @@ def Combine(A, B, modes: dict):
     return true_arch["<MAIN>"]
 
 
-def test_1(method,A=None,B=None):
+def test_1(method):
     A = [1, 2, 3]
     B = [4, 5, 6, 7]
     modes = {"<MAINs>": {None: method}, None: {None: method}}
     A2 = Combine(A, B, modes)
     print(A2)
 
-def test_2(method,A=None,B=None):
+def test_2(method):
     A = [1, 2, 3, 4, 5]
     B = [4, 5, 6, 7]
     modes = {"<MAINs>": {None: method}, None: {None: method}}
