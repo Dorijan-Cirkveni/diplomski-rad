@@ -197,6 +197,7 @@ class GridEntity(itf.iEntity):
         gridData: Grid2D = data.get("grid")
         if self.S_blind in self.states:
             gridData = Grid2D(gridData.scale, default=-1)
+            data["grid"]=gridData
         else:
             if gridData is None:
                 raise Exception("Not sending return_grid data properly!")
@@ -288,7 +289,7 @@ class GridEnvironment(itf.iEnvironment):
         self.scale=solid.grids[0].scale
         agmem=gridRoutines.get(AGENTMEMORY,None)
         if agmem is None:
-            newgrid=Grid2D(self.scale)
+            newgrid=Grid2D(self.scale,default=-1)
             agmem=GridRoutine(newgrid)
             gridRoutines[AGENTMEMORY]=agmem
         agrid:Grid2D=agmem.getCurGrid(0)

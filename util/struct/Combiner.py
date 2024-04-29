@@ -16,7 +16,7 @@ class iCombinable(iRawInit):
         """
         raise NotImplementedError
 
-    def Extend(self, other, stack):
+    def CombineExtend(self, other, stack):
         """
 
         :param other:
@@ -24,7 +24,7 @@ class iCombinable(iRawInit):
         """
         raise NotImplementedError
 
-    def Overwrite(self, other, stack):
+    def CombineOverwrite(self, other, stack):
         """
 
         :param other:
@@ -32,7 +32,7 @@ class iCombinable(iRawInit):
         """
         raise NotImplementedError
 
-    def Replace(self, other, stack):
+    def CombineReplace(self, other, stack):
         """
 
         :param other:
@@ -40,7 +40,7 @@ class iCombinable(iRawInit):
         """
         return deepcopy(other)
 
-    def Recur(self, other, stack):
+    def CombineRecur(self, other, stack):
         """
 
         :param other:
@@ -48,148 +48,99 @@ class iCombinable(iRawInit):
         """
         raise NotImplementedError
 
+    def getMethod(self,mID:int):
+        meth = [self.CombineExtend, self.CombineOverwrite, self.CombineReplace, self.CombineRecur][mID]
+        return meth
 
-class iCombineMethod:
-    """
-    A method used to combine two data structures.
-    """
-    EXTEND = 0
-    OVERWRITE = 1
-    REPLACE = 2
-    RECUR = 3
-    methods = {}
-
-    def __init__(self, A):
-        self.A = A
-        self.aid = id(A)
-
-    def reset(self, A):
-        self.A = A
-        self.aid = id(A)
-
-    def Extend(self, B, stack):
-        """
-
-        :param B:
-        :param stack:
-        """
-        raise NotImplementedError
-
-    def Overwrite(self, B, stack):
-        """
-
-        :param B:
-        :param stack:
-        """
-        raise NotImplementedError
-
-    def Replace(self, B, stack):
-        """
-
-        :param B:
-        :param stack:
-        """
-        raise NotImplementedError
-
-    def Recur(self, B, stack):
-        """
-
-        :param B:
-        :param stack:
-        """
-        raise NotImplementedError
-
-    def CombineFailCheck(self, result):
-        return result is None
-
-    def main(self, type: int, B, stack, memodict=None):
+    def CombineMain(self, methodID: int, B, stack, memodict=None):
         if memodict is None:
             memodict = {}
-        L = memodict.get(self.aid)
-        if self.aid in memodict:
-            return memodict[self.aid]
-        D = [self.Extend, self.Overwrite, self.Replace, self.Recur]
-        resultcall = D[type]
-        result=resultcall(B, stack)
+        aid = id(self)
+        L = memodict.get(aid)
+        if aid in memodict:
+            return memodict[aid]
+        D = [self.CombineExtend, self.CombineOverwrite, self.CombineReplace, self.CombineRecur]
+        resultcall = D[methodID]
+        result = resultcall(B, stack)
         if self.CombineFailCheck(result):
             raise Exception("Combine failed, result is {}!".format(result))
-        memodict[self.aid] = result
+        memodict[aid] = result
         return result
 
 
-class MainCombineMethod(iCombineMethod):
-
-    def Extend(self, B, stack):
-        self.A: iCombinable
-        return self.A.Extend(B, stack)
-
-    def Overwrite(self, B, stack):
-        self.A: iCombinable
-        return self.A.Overwrite(B, stack)
-
-    def Replace(self, B, stack):
-        self.A: iCombinable
-        return self.A.Replace(B, stack)
-
-    def Recur(self, B, stack):
-        self.A: iCombinable
-        return self.A.Recur(B, stack)
+def combine_extend_dict(A: dict, B: dict, stack: list):
+    for e, v in B.items():
+        A[e] = A.get(e, v)
+    return A
 
 
-class ListCombineMethod(iCombineMethod):
-    def Extend(self, B, stack):
-        self.A.extend(deepcopy(B))
-        return self.A
-
-    def Overwrite(self, B, stack):
-        la, lb = len(self.A), len(B)
-        if la < lb:
-            lb = la
-        for i in range(lb):
-            self.A[i] = deepcopy(B[i])
-        return self.A
-
-    def Replace(self, B, stack):
-        B: list
-        return deepcopy(B)
-
-    def Recur(self, B, stack):
-        la, lb = len(self.A), len(B)
-        if la < lb:
-            self.A.extend(B[la:lb])
-            lb = la
-        for i in range(lb):
-            stack.append((self.A, i, self.A[i], B[i]))
-        return self.A
+def combine_overwrite_dict(A: dict, B: dict, stack: list):
+    A.update(B)
+    return A
 
 
-iCombineMethod.methods[list] = ListCombineMethod([])
+def combine_replace_dict(A: dict, B: dict, stack: list):
+    return deepcopy(B)
 
 
-class DictCombineMethod(iCombineMethod):
-    def Extend(self, B, stack):
-        self.A: dict
-        for e, v in B.items():
-            self.A[e] = self.A.get(e, v)
-        return self.A
-
-    def Overwrite(self, B, stack):
-        self.A.update(B)
-        return self.A
-
-    def Replace(self, B, stack):
-        return B
-
-    def Recur(self, B: dict, stack):
-        for e, v in B.items():
-            if e not in self.A:
-                self.A[e] = v
-                continue
-            stack.append((self.A, e, self.A[e], v))
-        return self.A
+def combine_recur_dict(A: dict, B: dict, stack: list):
+    for e, v in B.items():
+        if e not in A:
+            A[e] = v
+        else:
+            stack.append((A, e, A[e], v))
+    return A
 
 
-iCombineMethod.methods[dict] = DictCombineMethod([])
+def combine_extend_list(A: list, B: list, stack: list):
+    A.extend(deepcopy(B))
+    return A
+
+
+def combine_overwrite_list(A: list, B: list, stack: list):
+    la = len(A)
+    lb = min(len(B), la)
+    for i in range(lb):
+        A[i] = deepcopy(B[i])
+    return A
+
+
+def combine_replace_list(A: list, B: list, stack: list):
+    return deepcopy(B)
+
+
+def combine_recur_list(A: list, B: list, stack: list):
+    la, lb = len(A), len(B)
+    if la < lb:
+        A.extend(B[la:lb])
+        lb = la
+    for i in range(lb):
+        stack.append((A, i, A[i], B[i]))
+    return A
+
+combine_list = [
+    combine_extend_list,
+    combine_overwrite_list,
+    combine_replace_list,
+    combine_recur_list
+]
+
+combine_dict = [
+    combine_extend_dict,
+    combine_overwrite_dict,
+    combine_replace_dict,
+    combine_recur_dict
+]
+
+def get_method(A, tA, mode):
+    if tA == list:
+        return combine_list[mode], False
+    elif tA == dict:
+        return combine_dict[mode], False
+    elif isinstance(A, iCombinable):
+        return A.getMethod(mode), True
+    return None, None
+
 
 
 def Combine(A, B, modes: dict):
@@ -200,22 +151,18 @@ def Combine(A, B, modes: dict):
         tA, tB = type(A), type(B)
         print("|--------", tA, tB)
         if tA != tB:
-            print(tA, "!=", tB)
             arch[key] = B
+            continue
         keymodes = modes.get(key, modes.get(None, {}))
-        mode = keymodes.get(tA, keymodes.get(None, iCombineMethod.RECUR))
-        if tA in iCombineMethod.methods:
-            print(tA, iCombineMethod.methods.keys())
-            meth: iCombineMethod = iCombineMethod.methods[tA]
-        elif isinstance(A, iCombinable):
-            print("is instance")
-            meth: iCombineMethod = MainCombineMethod(A)
-        else:
-            print("is not instance")
+        mode = keymodes.get(tA, keymodes.get(None, 3))
+        method, isIncluded=get_method(A,tA,mode)
+        if method is None:
             arch[key] = deepcopy(B)
             continue
-        meth.reset(A)
-        A = meth.main(mode, B, cur)
+        X=[] if isIncluded else [A]
+        X.extend([B, cur])
+        print("--->",tA,tB,mode,method)
+        A = method(*X)
         arch[key] = A
     return true_arch["<MAIN>"]
 
@@ -229,11 +176,23 @@ def test_1(method):
 
 
 def test_2(method):
+    print()
+    print(method)
     A = [1, 2, 3, 4, 5]
     B = [4, 5, 6, 7]
     modes = {"<MAINs>": {None: method}, None: {None: method}}
     A2 = Combine(A, B, modes)
     print(A2)
+
+def test_2(method):
+    print()
+    print(method)
+    A = [[], 2, 3, 4, 5]
+    B = [["11"], 5, 6, 7]
+    modes = {"<MAINs>": {None: method}, None: {None: method}}
+    A2 = Combine(A, B, modes)
+    print(A2)
+
 
 
 def main():

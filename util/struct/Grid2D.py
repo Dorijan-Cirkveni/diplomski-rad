@@ -159,7 +159,7 @@ class Grid2D(iCombinable):
     # |                         |
     # ---------------------------
 
-    def Extend(self, other, stack):
+    def CombineExtend(self, other, stack):
         """
 
         :param other:
@@ -167,7 +167,7 @@ class Grid2D(iCombinable):
         """
         raise Exception("EXTEND HOW?")
 
-    def Overwrite(self, other, stack):
+    def CombineOverwrite(self, other, stack):
         """
 
         :param other:
@@ -175,16 +175,18 @@ class Grid2D(iCombinable):
         """
         other: Grid2D
         newother=deepcopy(other)
-        newother.overlap(self,(0,0))
+        newother.overlap(self,(0,0), {-1})
         return newother
 
-    def Recur(self, other, stack):
+    def CombineRecur(self, other, stack):
         """
 
         :param other:
         :param stack:
         """
-        return self.overlap(other, (0,0))
+        self.overlap(other, (0, 0), {-1})
+        print("\n\nGir",self.unique_values())
+        return self
 
     # ---------------------------
     # |                         |
@@ -389,13 +391,18 @@ class Grid2D(iCombinable):
                 E[j] = fog
         return
 
-    def overlap(self, other, offset: tuple):
+    def overlap(self, other, offset: tuple, ignore:set=None):
+        if ignore is None:
+            ignore = set()
         other: Grid2D
         top = Tsub(Tmin(self.scale, other.scale), offset)
         bottom = Tmax((0, 0), offset)
         for i in range(bottom[0], top[0]):
             for j in range(bottom[1], top[1]):
-                self.M[i + offset[0]][j + offset[1]] = other[i][j]
+                e = other[i][j]
+                if e in ignore:
+                    continue
+                self.M[i + offset[0]][j + offset[1]] = e
         return
 
 

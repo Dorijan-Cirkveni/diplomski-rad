@@ -10,7 +10,7 @@ class InformationCompiler:
 
     def absorb_data(self, new_data: dict, modes:dict=None):
         if modes is None:
-            modes={"<MAIN>": {None: iCombineMethod.RECUR}, None: {None: iCombineMethod.RECUR}}
+            modes={"<MAIN>": {None: 3}, None: {None: 3}}
         self.current_data = Combine(self.current_data, new_data, modes)
 
     def get_data(self):
