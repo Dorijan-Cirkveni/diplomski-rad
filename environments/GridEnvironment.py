@@ -267,11 +267,8 @@ class GridEnvironment(itf.iEnvironment):
                          effects=effects,
                          extraData=extraData)
         self.entities: list[GridEntity]
-        if VIEWED not in gridRoutines:
-            gridRoutines[VIEWED] = deepcopy(gridRoutines[SOLID])
-        if AGENTMEMORY in gridRoutines:
-            agmem=gridRoutines.pop(AGENTMEMORY)
-            self.init_agent_memory(agmem)
+        self.scale=None
+        self.init_grids_and_memory()
         self.gridRoutines = gridRoutines
         self.grids = dict()
         self.solidGrid = None
@@ -284,8 +281,15 @@ class GridEnvironment(itf.iEnvironment):
         self.init_entity_locations()
         return
 
-    def init_agent_memory(self,agmeme:GridRoutine):
-        agrid:Grid2D=agmeme.getCurGrid(0)
+    def init_grids_and_memory(self,gridRoutines):
+        solid:GridRoutine=gridRoutines[SOLID]
+        if VIEWED not in gridRoutines:
+            gridRoutines[VIEWED] = deepcopy(solid)
+        self.scale=solid.grids[0].scale
+        newgrid=Grid2D(self.scale)
+        newroutine=GridRoutine(newgrid)
+        agmem=gridRoutines.pop(AGENTMEMORY,)
+        agrid:Grid2D=agmem.getCurGrid(0)
         for entity in self.entities:
             agent:iAgent=entity.agent
             memory=agent.memory

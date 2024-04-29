@@ -1,3 +1,4 @@
+import util.CommonExceptions
 from interfaces import iRawInit
 from util.struct.Grid2D import Grid2D
 
@@ -8,18 +9,33 @@ class GridRoutine(iRawInit):
     """
 
     def __init__(self, grids: list[Grid2D], seq: list[int] = None, loop: bool = True):
+        if type(grids) == Grid2D:
+            self.grids = [grids]
+            self.seq = []
+            self.loop = True
+            return
         self.grids = grids
         self.seq = seq if seq else [i for i in range(len(grids))]
         self.loop = loop
 
     @staticmethod
+    def from_string(s):
+        raise util.CommonExceptions.ImplementAsNeededException()
+
+    @staticmethod
     def raw_process_dict(raw: dict, params: list):
+        """
+
+        :param raw:
+        :param params:
+        :return:
+        """
         if "grids" not in raw:
             grid: Grid2D = Grid2D.raw_init(raw)
-            return {"grids": [grid], "seq": 0, "loop": True}
+            return {"grids": grid}
         grids_raw: list = raw["grids"]
         raw["grids"] = [Grid2D.raw_init(el) for el in grids_raw]
-        return iRawInit.raw_process_dict(raw,params)
+        return iRawInit.raw_process_dict(raw, params)
 
     def getCurGrid(self, itid):
         """
@@ -41,6 +57,8 @@ class GridRoutine(iRawInit):
 
 
 def main():
+    GR=GridRoutine.from_string("TEST")
+    print(GR)
     return
 
 
