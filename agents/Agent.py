@@ -307,7 +307,7 @@ class GraphicManualInputAgent(itf.iAgent):
 
         :param data: Data received from the environment.
         """
-        return
+        super().receiveEnvironmentData(data)
 
     def performAction(self, actions):
         """

@@ -1,3 +1,5 @@
+import util.CommonExceptions
+from util.struct.Combiner import iCombinable
 from util.struct.baseClasses import *
 from util.struct.TupleDotOperations import *
 
@@ -8,11 +10,22 @@ WRAP_BOTH = 3
 
 
 class iGridDrawElement:
+    """
+    An element used to draw in the grid with.
+    """
+
     def apply(self) -> list[tuple[int, int]]:
+        """
+        Apply the element
+        """
         raise NotImplementedError
 
 
 class Rect(iGridDrawElement):
+    """
+    A rectangle element.
+    """
+
     def __init__(self, L):
         a, b, c, d, v = L
         if c < a:
@@ -24,6 +37,10 @@ class Rect(iGridDrawElement):
         self.value = v
 
     def apply(self) -> list[tuple[tuple[int, int], int]]:
+        """
+        Be there or be square.
+        :return:
+        """
         x1, y1 = self.first
         x2, y2 = self.last
         v = self.value
@@ -37,16 +54,25 @@ class Rect(iGridDrawElement):
         return RES
 
 
-class Grid2D(iRawDictInit):
+class Grid2D(iCombinable):
     """
     Class representing a 2D return_grid.
     """
+
+    @staticmethod
+    def from_string(s):
+        """
+        Do we need this?
+        :param s:
+        """
+        raise util.CommonExceptions.ImplementAsNeededException()
+
     DRAW_ELEMENTS = {
         "rect": Rect
     }
 
     def __init__(self, scale: tuple, M: list[list] = None, default=0,
-                 shapes:dict=None, add:list=None):
+                 shapes: dict = None, add: list = None):
         """
         Initialize a 2D return_grid with given dimensions.
 
@@ -56,18 +82,18 @@ class Grid2D(iRawDictInit):
 
         :raises Exception: If dimensions tuple dimensions are not 2.
         """
-        shapes=shapes if shapes else {}
-        add=add if add else []
+        shapes = shapes if shapes else {}
+        add = add if add else []
         self.scale = scale
         if len(scale) != 2:
             raise Exception("Dimensions tuple scale must be 2, not {}".format(len(scale)))
         self.M = [[default for __ in range(scale[1])] for _ in range(scale[0])]
         self.fill_init(M)
-        self.shapes=shapes
-        self.add=add
+        self.shapes = shapes
+        self.add = add
         return
 
-    def fill_init(self,M):
+    def fill_init(self, M):
         """
 
         :param M:
@@ -81,41 +107,40 @@ class Grid2D(iRawDictInit):
                 E[j] = E2[j]
 
     @staticmethod
-    def raw_process_dict(raw: dict, params:list):
+    def raw_process_dict(raw: dict, params: list):
         """
 
         :param raw:
         :param params:
         :return:
         """
-        raw['M']=raw.pop('grid',[])
-        raw=iRawDictInit.raw_process_dict(raw,params)
+        raw['M'] = raw.pop('grid', [])
+        raw = iRawDictInit.raw_process_dict(raw, params)
         return raw
 
     def raw_post_init(self):
         """
         Add shapes and subgrids
         """
-        for shapename,L in self.shapes.items():
+        for shapename, L in self.shapes.items():
             if shapename not in Grid2D.DRAW_ELEMENTS:
                 raise Exception("Invalid element name!")
-            shapetype=Grid2D.DRAW_ELEMENTS[shapename]
+            shapetype = Grid2D.DRAW_ELEMENTS[shapename]
             for shapedata in L:
                 if not shapedata:
                     continue
-                shape=shapetype(shapedata)
+                shape = shapetype(shapedata)
                 self.use_draw_element(shape)
         self.shapes.clear()
         for sublist in self.add:
             self.subraw_post_init(sublist)
         self.add.clear()
 
-    def subraw_post_init(self,sublist):
+    def subraw_post_init(self, sublist):
         subraw = sublist["grid"]
         offset = tuple(sublist.get("offset", [0, 0]))
         subgrid = Grid2D.raw_init(subraw)
         self.overlap(subgrid, offset)
-
 
     def makeNew(self, func: callable):
         """
@@ -127,6 +152,39 @@ class Grid2D(iRawDictInit):
         """
         newGrid = self.__deepcopy__()
         return newGrid.apply(func)
+
+    # ---------------------------
+    # |                         |
+    # | Combiner functions      |
+    # |                         |
+    # ---------------------------
+
+    def Extend(self, other, stack):
+        """
+
+        :param other:
+        :param stack:
+        """
+        raise Exception("EXTEND HOW?")
+
+    def Overwrite(self, other, stack):
+        """
+
+        :param other:
+        :param stack:
+        """
+        other: Grid2D
+        newother=deepcopy(other)
+        newother.overlap(self,(0,0))
+        return newother
+
+    def Recur(self, other, stack):
+        """
+
+        :param other:
+        :param stack:
+        """
+        return self.overlap(other, (0,0))
 
     # ---------------------------
     # |                         |
@@ -207,7 +265,7 @@ class Grid2D(iRawDictInit):
         nex -= set(tree[start])
         new_points = set()
         for first in nex:
-            E=self.get_traverse_narrow_path(start, first, valid)
+            E = self.get_traverse_narrow_path(start, first, valid)
             n, end, last = E
             tree[start][first] = end
             if end not in tree:
@@ -220,10 +278,10 @@ class Grid2D(iRawDictInit):
         tree = {e: dict() for e in starting_points}
         curS: set = set(starting_points)
         while curS:
-            nex:set = set()
+            nex: set = set()
             for E in curS:
-                new_points:set = self.process_paths(E, valid, tree)
-                nex|=new_points
+                new_points: set = self.process_paths(E, valid, tree)
+                nex |= new_points
             curS = nex
         return tree
 
