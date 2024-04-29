@@ -8,13 +8,14 @@ class GridRoutine(iRawInit):
     A set of grids in a chronological sequence.
     """
 
-    def __init__(self, grids: list[Grid2D], seq: list[int] = None, loop: bool = True):
+    def __init__(self, grids: [list[Grid2D],Grid2D], seq: list[int] = None, loop: bool = True):
         if type(grids) == Grid2D:
             self.grids = [grids]
             self.seq = []
             self.loop = True
             return
-        self.grids = grids
+        grids:list[Grid2D]
+        self.grids:list[Grid2D] = grids
         self.seq = seq if seq else [i for i in range(len(grids))]
         self.loop = loop
 
@@ -57,8 +58,6 @@ class GridRoutine(iRawInit):
 
 
 def main():
-    GR=GridRoutine.from_string("TEST")
-    print(GR)
     return
 
 

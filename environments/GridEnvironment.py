@@ -268,7 +268,7 @@ class GridEnvironment(itf.iEnvironment):
                          extraData=extraData)
         self.entities: list[GridEntity]
         self.scale=None
-        self.init_grids_and_memory()
+        self.init_grids_and_memory(gridRoutines)
         self.gridRoutines = gridRoutines
         self.grids = dict()
         self.solidGrid = None
@@ -286,14 +286,18 @@ class GridEnvironment(itf.iEnvironment):
         if VIEWED not in gridRoutines:
             gridRoutines[VIEWED] = deepcopy(solid)
         self.scale=solid.grids[0].scale
-        newgrid=Grid2D(self.scale)
-        newroutine=GridRoutine(newgrid)
-        agmem=gridRoutines.pop(AGENTMEMORY,)
+        agmem=gridRoutines.get(AGENTMEMORY,None)
+        if agmem is None:
+            newgrid=Grid2D(self.scale)
+            agmem=GridRoutine(newgrid)
+            gridRoutines[AGENTMEMORY]=agmem
         agrid:Grid2D=agmem.getCurGrid(0)
         for entity in self.entities:
             agent:iAgent=entity.agent
             memory=agent.memory
             memory.absorb_data({"grid":deepcopy(agrid)})
+            print(id(agent),"Memory:",memory.current_data)
+        return
 
     def init_entity_locations(self):
         for ID, entity in enumerate(self.entities):
@@ -629,11 +633,16 @@ class GridEnvironment(itf.iEnvironment):
             return {"msg": "Entity terminated"}
         entity: GridEntity = self.entities[entityID]
         if gridType==AGENTMEMORY:
-            data=deepcopy(entity.agent.memory.current_data)
+            data=entity.agent.submitData()
+            print("\n\n",id(entity.agent),"Compare:",entity.agent.memory.current_data,data)
+            print("Retrieving:")
         else:
             if entity.isInState(entity.S_blind):
                 return {"msg": "Entity blinded"}
             data = self.getEnvData(entityID)
+        print(data)
+        if "grid" not in data:
+            return {"msg": "ERROR:\n"+str(data)}
         grid = data['grid']
         agents = dict()
         for E in self.taken.keys():
@@ -676,6 +685,25 @@ class GridEnvironment(itf.iEnvironment):
     #   ------------------------------------------------------------------------
     #   Setters / updaters / processors
     #   ------------------------------------------------------------------------
+
+    def changeActiveEntityAgents(self, newAgents: list[iAgent], preserveMemory=True):
+        """
+        Changes active entity agents.
+
+        Args:
+            newAgents (list[itf.iAgent]): List of new agents.
+            :param preserveMemory:
+        """
+        for i, E in enumerate(self.activeEntities):
+            ent: itf.iEntity = self.entities[E]
+            old_agent=ent.agent
+            new_agent = newAgents[i % len(newAgents)]
+            if preserveMemory:
+                new_agent.memory=old_agent.memory
+            else:
+                new_agent.memory.absorb_data({"grid":self.grids[AGENTMEMORY]})
+            ent.agent = new_agent
+        return
 
     def updateGrids(self, itID=None):
         if itID is None:

@@ -25,7 +25,11 @@ class iCombineMethod:
         :param memodict:
         :param B:
         """
-        raise NotImplementedError
+        extendOp=getattr(self,"extend",None)
+        if not callable(extendOp):
+            raise NotImplementedError
+        self.A.extend(B)
+
 
     def Overwrite(self, B, stack):
         """

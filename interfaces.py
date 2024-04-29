@@ -97,7 +97,9 @@ class iEntity(iRawDictInit):
         return json.dumps(entity_dict, indent=2)
 
     def receiveEnvironmentData(self, data: dict):
-        raise NotImplementedError
+        if self.agent is None:
+            return
+        self.agent.receiveData(data)
 
     def performAction(self, actions):
         return self.agent.performAction(actions)
@@ -135,6 +137,11 @@ class iEntity(iRawDictInit):
 
     def setDisplay(self, curdis):
         self.curdis = curdis
+
+    def getMemory(self):
+        if self.agent is None:
+            return {}
+        return self.agent.submitData()
 
 
 class iEnvironment(iRawDictInit):

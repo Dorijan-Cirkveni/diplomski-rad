@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import interfaces
 from util.InformationCompiler import InformationCompiler
 
@@ -35,15 +37,22 @@ class iAgent(interfaces.iRawInit):
         data = self.memory.current_data
         if entryKey not in data:
             return False, None
-        return True, data[entryKey]
+        return True, deepcopy(data[entryKey])
 
-    def submitData(self, dataEntries: list):
+    def submitData(self, dataEntries: list = None):
+        if dataEntries is None:
+            return self.memory.get_data()
         result = dict()
         for entryKey in dataEntries:
             entryExists, entryValue = self.submitDataEntry(entryKey)
             if entryExists:
                 result[entryKey] = entryValue
         return result
+
+    def receiveData(self, data:dict, modes:dict=None):
+        if modes is None:
+            modes = {}
+        self.memory.absorb_data(data,modes)
 
 
 def main():
