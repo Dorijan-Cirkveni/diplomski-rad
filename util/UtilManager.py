@@ -56,6 +56,16 @@ class SetQueue:
         return
 
 
+def DoNothing(*_, **__):
+    """
+    This function does nothing.
+    :param _:
+    :param __:
+    :return:
+    """
+    return
+
+
 def CallOrEqual(condition, value):
     if callable(condition):
         return condition(value)

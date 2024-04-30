@@ -1,16 +1,11 @@
-import pygame
-
-from definitions import *
-import interfaces as itf
+import json
 from test_json.test_json_manager import ImportManagedJSON
-from util.struct import TupleDotOperations as tdo
 import environments.EnvironmentManager as env_mngr
 import agents.AgentManager as ag_mngr
-from util.struct.Grid2D import *
 
 GridEnvironment = env_mngr.grid_env.GridEnvironment
 
-from agents.Agent import GraphicManualInputAgent
+from util.CommandLine import *
 
 from display.GridDisplay import *
 
@@ -54,29 +49,23 @@ class GridInteractive:
         self.display: GridDisplay
         self.display.run()
 
+    def full_run(self,file, ind, preimported_raw: list = None):
+        success = self.load_grid_from_fragment(file,ind)
+        if not success:
+            return False
+        self.grid.changeActiveEntityAgents([GraphicManualInputAgent()])
+        self.init_display(element_grid, agent_grid)
+        self.run()
+        return True
 
-def runInteractive(file, ind):
-    testGI = GridInteractive()
-    testGI.load_grid_from_fragment(file, ind)
-    grid: GridEnvironment = testGI.grid
-    grid.changeActiveEntityAgents([GraphicManualInputAgent()])
+ind_test_commands={
+    "exit":GridInteractive.run()
+}
 
-    testGI.init_display(element_grid, agent_grid)
-    testGI.run()
-
-
-element_grid = [
-    GridElementDisplay("grid_tiles/floor.png", (0, 0), (1, 1)),
-    GridElementDisplay("grid_tiles/goal.png", (0, 0), (1, 1)),
-    GridElementDisplay("grid_tiles/wall.png", (0, -0.5), (1, 1.5)),
-    GridElementDisplay("grid_tiles/curt.png", (0, -0.5), (1, 1.5)),
-    GridElementDisplay("grid_tiles/leth.png", (0, 0), (1, 1)),
-    GridElementDisplay("grid_tiles/lethwall.png", (0, -0.5), (1, 1.5)),
-    GridElementDisplay("grid_tiles/glass.png", (0, -1), (1, 2)),
-    GridElementDisplay("grid_tiles/effect.png", (0, 0), (1, 1)),
-
-    GridElementDisplay("grid_tiles/null.png", (0, -0.5), (1, 1.5))
-]
+F = open("grid_tiles/grid_tile_data.json", "r")
+element_raw = json.loads(F.read())
+F.close()
+element_grid = [GridElementDisplay(name, tuple(A), tuple(B)) for (name, A, B) in element_raw]
 agent_GL = ["red{}", "yellow{}", "green{}", "blue{}", "box"]
 agent_grid = [GridElementDisplay("grid_tiles/{}.png".format(e.format("Agent")), (0, -0.3), (1, 1.5)) for e in agent_GL]
 
@@ -133,7 +122,7 @@ def CustomTestWithCommands(file, ind, commandStack=None,
         if name == "agent":
             agentName = command[1]
             agentData = command[2]
-            agentMaker:itf.iAgent = ag_mngr.ALL_AGENTS[agentName]
+            agentMaker: itf.iAgent = ag_mngr.ALL_AGENTS[agentName]
             agent = agentMaker.from_string(agentData)
             if testMode:
                 printOutput("(This is where the agents would be set to {} {})".format(agentName, agentData))
@@ -146,97 +135,22 @@ def BulkTestWithCommands(file, rangeData: tuple[int, int], commandStack: list,
                          testMode=False, printOutput: callable = None):
     printOutput = print if printOutput is None else printOutput
     for ind in range(rangeData[0], rangeData[1]):
-        stack=commandStack.copy()
-        args=[file,ind,stack]
-        kwargs={
-            "testMode":testMode,
-            "printOutput":printOutput
+        stack = commandStack.copy()
+        args = [file, ind, stack]
+        kwargs = {
+            "testMode": testMode,
+            "printOutput": printOutput
         }
-        errmsg=CustomTestWithCommands(*args,**kwargs)
+        errmsg = CustomTestWithCommands(*args, **kwargs)
         if errmsg:
-            print("Interrupting on {} due to {}".format(ind,errmsg))
-            if errmsg=="EOF":
+            print("Interrupting on {} due to {}".format(ind, errmsg))
+            if errmsg == "EOF":
                 break
     return
 
 
-def CommandRun(commandList: list[str] = None,
-               testMode=False, printOutput: callable = None):
-    printOutput = print if printOutput is None else printOutput
-    if commandList is None:
-        commandList = []
-    commandList.reverse()
-    indCommandList = []
-    stackingIndCommands = False
-    while True:
-        if commandList:
-            command = commandList.pop().split()
-        else:
-            command = input(">>>").split()
-        if not command:
-            while "Y" not in command and "N" not in command:
-                command = input("Quit? [Y/N]")
-                command=command.upper()
-            if "Y" in command:
-                break
-            continue
-        printOutput("Main command:", command)
-        n = len(command)
-        name = command[0]
-        if name == "individual":
-            if n == 2:
-                subcommand = command[1]
-                if subcommand == "wipe":
-                    indCommandList = []
-            stackingIndCommands = not stackingIndCommands
-            if stackingIndCommands:
-                continue
-        if stackingIndCommands:
-            indCommandList.append(command)
-            continue
-        if name == "run":
-            kwargs={
-                "file":command[1],
-                "commandStack":indCommandList[::-1],
-                "testMode":testMode,
-                "printOutput":printOutput
-            }
-            if n == 3:
-                kwargs["ind"]=ind = int(command[2])
-                printOutput("Running:", command[1], kwargs["ind"])
-                CustomTestWithCommands(**kwargs)
-                continue
-            if n == 4:
-                kwargs.update({"ind1":int(command[2]),"ind2":int(command[3])})
-                printOutput("Running in bulk:", command[1],
-                            kwargs["ind1"], kwargs["ind2"])
-                BulkTestWithCommands(**kwargs)
-                continue
-            printOutput("Invalid command length (need to be 3 or 4):", command)
-
-
-def DebugRun():
-    X = [
-        "individual",
-        "agent RAA 33310",
-        "run",
-        "exit",
-        "individual",
-        "run t_base 0",
-        "individual",
-        "individual"
-    ]
-    CommandRun(X)
-    """
-        "run t_maze_0 0 999",
-        "run t_maze_1 0 999",
-    """
-
-
 def main():
-    # cProfile.run("CustomTest('t_base',0)")
-    DebugRun()
-    # CommandRun([("mirror", 0)])
+    return
 
 
 if __name__ == "__main__":

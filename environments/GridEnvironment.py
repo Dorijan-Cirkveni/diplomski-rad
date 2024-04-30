@@ -676,7 +676,7 @@ class GridEnvironment(itf.iEnvironment):
             location = entity.get(entity.LOCATION, None) if customLocation is None else customLocation
             properties = entity.properties
         goodMoves = []
-        for direction in global_moves:
+        for direction in V2DIRS:
             neigh_loc = Tadd(location, direction)
             movability = self.is_tile_movable(neigh_loc, properties)
             if movability:
@@ -915,7 +915,7 @@ keys = {
     "glas": Grid2DTile.glass,
     "effe": Grid2DTile.effect
 }
-global_moves = [(0, 0)] + V2DIRS
+global_moves = ACTIONS
 
 
 def testFN():

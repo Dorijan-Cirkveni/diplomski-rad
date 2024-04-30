@@ -184,12 +184,13 @@ class RulesetManager:
 
 
 class RuleBasedAgent(itf.iAgent):
-    def __init__(self, rulelist: list, used: set, pers_vars: set, defaultAction):
+    def __init__(self, rulelist: list, used: set, pers_vars: set = None, defaultAction=ACTIONS[-1]):
+        super().__init__()
         self.manager = RulesetManager()
         for rule in rulelist:
             self.manager.add(rule)
         self.used = used
-        self.persistent = {e: None for e in pers_vars}
+        self.persistent = {} if pers_vars is None else {e: None for e in pers_vars}
         self.defaultAction = defaultAction
 
     def receiveEnvironmentData(self, data: dict):
@@ -225,8 +226,8 @@ def ruleTest():
         RES = R1.reduce(k, v)
         print(RES[0] is R1)
         R1 = RES[0]
-    actions = V2DIRS + [(0, 0)]
-    RBA = RuleBasedAgent([R1], set(V2DIRS), ACTIONS[-1])
+    actions = ACTIONS
+    RBA = RuleBasedAgent([R1], set(ACTIONS), defaultAction=ACTIONS[-1])
     RBA.receiveEnvironmentData({'A1': True})
 
 
