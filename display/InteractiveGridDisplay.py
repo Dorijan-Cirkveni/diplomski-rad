@@ -1,13 +1,19 @@
 import json
+import os
+
 from test_json.test_json_manager import ImportManagedJSON
 import environments.EnvironmentManager as env_mngr
 import agents.AgentManager as ag_mngr
+from util.DirectoryManager import DirectoryManager
 
 GridEnvironment = env_mngr.grid_env.GridEnvironment
 
-from util.CommandLine import *
+import util.CommandLine as CLI
 
 from display.GridDisplay import *
+
+# -----------------------------------------------------
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class GridInteractive:
@@ -49,8 +55,8 @@ class GridInteractive:
         self.display: GridDisplay
         self.display.run()
 
-    def full_run(self,file, ind, preimported_raw: list = None):
-        success = self.load_grid_from_fragment(file,ind)
+    def full_run(self, file, ind, preimported_raw: list = None):
+        success = self.load_grid_from_fragment(file, ind)
         if not success:
             return False
         self.grid.changeActiveEntityAgents([GraphicManualInputAgent()])
@@ -58,28 +64,28 @@ class GridInteractive:
         self.run()
         return True
 
-ind_test_commands={
-    "exit":GridInteractive.run()
+
+ind_test_commands = {
+    "run": GridInteractive.run
 }
 
-F = open("grid_tiles/grid_tile_data.json", "r")
-element_raw = json.loads(F.read())
-F.close()
-element_grid = [GridElementDisplay(name, tuple(A), tuple(B)) for (name, A, B) in element_raw]
-agent_GL = ["red{}", "yellow{}", "green{}", "blue{}", "box"]
-agent_grid = [GridElementDisplay("grid_tiles/{}.png".format(e.format("Agent")), (0, -0.3), (1, 1.5)) for e in agent_GL]
 
+def open_elements():
+    path = os.path.abspath("../grid_tiles")
+    json_file_path = os.path.join(path, "grid_tile_data.json")
+    F = open("../grid_tiles/grid_tile_data.json", "r")
+    element_raw = json.loads(F.read())
+    F.close()
+    element_grid = []
+    agent_grid = []
 
-def CustomTest(file, ind, preimported_raw: list = None):
-    testGI = GridInteractive()
-    success = testGI.load_grid_from_fragment(file, ind)
-    if not success:
-        return False
-    # testGI.grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
-
-    testGI.init_display(element_grid, agent_grid)
-    testGI.run()
-    return True
+    for (name, A, B) in element_raw:
+        element = GridElementDisplay(path + name, tuple(A), tuple(B))
+        element_grid.append(element)
+    agent_GL = ["red{}", "yellow{}", "green{}", "blue{}", "box"]
+    for e in agent_GL:
+        element = GridElementDisplay(path + "/{}.png".format(e.format("Agent")), (0, -0.3), (1, 1.5))
+        agent_grid.append(element)
 
 
 def CustomTestWithCommands(file, ind, commandStack=None,
@@ -150,6 +156,11 @@ def BulkTestWithCommands(file, rangeData: tuple[int, int], commandStack: list,
 
 
 def main():
+    testCLI = CLI.CommandLine(ind_test_commands)
+    commands = [
+        "exit"
+    ]
+    testCLI.run(commands)
     return
 
 
