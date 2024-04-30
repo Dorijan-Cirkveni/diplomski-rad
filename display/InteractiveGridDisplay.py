@@ -15,11 +15,51 @@ from display.GridDisplay import *
 # -----------------------------------------------------
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
+path = os.path.abspath("..")
+json_file_path = os.path.join(path, "grid_tile_data.json")
+F = open("..\\grid_tiles\\grid_tile_data.json", "r")
+element_raw = json.loads(F.read())
+F.close()
+element_grid = []
+agent_grid = []
+
+for (name, A, B) in element_raw:
+    element = GridElementDisplay(os.path.join(path, name), tuple(A), tuple(B))
+    element_grid.append(element)
+agent_GL = ["red{}", "yellow{}", "green{}", "blue{}", "box"]
+for e in agent_GL:
+    element = GridElementDisplay(path + "\\grid_tiles\\{}.png".format(e.format("Agent")), (0, -0.3), (1, 1.5))
+    agent_grid.append(element)
+
 
 class GridInteractive:
-    def __init__(self):
-        self.grid: [GridEnvironment, None] = None
-        self.display: [GridDisplay, None] = None
+    def __init__(self, grid: GridEnvironment = None, display: GridDisplay = None):
+        self.grid: [GridEnvironment, None] = grid
+        self.display: [GridDisplay, None] = display
+
+    @staticmethod
+    def full_static_run(file, ind, preimported_raw: list = None):
+        ind = int(ind)
+        self = GridInteractive()
+        errormsg = self.load_grid_from_fragment(file, ind)
+        if errormsg:
+            print(file, ind, errormsg)
+            return False
+        self.grid.changeActiveEntityAgents([GraphicManualInputAgent()])
+        self.init_display(element_grid, agent_grid)
+        self.run()
+        return True
+
+    @staticmethod
+    def full_static_prep(file, ind, preimported_raw: list = None):
+        ind = int(ind)
+        self = GridInteractive()
+        errormsg = self.load_grid_from_fragment(file, ind)
+        if errormsg:
+            print(file, ind, errormsg)
+            return None
+        self.grid.changeActiveEntityAgents([GraphicManualInputAgent()])
+        return self
 
     def load_grid(self, gridEnv: GridEnvironment):
         self.grid = gridEnv.__deepcopy__()
@@ -55,6 +95,14 @@ class GridInteractive:
         self.display: GridDisplay
         self.display.run()
 
+    def init_run(self):
+        if self is None:
+            return False
+        self.init_display(element_grid, agent_grid)
+        self.display: GridDisplay
+        self.display.run()
+        return True
+
     def full_run(self, file, ind, preimported_raw: list = None):
         success = self.load_grid_from_fragment(file, ind)
         if not success:
@@ -64,102 +112,48 @@ class GridInteractive:
         self.run()
         return True
 
+    def change_agents(self, agentName, agentData):
+        agentMaker: itf.iAgent = ag_mngr.ALL_AGENTS[agentName]
+        agent = agentMaker.from_string(agentData)
+        self.grid.changeActiveEntityAgents([agent])
+
+
+def testBatch(cli: CLI.CommandLine, file:str, start: int, stop: int, subroutineName: str="individual"):
+    cli.data['file']=file
+    for ind in range(int(start), int(stop)):
+        cli.run_command(["setraw","ind",ind],"setraw")
+        cli.add_command(["subrtn", "run", subroutineName])
+
+
+def testCommandsInBulk(cli: CLI.CommandLine, indexname:str, start: int, stop: int, subroutineName: str):
+    for ind in range(start, stop):
+        cli.run_command(["setraw",indexname,ind],"setraw")
+        cli.run_command(["subrtn", "run", subroutineName], "subrtn")
+
 
 ind_test_commands = {
-    "run": GridInteractive.run
+    "quickdisplay": GridInteractive.full_static_run,
+    "prepdisplay": GridInteractive.full_static_prep,
+    "rundisplay": GridInteractive.init_run
 }
 
-
-def open_elements():
-    path = os.path.abspath("../grid_tiles")
-    json_file_path = os.path.join(path, "grid_tile_data.json")
-    F = open("../grid_tiles/grid_tile_data.json", "r")
-    element_raw = json.loads(F.read())
-    F.close()
-    element_grid = []
-    agent_grid = []
-
-    for (name, A, B) in element_raw:
-        element = GridElementDisplay(path + name, tuple(A), tuple(B))
-        element_grid.append(element)
-    agent_GL = ["red{}", "yellow{}", "green{}", "blue{}", "box"]
-    for e in agent_GL:
-        element = GridElementDisplay(path + "/{}.png".format(e.format("Agent")), (0, -0.3), (1, 1.5))
-        agent_grid.append(element)
-
-
-def CustomTestWithCommands(file, ind, commandStack=None,
-                           testMode=False, printOutput=None, raiseError=False):
-    """
-
-    :param file:
-    :param ind:
-    :param commandStack:
-    :param testMode:
-    :param printOutput:
-    :param raiseError:
-    :return:
-    """
-    printOutput = print if printOutput is None else printOutput
-    if commandStack is None:
-        commandStack = []
-    testGI = GridInteractive()
-    errmsg = testGI.load_grid_from_fragment(file, ind)
-    if errmsg is not None and raiseError:
-        raise Exception(errmsg)
-    if errmsg is not None:
-        return errmsg
-    printOutput(file, ind, testGI.grid)
-    while True:
-        if commandStack:
-            command = list(commandStack.pop())
-            print("Running command {}".format(command))
-        else:
-            command = input("Input command: ").split(" ")
-        name = command[0]
-        if name == "exit":
-            break
-        if name == "run":
-            if testMode:
-                printOutput("(This is where the simulation would run)")
-            else:
-                testGI.init_display(element_grid, agent_grid)
-                testGI.run()
-        if name == "agent":
-            agentName = command[1]
-            agentData = command[2]
-            agentMaker: itf.iAgent = ag_mngr.ALL_AGENTS[agentName]
-            agent = agentMaker.from_string(agentData)
-            if testMode:
-                printOutput("(This is where the agents would be set to {} {})".format(agentName, agentData))
-            else:
-                testGI.grid.changeActiveEntityAgents([agent])
-    return None
-
-
-def BulkTestWithCommands(file, rangeData: tuple[int, int], commandStack: list,
-                         testMode=False, printOutput: callable = None):
-    printOutput = print if printOutput is None else printOutput
-    for ind in range(rangeData[0], rangeData[1]):
-        stack = commandStack.copy()
-        args = [file, ind, stack]
-        kwargs = {
-            "testMode": testMode,
-            "printOutput": printOutput
-        }
-        errmsg = CustomTestWithCommands(*args, **kwargs)
-        if errmsg:
-            print("Interrupting on {} due to {}".format(ind, errmsg))
-            if errmsg == "EOF":
-                break
-    return
-
+all_test_commands = {
+    "testbatch":testBatch
+}
+CLI.default_guides['main']=all_test_commands
+CLI.default_guides['individual']=ind_test_commands
 
 def main():
-    testCLI = CLI.CommandLine(ind_test_commands)
-    commands = [
-        "exit"
-    ]
+    testCLI = CLI.CommandLine(all_test_commands)
+    commands = """
+    subrtn start individual individual
+    setraw base t_base
+    run quickdisplay result $base $ind
+    print result
+    subrtn end individual
+    testbatch outcome $self base 0 2
+    exit
+    """
     testCLI.run(commands)
     return
 

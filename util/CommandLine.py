@@ -39,7 +39,7 @@ class CommandSubroutine:
 
 class CommandLine:
     def __init__(self, guide: dict, testMode=False, printOutput: callable = None):
-        self.printOutput = util.UtilManager.DoNothing if printOutput is None else printOutput
+        self.printOutput = print if printOutput is None else printOutput
         self.printOutput("wasd")
         self.testMode = testMode
 
@@ -54,7 +54,7 @@ class CommandLine:
         special = {
             "self": self
         }
-        return special.get(key, self.data.get(key))
+        return special.get(key, self.data.get(key,None))
 
     def set_data(self, key, value):
         self.data[key] = value
@@ -100,9 +100,55 @@ class CommandLine:
     def clear_commands(self):
         self.main_routine = CommandSubroutine(self.main_routine.guide)
 
+    def actual_run(self,command):
+        output_address = command[2]
+        varData = command[3:]
+        vars = []
+        kvars = {}
+        for E in varData:
+            cur=kvars
+            if "|" in E:
+                L = E.split("|")
+                A, B = L[0], L[1]
+                cur=kvars
+            else:
+                vars.append(None)
+                A, B =-1,E
+                cur=vars
+            if B[0] == "$":
+                cur[A] = self.get_data(B[1:])
+                if cur[A] is None:
+                    raise Exception("i like twains :D")
+            else:
+                cur[A]=B
+        execom: callable = self.main_routine.get_command(command)
+        res = execom(*vars, **kvars)
+        self.data[output_address] = res
+
+    def run_command(self,command,comm_name):
+        if comm_name == "run":
+            return self.actual_run(command)
+        if comm_name == "setraw":
+            return self.data.setdefault(command[1], command[2])
+        if comm_name == "set":
+            return self.data.setdefault(command[1], json.loads(command[2]))
+        if comm_name == "print":
+            d=self.data[command[1]]
+            print(d)
+            return d
+        if comm_name in self.main_routine.guide:
+            return self.actual_run(["run"]+command)
+        raise Exception( command)
+
     def add_command(self, command: list):
         self.printOutput(command)
         comm_name = command[0]
+        if comm_name == "exit":
+            if self.stacks:
+                self.exit_subroutine()
+                return
+            else:
+                comm_name=""
         if not comm_name:
             command = ""
             while "Y" not in command and "N" not in command:
@@ -117,34 +163,8 @@ class CommandLine:
         if comm_name == "subrtn":
             self.command_subroutine(command)
             return
-        if comm_name == "exit":
-            if self.stacks:
-                self.exit_subroutine()
-            else:
-                exit()
-
         if self.running:
-            if comm_name == "run":
-                output_address = command[2]
-                varData = command[3:]
-                vars = []
-                kvars = {}
-                for E in varData:
-                    if "|" in E:
-                        L = E.split("|")
-                        A, B = L[0], L[1]
-                        kvars[A] = self.get_data(B)
-                    else:
-                        vars.append(self.get_data(E))
-                execom: callable = self.main_routine.get_command(command)
-                res = execom(*vars, **kvars)
-                self.data[output_address] = res
-            if comm_name == "set_raw":
-                self.data[command[1]] = command[2]
-            if comm_name == "set":
-                self.data[command[1]] = json.loads(command[2])
-            if comm_name == "print":
-                print(self.data[command[1]])
+            self.run_command(command,comm_name)
         else:
             self.main_routine.commands.append(command)
         return
@@ -155,8 +175,19 @@ class CommandLine:
         return
 
     def run(self,commands):
+        if type(commands)==str:
+            commands = commands.split("\n")
+        true_commands=[]
+        for E in commands:
+            if not E:
+                continue
+            E2=E.split()
+            E3=[e for e in E2 if e]
+            if not E3:
+                continue
+            true_commands.append(E3)
         try:
-            self.run_commands(commands)
+            self.run_commands(true_commands)
             while True:
                 S=input("Next command:")
                 E=S.split()
