@@ -44,7 +44,7 @@ def rect(E, grid):
     return
 
 
-class Grid2DTile:
+class Grid2DTile(itf.iRawListInit):
     """
     A class describing a plane tile and how it reacts to entities
     (whether it allows entities to enter its space unharmed, destroys them, prevents them from moving in...)
@@ -64,7 +64,7 @@ class Grid2DTile:
         self.agentExceptions = [] if agentExceptions is None else agentExceptions
     
     @staticmethod
-    def raw_init(self,raw):
+    def raw_init_deprecated(self,raw):
         """
 
         :param self:
@@ -321,10 +321,11 @@ class GridEnvironment(itf.iEnvironment):
         for el in raw:
             if type(el) == int:
                 X.append(Grid2DTile(el))
-            elif type(el) == tuple:
-                el: tuple
-                tileBase, tileExceptions = el
-                X.append(Grid2DTile(tileBase, tileExceptions))
+                continue
+            el: [list,tuple]
+            tileBase, tileExceptions = el
+            X.append(Grid2DTile(tileBase, tileExceptions))
+        return X
 
     @staticmethod
     def getGridRoutinesFromDict(raw: dict):
@@ -371,7 +372,10 @@ class GridEnvironment(itf.iEnvironment):
             entity.agent = agents[int(ID)]
             entities.append(entity)
 
-        tiles = defaultTileTypes
+        tiles = None
+        if "tiles" in raw:
+            tiles = GridEnvironment.generateCustomTileup(raw["tiles"])
+
         effect_types = [itf.Effect.raw_init(e) for e in raw.get("effect_types", [])]
         effects = [itf.EffectTime.raw_init(e) for e in raw.get("effects", [])]
 

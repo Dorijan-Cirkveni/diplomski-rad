@@ -24,6 +24,7 @@
   }
   ,
   {
+    "tiles": [0,0,1,2,2,2,2,2,2,2],
     "envType": "grid",
     "name": "Environment Base 2",
     "solid": "<EXT>g_base|0",
