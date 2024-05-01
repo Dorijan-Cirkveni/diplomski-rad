@@ -1,0 +1,18 @@
+wasd
+main Applying ['subrtn', 'start', 'individual', 'individual']
+individual Reading ['setraw', 'base', 't_base']
+individual Reading ['run', 'quickdisplay', 'result', '$base', '$ind']
+individual Reading ['print', '$result']
+individual Reading ['exit']
+individual Reading ['subrtn', 'end', 'individual']
+main Applying ['testbatch', 'outcome', '$self', 'base', '1', '2']
+[<util.CommandLine.CommandLine object at 0x00000246438DA490>, 'base', '1', '2'] {}
+main Applying ['setraw', 'ind', 1]
+main Applying ['subrtn', 'run', 'individual']
+individual Applying ['setraw', 'base', 't_base']
+individual Applying ['run', 'quickdisplay', 'result', '$base', '$ind']
+['t_base', 1] {}
+individual Applying ['print', '$result']
+[True]
+individual Applying ['exit']
+main Applying ['exit']

@@ -2,6 +2,7 @@ import json
 import os
 import re
 from collections import defaultdict
+from copy import deepcopy
 
 
 class FragmentedJSONException(Exception):
@@ -227,7 +228,8 @@ def ImportFragmentedJSON(main_file: str, files: dict):
             target_fragment = DescendByFragment(target_fragment, fragment_indices)
         except FragmentedJSONException as E:
             print(E)
-        arch[key] = target_fragment
+        target_copy=deepcopy(target_fragment)
+        arch[key] = target_copy
     ExtendAllApplicable(files[main_file])
     return files[main_file]
 

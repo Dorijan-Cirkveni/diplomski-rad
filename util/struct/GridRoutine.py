@@ -35,7 +35,14 @@ class GridRoutine(iRawInit):
             grid: Grid2D = Grid2D.raw_init(raw)
             return {"grids": grid}
         grids_raw: list = raw["grids"]
-        raw["grids"] = [Grid2D.raw_init(el) for el in grids_raw]
+        L=[]
+        for el in grids_raw:
+            if type(el)==Grid2D:
+                L.append(el)
+                continue
+            stepgrid=Grid2D.raw_init(el)
+            L.append(stepgrid)
+        raw["grids"]=L
         return iRawInit.raw_process_dict(raw, params)
 
     def getCurGrid(self, itid):

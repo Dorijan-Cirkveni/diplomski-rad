@@ -118,16 +118,16 @@ class GridInteractive:
         self.grid.changeActiveEntityAgents([agent])
 
 
-def testBatch(cli: CLI.CommandLine, file:str, start: int, stop: int, subroutineName: str="individual"):
-    cli.data['file']=file
+def testBatch(cli: CLI.CommandLine, file: str, start: int, stop: int, subroutineName: str = "individual"):
+    cli.data['file'] = file
     for ind in range(int(start), int(stop)):
-        cli.run_command(["setraw","ind",ind],"setraw")
+        cli.add_command(["setraw", "ind", ind])
         cli.add_command(["subrtn", "run", subroutineName])
 
 
-def testCommandsInBulk(cli: CLI.CommandLine, indexname:str, start: int, stop: int, subroutineName: str):
+def testCommandsInBulk(cli: CLI.CommandLine, indexname: str, start: int, stop: int, subroutineName: str):
     for ind in range(start, stop):
-        cli.run_command(["setraw",indexname,ind],"setraw")
+        cli.run_command(["setraw", indexname, ind], "setraw")
         cli.run_command(["subrtn", "run", subroutineName], "subrtn")
 
 
@@ -138,21 +138,31 @@ ind_test_commands = {
 }
 
 all_test_commands = {
-    "testbatch":testBatch
+    "testbatch": testBatch
 }
-CLI.default_guides['main']=all_test_commands
-CLI.default_guides['individual']=ind_test_commands
+CLI.default_guides['main'] = all_test_commands
+CLI.default_guides['individual'] = ind_test_commands
+
+printfile = path + "\\display\\debug.txt"
+open(printfile, "w").close()
+
+
+def printToFile(*args):
+    file = open(printfile, "a")
+    file.write(" ".join([str(e) for e in args])+"\n")
+    file.close()
+
 
 def main():
-    testCLI = CLI.CommandLine(all_test_commands)
+    testCLI = CLI.CommandLine(all_test_commands,printOutput=printToFile)
     commands = """
     subrtn start individual individual
     setraw base t_base
     run quickdisplay result $base $ind
-    print result
+    print $result
     exit
     subrtn end individual
-    testbatch outcome $self base 0 2
+    testbatch outcome $self base 1 2
     exit
     """
     testCLI.run(commands)

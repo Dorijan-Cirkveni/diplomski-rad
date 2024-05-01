@@ -149,7 +149,6 @@ def Combine(A, B, modes: dict):
     while cur:
         arch, key, A, B = cur.pop()
         tA, tB = type(A), type(B)
-        print("|--------", tA, tB)
         if tA != tB:
             arch[key] = B
             continue
@@ -161,7 +160,6 @@ def Combine(A, B, modes: dict):
             continue
         X=[] if isIncluded else [A]
         X.extend([B, cur])
-        print("--->",tA,tB,mode,method)
         A = method(*X)
         arch[key] = A
     return true_arch["<MAIN>"]

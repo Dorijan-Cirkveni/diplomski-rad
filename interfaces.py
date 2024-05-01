@@ -72,7 +72,13 @@ class EffectTime(iRawListInit):
 
         :param raw:
         """
-        raw[1] = Effect.raw_init(raw[1])
+        param=raw[1]
+        if type(param)==Effect:
+            param:Effect
+            res=param.copy()
+        else:
+            res=Effect.raw_init(param)
+        raw[1] = res
         return raw
 
 class iEntity(iRawDictInit):

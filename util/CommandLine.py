@@ -9,6 +9,11 @@ class EndCommandLineException(Exception):
         super().__init__("Ended successfully!")
 
 
+class RequestManualInput(Exception):
+    def __init__(self):
+        super().__init__("Ended successfully!")
+
+
 def printAll(*args, **kwargs):
     print("Args:", args)
     print("Kwargs:", kwargs)
@@ -52,16 +57,18 @@ class CommandLine:
         self.running = True
         self.index = 0
         self.data = {}
+        self.autorun=True
         return
 
-    def get_data(self, key):
+    def get_data(self, key, default=None):
         special = {
             "self": self
         }
-        return special.get(key, self.data.get(key, None))
+        return special.get(key, self.data.get(key, default))
 
     def set_data(self, key, value):
         self.data[key] = value
+        return self.data[key]
 
     def record_subroutine(self, name: str, instr_key: str, guide: dict = None):
         self.stacks.append((self.mainroutine, self.running))
@@ -129,9 +136,22 @@ class CommandLine:
                     raise Exception("i like twains :D")
             else:
                 cur[A] = B
+        self.printOutput(vars,kvars)
         execom: callable = self.mainroutine.get_command(command)
         res = execom(*vars, **kvars)
         self.data[output_address] = res
+
+    def print_command(self,args):
+        resargs=[]
+        for e in args:
+            if e[0]=="$":
+                key=e[1:]
+                e=self.get_data(key,"<{} not found>".format(key))
+            resargs.append(e)
+        self.printOutput(resargs)
+        return resargs
+
+
 
     def run_command(self, command, comm_name):
         if comm_name == "exit":
@@ -143,9 +163,9 @@ class CommandLine:
         special = {
             "pass": util.UtilManager.DoNothing,
             "run": self.actual_run,
-            "setraw": lambda E: self.data.setdefault(E[1], E[2]),
-            "set": lambda E: self.data.setdefault(E[1], json.loads(command[2])),
-            "print": lambda _: util.UtilManager.PrintAndReturn(self.get_data(command[1])),
+            "setraw": lambda E: self.set_data(E[1], E[2]),
+            "set": lambda E: self.set_data(E[1], json.loads(command[2])),
+            "print": lambda E: self.print_command(E[1:]),
             "": lambda _: util.UtilManager.ConfirmQuit()
         }
         if comm_name in special:
@@ -160,11 +180,11 @@ class CommandLine:
         self.printOutput(self.mainroutine.name,["Reading", "Applying"][self.running], command)
         comm_name = command[0]
         if comm_name == "subrtn":
-            self.command_subroutine(command)
+            ret = self.command_subroutine(command)
         elif self.running:
-            self.run_command(command, comm_name)
+            ret = self.run_command(command, comm_name)
         else:
-            self.mainroutine.commands.append(command)
+            ret = self.mainroutine.commands.append(command)
         return
 
     def run_commands(self, commands: list):
@@ -175,7 +195,7 @@ class CommandLine:
     def run(self, commands):
         if type(commands) == str:
             commands = commands.split("\n")
-        true_commands = []
+        command_queue=deque()
         for E in commands:
             if not E:
                 continue
@@ -183,17 +203,19 @@ class CommandLine:
             E3 = [e for e in E2 if e]
             if not E3:
                 continue
-            true_commands.append(E3)
-        try:
-            self.run_commands(true_commands)
-            while True:
+            command_queue.append(E3)
+        auto=True
+        while True:
+            try:
+                if not command_queue:
+                    raise RequestManualInput()
+                self.add_command(command_queue.popleft())
+            except EndCommandLineException:
+                return
+            except RequestManualInput:
                 S = input("Next command:")
                 E = S.split()
                 RE = [e for e in E if e]
-                self.add_command(RE)
-        except EndCommandLineException:
-            pass
-        return
 
 
 def DebugRun():

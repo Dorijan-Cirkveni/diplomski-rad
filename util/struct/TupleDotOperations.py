@@ -142,18 +142,6 @@ def T_generate_links(objectset: set, moves: list, direction, passiveEntityLimit=
 
 
 def main():
-    A = (4, 6)
-    B = (2, 3)
-    print(Tadd(A, B))
-    print(Tsub(A, B))
-    print(Tmul(A, B))
-    print(Tdiv(A, B))
-    OS = {(0, e) for e in range(6)}
-    OS.remove((0, 2))
-    X = [(0, 3), (0, 0)]
-    print(OS, X)
-    res = T_generate_links(OS, X, (0, 1))
-    print(res)
     return
 
 

@@ -116,7 +116,6 @@ class MirrorAgent(itf.iAgent):
         :param actions: Available actions.
         :return: object: Action to be performed.
         """
-        print(self.agent_data, self.actionMirrors)
         action = self.actionMirrors.get(self.agent_data, self.agent_data)
         return action
 

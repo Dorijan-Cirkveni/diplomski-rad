@@ -344,10 +344,11 @@ class GridEnvironment(itf.iEnvironment):
         return all_grids
 
     @staticmethod
-    def getInputFromDict(raw: dict):
+    def raw_process_dict(raw: dict, params:list):
         """
 
         :param raw:
+        :param params:
         :return:
         """
         agentDict = raw.get("agentDict", AgentManager.ALL_AGENTS)
@@ -378,10 +379,18 @@ class GridEnvironment(itf.iEnvironment):
         raw.update(extraData)
 
         active.update(set(raw.get("activeEntities", [])))
-        return all_routines, entities, active, tiles, effect_types, effects
+        res={"gridRoutines":all_routines,
+             "entities":entities,
+             "activeEntities": active,
+             "tileTypes": tiles,
+             "effectTypes": effect_types,
+             "effects": effects,
+             "extraData":extraData
+        }
+        return res
 
     @staticmethod
-    def raw_init(raw: dict):
+    def raw_init_deprecated(raw: dict):
         """
         Static method to create a GridEnvironment object from dictionary data.
 
