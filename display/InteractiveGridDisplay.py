@@ -150,6 +150,7 @@ def main():
     setraw base t_base
     run quickdisplay result $base $ind
     print result
+    exit
     subrtn end individual
     testbatch outcome $self base 0 2
     exit

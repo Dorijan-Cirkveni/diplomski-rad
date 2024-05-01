@@ -66,6 +66,21 @@ def DoNothing(*_, **__):
     return
 
 
+def ConfirmQuit(message:str="Are you sure? [Y/N]",*_,**__):
+    command = ""
+    while "Y" not in command and "N" not in command:
+        command = input(message)
+        command = command.upper()
+    if "Y" in command:
+        exit()
+    return
+
+def PrintAndReturn(var):
+    print(var)
+    return var
+
+
+
 def CallOrEqual(condition, value):
     if callable(condition):
         return condition(value)
