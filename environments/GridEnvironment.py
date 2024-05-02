@@ -1,6 +1,7 @@
 import json
 from copy import deepcopy
 
+import util.CommonExceptions
 from agents.iAgent import iAgent
 import agents.Agent
 from definitions import *
@@ -26,6 +27,15 @@ class Grid2DTile(itf.iRawListInit):
     A class describing a plane tile and how it reacts to entities
     (whether it allows entities to enter its space unharmed, destroys them, prevents them from moving in...)
     """
+
+    @staticmethod
+    def from_string(s):
+        """
+
+        :param s:
+        """
+        raise util.CommonExceptions.ImplementAsNeededException()
+
     accessible = tile_counter.use()
     goal = tile_counter.use()
     wall = tile_counter.use()
@@ -86,18 +96,8 @@ class Grid2DTile(itf.iRawListInit):
         decision = self.checkAgainst(agentData)
         return decision in {Grid2DTile.lethal, Grid2DTile.lethalwall}
 
-
-defaultTileTypes = [
-    Grid2DTile(Grid2DTile.accessible),
-    Grid2DTile(Grid2DTile.goal),
-    Grid2DTile(Grid2DTile.wall),
-    Grid2DTile(Grid2DTile.curtain),
-    Grid2DTile(Grid2DTile.lethal),
-    Grid2DTile(Grid2DTile.lethalwall),
-    Grid2DTile(Grid2DTile.glass),
-    Grid2DTile(Grid2DTile.effect),
-    Grid2DTile(Grid2DTile.accessible, [("blue", Grid2DTile.goal)])
-]
+BASETILECOUNT = 8
+defaultTileTypes = [Grid2DTile(i) for i in range(BASETILECOUNT)]
 
 # Counter for assigning unique identifiers to different types of entities
 counter = util_mngr.Counter()
@@ -126,24 +126,14 @@ class GridEntity(itf.iEntity):
         newAgent = self.agent.copy()
 
     @staticmethod
-    def raw_init(entity_data: dict):
-        """
-        Initialize a GridEntity object from dictionary data.
+    def raw_process_dict(raw: dict, params:list):
+        raw.setdefault("agent",agents.Agent.BoxAgent())
+        properties = raw["properties"]
+        raw.setdefault("displays",[0,1,2,3])
+        raw.setdefault("curdis",0)
+        properties['loc'] = tuple(properties['loc'])
+        return itf.iEntity.raw_process_dict(raw,params)
 
-        :param entity_data: dict: Data representing the entity.
-
-        :return: GridEntity: Initialized GridEntity object.
-        """
-        ID = entity_data.get("id", None)
-        if ID is None:
-            raise Exception("Entity agent ID must be specified!")
-        properties = entity_data.get("properties", dict())
-        properties['loc'] = tuple(properties.get('loc', [5, 5]))
-        displays = entity_data.get("displays", [0])
-        curdis = entity_data.get("curdis", 0)
-        states = set(entity_data.get("states", []))
-        entity = GridEntity(agents.Agent.BoxAgent(), displays, curdis, states, properties)
-        return entity
 
     def receiveEnvironmentData(self, data: dict):
         """
@@ -284,7 +274,7 @@ class GridEnvironment(itf.iEnvironment):
             if type(el) == int:
                 X.append(Grid2DTile(el))
                 continue
-            el: [list, tuple]
+            el: [list, tuple]# TODO
             tileBase, tileExceptions = el
             X.append(Grid2DTile(tileBase, tileExceptions))
         return X

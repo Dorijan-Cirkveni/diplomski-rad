@@ -24,15 +24,17 @@
   }
   ,
   {
-    "tiles": [0,1,2,("red",)],
+    "tiles": [0,1,2,[0,["image","blue",1]]],
     "envType": "grid",
     "name": "Environment Base 2",
     "solid": "<EXT>g_base|0",
     "agent": [
-      ["RAA","4213214321"]
+      ["RAA","4213214321"],
+      ["BOX",""]
     ],
     "entities": [
-      {"id": 0, "properties": {"loc": [15, 5], "viewup": true}}
+      {"id": 0, "properties": {"loc": [15, 5], "viewup": true}},
+      {"id": 1, "displays": [0,1,2,3], "curdis": 3, "properties": {"image": "blue", "loc": [15, 10]}}
     ],
     "activeEntities": [0],
     "passiveMoveLimit": 1,

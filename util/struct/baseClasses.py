@@ -27,11 +27,13 @@ class iRawInit:
         if type(raw) == dict:
             pro_d: dict
             pro_d = cls.raw_process_dict(raw, parkeys)
+            assert inspect.Parameter.empty not in pro_d
             cls: callable
             result = cls(**pro_d)
         elif type(raw) == list:
             pro_l: list
             pro_l = cls.raw_process_list(raw, parkeys)
+            assert inspect.Parameter.empty not in pro_l
             cls: callable
             result = cls(*pro_l)
         else:
