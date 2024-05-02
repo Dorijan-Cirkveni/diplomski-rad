@@ -21,29 +21,6 @@ SOLID = "solid"
 VIEWED = "viewed"
 
 
-def rect(E, grid):
-    """
-    Draw a rectangle on the return_grid with the provided value.
-
-    :param E: tuple: Coordinates and value for the rectangle (y1, x1, y2, x2, v).
-    :param grid: Grid2D: The return_grid to draw the rectangle on.
-    """
-    if len(E) != 5:
-        raise Exception("Bad rect data length!")
-    (y1, x1, y2, x2, v) = E
-    if y1 > y2:
-        y1, y2 = y2, y1
-    if x1 > x2:
-        x1, x2 = x2, x1
-    for dx in range(x1, x2 + 1):
-        grid[y1][dx] = v
-        grid[y2][dx] = v
-    for dy in range(y1, y2 + 1):
-        grid[dy][x1] = v
-        grid[dy][x2] = v
-    return
-
-
 class Grid2DTile(itf.iRawListInit):
     """
     A class describing a plane tile and how it reacts to entities
