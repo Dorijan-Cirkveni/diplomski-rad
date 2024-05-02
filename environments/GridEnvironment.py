@@ -40,20 +40,6 @@ class Grid2DTile(itf.iRawListInit):
         self.default = defaultState
         self.agentExceptions = [] if agentExceptions is None else agentExceptions
 
-    @staticmethod
-    def raw_init_deprecated(self, raw):
-        """
-
-        :param self:
-        :param raw:
-        :return:
-        """
-        if len(raw) != 2:
-            raise Exception("Bad tile data size!")
-        default, aex = raw
-        aex: list
-        return Grid2DTile(default, aex)
-
     def __repr__(self):
         if not self.agentExceptions:
             return str(self.default)
