@@ -245,6 +245,9 @@ class iEnvironment(iRawDictInit):
             effectList: list[Effect]
             for effect in effectList:
                 self.handleEffect(effect)
+                delta=effect.getDelta()
+                if delta<=0:
+                    continue
                 self.scheduledEffects.add((iter + effect.getDelta(), prio), effect)
 
     def runIteration(self, curIter=None):

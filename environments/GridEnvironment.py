@@ -114,7 +114,7 @@ class GridEnvironment(itf.iEnvironment):
                 X.append(Grid2DTile(el))
                 continue
             el: [list, tuple]# TODO
-            tileBase, tileExceptions = el
+            tileBase, tileExceptions = el[0],el[1:]
             X.append(Grid2DTile(tileBase, tileExceptions))
         return X
 
@@ -165,7 +165,7 @@ class GridEnvironment(itf.iEnvironment):
 
         tiles = None
         if "tiles" in raw:
-            tiles = GridEnvironment.generateCustomTileup(raw["tiles"])
+            tiles:list[Grid2DTile] = GridEnvironment.generateCustomTileup(raw["tiles"])
 
         effect_types = [itf.Effect.raw_init(e) for e in raw.get("effect_types", [])]
         effects = [itf.EffectTime.raw_init(e) for e in raw.get("effects", [])]
@@ -243,6 +243,24 @@ class GridEnvironment(itf.iEnvironment):
         """
         grid = self.getGrid(gridType)
         return grid.get_text_display(guide, self.taken)
+
+    def getGridByInd(self, ind:int):
+        if ind==len(self.grids):
+            return AGENTMEMORY
+        L=[SOLID,VIEWED,AGENTMEMORY]
+        print(self.grids.keys())
+        if len(self.grids)>3:
+            S=set(self.grids)
+            S-=set(L)
+            L2=list(S)
+            L2.sort()
+            L+=L2
+        return L[ind]
+
+    def getNextGridInd(self,ind:int):
+        if ind==len(self.grids)-1:
+            return 0
+        return ind+1
 
     def getTileGuide(self, entityID=None):
         tileguide = []
@@ -388,7 +406,7 @@ class GridEnvironment(itf.iEnvironment):
             for i, direction in enumerate(V2DIRS):
                 if viewdirs & (1 << i) == 0:
                     continue
-                self.view_direction(location, direction, gridData)
+                self.view_direction(location, direction, gridData, entityID=entityID)
         data["grid"] = gridData
         entityData = dict()
         for _, otherID in self.entityPriority:

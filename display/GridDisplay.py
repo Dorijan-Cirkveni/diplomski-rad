@@ -158,7 +158,7 @@ class GridDisplay:
         self.screen = None
         self.buttons = {}
         self.obsAgent = obsAgent
-        self.gridType = "solid"
+        self.gridType:int = 0
         self.iteration = 0
         self.winStatus = (-1, None)
         self.bottom_text = ">"
@@ -180,17 +180,11 @@ class GridDisplay:
         return 0
 
     def toggle_viewable(self):
-        V=list(self.grid.grids.keys())+["agentmemory"]
-        V.sort()
-        if not V:
-            raise Exception("This environment has no grid data!")
-        if self.gridType in V:
-            curind=(V.index(self.gridType)+1)%len(V)
-            self.gridType=V[curind]
-        else:
-            self.gridType=min(V)
+        self.gridType=self.grid.getNextGridInd(self.gridType)
+        gtname=self.grid.getGridByInd(self.gridType)
+
         button:Button=self.buttons["changetype"]
-        button.text="Grid mode: " + self.gridType
+        button.text="Grid mode: " + gtname
         self.show_iter()
         self.draw_frame()
         self.draw_buttons()
@@ -226,7 +220,7 @@ class GridDisplay:
 
         test = Button(
             (100, 0, 0),
-            "Grid mode: " + self.gridType,
+            "Grid mode: " + self.grid.getGridByInd(self.gridType),
             (5, 10 + 360, 190, 50),
             self.toggle_viewable
         )
@@ -300,7 +294,8 @@ class GridDisplay:
 
     def draw_frame(self, delay=0):
         self.draw_buttons()
-        data: dict = self.grid.getDisplayData(self.obsAgent,self.gridType)
+        V=list(self.grid.grids.keys()) + ["agentmemory"]
+        data: dict = self.grid.getDisplayData(self.obsAgent,V[self.gridType])
         grid: Grid2D = data.get('grid', None)
         agents: dict = data.get('agents', dict())
         if grid is None:

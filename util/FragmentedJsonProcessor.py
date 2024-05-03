@@ -1,7 +1,7 @@
 import json
 import os
 import re
-from collections import defaultdict
+from collections import defaultdict, deque
 from copy import deepcopy
 
 
@@ -172,7 +172,9 @@ def ProcessFragmentedJSON(root, fragmentNameRule=FragmentDefaultNameRule):
         :param ty:
         :return:
         """
-        if ty != str or not fragmentNameRule(cur):
+        if ty != str:
+            return False
+        if not fragmentNameRule(cur):
             return False
         fragmentedSegments.append((arch, position, cur))
         return True
@@ -201,11 +203,13 @@ def MakeMissingFilesException(missingFiles: dict):
 
 def ImportFragmentedJSON(main_file: str, files: dict):
     read_files = set()
-    unread_files: list[tuple[str, str]] = [("ROOT", main_file)]
+    unread_files_list: list[tuple[str, str]] = [("ROOT", main_file)]
+    unread_files=deque(unread_files_list)
     all_fragments = []
+    prerequisites=dict()
     missingFiles = defaultdict(list)
     while unread_files:
-        arch_file, cur_file = unread_files.pop()
+        arch_file, cur_file = unread_files.popleft()
         json_obj = files[cur_file]
         read_files.add(cur_file)
         fragments = ProcessFragmentedJSON(json_obj)
@@ -222,7 +226,10 @@ def ImportFragmentedJSON(main_file: str, files: dict):
             all_fragments.append((arch, key, fragment_name, fragment_indices))
     if missingFiles:
         raise MakeMissingFilesException(missingFiles)
-    for (arch, key, fragment_name, fragment_indices) in all_fragments:
+    for E in all_fragments:
+        print("->",E[1:])
+    while all_fragments:
+        (arch, key, fragment_name, fragment_indices)=all_fragments.pop()
         target_fragment = files[fragment_name]
         try:
             target_fragment = DescendByFragment(target_fragment, fragment_indices)
