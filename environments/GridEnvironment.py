@@ -259,13 +259,13 @@ class GridEnvironment(itf.iEnvironment):
         resgrid=grid.makeNew(lambda x:tileguide[x])
         return resgrid
 
-    def is_tile_movable(self, tilePos, agentData, gridType=SOLID):
+    def is_tile_movable(self, tilePos: tuple, entity: GridEntity, gridType=SOLID) -> bool:
         """
         Checks if the tile is movable.
 
         Args:
             tilePos (tuple): Tile position coordinates.
-            agentData: Agent data.
+            entity (GridEntity): Entity object representing the agent.
             gridType: Grid view type.
 
         Returns:
@@ -275,16 +275,16 @@ class GridEnvironment(itf.iEnvironment):
         if tileID is None:
             return False
         tile = self.tileTypes[tileID]
-        movability = tile.checkIfMovable(agentData)
+        movability = tile.checkIfMovable(entity)
         return movability
 
-    def is_tile_lethal(self, tilePos, agentData, gridType=SOLID):
+    def is_tile_lethal(self, tilePos: tuple, entity: GridEntity, gridType=SOLID) -> bool:
         """
         Checks if the tile is lethal.
 
         Args:
             tilePos (tuple): Tile position coordinates.
-            agentData: Agent data.
+            entity (GridEntity): Entity object representing the agent.
             gridType: Grid view type.
 
         Returns:
@@ -292,7 +292,7 @@ class GridEnvironment(itf.iEnvironment):
         """
         tileID = self.get_tile(tilePos, gridType)
         tile = self.tileTypes[tileID]
-        movability = tile.checkIfLethal(agentData)
+        movability = tile.checkIfLethal(entity)
         return movability
 
     def view_direction(self, position: tuple, direction: tuple, return_grid: Grid2D, opaque=None,
