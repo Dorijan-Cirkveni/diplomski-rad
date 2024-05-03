@@ -1,18 +1,10 @@
 import json
 from copy import deepcopy
 
-import util.CommonExceptions
 from agents.iAgent import iAgent
-import agents.Agent
-from definitions import *
 from agents import AgentManager
-import interfaces as itf
-from test_json.test_json_manager import ImportManagedJSON
-from util import UtilManager as util_mngr
 from util.struct.GridRoutine import GridRoutine
 from util.VisionOctant import VisionOctant
-from util.struct.Grid2D import Grid2D
-from util.struct.TupleDotOperations import *
 from util.debug.ExceptionCatchers import AssertInputTypes
 
 from environments.GridEnvElements import *
@@ -256,14 +248,9 @@ class GridEnvironment(itf.iEnvironment):
     def getTileGuide(self, entityID=None):
         tileguide = []
         entity = None if entityID is None else self.entities[entityID]
-        data = {}
-        if entity is not None:
-            entity: GridEntity
-            data = {e: True for e in entity.states}
-            data.update(entity.properties)
         for tile in self.tileTypes:
             tile: Grid2DTile
-            tiletype = tile.checkAgainst(data)
+            tiletype = tile.checkAgainst(entity)
             tileguide.append(tiletype)
         return tileguide
 
@@ -659,7 +646,7 @@ class GridEnvironment(itf.iEnvironment):
             if tileID not in range(len(self.tileTypes)):
                 raise Exception("Tile index invalid!")
             tile: Grid2DTile = self.tileTypes[tileID]
-            curtile = tile.checkAgainst(ent.properties)
+            curtile = tile.checkAgainst(ent)
             print(self.curIter, curtile)
             if curtile == Grid2DTile.goal:
                 return True

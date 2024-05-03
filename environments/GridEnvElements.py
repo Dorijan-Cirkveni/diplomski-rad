@@ -96,9 +96,9 @@ class GridEntity(itf.iEntity):
 
 class Condition(itf.iRawListInit):
     def __init__(self, raw_clauses: list, result: int):
-        clauses={e[0]:set() for e in raw_clauses}
-        for (key,values,default) in clauses:
-            S:set=clauses[key]
+        clauses = {e[0]: set() for e in raw_clauses}
+        for (key, values, default) in clauses:
+            S: set = clauses[key]
             if default in values:
                 S.add(None)
             S.update(values)
@@ -110,21 +110,21 @@ class Condition(itf.iRawListInit):
         pass
 
     @staticmethod
-    def raw_process_list(raw: list, params:list) -> list:
-        result=raw.pop()
+    def raw_process_list(raw: list, params: list) -> list:
+        result = raw.pop()
         for e in raw:
-            if type(e)!=list:
-                e=[e,True,False]
-            if len(e)==2:
+            if type(e) != list:
+                e = [e, True, False]
+            if len(e) == 2:
                 e.append(None)
-            if type(e[1])!=list:
-                e[1]=[e[1]]
-            key,values,default=e[0],e[1],e[2]
-        return itf.iRawListInit.raw_process_list([raw,result],params)
+            if type(e[1]) != list:
+                e[1] = [e[1]]
+            key, values, default = e[0], e[1], e[2]
+        return itf.iRawListInit.raw_process_list([raw, result], params)
 
-    def check(self,entity:GridEntity):
-        for key,values in self.clauses:
-            datapoint = entity.get(key,None)
+    def check(self, entity: [GridEntity, None]):
+        for key, values in self.clauses:
+            datapoint = entity.get(key, None)
             if datapoint not in values:
                 return None
         return self.result
@@ -177,7 +177,7 @@ class Grid2DTile(itf.iRawListInit):
                 assert type(el[0]) is list
         return [raw[0], L]
 
-    def checkAgainst(self, entity: GridEntity):
+    def checkAgainst(self, entity: [GridEntity, None]):
         """
         Check if the tile reacts to the given entity data.
 
@@ -186,28 +186,29 @@ class Grid2DTile(itf.iRawListInit):
         :return: int: Decision regarding how the tile reacts to the entity
         """
         decision = self.default
-        for cond in self.conditions:
+        conditions = [] if entity is None else self.conditions
+        for cond in conditions:
             res = cond.check(entity)
             if res is not None:
-                decision=res
+                decision = res
         return decision
 
-    def checkIfMovable(self, entity: GridEntity) -> bool:
+    def checkIfMovable(self, entity: [GridEntity, None]) -> bool:
         """
         Check if the tile is movable for the given entity.
 
-        :param entity: GridEntity: Entity object representing the agent.
+        :param entity: [GridEntity,None]: Entity object representing the agent.
 
         :return: bool: True if the tile is movable, False otherwise.
         """
         decision = self.checkAgainst(entity)
         return decision in default_movable
 
-    def checkIfLethal(self, entity: GridEntity) -> bool:
+    def checkIfLethal(self, entity: [GridEntity, None]) -> bool:
         """
         Check if the tile is lethal for the given entity.
 
-        :param entity: GridEntity: Entity object representing the agent.
+        :param entity: [GridEntity,None]: Entity object representing the agent.
 
         :return: bool: True if the tile is lethal, False otherwise.
         """
