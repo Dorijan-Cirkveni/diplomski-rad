@@ -53,9 +53,6 @@ class iRawInit:
         :param params:
         :return:
         """
-        D=dict()
-        for e,v in params:
-            print(type(v))
         return {e:raw.get(e,v) for e,v in params}
 
     @staticmethod

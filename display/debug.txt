@@ -6,7 +6,7 @@ individual Reading ['print', '$result']
 individual Reading ['exit']
 individual Reading ['subrtn', 'end', 'individual']
 main Applying ['testbatch', 'outcome', '$self', 'base', '1', '2']
-[<util.CommandLine.CommandLine object at 0x0000028797F06580>, 'base', '1', '2'] {}
+[<util.CommandLine.CommandLine object at 0x00000255A44FB9D0>, 'base', '1', '2'] {}
 main Applying ['setraw', 'ind', 1]
 main Applying ['subrtn', 'run', 'individual']
 individual Applying ['setraw', 'base', 't_base']

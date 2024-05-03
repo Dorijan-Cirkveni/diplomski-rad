@@ -1,10 +1,10 @@
 from copy import deepcopy
 
-import interfaces
+import util.struct.baseClasses as baseClasses
 from util.InformationCompiler import InformationCompiler
 
 
-class iAgent(interfaces.iRawInit):
+class iAgent(baseClasses.iRawInit):
     """
 
     """

@@ -15,168 +15,16 @@ from util.struct.Grid2D import Grid2D
 from util.struct.TupleDotOperations import *
 from util.debug.ExceptionCatchers import AssertInputTypes
 
+from environments.GridEnvElements import *
+
 # Counter for assigning unique identifiers to different types of tiles
 tile_counter = util_mngr.Counter()
 AGENTMEMORY = "agentmemory"
 SOLID = "solid"
 VIEWED = "viewed"
 
-
-class Grid2DTile(itf.iRawListInit):
-    """
-    A class describing a plane tile and how it reacts to entities
-    (whether it allows entities to enter its space unharmed, destroys them, prevents them from moving in...)
-    """
-
-    @staticmethod
-    def from_string(s):
-        """
-
-        :param s:
-        """
-        raise util.CommonExceptions.ImplementAsNeededException()
-
-    accessible = tile_counter.use()
-    goal = tile_counter.use()
-    wall = tile_counter.use()
-    curtain = tile_counter.use()
-    lethal = tile_counter.use()
-    lethalwall = tile_counter.use()
-    glass = tile_counter.use()
-    effect = tile_counter.use()
-    TYPE_COUNT = tile_counter.value + 1
-
-    def __init__(self, defaultState, agentExceptions=None):
-        self.default = defaultState
-        self.agentExceptions = [] if agentExceptions is None else agentExceptions
-
-    def __repr__(self):
-        if not self.agentExceptions:
-            return str(self.default)
-        return str(self.default) + " " + json.dumps(self.agentExceptions)
-
-    def checkAgainst(self, agentData: dict):
-        """
-        Check if the tile reacts to the given agent data.
-
-        :param agentData: dict: Data representing the agent
-
-        :return: int: Decision regarding how the tile reacts to the agent
-        """
-        decision = self.default
-        for (condition, value) in self.agentExceptions:
-            if type(condition) != list:
-                condition = [condition]
-            for clause in condition:
-                if not agentData.get(clause, False):
-                    break
-            else:
-                decision = value
-        return decision
-
-    def checkIfMovable(self, agentData: dict):
-        """
-        Check if the tile is movable for the given agent data.
-
-        :param agentData: dict: Data representing the agent.
-
-        :return: bool: True if the tile is movable, False otherwise.
-        """
-        decision = self.checkAgainst(agentData)
-        return decision in default_movable
-
-    def checkIfLethal(self, agentData: dict):
-        """
-        Check if the tile is lethal for the given agent data.
-
-        :param agentData: dict: Data representing the agent.
-
-        :return: bool: True if the tile is lethal, False otherwise.
-        """
-        decision = self.checkAgainst(agentData)
-        return decision in {Grid2DTile.lethal, Grid2DTile.lethalwall}
-
 BASETILECOUNT = 8
 defaultTileTypes = [Grid2DTile(i) for i in range(BASETILECOUNT)]
-
-# Counter for assigning unique identifiers to different types of entities
-counter = util_mngr.Counter()
-
-
-class GridEntity(itf.iEntity):
-    """
-    A class representing an entity in a return_grid environment.
-    """
-    S_blind = "blind"
-    S_allseeing = "allsee"
-    S_frozen = "frozen"
-    S_mirror = "mirror"
-    P_viewdirections = "viewdir"  # down=0, up=1, left=2, right=3
-    S_view_self = "viewse"
-    S_relativepos = "relpos"
-    P_visionlimit = "vision_limit"
-    LOCATION = "loc"
-    FALSE_INPUT = "falin"
-
-    def __init__(self, agent: itf.iAgent, displays: list, curdis: int,
-                 states: set = None, properties: dict = None):
-        super().__init__(agent, displays, curdis, states, properties)
-
-    def copy(self):
-        newAgent = self.agent.copy()
-
-    @staticmethod
-    def raw_process_dict(raw: dict, params:list):
-        raw.setdefault("agent",agents.Agent.BoxAgent())
-        properties = raw["properties"]
-        raw.setdefault("displays",[0,1,2,3])
-        raw.setdefault("curdis",0)
-        properties['loc'] = tuple(properties['loc'])
-        return itf.iEntity.raw_process_dict(raw,params)
-
-
-    def receiveEnvironmentData(self, data: dict):
-        """
-        Receive environment data and process it for the entity.
-
-        :param data: dict: Environment data.
-
-        :return: None
-        """
-        relativeTo = self.get(self.LOCATION, (0, 0))
-        if not self.properties.get(self.S_mirror, False):
-            data['agent_last_action'] = dict()
-        gridData: Grid2D = data.get("grid")
-        if self.S_blind in self.states:
-            gridData = Grid2D(gridData.scale, default=-1)
-            data["grid"] = gridData
-        else:
-            if gridData is None:
-                raise Exception("Not sending return_grid data properly!")
-            if self.P_visionlimit in self.properties:
-                gridData.applyManhatLimit(relativeTo, self.properties[self.P_visionlimit])
-        if self.S_relativepos in self.states:
-            newdata = dict()
-            for k, v in data.items():
-                if type(k) != tuple or len(k) != 2:
-                    newdata[k] = v
-                else:
-                    newdata[Tsub(k, relativeTo)] = v
-            data = newdata
-        return self.agent.receiveEnvironmentData(data)
-
-    def performAction(self, actions):
-        """
-        Perform actions based on the provided actions.
-
-        :param actions: dict: Actions to be performed.
-
-        :return: dict: Result of the actions.
-        """
-        if self.properties.get(self.S_frozen, False):
-            actions = dict()
-        res = self.agent.performAction(actions)
-        return res
 
 
 class GridEnvironment(itf.iEnvironment):
@@ -884,24 +732,9 @@ def readPlaneEnvironment(jsonL, index: int, agentDict: dict = None) -> GridEnvir
     return RES
 
 
-default_opaque = {Grid2DTile.wall, Grid2DTile.curtain, Grid2DTile.lethalwall, Grid2DTile.curtain}
-default_movable = {Grid2DTile.goal, Grid2DTile.curtain, Grid2DTile.lethal, Grid2DTile.accessible, Grid2DTile.effect}
-keys = {
-    "wall": Grid2DTile.wall,
-    "curt": Grid2DTile.curtain,
-    "leth": Grid2DTile.lethal,
-    "lewa": Grid2DTile.lethalwall,
-    "goal": Grid2DTile.goal,
-    "acce": Grid2DTile.accessible,
-    "glas": Grid2DTile.glass,
-    "effe": Grid2DTile.effect
-}
-global_moves = ACTIONS
-
-
 def testFN():
     test = Grid2DTile(0, [[1, 1]])
-    print(test.default, test.agentExceptions)
+    print(test.default, test.conditions)
 
 
 def main():

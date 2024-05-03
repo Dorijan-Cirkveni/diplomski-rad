@@ -1,7 +1,7 @@
 import json
 import os
 
-from util.FragmentedJsonProcessor import ImportFragmentedJSON
+from util.FragmentedJsonProcessor import *
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -46,26 +46,31 @@ def read_all_files():
 JSON_data = read_all_files()
 
 
-def ImportManagedJSON(main_file, files: dict = None, applyToMain=False):
+def ImportManagedJSON(address, files: dict = None, applyToMain=False):
     """
 
     :param applyToMain: Toggles whether the main_file entry is replaced with a full version when complete.
-    :param main_file:
+    :param address:
     :param files:
     :return:
     """
+    X=address.split("|")
+    main_file=X[0]
     files = JSON_data if files is None else files
     full_main = ImportFragmentedJSON(main_file, JSON_data)
     if applyToMain:
         files[main_file] = full_main
-    return full_main
+    res=DescendByFragment(full_main,X[1:])
+    return res
+
+def test(full_addr):
+    print(ImportManagedJSON(full_addr))
 
 
 def main():
-    res1=ImportManagedJSON("t_maze_0")[0]
-    res2=ImportManagedJSON("t_maze_1")[0]
-    print(json.dumps(res1))
-    print(json.dumps(res2))
+    X=["t_maze_0|0","t_maze_1|0","tilecond|imagered"]
+    for e in X:
+        test(e)
     return
 
 

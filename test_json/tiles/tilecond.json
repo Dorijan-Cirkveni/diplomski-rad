@@ -1,0 +1,8 @@
+{
+  "imagered": ["image","red"],
+  "imageblue": ["image","blue"],
+  "imagegreen": ["image","green"],
+  "imageyellow": ["image","yellow"],
+  "imagelime": ["image",["blue","green"]],
+  "null": []
+}
