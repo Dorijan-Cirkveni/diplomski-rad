@@ -68,6 +68,11 @@ class GridEnvironment(itf.iEnvironment):
         self.updateGrids()
 
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
+        if tileTypes is not None:
+            self.tileTypes = tileTypes
+            for i in range(len(self.tileTypes),len(defaultTileTypes)):
+                self.tileTypes.append(defaultTileTypes[i])
+
 
         self.taken = dict()
         self.init_entity_locations()
