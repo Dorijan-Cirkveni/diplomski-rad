@@ -23,7 +23,6 @@ class iRawInit:
         """
         params=inspect.signature(cls.__init__).parameters
         parkeys=[(e,params[e].default) for e in list(params)[1:]]
-        print(parkeys)
         if type(raw) == dict:
             pro_d: dict
             pro_d = cls.raw_process_dict(raw, parkeys)

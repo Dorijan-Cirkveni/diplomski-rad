@@ -88,7 +88,6 @@ class GridEnvironment(itf.iEnvironment):
             agent: iAgent = entity.agent
             memory = agent.memory
             memory.absorb_data({"grid": deepcopy(agrid)})
-            print(id(agent), "Memory:", memory.current_data)
         return
 
     def init_entity_locations(self):
@@ -97,8 +96,7 @@ class GridEnvironment(itf.iEnvironment):
             name = entity.properties.get(entity.NAME, "Untitled")
             location = entity.properties.get('loc', None)
             if location is None:
-                print("Unable to initialise Entity {} ({}) without location!".format(ID, name))
-                continue
+                raise Exception("Unable to initialise Entity {} ({}) without location!".format(ID, name))
             self.taken[location] = ID
 
     @staticmethod
@@ -248,7 +246,6 @@ class GridEnvironment(itf.iEnvironment):
         if ind==len(self.grids):
             return AGENTMEMORY
         L=[SOLID,VIEWED,AGENTMEMORY]
-        print(self.grids.keys())
         if len(self.grids)>3:
             S=set(self.grids)
             S-=set(L)
@@ -269,6 +266,7 @@ class GridEnvironment(itf.iEnvironment):
             tile: Grid2DTile
             tiletype = tile.checkAgainst(entity)
             tileguide.append(tiletype)
+        tileguide.append(-1)
         return tileguide
 
     def convertGrid(self, grid, entityID):
@@ -337,7 +335,6 @@ class GridEnvironment(itf.iEnvironment):
             addable = util_mngr.reverseIf((distance * sig, 0), axis == 1)
             start = Tadd(position, addable)
             scheck:int = self.get_tile(start, gridType, tileGuide=tileGuide)
-            # print(start, scheck)
             if scheck is None:
                 break
             used_any = False
@@ -355,7 +352,7 @@ class GridEnvironment(itf.iEnvironment):
                         break
                     L.append((temp, val))
                 vis_inc = VO_inc.step([e[1] in opaque for e in L], distance)
-                # print(temp, "".join([str(el[1]) for el in L]), vis_inc)
+                # (temp, "".join([str(el[1]) for el in L]), vis_inc)
                 for i in range(len(vis_inc)):
                     if vis_inc[i]:
                         return_grid[L[i][0]] = L[i][1]
@@ -374,7 +371,7 @@ class GridEnvironment(itf.iEnvironment):
                         break
                     L.append((temp, val))
                 vis_dec = VO_dec.step([e[1] in opaque for e in L], distance)
-                # print(temp, "".join([str(el[1]) for el in L]), vis_dec)
+                # (temp, "".join([str(el[1]) for el in L]), vis_dec)
                 for i in range(len(vis_dec)):
                     if vis_dec[i]:
                         return_grid[L[i][0]] = L[i][1]
@@ -454,6 +451,8 @@ class GridEnvironment(itf.iEnvironment):
             dict: Grid and agent display data.
         """
         if entityID is None:
+            if gridType==AGENTMEMORY:
+                return {"msg": "Agent memory requires an agent!"}
             agents = dict()
             for E in self.taken.keys():
                 self.getAgentDisplay(agents, E)
@@ -532,7 +531,8 @@ class GridEnvironment(itf.iEnvironment):
             if preserveMemory:
                 new_agent.memory = old_agent.memory
             else:
-                new_agent.memory.absorb_data({"grid": self.grids[AGENTMEMORY]})
+                agrid=self.grids[AGENTMEMORY]
+                new_agent.memory.absorb_data({"grid": deepcopy(agrid)})
             ent.agent = new_agent
         return
 
@@ -622,7 +622,6 @@ class GridEnvironment(itf.iEnvironment):
             self.taken.pop(entpos)
             self.entities[e] = None
             self.activeEntities -= {e}
-        print(self.curIter)
         self.updateGrids()
         return
 
@@ -661,7 +660,6 @@ class GridEnvironment(itf.iEnvironment):
                 raise Exception("Tile index invalid!")
             tile: Grid2DTile = self.tileTypes[tileID]
             curtile = tile.checkAgainst(ent)
-            print(self.curIter, curtile)
             if curtile == Grid2DTile.goal:
                 return True
         return False

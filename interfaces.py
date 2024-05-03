@@ -87,7 +87,7 @@ class iEntity(iRawDictInit):
                  states: set = None, properties: dict = None):
         self.displays = displays
         self.curdis = curdis
-        self.states = set() if states is None else states
+        self.states = set() if states is None else set(states)
         self.properties = dict() if properties is None else properties
         self.agent = agent
 

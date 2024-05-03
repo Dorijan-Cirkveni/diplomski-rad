@@ -101,7 +101,7 @@ class Grid2D(iCombinable):
         """
         if not M:
             return
-        for i in range(min(len(M[0]), self.scale[0])):
+        for i in range(min(len(M), self.scale[0])):
             E, E2 = self.M[i], M[i]
             for j in range(min(len(E), len(E2))):
                 E[j] = E2[j]
@@ -174,8 +174,8 @@ class Grid2D(iCombinable):
         :param stack:
         """
         other: Grid2D
-        newother=deepcopy(other)
-        newother.overlap(self,(0,0), {-1})
+        newother = deepcopy(other)
+        newother.overlap(self, (0, 0), {-1})
         return newother
 
     def CombineRecur(self, other, stack):
@@ -185,7 +185,6 @@ class Grid2D(iCombinable):
         :param stack:
         """
         self.overlap(other, (0, 0), {-1})
-        print("\n\nGir",self.unique_values())
         return self
 
     # ---------------------------
@@ -391,7 +390,10 @@ class Grid2D(iCombinable):
                 E[j] = fog
         return
 
-    def overlap(self, other, offset: tuple, ignore:set=None):
+    def overlap(self, other, offset: tuple = None, ignore: set = None):
+        print(self.unique_values(),other.unique_values())
+        if offset is None:
+            offset = (0, 0)
         if ignore is None:
             ignore = set()
         other: Grid2D
@@ -403,16 +405,18 @@ class Grid2D(iCombinable):
                 if e in ignore:
                     continue
                 self.M[i + offset[0]][j + offset[1]] = e
+        print(self.unique_values())
         return
 
 
 # [[(i * 2 + j) % 5 for j in range(10)] for i in range(10)]
 def main():
-    X = Grid2D((10, 10))
-    R = Rect([1, 1, 4, 4, 1])
-    print(R.first, R.last, R.value)
-    X.use_draw_element(R)
-    print(X.get_text_display('0123456789'))
+    X = Grid2D((5, 5))
+    Y = Grid2D((5, 5), [[-1]])
+    print(X[0])
+    print(Y[0])
+    X.overlap(Y,ignore={-1})
+    print(X[0])
     return
 
 

@@ -138,9 +138,7 @@ def ExtendAllApplicable(root):
             tav,tv=type(av),type(v)
             if "C" in keys and (tav,tv) in specialExtensions:
                 ext:iFragmentedJsonJoinable=specialExtensions[(tav,tv)]
-                print(av,v)
-                res=ext.join(av,v)
-                print(res,av,v)
+                arch[e]=ext.join(av,v)
                 continue
             if "A" not in keys:
                 arch[e]=v
@@ -226,15 +224,10 @@ def ImportFragmentedJSON(main_file: str, files: dict):
             all_fragments.append((arch, key, fragment_name, fragment_indices))
     if missingFiles:
         raise MakeMissingFilesException(missingFiles)
-    for E in all_fragments:
-        print("->",E[1:])
     while all_fragments:
         (arch, key, fragment_name, fragment_indices)=all_fragments.pop()
         target_fragment = files[fragment_name]
-        try:
-            target_fragment = DescendByFragment(target_fragment, fragment_indices)
-        except FragmentedJSONException as E:
-            print(E)
+        target_fragment = DescendByFragment(target_fragment, fragment_indices)
         target_copy=deepcopy(target_fragment)
         arch[key] = target_copy
     ExtendAllApplicable(files[main_file])
