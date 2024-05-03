@@ -70,7 +70,7 @@ class iRawInit:
         X=[e[1] for e in params]
         for i in range(n):
             X[i]=raw[i]
-        return raw
+        return X
 
     def __copy__(self):
         cls = self.__class__

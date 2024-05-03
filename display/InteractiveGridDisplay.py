@@ -162,7 +162,7 @@ def main():
     print $result
     exit
     subrtn end individual
-    testbatch outcome $self base 1 2
+    testbatch outcome $self base 0 2
     exit
     """
     testCLI.run(commands)

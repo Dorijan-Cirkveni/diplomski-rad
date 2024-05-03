@@ -468,13 +468,10 @@ class GridEnvironment(itf.iEnvironment):
         entity: GridEntity = self.entities[entityID]
         if gridType == AGENTMEMORY:
             data = entity.agent.submitData()
-            print("\n\n", id(entity.agent), "Compare:", entity.agent.memory.current_data, data)
-            print("Retrieving:")
         else:
             if entity.isInState(entity.S_blind):
                 return {"msg": "Entity blinded"}
             data = self.getEnvData(entityID)
-        print(data)
         if "grid" not in data:
             return {"msg": "ERROR:\n" + str(data)}
         grid:Grid2D = data['grid']

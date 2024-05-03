@@ -24,6 +24,7 @@
   }
   ,
   {
+    "effectTypes": [],
     "tiles": [
       0,
       "<EXT>tilebase|0",

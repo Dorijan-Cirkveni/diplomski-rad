@@ -35,12 +35,11 @@ class Effect(iRawListInit):
         :param params:
         :return:
         """
-        iRawListInit.raw_process_list(raw,params)
-        val = [None, 10, 0, [], {}]
         if not raw:
             raise Exception("Must have effect name!")
-        for i in range(len(raw)):
-            val[i] = raw[i]
+        val = iRawListInit.raw_process_list(raw,params)
+        if type(val[0])==list:
+            val[0]=tuple(val[0])
         if type(val[3]) == int:
             val[3] = {val[3]}
         return val
@@ -228,12 +227,15 @@ class iEnvironment(iRawDictInit):
             if ent is None:
                 continue
             entities.append(ent)
+        value=effect.value
+        if type(value)!=tuple:
+            value=(value,not remove)
         if remove:
             for entity in entities:
-                entity.pop(effect.value)
+                entity.pop(*value)
         else:
             for entity in entities:
-                entity.set(effect.value)
+                entity.set(*value)
 
     def setEffects(self, effects):
         return
