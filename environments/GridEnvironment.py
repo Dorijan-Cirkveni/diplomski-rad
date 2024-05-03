@@ -70,9 +70,8 @@ class GridEnvironment(itf.iEnvironment):
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes
         if tileTypes is not None:
             self.tileTypes = tileTypes
-            for i in range(len(self.tileTypes),len(defaultTileTypes)):
+            for i in range(len(self.tileTypes), len(defaultTileTypes)):
                 self.tileTypes.append(defaultTileTypes[i])
-
 
         self.taken = dict()
         self.init_entity_locations()
@@ -116,8 +115,8 @@ class GridEnvironment(itf.iEnvironment):
             if type(el) == int:
                 X.append(Grid2DTile(el))
                 continue
-            el: [list, tuple]# TODO
-            tileBase, tileExceptions = el[0],el[1:]
+            el: [list, tuple]  # TODO
+            tileBase, tileExceptions = el[0], el[1:]
             X.append(Grid2DTile(tileBase, tileExceptions))
         return X
 
@@ -168,7 +167,7 @@ class GridEnvironment(itf.iEnvironment):
 
         tiles = None
         if "tiles" in raw:
-            tiles:list[Grid2DTile] = GridEnvironment.generateCustomTileup(raw["tiles"])
+            tiles: list[Grid2DTile] = GridEnvironment.generateCustomTileup(raw["tiles"])
 
         effect_types = [itf.Effect.raw_init(e) for e in raw.get("effect_types", [])]
         effects = [itf.EffectTime.raw_init(e) for e in raw.get("effects", [])]
@@ -215,7 +214,7 @@ class GridEnvironment(itf.iEnvironment):
             default = self.grids.get(default, None)
         return self.grids.get(gridType, default)
 
-    def get_tile(self, E: tuple, gridType: str, curtime=None, tileGuide:list[int]=None):
+    def get_tile(self, E: tuple, gridType: str, curtime=None, tileGuide: list[int] = None):
         """
 
         :param E: Position coordinates.
@@ -232,9 +231,9 @@ class GridEnvironment(itf.iEnvironment):
             grid = self.gridRoutines[gridType].getCurGrid(curtime)
         if not Tinrange(E, grid.scale):
             return None
-        tilenumber=grid[E]
+        tilenumber = grid[E]
         if tileGuide:
-            tilenumber=tileGuide[tilenumber]
+            tilenumber = tileGuide[tilenumber]
         return tilenumber
 
     def text_display(self, guide, gridType):
@@ -247,22 +246,22 @@ class GridEnvironment(itf.iEnvironment):
         grid = self.getGrid(gridType)
         return grid.get_text_display(guide, self.taken)
 
-    def getGridByInd(self, ind:int):
-        if ind==len(self.grids):
+    def getGridByInd(self, ind: int):
+        if ind == len(self.grids):
             return AGENTMEMORY
-        L=[SOLID,VIEWED,AGENTMEMORY]
-        if len(self.grids)>3:
-            S=set(self.grids)
-            S-=set(L)
-            L2=list(S)
+        L = [SOLID, VIEWED, AGENTMEMORY]
+        if len(self.grids) > 3:
+            S = set(self.grids)
+            S -= set(L)
+            L2 = list(S)
             L2.sort()
-            L+=L2
+            L += L2
         return L[ind]
 
-    def getNextGridInd(self,ind:int):
-        if ind==len(self.grids)-1:
+    def getNextGridInd(self, ind: int):
+        if ind == len(self.grids) - 1:
             return 0
-        return ind+1
+        return ind + 1
 
     def getTileGuide(self, entityID=None):
         tileguide = []
@@ -276,7 +275,7 @@ class GridEnvironment(itf.iEnvironment):
 
     def convertGrid(self, grid, entityID):
         tileguide = self.getTileGuide(entityID)
-        resgrid=grid.makeNew(lambda x:tileguide[x])
+        resgrid = grid.makeNew(lambda x: tileguide[x])
         return resgrid
 
     def is_tile_movable(self, tilePos: tuple, entity: GridEntity, gridType=SOLID) -> bool:
@@ -334,12 +333,12 @@ class GridEnvironment(itf.iEnvironment):
         VO_dec = VisionOctant()
         distance = 0
         used_any = True
-        tileGuide=self.getTileGuide(entityID)
+        tileGuide = self.getTileGuide(entityID)
         while used_any:
             distance += 1
             addable = util_mngr.reverseIf((distance * sig, 0), axis == 1)
             start = Tadd(position, addable)
-            scheck:int = self.get_tile(start, gridType, tileGuide=tileGuide)
+            scheck: int = self.get_tile(start, gridType, tileGuide=tileGuide)
             if scheck is None:
                 break
             used_any = False
@@ -456,15 +455,15 @@ class GridEnvironment(itf.iEnvironment):
             dict: Grid and agent display data.
         """
         if entityID is None:
-            if gridType==AGENTMEMORY:
+            if gridType == AGENTMEMORY:
                 return {"msg": "Agent memory requires an agent!"}
             agents = dict()
             for E in self.taken.keys():
                 self.getAgentDisplay(agents, E)
             if gridType not in self.grids:
                 return {"msg": "Grid type <{}> not found".format(gridType)}
-            grid=self.grids[gridType]
-            return_grid=self.convertGrid(grid,None)
+            grid = self.grids[gridType]
+            return_grid = self.convertGrid(grid, None)
             return {"grid": return_grid, "agents": agents}
         entityID: int
         if self.entities[entityID] is None:
@@ -478,7 +477,7 @@ class GridEnvironment(itf.iEnvironment):
             data = self.getEnvData(entityID)
         if "grid" not in data:
             return {"msg": "ERROR:\n" + str(data)}
-        grid:Grid2D = data['grid']
+        grid: Grid2D = data['grid']
         agents = dict()
         for E in self.taken.keys():
             if grid[E] == -1:
@@ -536,7 +535,7 @@ class GridEnvironment(itf.iEnvironment):
             if preserveMemory:
                 new_agent.memory = old_agent.memory
             else:
-                agrid=self.grids[AGENTMEMORY]
+                agrid = self.grids[AGENTMEMORY]
                 new_agent.memory.absorb_data({"grid": deepcopy(agrid)})
             ent.agent = new_agent
         return
