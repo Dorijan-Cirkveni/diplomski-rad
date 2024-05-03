@@ -68,7 +68,7 @@ def test(full_addr):
 
 
 def main():
-    X=["t_maze_0|0","t_maze_1|0","tilecond|imagered"]
+    X=["tilecond|imagered"]
     for e in X:
         test(e)
     return

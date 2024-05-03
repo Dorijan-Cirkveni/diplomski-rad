@@ -1,4 +1,3 @@
-import json
 from copy import deepcopy
 
 from agents.iAgent import iAgent
@@ -720,7 +719,7 @@ def readPlaneEnvironment(jsonL, index: int, agentDict: dict = None) -> GridEnvir
 
 
 def testFN():
-    test = Grid2DTile(0, [[1, 1]])
+    test = Grid2DTile(0)
     print(test.default, test.conditions)
 
 

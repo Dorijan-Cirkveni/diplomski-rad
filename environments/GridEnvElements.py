@@ -97,7 +97,7 @@ class GridEntity(itf.iEntity):
 class Condition(itf.iRawListInit):
     def __init__(self, raw_clauses: list, result: int):
         clauses = {e[0]: set() for e in raw_clauses}
-        for (key, values, default) in clauses:
+        for (key, values, default) in raw_clauses:
             S: set = clauses[key]
             if default in values:
                 S.add(None)
@@ -119,11 +119,10 @@ class Condition(itf.iRawListInit):
                 e.append(None)
             if type(e[1]) != list:
                 e[1] = [e[1]]
-            key, values, default = e[0], e[1], e[2]
         return itf.iRawListInit.raw_process_list([raw, result], params)
 
     def check(self, entity: [GridEntity, None]):
-        for key, values in self.clauses:
+        for key, values in self.clauses.items():
             datapoint = entity.get(key, None)
             if datapoint not in values:
                 return None
@@ -156,7 +155,12 @@ class Grid2DTile(itf.iRawListInit):
 
     def __init__(self, defaultState, conditions: list[Condition] = None):
         self.default = defaultState
-        self.conditions = [] if conditions is None else conditions
+        self.conditions = []
+        if conditions is None:
+            return
+        for raw in conditions:
+            cond:Condition=Condition.raw_init(raw)
+            self.conditions.append(cond)
 
     def __repr__(self):
         if not self.conditions:
@@ -168,13 +172,6 @@ class Grid2DTile(itf.iRawListInit):
         L = raw[1:]
         if not L:
             return raw
-        for sel in L:
-            assert type(sel) is list
-            assert type(sel[-1]) is int
-            for el in sel[:-1]:
-                if type(el) == str:
-                    continue
-                assert type(el[0]) is list
         return [raw[0], L]
 
     def checkAgainst(self, entity: [GridEntity, None]):
@@ -235,7 +232,11 @@ def main():
     raw = ImportManagedJSON("tilebase|0")
     print(raw)
     tile: Grid2DTile = Grid2DTile.raw_init(raw)
-    print("1:", tile.default, tile.conditions)
+    print(tile.default)
+    for E in tile.conditions:
+        print(E.clauses,E.result)
+    entity=GridEntity(BoxAgent(),[0,1,2,3],0,None,{"image":"blue"})
+    print(tile.checkAgainst(entity))
     return
 
 
