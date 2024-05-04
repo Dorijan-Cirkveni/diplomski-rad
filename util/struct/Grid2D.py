@@ -256,12 +256,13 @@ class Grid2D(iCombinable):
         def distance_grid_init(E,elval):
             if elval in goal:
                 start.add(E)
-                return 0
+                return INF
             if elval in usable:
                 return INF
             return -1
         disgrid.apply_with_index(distance_grid_init)
         for i in range(INF):
+            print(start)
             newstart=set()
             if not start:
                 break
@@ -272,6 +273,7 @@ class Grid2D(iCombinable):
                 disgrid[E]=i
                 L=self.get_neighbours(E,checkUsable=usable)
                 newstart|=set(L)
+            start=newstart
         return disgrid
 
 
@@ -321,7 +323,7 @@ class Grid2D(iCombinable):
         for i, E in enumerate(self.M):
             s = ""
             for j, e in enumerate(E):
-                val = guide[e]
+                val = guide(e) if callable(guide) else guide[e]
                 if specialSpots and (i, j) in specialSpots:
                     val = translateSpecial(specialSpots[(i, j)])
                 s += str(val)
@@ -453,12 +455,29 @@ class Grid2D(iCombinable):
 
 # [[(i * 2 + j) % 5 for j in range(10)] for i in range(10)]
 def main():
-    X = Grid2D((5, 5))
-    Y = Grid2D((5, 5), [[-1]])
-    print(X[0])
-    print(Y[0])
-    X.overlap(Y,ignore={-1})
-    print(X[0])
+    X=[
+        [-1,2,0,0,0],
+        [0,0,0,2,0],
+        [0,2,0,2,0],
+        [0,0,0,2,2],
+        [-1,0,0,2,0]
+    ]
+    GR=Grid2D((5,5),X)
+    DIS=GR.get_distances_to_goal({-1},{0})
+    for E in DIS:
+        print(E)
+    E={(-1,0):"X",(20,1000):"N"}
+    def chooseDisp(n):
+        for e,v in E.items():
+            if n in range(*e):
+                return v
+        if n<10:
+            return str(n)
+        n-=10
+        if n<26:
+            return chr(65+n)
+        return ""
+    print(DIS.get_text_display(chooseDisp))
     return
 
 
