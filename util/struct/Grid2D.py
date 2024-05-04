@@ -56,7 +56,7 @@ class Rect(iGridDrawElement):
 
 class Grid2D(iCombinable):
     """
-    Class representing a 2D return_grid.
+    Class representing a 2D grid.
     """
 
     @staticmethod
@@ -74,11 +74,11 @@ class Grid2D(iCombinable):
     def __init__(self, scale: tuple, M: list[list] = None, default=0,
                  shapes: dict = None, add: list = None):
         """
-        Initialize a 2D return_grid with given dimensions.
+        Initialize a 2D grid with given dimensions.
 
-        :param scale: tuple: The dimensions of the return_grid in the format (rows, columns).
-        :param M: list[list], optional: Optional initial return_grid values. Defaults to None.
-        :param default: Default value for return_grid cells. Defaults to 0.
+        :param scale: tuple: The dimensions of the grid in the format (rows, columns).
+        :param M: list[list], optional: Optional initial grid values. Defaults to None.
+        :param default: Default value for grid cells. Defaults to 0.
 
         :raises Exception: If dimensions tuple dimensions are not 2.
         """
@@ -142,15 +142,17 @@ class Grid2D(iCombinable):
         subgrid = Grid2D.raw_init(subraw)
         self.overlap(subgrid, offset)
 
-    def makeNew(self, func: callable):
+    def makeNew(self, func: callable=None):
         """
-        Create a new return_grid by applying a function to each element in the return_grid.
+        Create a new grid by applying a function to each element in the grid.
 
         :param func: callable: Function to be applied.
 
-        :return: Grid2D: A new return_grid object with the function applied to each element.
+        :return: Grid2D: A new grid object with the function applied to each element.
         """
         newGrid = self.__deepcopy__()
+        if func is None:
+            return newGrid
         return newGrid.apply(func)
 
     # ---------------------------
@@ -200,7 +202,7 @@ class Grid2D(iCombinable):
 
     def __getitem__(self, item):
         """
-        Get an item from the return_grid.
+        Get an item from the grid.
 
         :param item: Integer or tuple index.
 
@@ -209,7 +211,7 @@ class Grid2D(iCombinable):
         -a tile value if type(item) is a tuple
 
         :raises Exception: If index is neither integer nor tuple.
-        :raises Exception: If index is out of return_grid bounds.
+        :raises Exception: If index is out of grid bounds.
         :raises Exception: If tuple index scale are not 2.
         """
         if type(item) == int:
@@ -218,7 +220,7 @@ class Grid2D(iCombinable):
             if len(item) != 2:
                 raise Exception("Index tuple scale must be 2, not {}".format(len(item)))
             if not Tinrange(item, self.scale):
-                raise Exception("Index {} not in return_grid {}".format(item, self.scale))
+                raise Exception("Index {} not in grid {}".format(item, self.scale))
             return self.M[item[0]][item[1]]
         raise Exception("Index must be int or tuple, not {}".format(type(item)))
 
@@ -227,7 +229,7 @@ class Grid2D(iCombinable):
         Get neighboring indices of a given key.
 
         :param key: tuple: The key for which neighbors are to be found.
-        :param wrapAround: int, optional: Option for wrapping around the return_grid edges. Defaults to WRAP_NONE.
+        :param wrapAround: int, optional: Option for wrapping around the grid edges. Defaults to WRAP_NONE.
         :param checkUsable: In case neighbours have to be of specific value.
         :return: list: List of neighboring indices.
         """
@@ -246,6 +248,33 @@ class Grid2D(iCombinable):
                 continue
             res.append(trueNeigh)
         return res
+
+    def get_distances_to_goal(self,goal:[int,set],usable:[int,set]):
+        INF=len(self.M)*len(self.M[0])
+        disgrid=self.makeNew()
+        start=set()
+        def distance_grid_init(E,elval):
+            if elval in goal:
+                start.add(E)
+                return 0
+            if elval in usable:
+                return INF
+            return -1
+        disgrid.apply_with_index(distance_grid_init)
+        for i in range(INF):
+            newstart=set()
+            if not start:
+                break
+            while start:
+                E=start.pop()
+                if disgrid[E]<INF:
+                    continue
+                disgrid[E]=i
+                L=self.get_neighbours(E,checkUsable=usable)
+                newstart|=set(L)
+        return disgrid
+
+
 
     def get_traverse_narrow_path(self, start: tuple, first: tuple, valid: set):
         last = start
@@ -301,11 +330,11 @@ class Grid2D(iCombinable):
 
     def hasTileOfIndex(self, E: [tuple, int]):
         """
-        Check if the return_grid contains a tile or  at the given index.
+        Check if the grid contains a tile or  at the given index.
 
         :param E: [tuple, int]: Valid index.
 
-        :return: bool: True if the return_grid contains a tile at the given index, False otherwise.
+        :return: bool: True if the grid contains a tile at the given index, False otherwise.
         """
         if type(E) == tuple:
             return Tinrange(E, self.scale)
@@ -321,14 +350,14 @@ class Grid2D(iCombinable):
 
     def __setitem__(self, key, value):
         """
-        Set an item in the return_grid.
+        Set an item in the grid.
 
         :param key: Integer or tuple index.
         :param value: Value to be set.
 
         :raises Exception: For an integer index, if column insertion value is not a list.
         :raises Exception: For a tuple index, if its scale are not 2.
-        :raises Exception: If the index is out of return_grid bounds.
+        :raises Exception: If the index is out of grid bounds.
         """
         if type(key) == int:
             if type(value) != list:
@@ -342,7 +371,7 @@ class Grid2D(iCombinable):
             if len(key) != 2:
                 print("Index tuple scale must be 2, not {}".format(len(key)))
             if not Tinrange(key, self.scale):
-                raise Exception("Index {} not in return_grid {}".format(key, self.scale))
+                raise Exception("Index {} not in grid {}".format(key, self.scale))
             self.M[key[0]][key[1]] = value
             return
         raise Exception("Index must be int or tuple, not {}".format(type(key)))
@@ -356,15 +385,28 @@ class Grid2D(iCombinable):
 
     def apply(self, func: callable):
         """
-        Apply a function to each element in the return_grid in place, then return self.
+        Apply a function to each element in the grid in place, then return self.
 
         :param func: callable: Function to be applied.
 
-        :return: Grid2D: The modified return_grid object.
+        :return: Grid2D: The modified grid object.
         """
         for i, E in enumerate(self.M):
             for j, f in enumerate(E):
                 E[j] = func(f)
+        return self
+
+    def apply_with_index(self, func: callable):
+        """
+        Apply a function to each element in the grid in place, then return self.
+
+        :param func: callable: Function to be applied.
+
+        :return: Grid2D: The modified grid object.
+        """
+        for i, E in enumerate(self.M):
+            for j, f in enumerate(E):
+                E[j] = func((i,j),f)
         return self
 
     def applyManhatLimit(self, center: tuple, maxDistance, fog=-1):

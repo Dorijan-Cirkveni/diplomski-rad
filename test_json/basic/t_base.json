@@ -10,10 +10,10 @@
     ],
     "entities": [
       {"id": 0, "displays": [0,1,2,3], "curdis": 3,
-        "properties": {"loc": [2, 5], "viewdir": 14},
+        "properties": {"image": "blue", "loc": [2, 5], "viewdir": 14},
         "states": []
       },
-      {"id": 1, "displays": [0,1,2,3], "curdis": 3, "properties": {"image": "blue", "loc": [15, 10]}}
+      {"id": 1, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [15, 10]}}
     ],
     "activeEntities": [0],
     "passiveMoveLimit": 1,
@@ -27,7 +27,7 @@
     "effectTypes": [],
     "tiles": [
       0,
-      "<EXT>tilebase|0",
+      "<EXT>tilebase|1",
       2
     ],
     "envType": "grid",
