@@ -5,40 +5,38 @@ import interfaces as itf
 import util.UtilManager as util_mngr
 
 
-class iRule:
-    def getCategories(self):
+class iRule(itf.iRawListInit):
+    """
+    A rule interface.
+    """
+    @staticmethod
+    def from_string(s):
+        """
+        ...
+        :param s:
+        """
+        pass
+
+    def check(self,data):
+        """
+        Check if data satisfies the rule.
+        :param data:
+        """
+        raise NotImplementedError
+
+    def get_keys(self):
+        """
+        Get variable names for the rule.
+        """
         raise NotImplementedError
 
     def reduce(self, variable, value):
+        """
+        Reduce using known values.
+        :param variable:
+        :param value:
+        """
         raise NotImplementedError
-
-    def __copy__(self):
-        raise NotImplementedError
-
-    def getResult(self):
-        raise NotImplementedError
-
-
-class Rule(iRule):
-    def __init__(self, conditions: dict, result):
-        self.conditions: dict = conditions
-        self.result = result
-
-    def getCategories(self):
-        return set(self.conditions.keys())
-
-    def check(self, data: dict):
-        for el, val in self.conditions.items():
-            if el not in data or data[el] != val:
-                return None
-        return self.result
-
-    def __copy__(self):
-        X = {e: v for e, v in self.conditions}
-        new = Rule(X, self.result)
-        return new
-
-    def reduce(self, variable, value):
         if variable not in self.conditions:
             return False, {}
         condition = self.conditions[value]
@@ -47,7 +45,79 @@ class Rule(iRule):
         self.conditions.pop(variable)
         return self, len(self.conditions) == 0, {variable}
 
+    def reduce_multiple(self, values:dict):
+        """
+
+        :param values:
+        :return:
+        """
+        for variable,value in values.items():
+            self.reduce(variable,value)
+        return self,
+
     def getResult(self):
+        """
+        Get result if possible.
+        """
+        raise NotImplementedError
+
+
+class Rule(iRule):
+    """
+    A basic rule.
+    """
+    def __init__(self, conditions: dict, result):
+        self.conditions: dict = conditions
+        for e,v in conditions.items():
+            if type(v)==set:
+                continue
+            if type(v)==list:
+                v=set(v)
+            else:
+                v={v}
+            self.conditions[e]=v
+        self.result = result
+
+    def get_keys(self):
+        """
+        You know by now.
+        :return:
+        """
+        return set(self.conditions.keys())
+
+    def check(self, data: dict):
+        """
+        Check
+        :param data:
+        :return:
+        """
+        for el, val in self.conditions.items():
+            val:set
+            if el not in data:
+                return None
+            if data[el] not in val:
+                return None
+        return self.result
+
+    def reduce(self, variable, value):
+        """
+        Reduce using known values.
+        :param variable:
+        :param value:
+        """
+        if variable not in self.conditions:
+            return self, False, {}
+        condition = self.conditions[value]
+        if not util_mngr.CallOrEqual(condition, value):
+            return None, False, {}
+        self.conditions.pop(variable)
+        return self, len(self.conditions) == 0, {variable}
+
+    def getResult(self):
+        """
+
+        :return:
+        """
         if self.conditions:
             return None
         return self.result
@@ -69,25 +139,19 @@ class FirstOrderRule(iRule):
         newres = self.result
         return FirstOrderRule(newconds, newres)
 
-    def getCategories(self):
+    def get_keys(self):
+        """
+
+        :return:
+        """
         return {"FO"}
 
-    def reduce(self, variable, value):
-        (categoryCondition, valueCondition) = self.conditions[-1]
-        categoryCondition: iFirstOrderCondition
-        valueCondition: iFirstOrderCondition
-        isValid, newData = categoryCondition.check(variable, self.metadata)
-        if not isValid:
-            return self, False, {}
-        isValid, newData = valueCondition.check(value, newData)
-        if not isValid:
-            return self, False, {}
-        new = self.__copy__()
-        new.conditions.pop()
-        new.metadata = newData
-        if new.conditions:
-            return new, False, {}
-        return new, True, {"FO"}
+    def reduce(self, values):
+        """
+
+        :param values:
+        """
+        raise NotImplementedError
 
     def getResult(self):
         if self.conditions:
@@ -145,7 +209,7 @@ class RulesetManager:
 
     def add(self, rule: iRule):
         ruleID = self.allocateIndex(rule)
-        X = rule.getCategories()
+        X = rule.get_keys()
         for cat in X:
             self.byElement[cat].add(ruleID)
 
@@ -221,13 +285,13 @@ def ruleTest():
         'A4': True
     }
     LX = [('A1', True), ('A2', True), ('A3', True)]
-    R1 = FirstOrderRule([],)
+    R1 = FirstOrderRule(LX,ACTIONS[0])
     for (k, v) in LX[::-1]:
         RES = R1.reduce(k, v)
         print(RES[0] is R1)
         R1 = RES[0]
     actions = ACTIONS
-    RBA = RuleBasedAgent([R1], set(ACTIONS), defaultAction=ACTIONS[-1])
+    RBA = RuleBasedAgent([R1], set(actions), defaultAction=ACTIONS[-1])
     RBA.receiveEnvironmentData({'A1': True})
 
 

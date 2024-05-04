@@ -58,7 +58,9 @@ class GridEntity(itf.iEntity):
 
         :return: None
         """
-        relativeTo = self.get(self.LOCATION, (0, 0))
+        loc=self.get(self.LOCATION, (0, 0))
+        relativeTo = loc
+        data["loc"]=loc
         if not self.properties.get(self.S_mirror, False):
             data['agent_last_action'] = dict()
         gridData: Grid2D = data.get("grid")
