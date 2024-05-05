@@ -10,13 +10,13 @@ class GridRoutine(iRawInit):
 
     def __init__(self, grids: [list[Grid2D],Grid2D], seq: list[int] = None, loop: bool = True):
         if type(grids) == Grid2D:
-            self.grids = [grids]
-            self.seq = []
+            self.grids:list[Grid2D] = [grids]
+            self.seq:list[int] = []
             self.loop = True
             return
         grids:list[Grid2D]
         self.grids:list[Grid2D] = grids
-        self.seq = seq if seq else [i for i in range(len(grids))]
+        self.seq:list[int] = seq if seq else [i for i in range(len(grids))]
         self.loop = loop
 
     @staticmethod
@@ -63,8 +63,32 @@ class GridRoutine(iRawInit):
         chosenGrid = self.grids[chosenSequence]
         return chosenGrid
 
+    def expandMirrorVertically(self,default=-1,wall=2):
+        newGrids=[]
+        a,b=self.grids[0].scale
+        newscale=(a*2+1,b)
+        for grid in self.grids:
+            newgrid=Grid2D(newscale,grid.M,default)
+            newgrid[a]=[wall]*b
+            newGrids.append(newgrid)
+        return GridRoutine(newGrids,self.seq[::],self.loop)
+
+    def duplicateMirrorVertically(self,default=-1,wall=2):
+        newGrids=[]
+        a,b=self.grids[0].scale
+        newscale=(a*2+1,b)
+        for grid in self.grids:
+            newgrid=Grid2D(newscale,grid.M,default)
+            newgrid[a]=[wall]*b
+            newGrids.append(newgrid)
+        return GridRoutine(newGrids,self.seq[::],self.loop)
+
 
 def main():
+    X=GridRoutine(Grid2D((2,5),[[0,0,1]]))
+    Y=X.duplicateMirrorVertically()
+    for e in Y.grids[0].M:
+        print(e)
     return
 
 

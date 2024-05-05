@@ -142,7 +142,7 @@ class Grid2D(iCombinable):
         subgrid = Grid2D.raw_init(subraw)
         self.overlap(subgrid, offset)
 
-    def makeNew(self, func: callable=None):
+    def makeNew(self, func: callable = None):
         """
         Create a new grid by applying a function to each element in the grid.
 
@@ -249,34 +249,34 @@ class Grid2D(iCombinable):
             res.append(trueNeigh)
         return res
 
-    def get_distances_to_goal(self,goal:[int,set],usable:[int,set]):
-        INF=len(self.M)*len(self.M[0])
-        disgrid=self.makeNew()
-        start=set()
-        def distance_grid_init(E,elval):
+    def get_distances_to_goal(self, goal: [int, set], usable: [int, set]):
+        INF = len(self.M) * len(self.M[0])
+        disgrid = self.makeNew()
+        start = set()
+
+        def distance_grid_init(E, elval):
             if elval in goal:
                 start.add(E)
                 return INF
             if elval in usable:
                 return INF
             return -1
+
         disgrid.apply_with_index(distance_grid_init)
         for i in range(INF):
             print(start)
-            newstart=set()
+            newstart = set()
             if not start:
                 break
             while start:
-                E=start.pop()
-                if disgrid[E]<INF:
+                E = start.pop()
+                if disgrid[E] < INF:
                     continue
-                disgrid[E]=i
-                L=self.get_neighbours(E,checkUsable=usable)
-                newstart|=set(L)
-            start=newstart
+                disgrid[E] = i
+                L = self.get_neighbours(E, checkUsable=usable)
+                newstart |= set(L)
+            start = newstart
         return disgrid
-
-
 
     def get_traverse_narrow_path(self, start: tuple, first: tuple, valid: set):
         last = start
@@ -317,13 +317,16 @@ class Grid2D(iCombinable):
             curS = nex
         return tree
 
-    def get_text_display(self, guide, specialSpots: dict = None,
+    def get_text_display(self, guide:callable, specialSpots: dict = None,
                          translateSpecial=lambda n: chr(ord('A') + n)):
         res = []
         for i, E in enumerate(self.M):
             s = ""
             for j, e in enumerate(E):
-                val = guide(e) if callable(guide) else guide[e]
+                if callable(guide):
+                    val = guide(e)
+                else:
+                    val = guide[e]
                 if specialSpots and (i, j) in specialSpots:
                     val = translateSpecial(specialSpots[(i, j)])
                 s += str(val)
@@ -378,6 +381,14 @@ class Grid2D(iCombinable):
             return
         raise Exception("Index must be int or tuple, not {}".format(type(key)))
 
+    def invert(self, dimension_mask:int):
+        vert,hor=divmod(dimension_mask,2)
+        print(vert,hor)
+        PARTM=self.M[::(-1)**vert]
+        NEWM=[E[::(-1)**hor] for E in PARTM]
+        return Grid2D(self.scale,NEWM)
+
+
     def use_draw_element(self, element: iGridDrawElement):
         for T, v in element.apply():
             T: tuple
@@ -408,7 +419,7 @@ class Grid2D(iCombinable):
         """
         for i, E in enumerate(self.M):
             for j, f in enumerate(E):
-                E[j] = func((i,j),f)
+                E[j] = func((i, j), f)
         return self
 
     def applyManhatLimit(self, center: tuple, maxDistance, fog=-1):
@@ -435,7 +446,7 @@ class Grid2D(iCombinable):
         return
 
     def overlap(self, other, offset: tuple = None, ignore: set = None):
-        print(self.unique_values(),other.unique_values())
+        print(self.unique_values(), other.unique_values())
         if offset is None:
             offset = (0, 0)
         if ignore is None:
@@ -452,32 +463,72 @@ class Grid2D(iCombinable):
         print(self.unique_values())
         return
 
+    def collage_v(self, other, default: int = -1, gap: int = 0, gapdefault: int = 2):
+        other: Grid2D
+        final0 = self.scale[0] + other.scale[0] + gap
+        final1 = max(self.scale[1], other.scale[1])
+        other_loc = (self.scale[0] + gap, 0)
+        newgrid = Grid2D((final0, final1), self.M, default)
+        if gap != 0:
+            gapgrid = Grid2D((1, gap), default=gapdefault)
+            newgrid.overlap(gapgrid, (self.scale[0], 0))
+        newgrid.overlap(other, (self.scale[0] + gap, 0))
+
+    def collage_h(self, other, dimension: int, default: int = -1, gap: int = 0, gapdefault: int = 2):
+        other: Grid2D
+        final0 = max(self.scale[0], other.scale[0])
+        final1 = self.scale[1] + other.scale[1] + gap
+        other_loc = (0, self.scale[1] + gap)
+        newgrid = Grid2D((final0, final1), self.M, default)
+        if gap != 0:
+            gapgrid = Grid2D((gap, 1), default=gapdefault)
+            newgrid.overlap(gapgrid, (0, self.scale[1]))
+        newgrid.overlap(other, (0, self.scale[0] + gap))
+
+
+def make_choose_disp(E):
+    """
+
+    :param E:
+    :return:
+    """
+
+    def chooseDisp(n):
+        """
+
+        :param n:
+        :return:
+        """
+        for e, v in E.items():
+            if n in range(*e):
+                return v
+        if n < 10:
+            return str(n)
+        n -= 10
+        if n < 26:
+            return chr(65 + n)
+        return ""
+
+    return chooseDisp
+
 
 # [[(i * 2 + j) % 5 for j in range(10)] for i in range(10)]
 def main():
-    X=[
-        [-1,2,0,0,0],
-        [0,0,0,2,0],
-        [0,2,0,2,0],
-        [0,0,0,2,2],
-        [-1,0,0,2,0]
+    """
+    Currently testing: Grid collage
+    :return:
+    """
+    X = [
+        [-1, 2, 1, 1, 1],
+        [1, 0, 0, 0, 0]
     ]
-    GR=Grid2D((5,5),X)
-    DIS=GR.get_distances_to_goal({-1},{0})
-    for E in DIS:
-        print(E)
-    E={(-1,0):"X",(20,1000):"N"}
-    def chooseDisp(n):
-        for e,v in E.items():
-            if n in range(*e):
-                return v
-        if n<10:
-            return str(n)
-        n-=10
-        if n<26:
-            return chr(65+n)
-        return ""
-    print(DIS.get_text_display(chooseDisp))
+    A = Grid2D((5, 5), X)
+    displayMethod:callable = lambda x:" XXXX"[x] # make_choose_disp({(-1, 0): "X", (20, 1000): "N"})
+    print(A.get_text_display(displayMethod))
+    for i in range(4):
+        B = A.invert(i)
+        print(i)
+        print(B.get_text_display(displayMethod))
     return
 
 
