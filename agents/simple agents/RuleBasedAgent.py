@@ -17,47 +17,16 @@ class iRule(itf.iRawListInit):
         """
         pass
 
-    def check(self,data):
-        """
-        Check if data satisfies the rule.
-        :param data:
-        """
-        raise NotImplementedError
-
     def get_keys(self):
         """
         Get variable names for the rule.
         """
         raise NotImplementedError
 
-    def reduce(self, variable, value):
+    def check(self,data):
         """
-        Reduce using known values.
-        :param variable:
-        :param value:
-        """
-        raise NotImplementedError
-        if variable not in self.conditions:
-            return False, {}
-        condition = self.conditions[value]
-        if not util_mngr.CallOrEqual(condition, value):
-            return False, {}
-        self.conditions.pop(variable)
-        return self, len(self.conditions) == 0, {variable}
-
-    def reduce_multiple(self, values:dict):
-        """
-
-        :param values:
-        :return:
-        """
-        for variable,value in values.items():
-            self.reduce(variable,value)
-        return self,
-
-    def getResult(self):
-        """
-        Get result if possible.
+        Check if data satisfies the rule.
+        :param data:
         """
         raise NotImplementedError
 
@@ -99,29 +68,6 @@ class Rule(iRule):
                 return None
         return self.result
 
-    def reduce(self, variable, value):
-        """
-        Reduce using known values.
-        :param variable:
-        :param value:
-        """
-        if variable not in self.conditions:
-            return self, False, {}
-        condition = self.conditions[value]
-        if not util_mngr.CallOrEqual(condition, value):
-            return None, False, {}
-        self.conditions.pop(variable)
-        return self, len(self.conditions) == 0, {variable}
-
-    def getResult(self):
-        """
-
-        :return:
-        """
-        if self.conditions:
-            return None
-        return self.result
-
 
 class iFirstOrderCondition:
     def check(self, value, metadata):
@@ -134,11 +80,6 @@ class FirstOrderRule(iRule):
         self.result = result
         self.metadata = dict()
 
-    def __copy__(self):
-        newconds = self.conditions.copy()
-        newres = self.result
-        return FirstOrderRule(newconds, newres)
-
     def get_keys(self):
         """
 
@@ -146,12 +87,11 @@ class FirstOrderRule(iRule):
         """
         return {"FO"}
 
-    def reduce(self, values):
-        """
-
-        :param values:
-        """
-        raise NotImplementedError
+    def check(self, data):
+        for condition in self.conditions:
+            condition:iFirstOrderCondition
+            raise NotImplementedError() # First order logic is too much for now
+        pass
 
     def getResult(self):
         if self.conditions:
@@ -163,19 +103,13 @@ class FirstOrderRule(iRule):
 
 
 class AscendingTestVariableCondition(iFirstOrderCondition):
-    def __init__(self, const, minval, maxval):
-        self.const = const
+    def __init__(self, minval, maxval):
         self.minval = minval
         self.maxval = maxval
 
-    def check(self, value, metadata):
-        n = len(self.const)
-        if value[:n] != self.const:
+    def check(self, value:int, metadata):
+        if type(value)!=int:
             return False
-        value: str = value[n:]
-        if not value.isdigit():
-            return False
-        value: int = int(value)
         if value not in range(self.minval, self.maxval + 1):
             return False
         cur = metadata.get('cur', None)
@@ -254,45 +188,44 @@ class RuleBasedAgent(itf.iAgent):
         for rule in rulelist:
             self.manager.add(rule)
         self.used = used
-        self.persistent = {} if pers_vars is None else {e: None for e in pers_vars}
+        self.pers_vars: set = {} if pers_vars is None else pers_vars
         self.defaultAction = defaultAction
 
     def receiveEnvironmentData(self, data: dict):
+        self.memory.step_iteration({"grid","agents","persistent"},False)
         curManager: RulesetManager = self.manager.__copy__()
         L = [e for e in self.used if e in data]
         while L:
             cat = L.pop()
             new_data = curManager.apply_data_point(cat, data[cat], data)
             L.extend(new_data)
-        for e in self.persistent:
-            if e not in data:
-                continue
-            self.persistent[e] = data[e]
+        persistent={}
+
+
 
     def performAction(self, actions):
-        action = self.defaultAction
-        for e in actions:
-            if self.persistent.get(e, None) in (None, False):
-                continue
-            action = e
+        action = self.memory.get_data([("action",self.defaultAction)])
         return action
 
 
 def ruleTest():
-    X = {
+    rule = {
         'A1': True,
         'A2': True,
-        'A4': True
+        'A3': True
+    }
+    example= {
+        'A1': True,
+        'A2': True,
+        'A4': None
     }
     LX = [('A1', True), ('A2', True), ('A3', True)]
-    R1 = FirstOrderRule(LX,ACTIONS[0])
-    for (k, v) in LX[::-1]:
-        RES = R1.reduce(k, v)
-        print(RES[0] is R1)
-        R1 = RES[0]
+    R1 = Rule(rule,('A',True))
+    print(R1.check(example))
+    example['A3']=True
+    print(R1.check(example))
     actions = ACTIONS
     RBA = RuleBasedAgent([R1], set(actions), defaultAction=ACTIONS[-1])
-    RBA.receiveEnvironmentData({'A1': True})
 
 
 def main():
