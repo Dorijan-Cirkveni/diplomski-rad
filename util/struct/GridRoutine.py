@@ -63,30 +63,19 @@ class GridRoutine(iRawInit):
         chosenGrid = self.grids[chosenSequence]
         return chosenGrid
 
-    def expandMirrorVertically(self,default=-1,wall=2):
-        newGrids=[]
-        a,b=self.grids[0].scale
-        newscale=(a*2+1,b)
-        for grid in self.grids:
-            newgrid=Grid2D(newscale,grid.M,default)
-            newgrid[a]=[wall]*b
-            newGrids.append(newgrid)
+    def expandMirror(self,dimension=0,wallsize=1,walltype=2,default=-1):
+        newGrid=Grid2D(self.grids[0].scale)
+        newGrids=[grid.collage(newGrid,dimension,default,wallsize,walltype) for grid in self.grids]
         return GridRoutine(newGrids,self.seq[::],self.loop)
 
-    def duplicateMirrorVertically(self,default=-1,wall=2):
-        newGrids=[]
-        a,b=self.grids[0].scale
-        newscale=(a*2+1,b)
-        for grid in self.grids:
-            newgrid=Grid2D(newscale,grid.M,default)
-            newgrid[a]=[wall]*b
-            newGrids.append(newgrid)
+    def duplicateMirror(self,dimension=0,wallsize=1,walltype=2):
+        newGrids=[grid.mirror(dimension,wallsize,walltype) for grid in self.grids]
         return GridRoutine(newGrids,self.seq[::],self.loop)
 
 
 def main():
     X=GridRoutine(Grid2D((2,5),[[0,0,1]]))
-    Y=X.duplicateMirrorVertically()
+    Y=X.duplicateMirror()
     for e in Y.grids[0].M:
         print(e)
     return

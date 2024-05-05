@@ -85,9 +85,9 @@ class MirrorAgent(itf.iAgent):
         mirrored_ID = int(L[0])
         keywords = {
             "O": [0, 1, 2, 3, 4],
-            "X": [1, 0, 2, 3, 4],
-            "Y": [0, 1, 3, 2, 4],
-            "B": [1, 0, 3, 2, 4]
+            "X": [2, 1, 0, 3, 4],
+            "Y": [0, 3, 2, 1, 4],
+            "B": [2, 3, 0, 1, 4]
         }
         actionbase = definitions.ACTIONS
         MA_list = L[1]
