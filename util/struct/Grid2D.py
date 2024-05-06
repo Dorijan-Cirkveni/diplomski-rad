@@ -451,14 +451,14 @@ class Grid2D(iCombinable):
         if ignore is None:
             ignore = set()
         other: Grid2D
-        A=self.scale
-        B=other.scale
-        OB=Tadd(B,offset)
-        top = Tmin(A,OB)
+        A = self.scale
+        B = other.scale
+        OB = Tadd(B, offset)
+        top = Tmin(A, OB)
         bottom = Tmax((0, 0), offset)
         for i in range(bottom[0], top[0]):
             for j in range(bottom[1], top[1]):
-                e = other[i-offset[0]][j-offset[1]]
+                e = other[i - offset[0]][j - offset[1]]
                 if e in ignore:
                     continue
                 self.M[i][j] = e
@@ -470,7 +470,7 @@ class Grid2D(iCombinable):
         final1 = max(self.scale[1], other.scale[1])
         newgrid = Grid2D((final0, final1), self.M, default)
         if gap != 0:
-            gapgrid = Grid2D((gap,final1), default=gapdefault)
+            gapgrid = Grid2D((gap, final1), default=gapdefault)
             newgrid.overlap(gapgrid, (self.scale[0], 0))
         newgrid.overlap(other, (self.scale[0] + gap, 0))
         return newgrid
@@ -481,22 +481,29 @@ class Grid2D(iCombinable):
         final1 = self.scale[1] + other.scale[1] + gap
         newgrid = Grid2D((final0, final1), self.M, default)
         if gap != 0:
-            gapgrid = Grid2D((final0,gap), default=gapdefault)
+            gapgrid = Grid2D((final0, gap), default=gapdefault)
             newgrid.overlap(gapgrid, (0, self.scale[1]))
         newgrid.overlap(other, (0, self.scale[1] + gap))
         return newgrid
 
-    def collage(self, other, dimension: int=0, default: int = -1, gap: int = 0, gapdefault: int = 2):
-        choice=self.collage_h if dimension else self.collage_v
-        E=(other,default,gap,gapdefault)
+    def collage(self, other, dimension: int = 0, default: int = -1, gap: int = 0, gapdefault: int = 2):
+        choice = self.collage_h if dimension else self.collage_v
+        E = (other, default, gap, gapdefault)
         return choice(*E)
 
     def mirror(self, dimension: int = 0, gap: int = 1, gapdefault: int = 2, swapOriginal: bool = False):
         dimension &= 1
         other = self.invert(1 << dimension)
-        A,B=reverseIf((self,other), swapOriginal)
-        A:Grid2D
-        return A.collage(B,dimension,-1,gap,gapdefault)
+        A, B = reverseIf((self, other), swapOriginal)
+        A: Grid2D
+        return A.collage(B, dimension, -1, gap, gapdefault)
+
+
+def init_framed_grid(size: tuple[int,int], frameType: int, fillType: int):
+    frame = Rect((0, 0) + Tsub(size, (1, 1)) + (frameType,))
+    grid = Grid2D(size, default=fillType)
+    grid.use_draw_element(frame)
+    return grid
 
 
 def make_choose_disp(E):
@@ -537,9 +544,9 @@ def main():
     ]
     A = Grid2D((5, 5), X)
     displayMethod: callable = lambda x: " ABCX"[x]  # make_choose_disp({(-1, 0): "X", (20, 1000): "N"})
-    print(A.get_text_display(displayMethod))
-    B:Grid2D=A.mirror(0,1)
-    print(B.get_text_display(displayMethod))
+    B: Grid2D = A.mirror(0, 1)
+    C=init_framed_grid((25,25),2,0)
+    print(C.get_text_display(displayMethod))
     return
 
 

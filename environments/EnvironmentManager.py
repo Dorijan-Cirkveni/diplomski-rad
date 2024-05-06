@@ -4,12 +4,15 @@ import util.UtilManager as util_mngr
 import interfaces as itf
 import environments.GridEnvironment as grid_env
 import environments.MazeEnvironment as maze_env
+import environments.BlindDangerTest as blind_danger_env
 import agents.AgentManager as agent_mngr
 
 # Dictionary mapping environment names to their respective environment classes
 envList = {
     "mazeBasic": maze_env.MazeEnvironment,
-    "grid": grid_env.GridEnvironment
+    "grid": grid_env.GridEnvironment,
+    "blind_danger_basic": blind_danger_env.BlindDangerBasicTest,
+    "null": None
 }
 
 
