@@ -4,7 +4,7 @@
     "name": "Hidden Danger Test 1",
     "scale":[20,20],
     "agent":["BOX",""],
-    "dangerDensity": 0.99,
-    "rand": 0
+    "dangerDensity": 0.70,
+    "rand": 333
     }
 ]

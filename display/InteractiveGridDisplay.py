@@ -169,7 +169,7 @@ def main():
     testbatch outcome $self base 0 2
     exit
     """
-    testCLI.run(commands)
+    testCLI.run("")
     return
 
 
