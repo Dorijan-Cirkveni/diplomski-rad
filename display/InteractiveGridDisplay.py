@@ -140,6 +140,7 @@ ind_test_commands = {
 all_test_commands = {
     "testbatch": testBatch
 }
+all_test_commands.update(ind_test_commands)
 CLI.default_guides['main'] = all_test_commands
 CLI.default_guides['individual'] = ind_test_commands
 
@@ -156,6 +157,9 @@ def printToFile(*args):
 def main():
     testCLI = CLI.CommandLine(all_test_commands,printOutput=printToFile)
     commands = """
+    run quickdisplay result t_bdt 0
+    """
+    com="""
     subrtn start individual individual
     setraw base t_base
     run quickdisplay result $base $ind

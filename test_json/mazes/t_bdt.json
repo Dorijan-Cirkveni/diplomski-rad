@@ -1,9 +1,10 @@
 [
   {
-        "scale":[10,10],
-        "agent":["BOX",""],
-        "name":"wasd",
-        "dangerDensity": 0.99,
-        "rand": 0
+    "envType": "blind_danger_basic",
+    "name": "Hidden Danger Test 1",
+    "scale":[20,20],
+    "agent":["BOX",""],
+    "dangerDensity": 0.99,
+    "rand": 0
     }
 ]

@@ -407,7 +407,7 @@ class GridEnvironment(itf.iEnvironment):
             for i, direction in enumerate(V2DIRS):
                 if viewdirs & (1 << i) == 0:
                     continue
-                self.view_direction(location, direction, gridData, entityID=entityID)
+                self.view_direction(location, direction, gridData, gridType=gridType, entityID=entityID)
         data["grid"] = gridData
         entityData = dict()
         for _, otherID in self.entityPriority:
@@ -474,7 +474,7 @@ class GridEnvironment(itf.iEnvironment):
         else:
             if entity.isInState(entity.S_blind):
                 return {"msg": "Entity blinded"}
-            data = self.getEnvData(entityID)
+            data = self.getEnvData(entityID,gridType)
         if "grid" not in data:
             return {"msg": "ERROR:\n" + str(data)}
         grid: Grid2D = data['grid']

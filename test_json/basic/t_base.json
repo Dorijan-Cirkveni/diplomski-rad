@@ -27,7 +27,7 @@
     "effectTypes": [],
     "tiles": [
       0,
-      "<EXT>tilebase|1",
+      "<EXT>tilebase|0",
       2
     ],
     "envType": "grid",

@@ -47,15 +47,15 @@ class BlindDangerBasicTest(GridEnvironment):
         d, m = divmod(scale[1], 2)
         a = d - 1 + m
         b = a - 1
-        solidGrid = baseGrid.copy()
+        solidGrid = deepcopy(baseGrid)
         for e in dangers:
             E = solidGrid[e]
             E[a] = _DANGER
             E[d] = _DANGER
         gridRoutines={"solid":GridRoutine(solidGrid),"viewed":GridRoutine(baseGrid)}
-        entities=[GridEntity(agent, [4], 4,properties={"loc":(1,1)})]
+        entities=[GridEntity(agent, [0,1,2,3], 0,properties={"loc":(1,1)})]
         for i in range(1,scale[1]-1):
-            gen=GridEntity(BoxAgent(), [4], 4,properties={"loc":(i,b)})
+            gen=GridEntity(BoxAgent(), [4], 0,properties={"loc":(i,b)})
             entities.append(gen)
         super().__init__(gridRoutines, entities, {0}, tileTypes, effectTypes, effects, extraData)
 
