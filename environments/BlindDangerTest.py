@@ -69,7 +69,6 @@ class BlindDangerBasicTest(GridEnvironment):
         """
         scale = raw["scale"]
         agentDict = raw.get("agentDict", AgentManager.ALL_AGENTS)
-        active = set()
         (a_type, a_str)=raw.get("agent", ("BOX",""))
         agentType: itf.iAgent = agentDict[a_type]
         agent = agentType.from_string(a_str)
@@ -82,16 +81,18 @@ class BlindDangerBasicTest(GridEnvironment):
         effects = [itf.EffectTime.raw_init(e) for e in raw.get("effects", [])]
 
         extraData = {"name": raw.get("name", "Untitled")}
+        rand=raw.get("rand",42)
+        randomizer = random.Random(rand)
         raw.update(extraData)
-
-        active.update(set(raw.get("activeEntities", [])))
         res = {
             "scale": scale,
             "agent": agent,
             "tileTypes": tiles,
             "effectTypes": effect_types,
             "effects": effects,
-            "extraData": extraData
+            "extraData": extraData,
+            "dangerDensity": raw.get("dangerDensity"),
+            "randomizer": randomizer
         }
         return res
 
@@ -141,7 +142,15 @@ class BlindDangerMazeTest(GridEnvironment):
 
 def main():
     ag=agents.Agent.ManualInputAgent((5,5),ACTIONS,"0123456789X")
-    res=BlindDangerBasicTest((10,10),ag,[],[],[],{},0.5,random.Random(42))
+    raw={
+        "scale":(10,10),
+        "agent":("BOX",'{}'),
+        "name":"wasd",
+        "dangerDensity": 0.99,
+        "rand": 0
+    }
+    res=BlindDangerBasicTest.raw_init(raw)
+    # ((10,10),ag,[],[],[],{},0.5,random.Random(42))
     print(res.text_display("0123456789X","solid"))
     print()
     print(res.text_display("0123456789X","viewed"))

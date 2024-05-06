@@ -1,0 +1,9 @@
+[
+  {
+        "scale":[10,10],
+        "agent":["BOX",""],
+        "name":"wasd",
+        "dangerDensity": 0.99,
+        "rand": 0
+    }
+]
