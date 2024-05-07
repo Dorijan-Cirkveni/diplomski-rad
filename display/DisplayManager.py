@@ -3,13 +3,20 @@ from display.DisplayGrid import *
 
 def main():
     mainframe=Test()
-    grid=GridDisplayFrame(mainframe)
+    grid_display_frame=GridDisplayFrame(mainframe)
     first=ExampleFrame(mainframe,"Example")
     second=ExampleFrameRedux(mainframe,"ExampleRedux")
+
+    test_grid=Grid2D((20,20),[[i+j for j in range(20)]for i in range(20)])
+    grid_display_frame.set_grid(test_grid)
+
     mainframe.add_frame(first)
     mainframe.add_frame(second)
-    mainframe.add_frame(grid)
-    mainframe.run(grid.name)
+    mainframe.add_frame(grid_display_frame)
+    mainframe.run(grid_display_frame.name)
+
+    test_grid=Grid2D((20,20),[[i+j for j in range(20)]for i in range(20)])
+    grid_display_frame.set_grid(test_grid)
     return
 
 

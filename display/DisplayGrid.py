@@ -1,4 +1,7 @@
 from DisplayBase import *
+from DisplayGridElement import *
+from util.struct.Grid2D import Grid2D
+from util.struct.TupleDotOperations import *
 
 
 class GridFrame(tk.Frame):
@@ -6,7 +9,8 @@ class GridFrame(tk.Frame):
     Frame for displaying a grid.
     """
 
-    def __init__(self, parent, rows, columns, cell_size=20, *args, **kwargs):
+    def __init__(self, parent, canvas_size:tuple,
+                 images:tuple[list[GridElementDisplay],list[GridElementDisplay]], *args, **kwargs):
         """
         Initialize the GridFrame.
 
@@ -15,46 +19,49 @@ class GridFrame(tk.Frame):
         :param columns: Number of columns in the grid.
         :param cell_size: Size of each grid cell in pixels.
         """
-        super().__init__(parent, *args, **kwargs)
-        self.rows = rows
-        self.columns = columns
-        self.cell_size = cell_size
+        super().__init__(parent,  *args, **kwargs)
+        self.canvas_size=canvas_size
+        self.canvas=tk.Canvas(self, width=self.canvas_size[0], height=self.canvas_size[1],
+                              bg="black", highlightthickness=0)
+        self.grid_object:Grid2D=Grid2D((20,20),default=-1)
+        self.tile_images:list[GridElementDisplay]=images[0]
+        self.agent_images:list[GridElementDisplay]=images[1]
 
-        self.cells = [[None for _ in range(columns)] for _ in range(rows)]
 
+    def update_grid(self, new_grid:Grid2D):
+        self.grid_object=new_grid
         self.create_grid()
+
 
     def create_grid(self):
         """
         Create the grid of cells.
         """
-        for row in range(self.rows):
-            for col in range(self.columns):
-                x0 = col * self.cell_size
-                y0 = row * self.cell_size
-                x1 = x0 + self.cell_size
-                y1 = y0 + self.cell_size
-                cell = tk.Canvas(self, width=self.cell_size, height=self.cell_size, bg="white", highlightthickness=0)
-                cell.grid(row=row, column=col, padx=1, pady=1)
-                cell.create_rectangle(0, 0, self.cell_size, self.cell_size, fill="white", outline="black")
-                cell.bind("<Button-1>", lambda event, row=row, col=col: self.on_cell_click(row, col))
-                self.cells[row][col] = cell
+        if self.grid_object is None:
+            return
+        grid:Grid2D=self.grid_object
+        cell_scale=Tdiv(self.canvas_size,grid.scale)
 
-    def on_cell_click(self, row, col):
-        """
-        Handle click event on a cell.
-
-        :param row: Row index of the clicked cell.
-        :param col: Column index of the clicked cell.
-        """
-        print(f"Clicked on cell ({row}, {col})")
+        fills = ["white","green","yellow","red","black"]
+        k=len(self.tile_images)
+        for row,E in enumerate(grid):
+            for col,elind in enumerate(E):
+                y0 = col * cell_scale[0]
+                x0 = row * cell_scale[1]
+                y1 = y0 + cell_scale[0]
+                x1 = x0 + cell_scale[1]
+                img=self.tile_images[elind%k]
+                loc0,scale=img.apply((x0,y0),cell_scale)
+                print(x0,y0,x1,y1)
+                self.canvas.create_rectangle(x0, y0, x1, y1, fill=fills[elind%5], outline="black")
+                # self.canvas.create_image()
 
 class GridDisplayFrame(iTkFrame):
     def __init__(self, controller: Test):
         name="GridDisplayFrame"
         super().__init__(controller,name)
 
-        self.grid_display = tk.Frame(self, bg="red")
+        self.grid_display = GridFrame(self,(600,600),get_grid_tile_images())
         self.data_display = tk.Frame(self, bg="blue")
         self.buttons = tk.Frame(self, bg="green")
 
@@ -68,12 +75,17 @@ class GridDisplayFrame(iTkFrame):
         self.grid_columnconfigure(0, weight=1)
 
         # Set sizes of subframes
-        self.grid_display.config(width=200, height=200)
+        self.grid_display.config(width=600, height=600)
         self.data_display.config(height=200)
         self.buttons.config(width=200)
 
+    def set_grid(self, grid:Grid2D):
+        self.grid_display.update_grid(grid)
+
 
 def main():
+    root=tk.Tk()
+    disp=GridDisplayFrame(root)
     return
 
 
