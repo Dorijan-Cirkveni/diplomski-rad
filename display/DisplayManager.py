@@ -14,9 +14,6 @@ def main():
     mainframe.add_frame(second)
     mainframe.add_frame(grid_display_frame)
     mainframe.run(grid_display_frame.name)
-
-    test_grid=Grid2D((20,20),[[i+j for j in range(20)]for i in range(20)])
-    grid_display_frame.set_grid(test_grid)
     return
 
 

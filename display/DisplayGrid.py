@@ -23,6 +23,8 @@ class GridFrame(tk.Frame):
         self.canvas_size=canvas_size
         self.canvas=tk.Canvas(self, width=self.canvas_size[0], height=self.canvas_size[1],
                               bg="black", highlightthickness=0)
+        self.canvas.pack()
+        self.canvas.create_rectangle(50, 50, 150, 150, fill="red")
         self.grid_object:Grid2D=Grid2D((20,20),default=-1)
         self.tile_images:list[GridElementDisplay]=images[0]
         self.agent_images:list[GridElementDisplay]=images[1]
@@ -42,7 +44,6 @@ class GridFrame(tk.Frame):
         grid:Grid2D=self.grid_object
         cell_scale=Tdiv(self.canvas_size,grid.scale)
 
-        fills = ["white","green","yellow","red","black"]
         k=len(self.tile_images)
         for row,E in enumerate(grid):
             for col,elind in enumerate(E):
@@ -52,9 +53,12 @@ class GridFrame(tk.Frame):
                 x1 = x0 + cell_scale[1]
                 img=self.tile_images[elind%k]
                 loc0,scale=img.apply((x0,y0),cell_scale)
-                print(x0,y0,x1,y1)
-                self.canvas.create_rectangle(x0, y0, x1, y1, fill=fills[elind%5], outline="black")
-                # self.canvas.create_image()
+                self.canvas.create_image(*loc0,image=img.image,anchor="nw")
+
+class GridButtons(tk.Frame):
+    def __init__(self):
+
+
 
 class GridDisplayFrame(iTkFrame):
     def __init__(self, controller: Test):
@@ -85,7 +89,11 @@ class GridDisplayFrame(iTkFrame):
 
 def main():
     root=tk.Tk()
-    disp=GridDisplayFrame(root)
+    disp=GridFrame(root,(600,600),get_grid_tile_images())
+    test_grid=Grid2D((20,20),[[(i//4+j//4) for j in range(20)]for i in range(20)])
+    disp.update_grid(test_grid)
+    disp.pack()
+    root.mainloop()
     return
 
 
