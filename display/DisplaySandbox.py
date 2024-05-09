@@ -3,8 +3,8 @@ import util.struct.Grid2D as G2Dlib
 
 
 class ExampleFrame(iTkFrame):
-    def __init__(self, controller: Test, name=None):
-        super().__init__(controller,name)
+    def __init__(self, controller: Test, name=None, screenSize=(200,200)):
+        super().__init__(controller,name, screenSize)
 
         self.label = tk.Label(self, text=f"This is Display wasd")
         self.label.pack(pady=10)
@@ -16,8 +16,8 @@ class ExampleFrame(iTkFrame):
 
 
 class ExampleFrameRedux(iTkFrame):
-    def __init__(self, controller: Test, name=None):
-        super().__init__(controller,name)
+    def __init__(self, controller: Test, name=None, screenSize=(200,200)):
+        super().__init__(controller,name, screenSize)
 
         self.label = tk.Label(self, text=f"This is Display wasd: Redux")
         self.label.pack(pady=10)

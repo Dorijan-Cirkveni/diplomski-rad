@@ -1,5 +1,4 @@
-import tkinter as tk
-from DisplayBase import *
+from DisplayBaseElements import *
 
 
 class GridConsole(iTkFrameDef):
@@ -46,36 +45,9 @@ class MainGridControls(iTkFrame):
         return
 
 
-class InputFrame(iTkFrameDef):
-    def __init__(self, master, returnFunction: callable, rule: callable, defaultValue=""):
-        self.label = None
-        self.input = None
-        self.button = None
-        super().__init__(master, returnFunction)
-        self.input: tk.Entry
-        self.input.delete(0, tk.END)
-        self.input.insert(0, defaultValue)
-        self.rule = rule
-
-    def create_widgets(self):
-        self.label = tk.Label(self, text="Iterations:")
-        self.input = tk.Entry(self)
-        self.button = tk.Button(self, text="Run", command=self.doOutput)
-        self.label.grid(row=0, column=0)
-        self.input.grid(row=0, column=1)
-        self.button.grid(row=1, column=0, columnspan=3, pady=10)
-
-    def doOutput(self):
-        s = self.input.get()
-        if not self.rule(s):
-            print("{} not valid!".format(s))
-            return
-        self.returnFunction(s)
-
-
 def main():
     root = tk.Tk()
-    app = InputFrame(root, print, str.isdigit, 1)
+    app = InputFrame(root, print, (200,200), str.isdigit, 1)
     app.pack()
     root.mainloop()
     root.mainloop()

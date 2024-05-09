@@ -1,16 +1,18 @@
 import random
 
 
-def Toper(T1, T2, oper):
+def Toper(T1, T2, oper, forceInteger):
     if len(T1) != len(T2):
         raise Exception("Bad length:{}!={}".format(T1, T2))
     X = []
     for i in range(len(T2)):
         X.append(oper(T1[i], T2[i]))
+    if forceInteger:
+        X=[int(e) for e in X]
     return tuple(X)
 
 
-def Trandom(Tmin:tuple, Tmax:tuple=None, seeder:random.Random=None, inclusive:bool=False):
+def Trandom(Tmin:tuple, Tmax:tuple=None, seeder:random.Random=None, inclusive:bool=False, forceInteger=False):
     if seeder is None:
         seeder=random.Random()
     if Tmax is None:
@@ -18,39 +20,39 @@ def Trandom(Tmin:tuple, Tmax:tuple=None, seeder:random.Random=None, inclusive:bo
         Tmin=(0,0)
     if not inclusive:
         Tmax=Tsub(Tmax,(1,1))
-    return Toper(Tmin,Tmax,lambda A,B:random.randint(A,B))
+    return Toper(Tmin, Tmax, lambda A, B: random.randint(A, B), forceInteger)
 
 
-def Tmin(T1, T2):
-    return Toper(T1, T2, lambda A, B: min(A, B))
+def Tmin(T1, T2, forceInteger=False):
+    return Toper(T1, T2, lambda A, B: min(A, B), forceInteger)
 
 
-def Tmax(T1, T2):
-    return Toper(T1, T2, lambda A, B: max(A, B))
+def Tmax(T1, T2, forceInteger=False):
+    return Toper(T1, T2, lambda A, B: max(A, B), forceInteger)
 
 
-def Tadd(T1, T2):
-    return Toper(T1, T2, lambda A, B: A + B)
+def Tadd(T1, T2, forceInteger=False):
+    return Toper(T1, T2, lambda A, B: A + B, forceInteger)
 
 
-def Tsub(T1, T2):
-    return Toper(T1, T2, lambda A, B: A - B)
+def Tsub(T1, T2, forceInteger=False):
+    return Toper(T1, T2, lambda A, B: A - B, forceInteger)
 
 
-def Tmul(T1, T2):
-    return Toper(T1, T2, lambda A, B: A * B)
+def Tmul(T1, T2, forceInteger=False):
+    return Toper(T1, T2, lambda A, B: A * B, forceInteger)
 
 
 def Tdiv(T1, T2):
-    return Toper(T1, T2, lambda A, B: A / B)
+    return Toper(T1, T2, lambda A, B: A / B, False)
 
 
 def Tfdiv(T1, T2):
-    return Toper(T1, T2, lambda A, B: A // B)
+    return Toper(T1, T2, lambda A, B: int(A // B), True)
 
 
 def Tmod(T1, T2):
-    return Toper(T1, T2, lambda A, B: A % B)
+    return Toper(T1, T2, lambda A, B: A % B, True)
 
 
 def Tmanhat(T):

@@ -1,18 +1,10 @@
-import pygame
-
-from definitions import *
-import interfaces as itf
 from test_json.test_json_manager import ImportManagedJSON
-from util.struct import TupleDotOperations as tdo
 import environments.EnvironmentManager as env_mngr
 import agents.AgentManager as ag_mngr
-from util.struct.Grid2D import *
 
 GridEnvironment = env_mngr.grid_env.GridEnvironment
 
-from agents.Agent import GraphicManualInputAgent
-
-from display.GridDisplay import *
+from display.deprecated.GridDisplay import *
 
 
 class GridInteractive:

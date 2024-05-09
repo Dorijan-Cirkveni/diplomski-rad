@@ -5,7 +5,7 @@
     ["grid_tiles/curt.png", [0, -0.5], [1, 1.5]],
     ["grid_tiles/leth.png", [0, 0], [1, 1]],
     ["grid_tiles/lethwall.png", [0, -0.5], [1, 1.5]],
-    ["grid_tiles/glass.png", [0, -0.5], [1, 2]],
+    ["grid_tiles/glass.png", [0, -0.5], [1, 1.5]],
     ["grid_tiles/effect.png", [0, 0], [1, 1]],
 
     ["grid_tiles/null.png", [0, -0.5], [1, 1.5]]

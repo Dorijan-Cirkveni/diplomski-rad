@@ -4,20 +4,19 @@ import os
 from test_json.test_json_manager import ImportManagedJSON
 import environments.EnvironmentManager as env_mngr
 import agents.AgentManager as ag_mngr
-from util.DirectoryManager import DirectoryManager
 
 GridEnvironment = env_mngr.grid_env.GridEnvironment
 
 import util.CommandLine as CLI
 
-from display.GridDisplay import *
+from display.deprecated.GridDisplay import *
 
 # -----------------------------------------------------
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-path = os.path.abspath("..")
+path = os.path.abspath("../..")
 json_file_path = os.path.join(path, "grid_tile_data.json")
-F = open("..\\grid_tiles\\grid_tile_data.json", "r")
+F = open("../../grid_tiles/grid_tile_data.json", "r")
 element_raw = json.loads(F.read())
 F.close()
 element_grid = []

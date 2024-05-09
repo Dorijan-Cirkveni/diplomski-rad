@@ -1,6 +1,7 @@
 import json
 import os
 import tkinter as tk
+from PIL import Image, ImageTk
 
 from util.struct.TupleDotOperations import *
 import environments.EnvironmentManager as env_mngr
@@ -29,33 +30,42 @@ class GridElementDisplay:
     def __init__(self, filename, offset, size, name=None):
         if name:
             while "/" in name:
-                name=name[name.index("/")+1:]
+                name = name[name.index("/") + 1:]
             if "." in name:
-                name=name[:name.index(".")]
-        self.image = tk.PhotoImage(file=filename,name=name)
+                name = name[:name.index(".")]
+        self.name=name
+        self.filename=filename
+        self.image = Image.open(filename)
+        self.curScaleImage = None
         self.offset = offset
         self.size = size
 
-    def apply(self, location:tuple, size:tuple):
+    def apply(self, location: tuple, size: tuple):
         """
         Creates an image of the appropriate size
         :param location:
         :param size:
-        :param localOffset: THe offset of the image top left corner from the location top left corner
         Expressed relative to the image's size.
         :return:
         """
 
-
-        original_width = self.image.width()
-        original_height = self.image.height()
-        og=(original_height,original_width)
+        original_width = self.image.width
+        original_height = self.image.height
+        og = (original_width, original_height)
         realOffset = Tmul(size, self.offset)
-        realSize= Tmul(size,self.size)
-        
-        true_location=Tadd(location,realOffset)
-        image_size=Tdiv(realSize,og)
-        return true_location,image_size
+        realSize = Tmul(size, self.size, forceInteger=True)
+
+        true_location = Tadd(location, realOffset)
+        ratio = Tdiv(realSize, og)
+        if ratio[0] != ratio[1]:
+            raise Exception("Distortion!")
+        if self.curScaleImage is None:
+            imgres = Image.open(self.filename)
+            imgres = imgres.resize(realSize,Image.Resampling.NEAREST)
+            photo_image = ImageTk.PhotoImage(imgres)
+            self.curScaleImage=photo_image
+        return true_location
+
 
 def get_grid_tile_images():
     element_grid = []
@@ -67,14 +77,14 @@ def get_grid_tile_images():
     for e in agent_GL:
         element = GridElementDisplay(path + "\\grid_tiles\\{}.png".format(e.format("Agent")), (0, -0.3), (1, 1.5))
         agent_grid.append(element)
-    return element_grid,agent_grid
+    return element_grid, agent_grid
 
 
 def main():
-    tkin=tk.Tk()
-    E,A=get_grid_tile_images()
+    tkin = tk.Tk()
+    E, A = get_grid_tile_images()
     for el in E:
-        print(el.image.name,el.offset,el.size)
+        print(el.image.name, el.offset, el.size)
     return
 
 
