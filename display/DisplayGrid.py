@@ -10,13 +10,13 @@ class GridFrame(iTkFrameDef):
     Frame for displaying a grid.
     """
 
-    def __init__(self, master, returnFunction: callable, screen_size: tuple[int, int],
+    def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int],
                  images: tuple[list[GridElementDisplay], list[GridElementDisplay]] = None):
 
         if images is None:
             images = get_grid_tile_images()
         self.images = images
-        super().__init__(master, returnFunction, screen_size)
+        super().__init__(master, return_lambda, screen_size)
 
     def create_widgets(self):
         print(self.screen_size)
@@ -56,11 +56,12 @@ class GridButtonFrame(iTkFrameDef):
 
     def create_widgets(self):
         size=(self.screen_size[0],50)
-        X = DBE.InputFrame(self, print, size, str.isdigit, 1)
+        X = DBE.InputFrame(self, self.return_lambda, size, str.isdigit, 1)
         X.pack()
         self.widgets["iterate"] = X
-        X = tk.Button(self, text="Exit")
+        X = tk.Button(self, text="Exit", command=self.prepare_input("Exit"))
         X.pack(side="bottom")
+
 
 
 class GridDisplayFrame(iTkFrame):
@@ -68,7 +69,7 @@ class GridDisplayFrame(iTkFrame):
         self.grid_display = None
         self.data_display = None
         self.buttons = None
-        super().__init__(controller, name, screen_size)
+        super().__init__(controller, name, screen_size, self.prepare_input)
 
     def create_widgets(self):
         gridsize = Toper((0.6, 0.8), self.screen_size, lambda a, b: int(a * b), True)
@@ -77,7 +78,7 @@ class GridDisplayFrame(iTkFrame):
         print(gridsize, datasize, buttonsize)
         self.grid_display = GridFrame(self, print, gridsize, get_grid_tile_images())
         self.data_display = tk.Frame(self, bg="blue")
-        self.buttons = GridButtonFrame(self, "Grid buttons", buttonsize)
+        self.buttons = GridButtonFrame(self, print, buttonsize)
 
         # Pack subframes
         self.grid_display.grid(row=0, column=0, sticky="nsew")
@@ -95,6 +96,12 @@ class GridDisplayFrame(iTkFrame):
 
     def set_grid(self, grid: Grid2D):
         self.grid_display.update_grid(grid)
+
+    def prepare_input(self,E):
+        print("Received input:",E)
+        if E=="Exit":
+            print("Exiting...")
+
 
 
 def main():

@@ -5,14 +5,14 @@ counter=Counter(0)
 
 
 class InputFrame(iTkFrameDef):
-    def __init__(self, master, returnFunction: callable, screen_size:tuple, rule: callable, defaultValue=""):
+    def __init__(self, master, return_lambda: callable, screen_size:tuple, rule: callable, defaultValue=""):
         print(screen_size,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
         self.label = None
         self.rule = rule
         self.input = defaultValue
         self.button = None
         self.id=counter.use()
-        super().__init__(master, returnFunction, screen_size)
+        super().__init__(master, return_lambda, screen_size)
 
     def getname(self):
         return "Input Frame"
@@ -33,7 +33,7 @@ class InputFrame(iTkFrameDef):
         if not self.rule(s):
             print("{} not valid!".format(s))
             return
-        self.returnFunction(s)
+        self.return_lambda(s)
 
 
 def main():

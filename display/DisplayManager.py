@@ -1,8 +1,10 @@
 from display.DisplayGrid import *
 
-GRIDDISPLAY="GridDisplay"
+GRIDDISPLAY = "GridDisplay"
+
+
 class SelectionFrame(iTkFrame):
-    def __init__(self, controller: Test, name="Grid Selector", screenSize=(600,600)):
+    def __init__(self, controller: Test, name="Grid Selector", screenSize=(600, 600)):
         self.label = None
         self.button = None
         super().__init__(controller, name, screenSize)
@@ -18,12 +20,12 @@ class SelectionFrame(iTkFrame):
 
 
 def main():
-    ws=(800, 600)
+    ws = (800, 600)
     mainframe = Test(ws)
-    grid_display_frame = GridDisplayFrame(mainframe,GRIDDISPLAY)
+    grid_display_frame = GridDisplayFrame(mainframe, GRIDDISPLAY)
     first = SelectionFrame(mainframe)
 
-    test_grid = Grid2D((20, 20), [[i//5 + j//5 for j in range(20)] for i in range(20)])
+    test_grid = Grid2D((20, 20), [[i // 5 + j // 5 for j in range(20)] for i in range(20)])
     grid_display_frame.set_grid(test_grid)
 
     mainframe.add_frame(first)

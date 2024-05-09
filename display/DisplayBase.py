@@ -2,14 +2,12 @@ import tkinter as tk
 
 
 class iTkFrameDef(tk.Frame):
-    def __init__(self, master, returnFunction: callable, screen_size: tuple[int, int]):
+    def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
         super().__init__(master)
         self.master = master
         self.widgets = {}
-        self.returnFunction = lambda E: print(E)
+        self.return_lambda = print if not return_lambda else return_lambda
         self.screen_size=screen_size
-        if returnFunction:
-            self.returnFunction = returnFunction
         self.create_widgets()
 
     def getname(self):
@@ -17,6 +15,9 @@ class iTkFrameDef(tk.Frame):
 
     def create_widgets(self):
         raise NotImplementedError
+    
+    def prepare_input(self,E):
+        return lambda:self.return_lambda(E)
 
 
 class Test(tk.Tk):
@@ -48,12 +49,12 @@ class Test(tk.Tk):
 
 
 class iTkFrame(iTkFrameDef):
-    def __init__(self, controller: Test, name: str, screen_size: tuple[int, int], returnFunction=lambda x: x):
+    def __init__(self, controller: Test, name: str, screen_size: tuple[int, int]):
         container = controller.container
         self.container = container
         self.name = "Test Frame" if not name else name
         self.controller = controller
-        super().__init__(container, returnFunction, screen_size)
+        super().__init__(container, return_lambda, screen_size)
 
     def getname(self):
         return self.name
