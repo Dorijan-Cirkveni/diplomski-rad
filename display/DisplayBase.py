@@ -54,7 +54,8 @@ class iTkFrame(iTkFrameDef):
         self.container = container
         self.name = "Test Frame" if not name else name
         self.controller = controller
-        super().__init__(container, return_lambda, screen_size)
+        self.data=dict()
+        super().__init__(container, self.prepare_input, screen_size)
 
     def getname(self):
         return self.name
@@ -78,6 +79,9 @@ class iTkFrame(iTkFrameDef):
             the_frame.receiveData(data)
 
         return swapFrame
+
+    def prepare_input(self,E):
+        raise NotImplementedError
 
 
 def main():

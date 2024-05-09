@@ -4,7 +4,8 @@ from DisplayBaseElements import *
 class GridConsole(iTkFrameDef):
     """
 
-    """def create_widgets(self):
+    """
+    def create_widgets(self):
         # Create the buttons
         X = {
             (0, 1): "Up",
@@ -19,22 +20,6 @@ class GridConsole(iTkFrameDef):
             button = tk.Button(self, text=txt, command=self.return_lambda(direction))
             button.grid(row=y, column=x)
             self.buttons[direction] = button
-
-
-class MainGridControls(iTkFrame):
-    def create_widgets(self):
-        choices = ['GB', 'MB', 'KB']
-        variable = tk.StringVar(self.master)
-        variable.set('GB')
-
-        w = tk.OptionMenu(self.master, variable, *choices)
-        w.pack()
-        console = GridConsole(self, self.passer)
-        console.pack()
-
-    def passer(self, E):
-        print("Passed " + str(E))
-        return
 
 
 def main():

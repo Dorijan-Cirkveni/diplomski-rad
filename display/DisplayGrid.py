@@ -23,19 +23,23 @@ class GridFrame(iTkFrameDef):
         self.canvas = tk.Canvas(self, width=self.screen_size[0], height=self.screen_size[1],
                                 bg="black", highlightthickness=0)
         self.canvas.pack()
-        self.grid_object: Grid2D = Grid2D((20, 20), default=-1)
+        self.grid_object: [Grid2D,str] = Grid2D((20, 20), default=-1)
         self.tile_images: list[GridElementDisplay] = self.images[0]
         self.agent_images: list[GridElementDisplay] = self.images[1]
 
-    def update_grid(self, new_grid: Grid2D):
+    def update_grid(self, new_grid: [Grid2D,None]):
         self.grid_object = new_grid
         self.create_grid()
+
 
     def create_grid(self):
         """
         Create the grid of cells.
         """
-        if self.grid_object is None:
+        if type(self.grid_object)!=Grid2D:
+            s=str(self.grid_object)
+            self.canvas.create_rectangle(*((0,0)+self.screen_size),fill="cyan")
+            self.canvas.create_text(Tfdiv(self.screen_size,(2,2)),text=s,font=("Consolas",42))
             return
         grid: Grid2D = self.grid_object
         cell_scale = Tdiv(self.screen_size, grid.scale)
@@ -55,13 +59,15 @@ class GridFrame(iTkFrameDef):
 class GridButtonFrame(iTkFrameDef):
 
     def create_widgets(self):
-        size=(self.screen_size[0],50)
+        size = (self.screen_size[0], 50)
         X = DBE.InputFrame(self, self.return_lambda, size, str.isdigit, 1)
         X.pack()
         self.widgets["iterate"] = X
         X = tk.Button(self, text="Exit", command=self.prepare_input("Exit"))
         X.pack(side="bottom")
-
+        return
+        w = tk.OptionMenu(self, variable, *choices)
+        w.pack()
 
 
 class GridDisplayFrame(iTkFrame):
@@ -69,16 +75,16 @@ class GridDisplayFrame(iTkFrame):
         self.grid_display = None
         self.data_display = None
         self.buttons = None
-        super().__init__(controller, name, screen_size, self.prepare_input)
+        super().__init__(controller, name, screen_size)
 
     def create_widgets(self):
         gridsize = Toper((0.6, 0.8), self.screen_size, lambda a, b: int(a * b), True)
         datasize = (gridsize[0], self.screen_size[1] - gridsize[1])
         buttonsize = (self.screen_size[0] - gridsize[0], gridsize[1])
         print(gridsize, datasize, buttonsize)
-        self.grid_display = GridFrame(self, print, gridsize, get_grid_tile_images())
+        self.grid_display = GridFrame(self, self.return_lambda, gridsize, get_grid_tile_images())
         self.data_display = tk.Frame(self, bg="blue")
-        self.buttons = GridButtonFrame(self, print, buttonsize)
+        self.buttons = GridButtonFrame(self, self.return_lambda, buttonsize)
 
         # Pack subframes
         self.grid_display.grid(row=0, column=0, sticky="nsew")
@@ -94,21 +100,21 @@ class GridDisplayFrame(iTkFrame):
         self.data_display.config(height=datasize[1])
         self.buttons.config(width=buttonsize[0])
 
-    def set_grid(self, grid: Grid2D):
+    def set_grid(self, grid: Grid2D=None):
         self.grid_display.update_grid(grid)
 
-    def prepare_input(self,E):
-        print("Received input:",E)
-        if E=="Exit":
+    def prepare_input(self, E):
+        print("Received input:", E)
+        if E == "Exit":
             print("Exiting...")
-
+            self.swapFrameFactory("Grid Selector")()
 
 
 def main():
     root = tk.Tk()
     disp = GridFrame(root, print, (600, 600), get_grid_tile_images())
     test_grid = Grid2D((20, 20), [[(i // 4 + j // 4) for j in range(20)] for i in range(20)])
-    disp.update_grid(test_grid)
+    disp.update_grid("None")
     disp.pack()
     root.mainloop()
     return

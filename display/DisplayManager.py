@@ -18,6 +18,9 @@ class SelectionFrame(iTkFrame):
     def getname(self):
         return self.name
 
+    def prepare_input(self, E):
+        print("Selected:",E)
+
 
 def main():
     ws = (800, 600)
