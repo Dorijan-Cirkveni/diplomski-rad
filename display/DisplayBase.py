@@ -2,7 +2,17 @@ import tkinter as tk
 
 
 class iTkFrameDef(tk.Frame):
+    def __init__(self, master, returnFunction: callable):
+        super().__init__(master)
+        self.master = master
+        self.widgets = {}
+        self.returnFunction = lambda E: print(E)
+        if returnFunction:
+            self.returnFunction = returnFunction
+        self.create_widgets()
     def getname(self):
+        raise NotImplementedError
+    def create_widgets(self):
         raise NotImplementedError
 
 

@@ -1,20 +1,16 @@
 import tkinter as tk
+from DisplayBase import *
 
 
-class GridConsole(tk.Frame):
-    def __init__(self, master=None, canvas_size:tuple, returnFunction: callable = None):
-        super().__init__(master)
-        self.master = master
-        self.geo
-        self.buttons = {}
-        self.returnFunction = lambda E: print(E)
-        if returnFunction:
-            self.returnFunction = returnFunction
-        self.create_widgets()
+class GridConsole(iTkFrameDef):
+    """
 
-    def factory(self,E):
+    """
+
+    def factory(self, E):
         def func():
             return self.returnFunction(E)
+
         return func
 
     def create_widgets(self):
@@ -28,34 +24,60 @@ class GridConsole(tk.Frame):
         }
         self.buttons = {}
         for (y, x), txt in X.items():
-            direction=(y - 1, x - 1)
+            direction = (y - 1, x - 1)
             button = tk.Button(self, text=txt, command=self.factory(direction))
             button.grid(row=y, column=x)
             self.buttons[direction] = button
 
-class
 
-class MainGridControls(tk.Frame):
-    def __init__(self, master=None, returnFunction: callable = None):
-        super().__init__(master)
+class MainGridControls(iTkFrame):
+    def create_widgets(self):
         choices = ['GB', 'MB', 'KB']
-        variable = tk.StringVar(master)
+        variable = tk.StringVar(self.master)
         variable.set('GB')
 
-        w = tk.OptionMenu(master, variable, *choices)
+        w = tk.OptionMenu(self.master, variable, *choices)
         w.pack()
-        console=GridConsole(self,self.passer)
+        console = GridConsole(self, self.passer)
         console.pack()
 
-    def passer(self,E):
-        print("Passed "+str(E))
+    def passer(self, E):
+        print("Passed " + str(E))
         return
+
+
+class InputFrame(iTkFrameDef):
+    def __init__(self, master, returnFunction: callable, rule: callable, defaultValue=""):
+        self.label = None
+        self.input = None
+        self.button = None
+        super().__init__(master, returnFunction)
+        self.input: tk.Entry
+        self.input.delete(0, tk.END)
+        self.input.insert(0, defaultValue)
+        self.rule = rule
+
+    def create_widgets(self):
+        self.label = tk.Label(self, text="Iterations:")
+        self.input = tk.Entry(self)
+        self.button = tk.Button(self, text="Run", command=self.doOutput)
+        self.label.grid(row=0, column=0)
+        self.input.grid(row=0, column=1)
+        self.button.grid(row=1, column=0, columnspan=3, pady=10)
+
+    def doOutput(self):
+        s = self.input.get()
+        if not self.rule(s):
+            print("{} not valid!".format(s))
+            return
+        self.returnFunction(s)
 
 
 def main():
     root = tk.Tk()
-    app=MainGridControls(root)
+    app = InputFrame(root, print, str.isdigit, 1)
     app.pack()
+    root.mainloop()
     root.mainloop()
 
 
