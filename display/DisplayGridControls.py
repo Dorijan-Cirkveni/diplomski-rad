@@ -2,9 +2,10 @@ import tkinter as tk
 
 
 class GridConsole(tk.Frame):
-    def __init__(self, master=None, returnFunction: callable = None):
+    def __init__(self, master=None, canvas_size:tuple, returnFunction: callable = None):
         super().__init__(master)
         self.master = master
+        self.geo
         self.buttons = {}
         self.returnFunction = lambda E: print(E)
         if returnFunction:
@@ -31,6 +32,8 @@ class GridConsole(tk.Frame):
             button = tk.Button(self, text=txt, command=self.factory(direction))
             button.grid(row=y, column=x)
             self.buttons[direction] = button
+
+class
 
 class MainGridControls(tk.Frame):
     def __init__(self, master=None, returnFunction: callable = None):

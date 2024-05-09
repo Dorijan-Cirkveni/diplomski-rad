@@ -55,9 +55,6 @@ class GridFrame(tk.Frame):
                 loc0,scale=img.apply((x0,y0),cell_scale)
                 self.canvas.create_image(*loc0,image=img.image,anchor="nw")
 
-class GridButtons(tk.Frame):
-    def __init__(self):
-
 
 
 class GridDisplayFrame(iTkFrame):
