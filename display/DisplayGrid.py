@@ -64,9 +64,12 @@ class GridButtonFrame(iTkFrameDef):
         X = DBE.InputFrame(self, self.return_lambda, size, str.isdigit, 1)
         X.pack()
         self.widgets["iterate"] = X
-        console=GridConsole(self,self.return_lambda,(self.screen_size[0],)*2)
+        console=DBE.GridConsole(self,self.return_lambda,(self.screen_size[0],)*2)
         console.pack()
         self.widgets["console"]=console
+        modeButton=DBE.SelectFrame(self,self.return_lambda,(self.screen_size[0],)*2,
+                                   "TEST",['A','B','B'])
+        modeButton.pack()
         X = tk.Button(self, text="Exit", command=self.prepare_input("Exit"))
         X.pack(side="bottom")
         self.widgets["quit"]=X
