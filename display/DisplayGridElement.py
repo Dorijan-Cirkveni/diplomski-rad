@@ -57,7 +57,8 @@ class GridElementDisplay:
 
         true_location = Tadd(location, realOffset)
         ratio = Tdiv(realSize, og)
-        if ratio[0] != ratio[1]:
+        curatio=ratio[0]/ratio[1]
+        if not (0.8 <= curatio <= 1.25):
             raise Exception("Distortion!")
         if self.curScaleImage is None:
             imgres = Image.open(self.filename)

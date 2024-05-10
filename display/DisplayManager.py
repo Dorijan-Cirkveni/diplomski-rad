@@ -1,4 +1,6 @@
+from display.DisplayBaseElements import *
 from display.DisplayGrid import *
+from environments.GridEnvironment import *
 
 GRIDDISPLAY = "GridDisplay"
 
@@ -28,8 +30,11 @@ def main():
     grid_display_frame = GridDisplayFrame(mainframe, GRIDDISPLAY)
     first = SelectionFrame(mainframe)
 
-    test_grid = Grid2D((20, 20), [[i // 5 + j // 5 for j in range(20)] for i in range(20)])
-    grid_display_frame.set_grid(test_grid)
+    data = ImportManagedJSON('t_base')
+    guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
+    X = readPlaneEnvironment(data, 0)
+    Y = X.__copy__()
+    grid_display_frame.set_env(Y)
 
     mainframe.add_frame(first)
     mainframe.add_frame(grid_display_frame)

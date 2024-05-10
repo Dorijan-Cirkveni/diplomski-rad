@@ -68,17 +68,17 @@ class SelectFrame(iTkFrameDef):
         self.var = tk.StringVar()
         super().__init__(master, return_lambda, screen_size)
 
+    def create_widgets(self):
+        tk.Label(self,text=self.name).pack(side="left")
+        self.var.set(self.choices[0])
+        tk.OptionMenu(self, self.var, *self.choices).pack(side="left")
+
     def change_choices(self):
         return
 
     def onChoice(self):
         text = self.var.get()
         self.return_lambda(self.name + "." + text)
-
-    def create_widgets(self):
-        self.var.set(self.choices[0])
-        w = tk.OptionMenu(self, self.var, *self.choices)
-        w.pack()
 
 
 def main():
