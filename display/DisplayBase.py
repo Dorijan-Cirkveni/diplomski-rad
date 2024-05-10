@@ -20,6 +20,10 @@ class iTkFrameDef(tk.Frame):
     def prepare_input(self,E):
         return lambda:self.return_lambda(E)
 
+    def ret_pack(self):
+        self.pack()
+        return self
+
 
 class Test(tk.Tk):
     def __init__(self, window_size):
@@ -56,7 +60,7 @@ class iTkFrame(iTkFrameDef):
         self.name = "Test Frame" if not name else name
         self.controller = controller
         self.data=dict()
-        super().__init__(container, self.prepare_input, screen_size)
+        super().__init__(container, self.resolve_input, screen_size)
 
     def getname(self):
         return self.name
@@ -83,6 +87,9 @@ class iTkFrame(iTkFrameDef):
 
     def prepare_input(self,E):
         raise NotImplementedError
+
+    def resolve_input(self,E):
+        print(self.getname(),E)
 
 
 def main():

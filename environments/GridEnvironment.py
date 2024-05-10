@@ -246,6 +246,15 @@ class GridEnvironment(itf.iEnvironment):
         grid = self.getGrid(gridType)
         return grid.get_text_display(guide, self.taken)
 
+    def get_grids(self):
+        S=set(self.grids.keys())
+        L=[]
+        for e in ("solid","viewed"):
+            if e in S:
+                L.append(e)
+        S-={"solid","viewed",AGENTMEMORY}
+        return L + ["agentmemory"]
+
     def getGridByInd(self, ind: int):
         if ind == len(self.grids):
             return AGENTMEMORY

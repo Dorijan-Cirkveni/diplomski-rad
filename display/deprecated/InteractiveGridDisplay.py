@@ -11,23 +11,30 @@ import util.CommandLine as CLI
 
 from display.deprecated.GridDisplay import *
 
-# -----------------------------------------------------
-current_dir = os.path.dirname(os.path.abspath(__file__))
 
-path = os.path.abspath("../..")
-json_file_path = os.path.join(path, "grid_tile_data.json")
-F = open("../../grid_tiles/grid_tile_data.json", "r")
+# -----------------------------------------------------
+def get_rootdir(curdir, roots):
+    L = curdir.split("\\")
+    while len(L) > 1 and L[-1] not in roots:
+        L.pop()
+    return "\\".join(L)
+
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+rootdir = get_rootdir(current_dir,{"diplomski-rad"})
+json_file_path = os.path.join(rootdir, "grid_tiles\\grid_tile_data.json")
+F = open(json_file_path, "r")
 element_raw = json.loads(F.read())
 F.close()
 element_grid = []
 agent_grid = []
 
 for (name, A, B) in element_raw:
-    element = GridElementDisplay(os.path.join(path, name), tuple(A), tuple(B))
+    element = GridElementDisplay(os.path.join(rootdir, name), tuple(A), tuple(B))
     element_grid.append(element)
 agent_GL = ["red{}", "yellow{}", "green{}", "blue{}", "box"]
 for e in agent_GL:
-    element = GridElementDisplay(path + "\\grid_tiles\\{}.png".format(e.format("Agent")), (0, -0.3), (1, 1.5))
+    element = GridElementDisplay(rootdir + "\\grid_tiles\\{}.png".format(e.format("Agent")), (0, -0.3), (1, 1.5))
     agent_grid.append(element)
 
 
@@ -143,22 +150,22 @@ all_test_commands.update(ind_test_commands)
 CLI.default_guides['main'] = all_test_commands
 CLI.default_guides['individual'] = ind_test_commands
 
-printfile = path + "\\display\\debug.txt"
+printfile = rootdir + "\\display\\debug.txt"
 open(printfile, "w").close()
 
 
 def printToFile(*args):
     file = open(printfile, "a")
-    file.write(" ".join([str(e) for e in args])+"\n")
+    file.write(" ".join([str(e) for e in args]) + "\n")
     file.close()
 
 
 def main():
-    testCLI = CLI.CommandLine(all_test_commands,printOutput=printToFile)
+    testCLI = CLI.CommandLine(all_test_commands, printOutput=printToFile)
     commands = """
     run quickdisplay result t_bdt 0
     """
-    com="""
+    com = """
     subrtn start individual individual
     setraw base t_base
     run quickdisplay result $base $ind
