@@ -1,3 +1,5 @@
+import tkinter as tk
+
 from DisplayBase import *
 from util.UtilManager import Counter
 
@@ -34,6 +36,21 @@ class InputFrame(iTkFrameDef):
             print("{} not valid!".format(s))
             return
         self.return_lambda(s)
+
+class SelectFrame(iTkFrameDef):
+
+    def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int], choices=list[str]):
+        self.choices=tuple(choices)
+        super().__init__(master, return_lambda, screen_size)
+
+    def change_choices(self):
+        return
+
+    def create_widgets(self):
+        variable=tk.StringVar()
+        variable.set(self.choices[0])
+        w = tk.OptionMenu(self, variable, *self.choices)
+        w.pack()
 
 
 def main():

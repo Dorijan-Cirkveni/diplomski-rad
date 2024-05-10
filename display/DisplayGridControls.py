@@ -17,7 +17,7 @@ class GridConsole(iTkFrameDef):
         self.buttons = {}
         for (y, x), txt in X.items():
             direction = (y - 1, x - 1)
-            button = tk.Button(self, text=txt, command=self.return_lambda(direction))
+            button = tk.Button(self, text=txt, command=self.prepare_input(direction))
             button.grid(row=y, column=x)
             self.buttons[direction] = button
 

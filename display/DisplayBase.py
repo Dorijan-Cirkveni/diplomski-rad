@@ -9,6 +9,7 @@ class iTkFrameDef(tk.Frame):
         self.return_lambda = print if not return_lambda else return_lambda
         self.screen_size=screen_size
         self.create_widgets()
+        self.config(width=screen_size[0],height=screen_size[1])
 
     def getname(self):
         raise NotImplementedError
