@@ -115,8 +115,27 @@ class DataDisplayFrame(DIB.iTkFrameDef):
         return "DDF"
 
     def create_widgets(self):
-        self.data={}
-        pass
+        self.data_label = tk.Label(self, text="Inazuma shines eternal")
+        self.data_label.grid(row=0, column=0)
+        self.data_label.pack()
+
+    def display_text(self):
+        RES=[]
+        S=set(self.data)
+        for e in self.order:
+            RES.append(str(self.data.get(e,"No "+e)))
+        S-=set(self.order)
+        L=list(S)
+        L.sort()
+        for e in L:
+            RES.append(str(e)+str(self.data[e]))
+        self.data_label.config(text="\n".join(RES))
+
+    def update_text(self, new_data:dict):
+        self.data.update(new_data)
+        self.display_text()
+        self.update()
+
 
 
 class GridDisplayFrame(DIB.iTkFrame):
@@ -142,9 +161,8 @@ class GridDisplayFrame(DIB.iTkFrame):
         buttonsize = (300, 500)
         print(gridsize, datasize, buttonsize)
         self.grid_display = GridFrame(self, self.return_lambda, gridsize, DGE.get_grid_tile_images())
-        self.data_display = tk.Frame(self, bg="cyan")
-        self.data_label = tk.Label(self.data_display, text="Nothing to display", bg="cyan")
-        self.data_label.grid(row=0, column=0)
+        self.data_display = DataDisplayFrame(self,self.return_lambda,(0,0))
+        self.data_display.display_text()
         self.buttons = GridButtonFrame(self, self.process_input, buttonsize)
 
         # Pack subframes
@@ -160,6 +178,15 @@ class GridDisplayFrame(DIB.iTkFrame):
         self.grid_display.config(width=gridsize[0], height=gridsize[1])
         self.data_display.config(height=datasize[1])
         self.buttons.config(width=buttonsize[0])
+
+    def show_iter(self):
+        winStatus, winIndex = self.winStatus
+        s = "Current step:{}\nValue:{}".format(self.cur_iter, "Unchecked")
+        if winStatus is True:
+            s = "Win on step {}".format(winIndex)
+        elif winStatus is False:
+            s = "Loss on step {}".format(winIndex)
+        self.data_display.update_text({"winstatus":s})
 
     def set_env(self, env: DGE.GridEnvironment = None, init=False):
         if init:
@@ -186,6 +213,7 @@ class GridDisplayFrame(DIB.iTkFrame):
                 self.data_label.config(text=msg)
                 data['msg'] = "See below"
         self.grid_display.update_grid(grid, agents)
+        self.show_iter()
         print(self.cur_iter,self.winStatus)
 
     def apply_manual_action_to_agents(self, action):
