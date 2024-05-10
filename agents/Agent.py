@@ -315,6 +315,7 @@ class GraphicManualInputAgent(itf.iAgent):
         :param actions: Available actions.
         :return: object: Action to be performed.
         """
+        print("------------------------",self.cur)
         return self.cur
 
 

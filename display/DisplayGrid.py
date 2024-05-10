@@ -142,7 +142,6 @@ class GridDisplayFrame(DIB.iTkFrame):
     def __init__(self, controller: DIB.Test, name="GridDisplayFrame", screen_size=(800, 700)):
         self.cur_iter = 0
         self.winStatus = (None, 0)
-        self.last_action = (0, 0)
         screen_size = (800, 700)
         self.env: [DGE.GridEnvironment, None] = None
         self.obs_agent = None
@@ -192,7 +191,6 @@ class GridDisplayFrame(DIB.iTkFrame):
         if init:
             self.cur_iter = 0
             self.winStatus = (None, 0)
-            self.last_action = (0, 0)
         self.env=env
         self.update_env()
 
@@ -234,7 +232,6 @@ class GridDisplayFrame(DIB.iTkFrame):
         if self.env is None:
             return
         env: DGE.GridEnvironment = self.env
-        self.apply_manual_action_to_agents(self.last_action)
         for i in range(itercount):
             self.cur_iter += 1
             env.runIteration(self.cur_iter)

@@ -80,6 +80,8 @@ class GridEntity(itf.iEntity):
                 else:
                     newdata[Tsub(k, relativeTo)] = v
             data = newdata
+        if type(self.agent)==type:
+            raise Exception("???")
         return self.agent.receiveEnvironmentData(data)
 
     def performAction(self, actions):
