@@ -17,7 +17,7 @@ class iTkFrameDef(tk.Frame):
     def create_widgets(self):
         raise NotImplementedError
     
-    def prepare_input(self,E):
+    def prepare_input(self, E)->callable:
         return lambda:self.return_lambda(E)
 
     def ret_pack(self):
@@ -85,7 +85,7 @@ class iTkFrame(iTkFrameDef):
 
         return swapFrame
 
-    def prepare_input(self,E):
+    def prepare_input(self, E)->callable:
         raise NotImplementedError
 
     def resolve_input(self,E):

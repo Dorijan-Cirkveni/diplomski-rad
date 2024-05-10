@@ -1,8 +1,10 @@
 import tkinter as tk
+import interfaces as itf
 import DisplayBase as DIB
 import DisplayBaseElements as DBE
 import DisplayGridElement as DGE
 import environments.EnvironmentManager as ENVM
+from agents.Agent import GraphicManualInputAgent
 from display.DisplayGridControls import GridConsole
 from util.struct.Grid2D import Grid2D
 from util.struct.TupleDotOperations import *
@@ -58,16 +60,14 @@ class GridFrame(DIB.iTkFrameDef):
             L.append((loc[1], agent_index))
         k = len(self.tile_images)
         k2 = len(self.agent_images)
-        print(byRow)
         for row, E in enumerate(grid):
-            print("Line",row)
             for col, elind in enumerate(E):
                 P0 = Tmul((col, row), cell_scale)
                 img = self.tile_images[elind % k]
                 loc0 = img.apply(P0, cell_scale)
                 self.canvas.create_image(*loc0, image=img.curScaleImage, anchor="nw")
             for (col, agent_index) in byRow[row]:
-                P0 = Tmul((col,row), cell_scale, True)
+                P0 = Tmul((col, row), cell_scale, True)
                 img = self.agent_images[agent_index % k2]
                 loc0 = img.apply(P0, cell_scale)
                 self.canvas.create_image(*loc0, image=img.curScaleImage, anchor="nw")
@@ -78,26 +78,52 @@ class GridButtonFrame(DIB.iTkFrameDef):
 
     def create_widgets(self):
         size = (self.screen_size[0], 50)
-        X = DBE.InputFrame(self, self.return_lambda, size, str.isdigit, 1).ret_pack()
+        X = DBE.InputFrame(self, lambda E: self.return_lambda("run."+str(E)), size, str.isdigit, 1).ret_pack()
         self.widgets["iterate"] = X
         console = DBE.GridConsole(self, self.return_lambda, (self.screen_size[0],) * 2)
         console.pack()
         self.widgets["console"] = console
-        X=[
-            ("Agent Choice",["None","0"]),
-            ("View Mode",["Solid","Viewed","Agentmemory"])
+        X = [
+            ("Agent Choice", ["None", "0"]),
+            ("View Mode", ["Solid", "Viewed", "Agentmemory"])
         ]
-        for name,values in X:
-            X=DBE.SelectFrame(self,self.return_lambda,(0,0),name,values).ret_pack()
-            self.widgets[name]=X
+        for name, values in X:
+            X = DBE.SelectFrame(self, self.return_lambda, (0, 0), name, values).ret_pack()
+            self.widgets[name] = X
         X = tk.Button(self, text="Exit", command=self.prepare_input("Exit"))
         X.pack(side="bottom")
         self.widgets["quit"] = X
         return
 
+    def prepare_input(self, E)->callable:
+        res = E
+        if E.isdigit():
+            res = "run.{}".format(E)
+        return lambda:self.return_lambda(res)
+
+class DataDisplayFrame(DIB.iTkFrameDef):
+
+    def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
+        self.data = {
+            "winstatus":"None",
+            "error":None
+        }
+        self.order=["winstatus","error"]
+        super().__init__(master, return_lambda, screen_size)
+
+    def getname(self):
+        return "DDF"
+
+    def create_widgets(self):
+        self.data={}
+        pass
+
 
 class GridDisplayFrame(DIB.iTkFrame):
     def __init__(self, controller: DIB.Test, name="GridDisplayFrame", screen_size=(800, 700)):
+        self.cur_iter = 0
+        self.winStatus = (None, 0)
+        self.last_action = (0, 0)
         screen_size = (800, 700)
         self.env: [DGE.GridEnvironment, None] = None
         self.obs_agent = None
@@ -119,7 +145,7 @@ class GridDisplayFrame(DIB.iTkFrame):
         self.data_display = tk.Frame(self, bg="cyan")
         self.data_label = tk.Label(self.data_display, text="Nothing to display", bg="cyan")
         self.data_label.grid(row=0, column=0)
-        self.buttons = GridButtonFrame(self, self.prepare_input, buttonsize)
+        self.buttons = GridButtonFrame(self, self.process_input, buttonsize)
 
         # Pack subframes
         self.grid_display.grid(row=0, column=0, sticky="nsew")
@@ -135,8 +161,16 @@ class GridDisplayFrame(DIB.iTkFrame):
         self.data_display.config(height=datasize[1])
         self.buttons.config(width=buttonsize[0])
 
-    def set_env(self, env: DGE.GridEnvironment = None):
-        self.env = env
+    def set_env(self, env: DGE.GridEnvironment = None, init=False):
+        if init:
+            self.cur_iter = 0
+            self.winStatus = (None, 0)
+            self.last_action = (0, 0)
+        self.env=env
+        self.update_env()
+
+    def update_env(self):
+        env=self.env
         data: dict = {}
         if env is None:
             data = {"msg": "Environment not loaded!"}
@@ -152,25 +186,64 @@ class GridDisplayFrame(DIB.iTkFrame):
                 self.data_label.config(text=msg)
                 data['msg'] = "See below"
         self.grid_display.update_grid(grid, agents)
+        print(self.cur_iter,self.winStatus)
 
-    def prepare_input(self, E):
-        print("Received input:", E)
-        if type(E)==str:
+    def apply_manual_action_to_agents(self, action):
+        if self.env is None:
+            return
+        env = self.env
+        for entity in env.entities:
+            entity: itf.iEntity
+            if entity is None:
+                continue
+            agent: itf.iAgent = entity.agent
+            if type(agent) != GraphicManualInputAgent:
+                continue
+            agent: GraphicManualInputAgent
+            agent.cur = action
+
+    def run_iteration(self, itercount=1, print_period=1):
+        if self.env is None:
+            return
+        env: DGE.GridEnvironment = self.env
+        self.apply_manual_action_to_agents(self.last_action)
+        for i in range(itercount):
+            self.cur_iter += 1
+            env.runIteration(self.cur_iter)
+            if (i + 1) % print_period == 0:
+                print("Iteration {}/{}".format(i + 1, self.cur_iter))
+            if env.isWin():
+                self.winStatus = (True, self.cur_iter)
+            self.update_env()
+            self.update()
+
+    def process_input(self,E):
+        print("E")
+        if type(E) == str:
             if E == "Exit":
                 print("Exiting...")
                 self.swapFrameFactory("Grid Selector")()
                 return
-            L=E.split('.')
-            if len(L)==2:
-                if L[-2]=="View Mode":
-                    self.view_mode=L[-1].lower()
+            L = E.split('.')
+            if len(L) == 2:
+                if L[-2] == "View Mode":
+                    self.view_mode = L[-1].lower()
                     self.set_env(self.env)
                     return
-                if L[-2]=="Agent Choice":
-                    self.obs_agent=None if L[-1]=="None" else int(L[1])
+                if L[-2] == "Agent Choice":
+                    self.obs_agent = None if L[-1] == "None" else int(L[1])
                     self.set_env(self.env)
                     return
-        print("Input unprocessed:",E)
+                if L[-2]=="run":
+                    self.run_iteration(int(L[-1]))
+                    return
+            print("String unprocessed:", E)
+            self.return_lambda(E)
+        if type(E)==tuple and len(E)==2:
+            self.apply_manual_action_to_agents(E)
+            self.run_iteration(1)
+            return
+        print("Input unprocessed:", E,type(E))
         self.return_lambda(E)
 
 

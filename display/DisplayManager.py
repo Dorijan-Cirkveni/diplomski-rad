@@ -20,8 +20,8 @@ class SelectionFrame(iTkFrame):
     def getname(self):
         return self.name
 
-    def prepare_input(self, E):
-        print("Selected:",E)
+    def prepare_input(self, E)->callable:
+        return lambda:print("Selected:",E)
 
 
 def main():
