@@ -7,7 +7,7 @@ GRIDDISPLAY = "GridDisplay"
 
 
 class SelectionFrame(iTkFrame):
-    def __init__(self, master: SwapFrame, name="Grid Selector", screenSize=(600, 600)):
+    def __init__(self, master: SwapFrame, name="DisplayInit", screenSize=(600, 600)):
         self.label = None
         self.button = None
         super().__init__(master, name, screenSize)
@@ -29,21 +29,23 @@ class MainFrame(SwapFrame):
         super().__init__(master, return_lambda, screen_size)
         master.geometry("{}x{}".format(*screen_size))
 
+def testframe():
+    data = ImportManagedJSON('t_base')
+    guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
+    X = readPlaneEnvironment(data, 0)
+    Y = X.__copy__()
+    Y.changeActiveEntityAgents([AgentManager.ALL_AGENTS['GMI']("")])
+    return Y
+
 
 def main():
     ws = (800, 600)
     mainframe = MainFrame(tk.Tk(),print,ws)
     grid_display_frame = GridDisplayFrame(mainframe, GRIDDISPLAY)
     first = SelectionFrame(mainframe)
-
-    data = ImportManagedJSON('t_base')
-    guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
-    X = readPlaneEnvironment(data, 0)
-    Y = X.__copy__()
-    Y.changeActiveEntityAgents([AgentManager.ALL_AGENTS['GMI']("")])
-    grid_display_frame.set_env(Y)
-
-    mainframe.add_frame(first)
+    dispinit=DisplayInitialiser(mainframe,"DisplayInit",ws)
+    grid_display_frame.set_env(testframe())
+    mainframe.add_frame(dispinit)
     mainframe.add_frame(grid_display_frame)
     mainframe.run(first.name)
     return

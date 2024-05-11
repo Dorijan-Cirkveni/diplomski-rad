@@ -245,7 +245,7 @@ class GridDisplayFrame(DIB.iTkFrame):
     def process_input(self, E):
         if type(E) == str:
             if E == "Exit":
-                self.swapFrameFactory("Grid Selector")()
+                self.swapFrameFactory("DisplayInit")()
                 return
             L = E.split('.')
             if len(L) == 2:
