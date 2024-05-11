@@ -1,21 +1,22 @@
 from display.DisplayBaseElements import *
 from display.DisplayGrid import *
+from display.DisplayInitialiser import *
 from environments.GridEnvironment import *
 
 GRIDDISPLAY = "GridDisplay"
 
 
 class SelectionFrame(iTkFrame):
-    def __init__(self, controller: Test, name="Grid Selector", screenSize=(600, 600)):
+    def __init__(self, master: SwapFrame, name="Grid Selector", screenSize=(600, 600)):
         self.label = None
         self.button = None
-        super().__init__(controller, name, screenSize)
+        super().__init__(master, name, screenSize)
 
     def create_widgets(self):
         self.label = tk.Label(self, text=f"This is Display wasd")
         self.label.pack(pady=10)
         self.button = tk.Button(self, text="Next Display", command=self.swapFrameFactory(GRIDDISPLAY))
-        self.button.pack(pady=10)
+        self.button.pack(pady=10, side="bottom")
 
     def getname(self):
         return self.name
@@ -23,10 +24,15 @@ class SelectionFrame(iTkFrame):
     def prepare_input(self, E)->callable:
         return lambda:print("Selected:",E)
 
+class MainFrame(SwapFrame):
+    def __init__(self, master:tk.Tk, return_lambda: callable, screen_size: tuple[int, int]):
+        super().__init__(master, return_lambda, screen_size)
+        master.geometry("{}x{}".format(*screen_size))
+
 
 def main():
     ws = (800, 600)
-    mainframe = Test(ws)
+    mainframe = MainFrame(tk.Tk(),print,ws)
     grid_display_frame = GridDisplayFrame(mainframe, GRIDDISPLAY)
     first = SelectionFrame(mainframe)
 
@@ -39,7 +45,7 @@ def main():
 
     mainframe.add_frame(first)
     mainframe.add_frame(grid_display_frame)
-    mainframe.run(grid_display_frame.name)
+    mainframe.run(first.name)
     return
 
 

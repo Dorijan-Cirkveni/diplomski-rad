@@ -25,16 +25,16 @@ class iTkFrameDef(tk.Frame):
         return self
 
 
-class Test(tk.Tk):
-    def __init__(self, window_size):
-        super().__init__()
-        self.container = container = tk.Frame(self)
-        self.geometry("{}x{}".format(*window_size))
-        self.resizable(width=False, height=False)
-        container.pack(side="top", fill="both", expand=True)
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
+class SwapFrame(iTkFrameDef):
+    def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
+        super().__init__(master, return_lambda, screen_size)
+        self.pack(side="top", fill="both", expand=True)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
         self.frames = {}
+
+    def create_widgets(self):
+        return
 
     def add_frame(self, frame: iTkFrameDef):
         name = frame.getname()
@@ -46,7 +46,7 @@ class Test(tk.Tk):
             raise Exception("{} not in frames ({})".format(page_name, list(self.frames)))
         frame = self.frames[page_name]
         frame.tkraise()
-        self.title(frame.getname())
+        self.return_lambda("title."+frame.getname())
 
     def run(self, first_screen: str):
         self.show_frame(first_screen)
@@ -54,13 +54,11 @@ class Test(tk.Tk):
 
 
 class iTkFrame(iTkFrameDef):
-    def __init__(self, controller: Test, name: str, screen_size: tuple[int, int]):
-        container = controller.container
-        self.container = container
+    def __init__(self, master: SwapFrame, name: str, screen_size: tuple[int, int]):
         self.name = "Test Frame" if not name else name
-        self.controller = controller
+        self.controller = master
         self.data=dict()
-        super().__init__(container, self.resolve_input, screen_size)
+        super().__init__(master, self.resolve_input, screen_size)
 
     def getname(self):
         return self.name

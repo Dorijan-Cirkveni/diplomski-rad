@@ -78,7 +78,7 @@ class GridButtonFrame(DIB.iTkFrameDef):
 
     def create_widgets(self):
         size = (self.screen_size[0], 50)
-        X = DBE.InputFrame(self, lambda E: self.return_lambda("run."+str(E)), size, str.isdigit, 1).ret_pack()
+        X = DBE.InputFrame(self, lambda E: self.return_lambda("run." + str(E)), size, str.isdigit, 1).ret_pack()
         self.widgets["iterate"] = X
         console = DBE.GridConsole(self, self.return_lambda, (self.screen_size[0],) * 2)
         console.pack()
@@ -95,20 +95,21 @@ class GridButtonFrame(DIB.iTkFrameDef):
         self.widgets["quit"] = X
         return
 
-    def prepare_input(self, E)->callable:
+    def prepare_input(self, E) -> callable:
         res = E
         if E.isdigit():
             res = "run.{}".format(E)
-        return lambda:self.return_lambda(res)
+        return lambda: self.return_lambda(res)
+
 
 class DataDisplayFrame(DIB.iTkFrameDef):
 
     def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
         self.data = {
-            "winstatus":"None",
-            "error":None
+            "winstatus": "None",
+            "error": None
         }
-        self.order=["winstatus","error"]
+        self.order = ["winstatus", "error"]
         super().__init__(master, return_lambda, screen_size)
 
     def getname(self):
@@ -120,26 +121,25 @@ class DataDisplayFrame(DIB.iTkFrameDef):
         self.data_label.pack()
 
     def display_text(self):
-        RES=[]
-        S=set(self.data)
+        RES = []
+        S = set(self.data)
         for e in self.order:
-            RES.append(str(self.data.get(e,"No "+e)))
-        S-=set(self.order)
-        L=list(S)
+            RES.append(str(self.data.get(e, "No " + e)))
+        S -= set(self.order)
+        L = list(S)
         L.sort()
         for e in L:
-            RES.append(str(e)+str(self.data[e]))
+            RES.append(str(e) + str(self.data[e]))
         self.data_label.config(text="\n".join(RES))
 
-    def update_text(self, new_data:dict):
+    def update_text(self, new_data: dict):
         self.data.update(new_data)
         self.display_text()
         self.update()
 
 
-
 class GridDisplayFrame(DIB.iTkFrame):
-    def __init__(self, controller: DIB.Test, name="GridDisplayFrame", screen_size=(800, 700)):
+    def __init__(self, master: DIB.SwapFrame, name="GridDisplayFrame", screen_size=(800, 700)):
         self.cur_iter = 0
         self.winStatus = (None, 0)
         screen_size = (800, 700)
@@ -151,7 +151,7 @@ class GridDisplayFrame(DIB.iTkFrame):
         self.data_display = None
         self.data_label = None
         self.buttons = None
-        super().__init__(controller, name, screen_size)
+        super().__init__(master, name, screen_size)
         self.set_env(None)
 
     def create_widgets(self):
@@ -160,7 +160,7 @@ class GridDisplayFrame(DIB.iTkFrame):
         buttonsize = (300, 500)
         print(gridsize, datasize, buttonsize)
         self.grid_display = GridFrame(self, self.return_lambda, gridsize, DGE.get_grid_tile_images())
-        self.data_display = DataDisplayFrame(self,self.return_lambda,(0,0))
+        self.data_display = DataDisplayFrame(self, self.return_lambda, (0, 0))
         self.data_display.display_text()
         self.buttons = GridButtonFrame(self, self.process_input, buttonsize)
 
@@ -185,17 +185,17 @@ class GridDisplayFrame(DIB.iTkFrame):
             s = "Win on step {}".format(winIndex)
         elif winStatus is False:
             s = "Loss on step {}".format(winIndex)
-        self.data_display.update_text({"winstatus":s})
+        self.data_display.update_text({"winstatus": s})
 
     def set_env(self, env: DGE.GridEnvironment = None, init=False):
         if init:
             self.cur_iter = 0
             self.winStatus = (None, 0)
-        self.env=env
+        self.env = env
         self.update_env()
 
     def update_env(self):
-        env=self.env
+        env = self.env
         data: dict = {}
         if env is None:
             data = {"msg": "Environment not loaded!"}
@@ -212,7 +212,7 @@ class GridDisplayFrame(DIB.iTkFrame):
                 data['msg'] = "See below"
         self.grid_display.update_grid(grid, agents)
         self.show_iter()
-        print(self.cur_iter,self.winStatus)
+        print(self.cur_iter, self.winStatus)
 
     def apply_manual_action_to_agents(self, action):
         if self.env is None:
@@ -242,11 +242,9 @@ class GridDisplayFrame(DIB.iTkFrame):
             self.update_env()
             self.update()
 
-    def process_input(self,E):
-        print("E")
+    def process_input(self, E):
         if type(E) == str:
             if E == "Exit":
-                print("Exiting...")
                 self.swapFrameFactory("Grid Selector")()
                 return
             L = E.split('.')
@@ -259,25 +257,25 @@ class GridDisplayFrame(DIB.iTkFrame):
                     self.obs_agent = None if L[-1] == "None" else int(L[1])
                     self.set_env(self.env)
                     return
-                if L[-2]=="run":
+                if L[-2] == "run":
                     self.run_iteration(int(L[-1]))
                     return
-            print("String unprocessed:", E)
             self.return_lambda(E)
-        if type(E)==tuple and len(E)==2:
+        if type(E) == tuple and len(E) == 2:
             self.apply_manual_action_to_agents(E)
             self.run_iteration(1)
             return
-        print("Input unprocessed:", E,type(E))
         self.return_lambda(E)
+
+    def receiveData(self, data: dict):
+        print(data, "???")
 
 
 def main():
-    print(DGE.GridEnvironment)
     root = tk.Tk()
     disp = GridFrame(root, print, (600, 600), DGE.get_grid_tile_images())
     test_grid = Grid2D((20, 20), [[(i // 4 + j // 4) for j in range(20)] for i in range(20)])
-    disp.update_grid("None")
+    disp.update_grid("None", {})
     disp.pack()
     root.mainloop()
     return
