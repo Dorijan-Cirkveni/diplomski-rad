@@ -28,7 +28,7 @@ class Effect(iRawListInit):
         self.active = False
 
     @staticmethod
-    def raw_process_list(raw: list, params:list) -> list:
+    def raw_process_list(raw: list, params: list) -> list:
         """
 
         :param raw:
@@ -37,9 +37,9 @@ class Effect(iRawListInit):
         """
         if not raw:
             raise Exception("Must have effect name!")
-        val = iRawListInit.raw_process_list(raw,params)
-        if type(val[0])==list:
-            val[0]=tuple(val[0])
+        val = iRawListInit.raw_process_list(raw, params)
+        if type(val[0]) == list:
+            val[0] = tuple(val[0])
         if type(val[3]) == int:
             val[3] = {val[3]}
         return val
@@ -61,24 +61,26 @@ class EffectTime(iRawListInit):
     """
     Time at which an effect takes place, alongside with the effect itself.
     """
+
     def __init__(self, time, effect: Effect):
         self.time = time
         self.effect = effect
 
     @staticmethod
-    def raw_process_list(raw: list, params:list) -> list:
+    def raw_process_list(raw: list, params: list) -> list:
         """
 
         :param raw:
         """
-        param=raw[1]
-        if type(param)==Effect:
-            param:Effect
-            res=param.copy()
+        param = raw[1]
+        if type(param) == Effect:
+            param: Effect
+            res = param.copy()
         else:
-            res=Effect.raw_init(param)
+            res = Effect.raw_init(param)
         raw[1] = res
         return raw
+
 
 class iEntity(iRawDictInit):
     NAME = "name"
@@ -227,9 +229,9 @@ class iEnvironment(iRawDictInit):
             if ent is None:
                 continue
             entities.append(ent)
-        value=effect.value
-        if type(value)!=tuple:
-            value=(value,not remove)
+        value = effect.value
+        if type(value) != tuple:
+            value = (value, not remove)
         if remove:
             for entity in entities:
                 entity.pop(*value)
@@ -247,8 +249,8 @@ class iEnvironment(iRawDictInit):
             effectList: list[Effect]
             for effect in effectList:
                 self.handleEffect(effect)
-                delta=effect.getDelta()
-                if delta<=0:
+                delta = effect.getDelta()
+                if delta <= 0:
                     continue
                 self.scheduledEffects.add((iter + effect.getDelta(), prio), effect)
 
