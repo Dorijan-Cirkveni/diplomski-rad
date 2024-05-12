@@ -317,7 +317,8 @@ class GridDisplay:
     def hide_grid(self):
         pass
 
-    def apply_manual_action_to_agents(self, action):
+    def apply_manual_action_to_agents(self, actionID):
+        assert isinstance(actionID,int)
         for entity in self.grid.entities:
             entity: itf.iEntity
             if entity is None:
@@ -330,7 +331,7 @@ class GridDisplay:
 
     def run(self):
         self.place_buttons()
-        pastMove = (0, 0)
+        pastMove = 4
         running = True
         self.winStatus=(None,-1)  # win=True, loss=False, ongoing=None
         self.show_iter()
@@ -362,7 +363,7 @@ class GridDisplay:
                         break
                     result, runIter = ret
                     if result is not None:
-                        self.apply_manual_action_to_agents(action=result)
+                        self.apply_manual_action_to_agents(result)
                     break
             if not running:
                 break
