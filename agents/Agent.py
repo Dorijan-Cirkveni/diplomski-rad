@@ -40,7 +40,7 @@ class BoxAgent(itf.iAgent):
 
         :param actions: Actions to be performed.
         """
-        return None
+        return 0
 
     def submitDataEntry(self, entryKey) -> tuple[bool, object]:
         """

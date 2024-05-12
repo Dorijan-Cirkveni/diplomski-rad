@@ -599,6 +599,8 @@ class GridEnvironment(itf.iEnvironment):
         """
         if direction is None:
             return
+        if not isinstance(direction,tuple):
+            raise Exception(type(direction),direction)
         locations = []
         for ID in movingEntIDs:
             ent: GridEntity = self.entities[ID]
@@ -623,9 +625,13 @@ class GridEnvironment(itf.iEnvironment):
         """
         moveTypes = {e: [] for e in moves.values()}
         for entityID, moveID in moves.items():
+            if type(moveID)==int:
+                moveID=ACTIONS[moveID]
             moveTypes[moveID].append(entityID)
         terminatedEntities = set()
         for e, V in moveTypes.items():
+            if type(e)==int:
+                e=ACTIONS[e]
             if e is None or e == (0, 0):
                 continue
             self.moveDirection(V, e, terminatedEntities)

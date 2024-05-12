@@ -6,7 +6,7 @@ from PIL import Image, ImageTk
 from util.struct.TupleDotOperations import *
 import environments.EnvironmentManager as env_mngr
 
-GridEnvironment = env_mngr.grid_env.GridEnvironment
+from environments.GridEnvironment import *
 
 from agents.Agent import GraphicManualInputAgent
 

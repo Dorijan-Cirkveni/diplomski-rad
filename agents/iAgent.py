@@ -30,7 +30,7 @@ class iAgent(baseClasses.iRawInit):
         data: dict
         self.memory.absorb_data(data)
 
-    def performAction(self, actions):
+    def performAction(self, actions) -> int:
         raise NotImplementedError
 
     def submitDataEntry(self, entryKey) -> tuple[bool, object]:

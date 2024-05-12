@@ -103,6 +103,8 @@ def T_generate_links(objectset: set, moves: list, direction, passiveEntityLimit=
     active = set(moves)
     while moves:
         E = moves.pop()
+        if len(E)!=len(direction):
+            raise Exception("Bad length: {}!={}".format(E,direction))
         if E not in objectset:
             continue
         F = Tadd(E, direction)
