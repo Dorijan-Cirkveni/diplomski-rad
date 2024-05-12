@@ -327,7 +327,7 @@ class GridDisplay:
             if type(agent) != GraphicManualInputAgent:
                 continue
             agent: GraphicManualInputAgent
-            agent.cur = action
+            agent.cur = actionID
 
     def run(self):
         self.place_buttons()
