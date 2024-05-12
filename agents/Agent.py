@@ -68,7 +68,7 @@ class MirrorAgent(itf.iAgent):
         super().__init__()
         self.mirroredAgent = mirroredAgent
         self.actionMirrors = {} if actionMirrors is None else actionMirrors
-        self.agent_data = None
+        self.agent_action = None
 
     @staticmethod
     def from_string(s):
@@ -106,7 +106,7 @@ class MirrorAgent(itf.iAgent):
         """
         curdata = data.get("agent_current_action", dict())
         MAdata = curdata.get(self.mirroredAgent, None)
-        self.agent_data = MAdata
+        self.agent_action = MAdata
         return
 
     def performAction(self, actions):
@@ -116,7 +116,7 @@ class MirrorAgent(itf.iAgent):
         :param actions: Available actions.
         :return: object: Action to be performed.
         """
-        action = self.actionMirrors.get(self.agent_data, self.agent_data)
+        action = self.actionMirrors.get(self.agent_action, self.agent_action)
         return action
 
 class RecordedActionsAgent(itf.iAgent):
