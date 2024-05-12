@@ -174,6 +174,8 @@ class RecordedActionsAgent(itf.iAgent):
         self.i += 1
         if self.i == len(self.actions):
             self.i = 0
+        if type(cur)==str:
+            cur=int(cur)
         return cur
 
 

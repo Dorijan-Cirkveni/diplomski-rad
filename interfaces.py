@@ -1,6 +1,8 @@
 import inspect
 import json
 from copy import deepcopy
+
+import definitions
 # from typing import Type
 
 # from util import TupleDotOperations as tdo
@@ -108,7 +110,7 @@ class iEntity(iRawDictInit):
             return
         self.agent.receiveData(data)
 
-    def performAction(self, actions):
+    def performAction(self, actions)->int:
         return self.agent.performAction(actions)
 
     def getPriority(self):
@@ -278,7 +280,8 @@ class iEnvironment(iRawDictInit):
             self.runData.update(envData)
             entity.receiveEnvironmentData(self.runData)
             move = self.getMoves(entityID)
-            chosenAction = entity.performAction(move)
+            chosenActionID = entity.performAction(move)
+            chosenAction=move[chosenActionID]
             cur_D[entityID] = chosenAction
         D.update(cur_D)
         self.step(D)
