@@ -97,7 +97,7 @@ class Joystick(iButton):
         S = "XSDWA"
         self.buttons = {}
         for i, E in enumerate([(0, 0), (1, 0), (0, 1), (-1, 0), (0, -1)]):
-            self.buttons[E] = Button(buttonColor, S[i], (35 + 35 * E[1], 35 + 35 * E[0], 30, 30), lambda: E)
+            self.buttons[E] = Button(buttonColor, S[i], (35 + 35 * E[1], 35 + 35 * E[0], 30, 30), lambda: i)
 
     def place(self, location, sizeChange=(1, 1)):
         for direction, button in self.buttons.items():
