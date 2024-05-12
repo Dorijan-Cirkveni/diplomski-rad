@@ -5,6 +5,7 @@ import DisplayBaseElements as DBE
 import DisplayGridElement as DGE
 import environments.EnvironmentManager as ENVM
 from agents.Agent import GraphicManualInputAgent
+from definitions import ACTIONS
 from util.struct.Grid2D import Grid2D
 from util.struct.TupleDotOperations import *
 
@@ -252,7 +253,6 @@ class GridDisplayFrame(DIB.iTkFrame):
             if entity is None:
                 continue
             agent: itf.iAgent = entity.agent
-            print(type(entity),type(agent))
             if type(agent) != GraphicManualInputAgent:
                 continue
             agent: GraphicManualInputAgent
@@ -297,8 +297,8 @@ class GridDisplayFrame(DIB.iTkFrame):
                     self.update_env()
             self.return_lambda(E)
         if type(E) == tuple and len(E) == 2:
-            print("WASDWASD",E)
-            self.apply_manual_action_to_agents(E)
+            ind=ACTIONS.index(E)
+            self.apply_manual_action_to_agents(ind)
             self.run_iteration(1)
             return
         self.return_lambda(E)
