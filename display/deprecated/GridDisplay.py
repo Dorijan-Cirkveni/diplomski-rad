@@ -122,7 +122,7 @@ class Joystick(iButton):
     def run(self, event):
         for direction, button in self.buttons.items():
             if button.is_clicked(event):
-                return direction, 1
+                return button.run(event), 1
         return (0, 0), 0
 
 
@@ -356,6 +356,7 @@ class GridDisplay:
                     if not isClicked:
                         continue
                     ret = element.run(event)
+                    print("ret:",ret)
                     if type(ret) != tuple:
                         if ret == 'Exit':
                             running = False
