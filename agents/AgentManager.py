@@ -1,6 +1,8 @@
 import json
 
 import agents.Agent as base
+from agents.iAgent import iAgent
+from definitions import ACTIONS
 
 # import agents.NeuralNetworkAgent as NNA
 # import agents.RuleBasedAgent as RBA
@@ -22,14 +24,24 @@ def test_all_agent_inits():
         v: base.itf.iAgent
         if v.defaultInput is None:
             raise Exception("Default input for {} (key {}) not defined!".format(v, e))
-        res=None
+        res: None = None
         try:
             res = v.from_string(v.defaultInput)
         except NotImplementedError:
             raise Exception("String initialisation for {} not implemented!".format(v))
-        if type(res) != v:
+        if res is None or type(res) != v:
             raise Exception("{} (key {}) does not give its own type when initialised from string,"
                             "giving a {} instead".format(type(v), e, type(res)))
+    Y=[(e,v) for e,v in X if e not in {}]
+    for e,v in Y:
+        if e in {"MI"}:
+            continue
+        res=v.from_string(v.defaultInput)
+        res: iAgent
+        actionID = res.performAction(ACTIONS)
+        if type(actionID) != int:
+            msg = "{} (key {}) does not give proper action type back! ({}!=int)"
+            raise Exception(msg.format(type(res), e, type(actionID)))
     return
 
 

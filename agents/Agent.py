@@ -58,7 +58,7 @@ class MirrorAgent(itf.iAgent):
 
     defaultInput = "0 O"
 
-    def __init__(self, mirroredAgent, actionMirrors: dict = None):
+    def __init__(self, mirroredAgent, actionMirrors: list = None):
         """
         Initializes the MirrorAgent.
 
@@ -67,8 +67,8 @@ class MirrorAgent(itf.iAgent):
         """
         super().__init__()
         self.mirroredAgent = mirroredAgent
-        self.actionMirrors = {} if actionMirrors is None else actionMirrors
-        self.agent_action = None
+        self.actionMirrors = [] if actionMirrors is None else actionMirrors
+        self.agent_action = 0
 
     @staticmethod
     def from_string(s):
@@ -89,14 +89,12 @@ class MirrorAgent(itf.iAgent):
             "Y": [0, 3, 2, 1, 4],
             "B": [2, 3, 0, 1, 4]
         }
-        actionbase = definitions.ACTIONS
         MA_list = L[1]
         if MA_list in keywords:
             MA_list = keywords[MA_list]
         else:
             MA_list = json.loads(MA_list)
-        actions = {actionbase[i]: actionbase[e] for i, e in enumerate(MA_list)}
-        return MirrorAgent(mirrored_ID, actions)
+        return MirrorAgent(mirrored_ID, MA_list)
 
     def receiveEnvironmentData(self, data):
         """
@@ -116,8 +114,9 @@ class MirrorAgent(itf.iAgent):
         :param actions: Available actions.
         :return: object: Action to be performed.
         """
-        action = self.actionMirrors.get(self.agent_action, self.agent_action)
-        return action
+        if self.agent_action<len(self.actionMirrors):
+            return self.actionMirrors[self.agent_action]
+        return self.agent_action
 
 class RecordedActionsAgent(itf.iAgent):
     """
@@ -143,16 +142,7 @@ class RecordedActionsAgent(itf.iAgent):
         :param s: The string.
         :return: The agent.
         """
-        translation = definitions.ACTIONS
-        if "|" in s:
-            L = s.split("|")
-            s = L[0]
-            translation = json.loads(L[1])
-        actions = []
-        for e in s:
-            i = int(e)
-            actions.append(translation[i % len(translation)])
-        return RecordedActionsAgent(actions)
+        return RecordedActionsAgent(s)
 
     def receiveEnvironmentData(self, data):
         """
@@ -262,8 +252,7 @@ class ManualInputAgent(itf.iAgent):
             X.append("{}:{}".format(i, e))
         actions = ",".join(X)
         actionID = int(input("Action?({})".format(actions)))
-        cur = self.actions[actionID]
-        return cur
+        return actionID
 
     def submitDataEntry(self, entryKey) -> tuple[bool, object]:
         """
@@ -289,7 +278,7 @@ class GraphicManualInputAgent(itf.iAgent):
         """
         super().__init__()
         self.actions = actions if actions not in (None, "", "None") else definitions.ACTIONS
-        self.cur = self.actions[-1]
+        self.cur = -1
 
     @staticmethod
     def from_string(s):
