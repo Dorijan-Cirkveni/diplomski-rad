@@ -1,4 +1,6 @@
 import tkinter as tk
+from collections import deque
+
 import interfaces as itf
 import DisplayBase as DIB
 import DisplayBaseElements as DBE
@@ -144,7 +146,7 @@ class DataDisplayFrame(DIB.iTkFrameDef):
 class GridDisplayFrame(DIB.iTkFrame):
     def __init__(self, master: DIB.SwapFrame, name="GridDisplayFrame", screen_size=(800, 700)):
         self.view_elements_mode = {"Grid","Agents"}
-        self.known_agent_locations = {}
+        self.kalQ=deque()
         self.winStatus = (None, 0)
         screen_size = (800, 700)
         self.env: [DGE.GridEnvironment, None] = None
@@ -202,7 +204,7 @@ class GridDisplayFrame(DIB.iTkFrame):
         self.env = env
         if self.env and init:
             self.view_elements_mode = {"Grid","Agents"}
-            self.known_agent_locations = {}
+            self.kalQ=deque()
             self.env.cur_iter = 0
             self.winStatus = (None, 0)
         self.update_env()
@@ -234,10 +236,12 @@ class GridDisplayFrame(DIB.iTkFrame):
             locations = self.check_entity_locations(agents)
         mode=2*int("Grid" in self.view_elements_mode)+int("Agents" in self.view_elements_mode)
         print("Locations checked:",agents,locations)
-        print("Old locations:",self.known_agent_locations)
+        print("Old locations:",list(self.kalQ))
         return grid, agents, mode
 
     def update_env(self):
+        for i,e in enumerate(self.kalQ):
+            print(e,"Beginning")
         env:DGE.GridEnvironment = self.env
         data: dict
         if env is None:
@@ -249,7 +253,7 @@ class GridDisplayFrame(DIB.iTkFrame):
             print()
         self.grid_display.update_grid(grid, agents, mode)
         self.show_iter()
-        self.known_agent_locations=agents
+        self.kalQ.appendleft(agents)
 
     def apply_manual_action_to_agents(self, action):
         if self.env is None:
