@@ -2,9 +2,10 @@ import tkinter as tk
 
 
 class iTkFrameDef(tk.Frame):
-    def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
+    def __init__(self, master, name:str, return_lambda: callable, screen_size: tuple[int, int]):
         super().__init__(master)
         self.master = master
+        self.name=name
         self.widgets = {}
         self.return_lambda = print if not return_lambda else return_lambda
         self.screen_size=screen_size
@@ -12,7 +13,7 @@ class iTkFrameDef(tk.Frame):
         self.config(width=screen_size[0],height=screen_size[1])
 
     def getname(self):
-        raise NotImplementedError
+        return self.name
 
     def create_widgets(self):
         raise NotImplementedError
@@ -26,8 +27,8 @@ class iTkFrameDef(tk.Frame):
 
 
 class SwapFrame(iTkFrameDef):
-    def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
-        super().__init__(master, return_lambda, screen_size)
+    def __init__(self, master, name:str, return_lambda: callable, screen_size: tuple[int, int]):
+        super().__init__(master, name, return_lambda, screen_size)
         self.pack(side="top", fill="both", expand=True)
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
@@ -58,18 +59,14 @@ class iTkFrame(iTkFrameDef):
         self.name = "Test Frame" if not name else name
         self.controller = master
         self.data=dict()
-        super().__init__(master, self.resolve_input, screen_size)
-
-    def getname(self):
-        return self.name
+        super().__init__(master, name, self.resolve_input, screen_size)
 
     def receiveData(self, data: dict):
         return
 
-    def sendData(self):
-        return {}
-
-    def swapFrameFactory(self, nextframe: str):
+    def swapFrameFactory(self, nextframe: str, data=None):
+        if data is None:
+            data = {}
         controller = self.controller
 
         def swapFrame():
@@ -78,7 +75,6 @@ class iTkFrame(iTkFrameDef):
             """
             controller.show_frame(nextframe)
             the_frame: iTkFrame = controller.frames[nextframe]
-            data = self.sendData()
             the_frame.receiveData(data)
 
         return swapFrame

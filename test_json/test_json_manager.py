@@ -26,6 +26,22 @@ def search_files(maindir: str, extension:str=".json") -> dict:
 
     return result
 
+def filter_env_paths(filedict:dict, forbidden:set=None):
+    if forbidden is None:
+        forbidden = {"entities","grids"}
+    filtered=[]
+    for name,path in filedict.items():
+        S=set(path.split("\\"))
+        print(S,S&forbidden)
+        if S&forbidden:
+            continue
+        filtered.append(name)
+    return filtered
+
+def get_grid_files():
+    D=search_files(current_dir)
+    res=filter_env_paths(D)
+    return res
 
 
 def read_all_files():
@@ -69,6 +85,7 @@ def test(full_addr):
 
 def main():
     X=["tilecond|imagered"]
+    X.clear()
     for e in X:
         test(e)
     return

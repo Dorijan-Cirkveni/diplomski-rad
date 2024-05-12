@@ -1,7 +1,7 @@
 from DisplayBaseElements import *
 
 
-class GridConsole(iTkFrameDef):
+class GridConsoleDeprecated(iTkFrameDef):
     """
 
     """

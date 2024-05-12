@@ -26,7 +26,7 @@ class GridFrame(DIB.iTkFrameDef):
         if images is None:
             images = DGE.get_grid_tile_images()
         self.images = images
-        super().__init__(master, return_lambda, screen_size)
+        super().__init__(master, "GridFrame", return_lambda, screen_size)
 
     def create_widgets(self):
         print(self.screen_size)
@@ -37,18 +37,18 @@ class GridFrame(DIB.iTkFrameDef):
         self.tile_images: list[DGE.GridElementDisplay] = self.images[0]
         self.agent_images: list[DGE.GridElementDisplay] = self.images[1]
 
-    def update_grid(self, new_grid: [Grid2D, None], agents: dict):
+    def update_grid(self, new_grid: [Grid2D, None], agents: dict, mode:int=3):
         self.grid_object = new_grid
         self.agents = agents
-        self.create_grid()
+        self.create_grid(mode)
 
-    def create_grid(self):
+    def create_grid(self, mode:int=3):
         """
         Create the grid of cells.
         """
+        self.canvas.create_rectangle(*((0, 0) + self.screen_size), fill="cyan")
         if type(self.grid_object) != Grid2D:
             s = str(self.grid_object)
-            self.canvas.create_rectangle(*((0, 0) + self.screen_size), fill="cyan")
             self.canvas.create_text(Tfdiv(self.screen_size, (2, 2)), text=s, font=("Consolas", 21))
             return
         grid: Grid2D = self.grid_object
@@ -61,16 +61,18 @@ class GridFrame(DIB.iTkFrameDef):
         k = len(self.tile_images)
         k2 = len(self.agent_images)
         for row, E in enumerate(grid):
-            for col, elind in enumerate(E):
-                P0 = Tmul((col, row), cell_scale)
-                img = self.tile_images[elind % k]
-                loc0 = img.apply(P0, cell_scale)
-                self.canvas.create_image(*loc0, image=img.curScaleImage, anchor="nw")
-            for (col, agent_index) in byRow[row]:
-                P0 = Tmul((col, row), cell_scale, True)
-                img = self.agent_images[agent_index % k2]
-                loc0 = img.apply(P0, cell_scale)
-                self.canvas.create_image(*loc0, image=img.curScaleImage, anchor="nw")
+            if mode & 2:
+                for col, elind in enumerate(E):
+                    P0 = Tmul((col, row), cell_scale)
+                    img = self.tile_images[elind % k]
+                    loc0 = img.apply(P0, cell_scale)
+                    self.canvas.create_image(*loc0, image=img.curScaleImage, anchor="nw")
+            if mode & 1:
+                for (col, agent_index) in byRow[row]:
+                    P0 = Tmul((col, row), cell_scale, True)
+                    img = self.agent_images[agent_index % k2]
+                    loc0 = img.apply(P0, cell_scale)
+                    self.canvas.create_image(*loc0, image=img.curScaleImage, anchor="nw")
         return
 
 
@@ -80,12 +82,13 @@ class GridButtonFrame(DIB.iTkFrameDef):
         size = (self.screen_size[0], 50)
         X = DBE.InputFrame(self, lambda E: self.return_lambda("run." + str(E)), size, str.isdigit, 1).ret_pack()
         self.widgets["iterate"] = X
-        console = DBE.GridConsole(self, self.return_lambda, (self.screen_size[0],) * 2)
+        console = DBE.GridConsole(self, "Console", self.return_lambda, (self.screen_size[0],) * 2)
         console.pack()
         self.widgets["console"] = console
         X = [
             ("Agent Choice", ["None", "0"]),
-            ("View Mode", ["Solid", "Viewed", "Agentmemory"])
+            ("View Mode", ["Solid", "Viewed", "Agentmemory"]),
+            ("View Type", ["Full","Agents only","Grid only"])
         ]
         for name, values in X:
             X = DBE.SelectFrame(self, self.return_lambda, (0, 0), name, values).ret_pack()
@@ -110,7 +113,7 @@ class DataDisplayFrame(DIB.iTkFrameDef):
             "error": None
         }
         self.order = ["winstatus", "error"]
-        super().__init__(master, return_lambda, screen_size)
+        super().__init__(master, "DataDisplay", return_lambda, screen_size)
 
     def getname(self):
         return "DDF"
@@ -140,6 +143,7 @@ class DataDisplayFrame(DIB.iTkFrameDef):
 
 class GridDisplayFrame(DIB.iTkFrame):
     def __init__(self, master: DIB.SwapFrame, name="GridDisplayFrame", screen_size=(800, 700)):
+        self.view_elements_mode = {"Grid","Agents"}
         self.cur_iter = 0
         self.winStatus = (None, 0)
         screen_size = (800, 700)
@@ -162,7 +166,7 @@ class GridDisplayFrame(DIB.iTkFrame):
         self.grid_display = GridFrame(self, self.return_lambda, gridsize, DGE.get_grid_tile_images())
         self.data_display = DataDisplayFrame(self, self.return_lambda, (0, 0))
         self.data_display.display_text()
-        self.buttons = GridButtonFrame(self, self.process_input, buttonsize)
+        self.buttons = GridButtonFrame(self, "GridButtons", self.process_input, buttonsize)
 
         # Pack subframes
         self.grid_display.grid(row=0, column=0, sticky="nsew")
@@ -210,7 +214,8 @@ class GridDisplayFrame(DIB.iTkFrame):
                 self.data_label: tk.Label
                 self.data_label.config(text=msg)
                 data['msg'] = "See below"
-        self.grid_display.update_grid(grid, agents)
+        mode=2*int("Grid" in self.view_elements_mode)+int("Agents" in self.view_elements_mode)
+        self.grid_display.update_grid(grid, agents, mode)
         self.show_iter()
         print(self.cur_iter, self.winStatus)
 
@@ -251,15 +256,21 @@ class GridDisplayFrame(DIB.iTkFrame):
             if len(L) == 2:
                 if L[-2] == "View Mode":
                     self.view_mode = L[-1].lower()
-                    self.set_env(self.env)
+                    self.update_env()
                     return
                 if L[-2] == "Agent Choice":
                     self.obs_agent = None if L[-1] == "None" else int(L[1])
-                    self.set_env(self.env)
+                    self.update_env()
                     return
                 if L[-2] == "run":
                     self.run_iteration(int(L[-1]))
                     return
+                if L[-2] == "View Type":
+                    if L[-1]=="Full":
+                        L[-1]="Grid Agents"
+                    S=set(L[-1].split())
+                    self.view_elements_mode=S
+                    self.update_env()
             self.return_lambda(E)
         if type(E) == tuple and len(E) == 2:
             self.apply_manual_action_to_agents(E)
@@ -268,7 +279,7 @@ class GridDisplayFrame(DIB.iTkFrame):
         self.return_lambda(E)
 
     def receiveData(self, data: dict):
-        print(data, "???")
+        self.set_env(data.get('env',None),True)
 
 
 def main():

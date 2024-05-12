@@ -26,7 +26,7 @@ class SelectionFrame(iTkFrame):
 
 class MainFrame(SwapFrame):
     def __init__(self, master:tk.Tk, return_lambda: callable, screen_size: tuple[int, int]):
-        super().__init__(master, return_lambda, screen_size)
+        super().__init__(master, "MainFrame", return_lambda, screen_size)
         master.geometry("{}x{}".format(*screen_size))
 
 def testframe():

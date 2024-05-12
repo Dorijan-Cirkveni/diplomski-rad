@@ -6,6 +6,7 @@ import environments.GridEnvironment as grid_env
 import environments.MazeEnvironment as maze_env
 import environments.BlindDangerTest as blind_danger_env
 import agents.AgentManager as agent_mngr
+from test_json.test_json_manager import ImportManagedJSON
 
 # Dictionary mapping environment names to their respective environment classes
 envList = {
@@ -37,6 +38,15 @@ def readEnvironment(jsonL:list, ind:int, agentDict=None):
     RES = envType.raw_init(raw)
     return RES
 
+
+def load_grid_from_fragment(filename: str, index=0, source: dict = None, checkValidity=False):
+    rawL: list = ImportManagedJSON(filename, source)
+    if checkValidity and index not in range(len(rawL)):
+        return "EOF"
+    grid = readEnvironment(rawL, index)
+    if grid is None:
+        return "EOF"
+    return grid
 
 def main():
     """

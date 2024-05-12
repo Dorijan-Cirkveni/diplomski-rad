@@ -91,7 +91,7 @@ class EvenMazeCreatorDFS(iMazeCreator):
         X = grid.get_neighbours(cur)
         Y = []
         for E in X:
-            E2 = Toper(cur, E, lambda A, B: B * 2 - A)
+            E2 = Toper(cur, E, lambda A, B: B * 2 - A,True)
             if grid[E2] == 1:
                 continue
             Y.append((E, E2))
@@ -135,11 +135,6 @@ class EvenMazeCreatorDFS(iMazeCreator):
         goal = self.rand.choice(list(leaves))
         grid[goal] = 2
         grid.apply(lambda e: tiles[e])
-        for e,D in tree.items():
-            print(e)
-            grid[e]=3
-            for f,v in D.items():
-                print("\t",f,v)
         return grid
 
 

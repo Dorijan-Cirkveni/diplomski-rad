@@ -14,10 +14,7 @@ class InputFrame(iTkFrameDef):
         self.input = defaultValue
         self.button = None
         self.id = counter.use()
-        super().__init__(master, return_lambda, screen_size)
-
-    def getname(self):
-        return "Input Frame"
+        super().__init__(master, "Input Frame", return_lambda, screen_size)
 
     def create_widgets(self):
         self.label = tk.Label(self, text="Iterations:")
@@ -31,6 +28,8 @@ class InputFrame(iTkFrameDef):
         self.input.insert(0, defaultValue)
 
     def doOutput(self):
+        assert type(self.input)==tk.Entry
+        self.input:tk.Entry
         s = self.input.get()
         if not self.rule(s):
             print("{} not valid!".format(s))
@@ -66,18 +65,33 @@ class SelectFrame(iTkFrameDef):
         self.name = name
         self.choices = tuple(choices)
         self.var = tk.StringVar()
-        super().__init__(master, return_lambda, screen_size)
+        self.lastsel=None
+        self.opt=None
+        super().__init__(master, name, return_lambda, screen_size)
 
     def create_widgets(self):
         tk.Label(self,text=self.name).pack(side="left")
         self.var.set(self.choices[0])
-        tk.OptionMenu(self, self.var, *self.choices, command=self.onChoice).pack(side="left")
+        self.confirm_selection()
+        self.opt=tk.OptionMenu(self, self.var, *self.choices, command=self.onChoice)
+        self.opt.pack(side="left")
 
-    def change_choices(self):
-        return
+    def confirm_selection(self):
+        self.lastsel=self.var.get()
+
+    def revert_selection(self):
+        self.var.set(self.lastsel)
+
+    def change_choices(self,choices:list):
+        M = self.opt['menu']
+        M.delete(0, 'end')
+        for choice in choices:
+            lamb = lambda c=choice: self.onChoice(c)
+            M.add_command(label=choice, command=lamb)
+        self.var.set(choices[0])
+        self.confirm_selection()
 
     def onChoice(self,E):
-        print(E)
         self.return_lambda(self.name + "." + E)
 
 
