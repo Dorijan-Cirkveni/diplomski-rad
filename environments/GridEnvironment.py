@@ -223,9 +223,9 @@ class GridEnvironment(itf.iEnvironment):
         :return: Tile value (untranslated)
         """
         if curtime is None:
-            curtime = self.curIter
+            curtime = self.cur_iter
         grid: Grid2D
-        if curtime == self.curIter:
+        if curtime == self.cur_iter:
             grid = self.getGrid(gridType)
         else:
             grid = self.gridRoutines[gridType].getCurGrid(curtime)
@@ -551,7 +551,7 @@ class GridEnvironment(itf.iEnvironment):
 
     def updateGrids(self, itID=None):
         if itID is None:
-            itID = self.curIter
+            itID = self.cur_iter
         for key, routine in self.gridRoutines.items():
             routine: GridRoutine
             self.grids[key] = routine.getCurGrid(itID)
@@ -647,7 +647,7 @@ class GridEnvironment(itf.iEnvironment):
     def runEnvChanges(self):
         routines = self.data.get("routines", {})
         for e, v in routines.items():
-            newgrid: Grid2D = v.getCurGrid(self.curIter)
+            newgrid: Grid2D = v.getCurGrid(self.cur_iter)
             self.grids[e] = newgrid
         self.solidGrid = self.grids[SOLID]
         self.viewedGrid = self.grids[VIEWED]

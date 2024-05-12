@@ -265,7 +265,6 @@ class Grid2D(iCombinable):
 
         disgrid.apply_with_index(distance_grid_init)
         for i in range(INF):
-            print(start)
             newstart = set()
             if not start:
                 break

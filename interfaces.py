@@ -180,7 +180,7 @@ class iEnvironment(iRawDictInit):
             self.entityPriority.append((priority, ID))
         self.entityPriority.sort(reverse=True)
         self.runData = dict()
-        self.curIter = 0
+        self.cur_iter = 0
 
     def changeActiveEntityAgents(self, newAgents: list[iAgent]):
         """
@@ -246,7 +246,7 @@ class iEnvironment(iRawDictInit):
 
     def applyEffects(self):
         dueEffects: list[tuple[object, list[Effect]]]
-        dueEffects = self.scheduledEffects.popLowerThan(self.curIter)
+        dueEffects = self.scheduledEffects.popLowerThan(self.cur_iter)
         for ((iter, prio), effectList) in dueEffects:
             effectList: list[Effect]
             for effect in effectList:
@@ -256,11 +256,11 @@ class iEnvironment(iRawDictInit):
                     continue
                 self.scheduledEffects.add((iter + effect.getDelta(), prio), effect)
 
-    def runIteration(self, curIter=None):
-        if curIter is None:
-            self.curIter += 1
+    def runIteration(self, cur_iter=None):
+        if cur_iter is None:
+            self.cur_iter += 1
         else:
-            self.curIter = curIter
+            self.cur_iter = cur_iter
         D = dict()
         self.runData['agent_current_action'] = D
         cur_prio = 0

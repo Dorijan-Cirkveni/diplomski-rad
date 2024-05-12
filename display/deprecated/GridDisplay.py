@@ -1,5 +1,6 @@
 import pygame
 
+import definitions
 import interfaces as itf
 from util.struct import TupleDotOperations as tdo
 import environments.EnvironmentManager as env_mngr
@@ -96,8 +97,10 @@ class Joystick(iButton):
         super().__init__(color, text, original_dimensions)
         S = "XSDWA"
         self.buttons = {}
+        self.indices={}
         for i, E in enumerate([(0, 0), (1, 0), (0, 1), (-1, 0), (0, -1)]):
-            self.buttons[E] = Button(buttonColor, S[i], (35 + 35 * E[1], 35 + 35 * E[0], 30, 30), lambda: i)
+            la=lambda: i
+            self.buttons[E] = Button(buttonColor, S[i], (35 + 35 * E[1], 35 + 35 * E[0], 30, 30), la)
 
     def place(self, location, sizeChange=(1, 1)):
         for direction, button in self.buttons.items():
@@ -122,7 +125,7 @@ class Joystick(iButton):
     def run(self, event):
         for direction, button in self.buttons.items():
             if button.is_clicked(event):
-                return button.run(event), 1
+                return direction, 1
         return (0, 0), 0
 
 
@@ -363,6 +366,8 @@ class GridDisplay:
                         result, runIter = pastMove, ret
                         break
                     result, runIter = ret
+                    if type(result)==tuple:
+                        result=definitions.ACTIONS.index(result)
                     if result is not None:
                         self.apply_manual_action_to_agents(result)
                     break

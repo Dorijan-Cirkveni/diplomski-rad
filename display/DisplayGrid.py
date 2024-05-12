@@ -186,7 +186,7 @@ class GridDisplayFrame(DIB.iTkFrame):
             return "No environment"
         winStatus, winIndex = self.winStatus
         self.env:DGE.GridEnvironment
-        s = "Current step:{}".format(self.env.curIter)
+        s = "Current step:{}".format(self.env.cur_iter)
         if winStatus is True:
             s = "Win on step {}".format(winIndex)
         elif winStatus is False:
@@ -200,7 +200,7 @@ class GridDisplayFrame(DIB.iTkFrame):
     def set_env(self, env: DGE.GridEnvironment = None, init=False):
         self.env = env
         if self.env and init:
-            self.env.curIter = 0
+            self.env.cur_iter = 0
             self.winStatus = (None, 0)
         self.update_env()
 
