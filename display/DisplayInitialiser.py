@@ -1,19 +1,27 @@
 from copy import deepcopy
 
+import agents.Agent as Agent
 from DisplayBaseElements import *
 import test_json.test_json_manager as jsonmngr
 import environments.EnvironmentManager as envmngr
+from agents import AgentManager
+from agents.iAgent import iAgent
+from environments.GridEnvironment import GridEnvironment
 
 
 class SelectionFrame(iTkFrame):
     def __init__(self, master: SwapFrame, destination, name: str, other: str, screenSize=(600, 600)):
-        self.dest=destination
+        self.agentkey = None
+        self.agInputScreen = None
+        self.agentSelect = None
+        self.agents = None
+        self.dest = destination
         self.label = None
         self.button = None
         self.other = other
         self.data = dict()
-        self.fileSelect=None
-        self.envSelect=None
+        self.fileSelect = None
+        self.envSelect = None
         super().__init__(master, name, screenSize)
 
     def create_widgets(self):
@@ -26,6 +34,24 @@ class SelectionFrame(iTkFrame):
                                       ["None"] + jsonmngr.get_grid_files()).ret_pack()
 
         self.envSelect = SelectFrame(self, self.load_env, (0, 0), "Select environment:", ["None"]).ret_pack()
+        self.agents = agents = {}
+        names = ['GMI']
+        for e,agent in AgentManager.ALL_AGENTS.items():
+            if agent is None:
+                continue
+            agent: AgentManager.iAgent
+            name = agent.get_full_name()
+            agents[name] = agent
+            if e != 'GMI':
+                names.append(name)
+            else:
+                self.agentkey=name
+        self.agentSelect = SelectFrame(self, self.set_agent, (0, 0), "Select agent:", names)
+        self.agentSelect.pack()
+        self.agInputScreen = InputFrame(self,self.set_agentdata,
+                                        (0,0),lambda s:True,
+                                        Agent.GraphicManualInputAgent.defaultInput,"Agent settings:","Apply settings")
+        self.agInputScreen.pack()
 
     def getname(self):
         return self.name
@@ -43,32 +69,45 @@ class SelectionFrame(iTkFrame):
         file = jsonmngr.ImportManagedJSON(filekey)
         self.data.clear()
         X = ["No environment"]
-        for i,D in enumerate(file):
+        for i, D in enumerate(file):
             if "name" not in D:
-                raise Exception("Environment {} in file {} has no name!".format(i,filekey))
-            name=D["name"]
+                raise Exception("Environment {} in file {} has no name!".format(i, filekey))
+            name = D["name"]
             X.append(name)
-            self.data[name]=D
+            self.data[name] = D
         self.envSelect: SelectFrame
         self.envSelect.change_choices(X)
         return
 
     def load_env(self, envkey: str):
-        print(envkey,"--->",self.envSelect.var.get())
         envkey = envkey[20:]
         self.envSelect.var.set(envkey)
         print("Loading environment for:", envkey)
-        if envkey in {"No environment","None"}:
-            print("REVERTING???")
+        if envkey in {"No environment", "None"}:
             self.envSelect.revert_selection()
             return
         self.envSelect.confirm_selection()
         self.envSelect.update()
-        env = envmngr.readEnvironment([self.data[envkey]],0)
+        env = envmngr.readEnvironment([self.data[envkey]], 0)
         if not self.dest:
             return
-        self.dest:DisplayInitialiser
-        self.dest.env=env
+        self.dest: DisplayInitialiser
+        self.dest.env = env
+        return
+
+    def set_agent(self, agentkey):
+        agentkey=agentkey[14:]
+        self.agentkey=agentkey
+        ag=self.agents[agentkey]
+        self.dest.agent=ag(ag.defaultInput)
+        self.agInputScreen:InputFrame
+        self.agInputScreen.set(ag.defaultInput)
+        return
+
+    def set_agentdata(self,agentdata):
+        agentkey=self.agentkey
+        ag=self.agents[agentkey]
+        self.dest.agent=ag(ag.defaultInput)
         return
 
 
@@ -76,6 +115,7 @@ class DisplayInitialiser(iTkFrame):
     def __init__(self, master: SwapFrame, name: str, screen_size: tuple[int, int]):
         self.menu = None
         self.env = None
+        self.agent:iAgent = Agent.GraphicManualInputAgent()
         super().__init__(master, name, screen_size)
 
     def create_widgets(self):
@@ -99,14 +139,17 @@ class DisplayInitialiser(iTkFrame):
         """
         Swaps to other frame.
         """
-        print("Copying",self.env)
-        data={
-            "env":deepcopy(self.env)
+        env:GridEnvironment
+        env=deepcopy(self.env)
+        data = {
+            "env": env
         }
-        print("Displaying",data)
+        print("Displaying", data)
         if data["env"] is None:
             print("Cannot display None!")
             return
+        print(self.agent)
+        env.changeActiveEntityAgents([self.agent])
         controller = self.controller
         controller.show_frame("GridDisplay")
         the_frame: iTkFrame = controller.frames["GridDisplay"]

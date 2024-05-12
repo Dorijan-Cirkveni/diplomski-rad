@@ -26,9 +26,19 @@ def search_files(maindir: str, extension:str=".json") -> dict:
 
     return result
 
+notenv=[
+    "agents",
+    "tiles",
+    "entities",
+    "grids",
+    "effects.json",
+    "syntax test sandbox.json",
+    "sandbox.json"
+]
+
 def filter_env_paths(filedict:dict, forbidden:set=None):
     if forbidden is None:
-        forbidden = {"entities","grids"}
+        forbidden = set(notenv)
     filtered=[]
     for name,path in filedict.items():
         S=set(path.split("\\"))

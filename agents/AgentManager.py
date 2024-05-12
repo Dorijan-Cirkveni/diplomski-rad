@@ -1,6 +1,7 @@
 import json
 
 import agents.Agent as base
+import util.UtilManager
 from agents.iAgent import iAgent
 from definitions import ACTIONS
 
@@ -32,23 +33,32 @@ def test_all_agent_inits():
         if res is None or type(res) != v:
             raise Exception("{} (key {}) does not give its own type when initialised from string,"
                             "giving a {} instead".format(type(v), e, type(res)))
-    Y=[(e,v) for e,v in X if e not in {}]
-    for e,v in Y:
+    Y = [(e, v) for e, v in X if e not in {}]
+    agentshorts=dict()
+    for e, v in Y:
         if e in {"MI"}:
             continue
-        res=v.from_string(v.defaultInput)
+        name = v.get_full_name()
+        if name == "Untitled Agent Type":
+            raise Exception("Forgot to name agent!")
+        if name in agentshorts:
+            raise Exception("{} and {} have the same name!")
+        agentshorts[name]=e
+        res = v.from_string(v.defaultInput)
         res: iAgent
         actionID = res.performAction(ACTIONS)
         if type(actionID) != int:
             msg = "{} (key {}) does not give proper action type back! ({}!=int)"
             raise Exception(msg.format(type(res), e, type(actionID)))
-    return
+
+    return agentshorts
 
 
-test_all_agent_inits()
+res=test_all_agent_inits()
 
 
 def main():
+    print(res)
     return
 
 

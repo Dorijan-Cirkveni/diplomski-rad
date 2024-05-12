@@ -201,6 +201,8 @@ class GridDisplayFrame(DIB.iTkFrame):
     def set_env(self, env: DGE.GridEnvironment = None, init=False):
         self.env = env
         if self.env and init:
+            self.view_elements_mode = {"Grid","Agents"}
+            self.known_agent_locations = {}
             self.env.cur_iter = 0
             self.winStatus = (None, 0)
         self.update_env()
@@ -221,15 +223,18 @@ class GridDisplayFrame(DIB.iTkFrame):
         grid: Grid2D = data.get('grid', None)
         agents: dict = data.get('agents', dict())
         print(agents)
+        locations=dict()
         if grid is None:
             msg = data.get("msg", "Missing message")
             if len(msg) > 25:
                 self.data_label: tk.Label
                 self.data_label.config(text=msg)
                 data['msg'] = "See below"
+        else:
+            locations = self.check_entity_locations(agents)
         mode=2*int("Grid" in self.view_elements_mode)+int("Agents" in self.view_elements_mode)
-        locations=self.check_entity_locations(agents)
-        print("Locations checked:",locations)
+        print("Locations checked:",agents,locations)
+        print("Old locations:",self.known_agent_locations)
         return grid, agents, mode
 
     def update_env(self):
@@ -241,8 +246,10 @@ class GridDisplayFrame(DIB.iTkFrame):
         else:
             data: dict = env.getDisplayData(self.obs_agent, self.view_mode)
             grid, agents, mode=self.process_update_env(data)
+            print()
         self.grid_display.update_grid(grid, agents, mode)
         self.show_iter()
+        self.known_agent_locations=agents
 
     def apply_manual_action_to_agents(self, action):
         if self.env is None:
@@ -258,18 +265,21 @@ class GridDisplayFrame(DIB.iTkFrame):
             agent: GraphicManualInputAgent
             agent.cur = action
 
-    def run_iteration(self, itercount=1, print_period=1):
+    def run_iteration(self, itercount=1, update_period=1):
         if self.env is None:
             return
         env: DGE.GridEnvironment = self.env
         for i in range(itercount):
             env.runIteration()
-            if (i + 1) % print_period == 0:
-                print("Iteration {}/{}".format(i + 1, self.env.cur_iter))
             if env.isWin():
                 self.winStatus = (True, self.env.cur_iter)
-            self.update_env()
-            self.update()
+            if (i + 1) % update_period == 0:
+                print("Iteration {}/{}".format(i, itercount))
+                self.show_iter()
+                self.update_env()
+                self.update()
+        self.update_env()
+        self.update()
 
     def process_input(self, E):
         if type(E) == str:
@@ -287,7 +297,9 @@ class GridDisplayFrame(DIB.iTkFrame):
                     self.update_env()
                     return
                 if L[-2] == "run":
+                    self.buttons.grid_remove()
                     self.run_iteration(int(L[-1]))
+                    self.buttons.grid()
                     return
                 if L[-2] == "View Type":
                     if L[-1]=="Full":

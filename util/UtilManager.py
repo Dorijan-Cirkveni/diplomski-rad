@@ -56,6 +56,25 @@ class SetQueue:
         return
 
 
+def MakeClassNameReadable(s: str):
+    new = [""]
+    for e in s:
+        if not new[-1]:
+            new[-1] += e.upper()
+            continue
+        if e.isupper():
+            new.append(e)
+            continue
+        if e=="_":
+            new.append("")
+            continue
+        new[-1] += e
+    while not new[-1]:
+        new.pop()
+    print(new)
+    return " ".join(new)
+
+
 def DoNothing(*_, **__):
     """
     This function does nothing.
@@ -66,7 +85,7 @@ def DoNothing(*_, **__):
     return
 
 
-def ConfirmQuit(message:str="Are you sure? [Y/N]",*_,**__):
+def ConfirmQuit(message: str = "Are you sure? [Y/N]", *_, **__):
     command = ""
     while "Y" not in command and "N" not in command:
         command = input(message)
@@ -75,10 +94,10 @@ def ConfirmQuit(message:str="Are you sure? [Y/N]",*_,**__):
         exit()
     return
 
+
 def PrintAndReturn(var):
     print(var)
     return var
-
 
 
 def CallOrEqual(condition, value):
@@ -141,7 +160,12 @@ def AddValueToLayeredStruct(S: [dict, list], types: list[type], indices: list, v
 
 
 def main():
-    print(reverseIf((0, 1), 0 == 1), reverseIf((0, 1), 1 == 1))
+    for E in [
+        "UnreadableClass",
+        "illegible_interface",
+        "noneuclideannerds",
+    ]:
+        print(E,"|",MakeClassNameReadable(E))
     return
 
 

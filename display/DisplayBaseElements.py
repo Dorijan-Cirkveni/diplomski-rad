@@ -7,17 +7,19 @@ counter = Counter(0)
 
 
 class InputFrame(iTkFrameDef):
-    def __init__(self, master, return_lambda: callable, screen_size: tuple, rule: callable, defaultValue=""):
+    def __init__(self, master, return_lambda: callable, screen_size: tuple, rule: callable, defaultValue="", text="Iterations:", butext="Run"):
         print(screen_size, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
         self.label = None
         self.rule = rule
         self.input = defaultValue
         self.button = None
         self.id = counter.use()
+        self.text=text
+        self.butext=butext
         super().__init__(master, "Input Frame", return_lambda, screen_size)
 
     def create_widgets(self):
-        self.label = tk.Label(self, text="Iterations:")
+        self.label = tk.Label(self, text=self.text)
         defaultValue = self.input
         self.input = tk.Entry(self)
         self.button = tk.Button(self, text="Run", command=self.doOutput)
@@ -26,6 +28,11 @@ class InputFrame(iTkFrameDef):
         self.button.grid(row=1, column=0, columnspan=2, pady=10)
         self.input.delete(0, tk.END)
         self.input.insert(0, defaultValue)
+
+    def set(self,s):
+        self.input:tk.Entry
+        self.input.delete(0, tk.END)
+        self.input.insert(0, s)
 
     def doOutput(self):
         assert type(self.input)==tk.Entry

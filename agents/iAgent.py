@@ -1,5 +1,6 @@
 from copy import deepcopy
 
+import util.UtilManager
 import util.struct.baseClasses as baseClasses
 from util.InformationCompiler import InformationCompiler
 
@@ -16,7 +17,12 @@ class iAgent(baseClasses.iRawInit):
     A template for an agent that controls one or more entities.
     """
 
+    fullname = "Untitled Agent Type"
     defaultInput = None
+
+    @classmethod
+    def get_full_name(cls):
+        return util.UtilManager.MakeClassNameReadable(cls.__name__)
 
     @staticmethod
     def from_string(s):
