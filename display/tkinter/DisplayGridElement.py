@@ -15,9 +15,9 @@ GRID_COLOR = (255, 255, 255)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-path = os.path.abspath("..")
+path = os.path.abspath("../..")
 json_file_path = os.path.join(path, "grid_tile_data.json")
-F = open("..\\grid_tiles\\grid_tile_data.json", "r")
+F = open("../../grid_tiles/grid_tile_data.json", "r")
 element_raw = json.loads(F.read())
 F.close()
 

@@ -1,6 +1,5 @@
-from display.DisplayBaseElements import *
-from display.DisplayGrid import *
-from display.DisplayInitialiser import *
+from display.tkinter.DisplayGrid import *
+from display.tkinter.DisplayInitialiser import *
 from environments.GridEnvironment import *
 
 GRIDDISPLAY = "GridDisplay"
