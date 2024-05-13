@@ -147,6 +147,7 @@ class DataDisplayFrame(DIB.iTkFrameDef):
 
 class GridDisplayFrame(DIB.iTkFrame):
     def __init__(self, master: DIB.SwapFrame, name="GridDisplayFrame", screen_size=(800, 700)):
+        self.agent_looks = {}
         self.view_elements_mode = {"Grid", "Agents"}
         self.agent_locations = dict()
         self.winStatus = (None, 0)
@@ -205,6 +206,8 @@ class GridDisplayFrame(DIB.iTkFrame):
     def set_env(self, env: DGE.GridEnvironment = None, init=False):
         self.env = env
         if self.env and init:
+            self.agent_looks={}
+            self.agent_locations={}
             self.view_elements_mode = {"Grid", "Agents"}
             self.env.cur_iter = 0
             self.winStatus = (None, 0)
@@ -218,13 +221,14 @@ class GridDisplayFrame(DIB.iTkFrame):
         res = {}
         for i, ent in enumerate(entities):
             if not ent:
-                if i not in env.deleted_locations:
-                    continue
-                pos=env.deleted_locations[i]
+                if i in env.deleted_locations:
+                    res[i] = env.deleted_locations[i]
+                continue
             else:
                 pos = ent.get(ent.LOCATION)
             if pos in seen:
                 res[i] = pos
+                self.agent_looks[i]=seen[pos]
         return res
 
     def process_update_env(self, data: dict):
@@ -268,7 +272,7 @@ class GridDisplayFrame(DIB.iTkFrame):
             for entID in offset_agents:
                 entloc=locations[entID]
                 offloc=offset_agents[entID]
-                entlook=agents[entloc]
+                entlook=agents.get(entloc,self.agent_looks[entID])
                 offset_entities[offloc]=entlook
             self.grid_display.update_grid(grid, offset_entities, mode)
             self.grid_display.update()
