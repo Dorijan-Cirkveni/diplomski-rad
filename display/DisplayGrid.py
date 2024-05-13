@@ -217,7 +217,12 @@ class GridDisplayFrame(DIB.iTkFrame):
         entities = env.entities
         res = {}
         for i, ent in enumerate(entities):
-            pos = ent.get(ent.LOCATION)
+            if not ent:
+                if i not in env.deleted_locations:
+                    continue
+                pos=env.deleted_locations[i]
+            else:
+                pos = ent.get(ent.LOCATION)
             if pos in seen:
                 res[i] = pos
         return res
@@ -300,7 +305,7 @@ class GridDisplayFrame(DIB.iTkFrame):
         self.show_iter()
         print("After:", self.agent_locations)
 
-    def run_iteration(self, itercount=1, update_period=1, anim_steps=2):
+    def run_iteration(self, itercount=1, update_period=1, anim_steps=5):
         if update_period!=1:
             anim_steps=1
         if self.env is None:
@@ -344,7 +349,9 @@ class GridDisplayFrame(DIB.iTkFrame):
         if type(E) == tuple and len(E) == 2:
             ind = ACTIONS.index(E)
             self.apply_manual_action_to_agents(ind)
+            self.buttons.grid_remove()
             self.run_iteration(1)
+            self.buttons.grid()
             return
         self.return_lambda(E)
 

@@ -58,6 +58,7 @@ class GridEnvironment(itf.iEnvironment):
                          effectTypes=effectTypes,
                          effects=effects,
                          extraData=extraData)
+        self.deleted_locations={}
         self.entities: list[GridEntity]
         self.scale = None
         self.init_grids_and_memory(gridRoutines)
@@ -623,6 +624,7 @@ class GridEnvironment(itf.iEnvironment):
         Args:
             moves (dict): Dictionary containing entity movements.
         """
+        self.deleted_locations={}
         moveTypes = {e: [] for e in moves.values()}
         for entityID, moveID in moves.items():
             if type(moveID)==int:
@@ -639,6 +641,7 @@ class GridEnvironment(itf.iEnvironment):
             ent: GridEntity = self.entities[e]
             entpos = ent.get(GridEntity.LOCATION, None)
             self.taken.pop(entpos)
+            self.deleted_locations[e]=entpos
             self.entities[e] = None
             self.activeEntities -= {e}
         self.updateGrids()
