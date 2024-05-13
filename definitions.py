@@ -5,6 +5,8 @@ V2UP = (-1, 0)
 ZERO_2 = (0, 0)
 V2DIRS = [V2RIGHT, V2DOWN, V2LEFT, V2UP]
 ACTIONS = V2DIRS + [ZERO_2]
+EPSILON = 0.00001
+EPSILONLITE = 0.01
 
 
 def getMirrorActions(dimension: int):

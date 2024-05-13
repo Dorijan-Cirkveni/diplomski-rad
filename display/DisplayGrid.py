@@ -1,6 +1,8 @@
+import math
 import tkinter as tk
 from collections import deque
 
+import definitions
 import interfaces as itf
 import DisplayBase as DIB
 import DisplayBaseElements as DBE
@@ -58,19 +60,19 @@ class GridFrame(DIB.iTkFrameDef):
         k = len(self.agent_images)
         byRow: list[list[tuple]] = [[] for _ in grid]
         for loc, agent_index in self.agents.items():
-            L = byRow[loc[0]]
-            L.append((loc[1], agent_index))
+            L = byRow[math.ceil(loc[0]-definitions.EPSILONLITE)]
+            L.append((loc[0],loc[1], agent_index))
         k = len(self.tile_images)
         k2 = len(self.agent_images)
-        for row, E in enumerate(grid):
+        for row_int, E in enumerate(grid):
             if mode & 2:
                 for col, elind in enumerate(E):
-                    P0 = Tmul((col, row), cell_scale)
+                    P0 = Tmul((col, row_int), cell_scale)
                     img = self.tile_images[elind % k]
                     loc0 = img.apply(P0, cell_scale)
                     self.canvas.create_image(*loc0, image=img.curScaleImage, anchor="nw")
             if mode & 1:
-                for (col, agent_index) in byRow[row]:
+                for (row, col, agent_index) in byRow[row_int]:
                     P0 = Tmul((col, row), cell_scale, True)
                     img = self.agent_images[agent_index % k2]
                     loc0 = img.apply(P0, cell_scale)
@@ -233,7 +235,7 @@ class GridDisplayFrame(DIB.iTkFrame):
         mode = 2 * int("Grid" in self.view_elements_mode) + int("Agents" in self.view_elements_mode)
         return grid, agents, mode
 
-    def update_env(self):
+    def update_env(self, animation_steps:int=2):
         env: DGE.GridEnvironment = self.env
         data: dict
         locations={}
@@ -245,14 +247,32 @@ class GridDisplayFrame(DIB.iTkFrame):
             grid, agents, mode = self.process_update_env(data)
             print()
             locations=self.check_entity_locations(agents)
+        print("Old locations:",self.agent_locations)
         print("Locations:",locations)
+        pers_agents={e:(
+            self.agent_locations[e],Tsub(locations[e],self.agent_locations[e],True)
+        ) for e in locations if e in self.agent_locations}
+        for i in range(1,animation_steps):
+            offset_agents = {}
+            for e,(start,diff) in pers_agents.items():
+                cdiff=Tmul(diff,(i/animation_steps,)*2,False)
+                cur=Tadd(start,cdiff)
+                offset_agents[e]=cur
+            print(offset_agents,agents)
+            offset_entities={}
+            for entID in offset_agents:
+                entloc=locations[entID]
+                offloc=offset_agents[entID]
+                entlook=agents[entloc]
+                offset_entities[offloc]=entlook
+            self.grid_display.update_grid(grid, offset_entities, mode)
+            self.grid_display.update()
+            self.update()
         self.grid_display.update_grid(grid, agents, mode)
+        self.update()
         self.show_iter()
+        self.agent_locations=locations
         return agents
-
-    def animate_update_env(self):
-
-        return
 
     def apply_manual_action_to_agents(self, action):
         if self.env is None:
@@ -268,7 +288,7 @@ class GridDisplayFrame(DIB.iTkFrame):
             agent: GraphicManualInputAgent
             agent.cur = action
 
-    def run_single_iteration(self, doUpdate=False, animate=False):
+    def run_single_iteration(self, doUpdate=False, anim_steps=1):
         env: DGE.GridEnvironment = self.env
         print("Before:", self.agent_locations)
         env.runIteration()
@@ -280,8 +300,9 @@ class GridDisplayFrame(DIB.iTkFrame):
         self.show_iter()
         print("After:", self.agent_locations)
 
-    def run_iteration(self, itercount=1, update_period=1):
-        animate = (update_period == 1)
+    def run_iteration(self, itercount=1, update_period=1, anim_steps=2):
+        if update_period!=1:
+            anim_steps=1
         if self.env is None:
             return
         env: DGE.GridEnvironment = self.env
@@ -289,7 +310,7 @@ class GridDisplayFrame(DIB.iTkFrame):
             doUpdate = (i + 1) % update_period == 0
             if doUpdate:
                 print("Iteration {} ({}/{})".format(env.cur_iter, i, itercount))
-            self.run_single_iteration(doUpdate)
+            self.run_single_iteration(doUpdate,anim_steps)
         self.update_env()
         self.update()
 
