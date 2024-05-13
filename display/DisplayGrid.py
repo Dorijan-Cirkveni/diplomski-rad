@@ -39,12 +39,12 @@ class GridFrame(DIB.iTkFrameDef):
         self.tile_images: list[DGE.GridElementDisplay] = self.images[0]
         self.agent_images: list[DGE.GridElementDisplay] = self.images[1]
 
-    def update_grid(self, new_grid: [Grid2D, None], agents: dict, mode:int=3):
+    def update_grid(self, new_grid: [Grid2D, None], agents: dict, mode: int = 3):
         self.grid_object = new_grid
         self.agents = agents
         self.create_grid(mode)
 
-    def create_grid(self, mode:int=3):
+    def create_grid(self, mode: int = 3):
         """
         Create the grid of cells.
         """
@@ -90,7 +90,7 @@ class GridButtonFrame(DIB.iTkFrameDef):
         X = [
             ("Agent Choice", ["None", "0"]),
             ("View Mode", ["Solid", "Viewed", "Agentmemory"]),
-            ("View Type", ["Full","Agents only","Grid only"])
+            ("View Type", ["Full", "Agents only", "Grid only"])
         ]
         for name, values in X:
             X = DBE.SelectFrame(self, self.return_lambda, (0, 0), name, values).ret_pack()
@@ -145,8 +145,8 @@ class DataDisplayFrame(DIB.iTkFrameDef):
 
 class GridDisplayFrame(DIB.iTkFrame):
     def __init__(self, master: DIB.SwapFrame, name="GridDisplayFrame", screen_size=(800, 700)):
-        self.view_elements_mode = {"Grid","Agents"}
-        self.kalQ=deque()
+        self.view_elements_mode = {"Grid", "Agents"}
+        self.agent_locations = dict()
         self.winStatus = (None, 0)
         screen_size = (800, 700)
         self.env: [DGE.GridEnvironment, None] = None
@@ -188,7 +188,7 @@ class GridDisplayFrame(DIB.iTkFrame):
         if self.env is None:
             return "No environment"
         winStatus, winIndex = self.winStatus
-        self.env:DGE.GridEnvironment
+        self.env: DGE.GridEnvironment
         s = "Current step:{}".format(self.env.cur_iter)
         if winStatus is True:
             s = "Win on step {}".format(winIndex)
@@ -197,63 +197,62 @@ class GridDisplayFrame(DIB.iTkFrame):
         return s
 
     def show_iter(self):
-        text={"winstatus": self.make_iter_text()}
+        text = {"winstatus": self.make_iter_text()}
         self.data_display.update_text(text)
 
     def set_env(self, env: DGE.GridEnvironment = None, init=False):
         self.env = env
         if self.env and init:
-            self.view_elements_mode = {"Grid","Agents"}
-            self.kalQ=deque()
+            self.view_elements_mode = {"Grid", "Agents"}
             self.env.cur_iter = 0
             self.winStatus = (None, 0)
         self.update_env()
 
-    def check_entity_locations(self, seen:dict):
-        env:DGE.GridEnvironment
-        env=self.env
-        entities:list[DGE.GridEntity]
-        entities=env.entities
-        res={}
-        for i,ent in enumerate(entities):
-            pos=ent.get(ent.LOCATION)
+    def check_entity_locations(self, seen: dict):
+        env: DGE.GridEnvironment
+        env = self.env
+        entities: list[DGE.GridEntity]
+        entities = env.entities
+        res = {}
+        for i, ent in enumerate(entities):
+            pos = ent.get(ent.LOCATION)
             if pos in seen:
-                res[i]=pos
+                res[i] = pos
         return res
 
-    def process_update_env(self,data:dict):
+    def process_update_env(self, data: dict):
         grid: Grid2D = data.get('grid', None)
         agents: dict = data.get('agents', dict())
         print(agents)
-        locations=dict()
         if grid is None:
             msg = data.get("msg", "Missing message")
             if len(msg) > 25:
                 self.data_label: tk.Label
                 self.data_label.config(text=msg)
                 data['msg'] = "See below"
-        else:
-            locations = self.check_entity_locations(agents)
-        mode=2*int("Grid" in self.view_elements_mode)+int("Agents" in self.view_elements_mode)
-        print("Locations checked:",agents,locations)
-        print("Old locations:",list(self.kalQ))
+        mode = 2 * int("Grid" in self.view_elements_mode) + int("Agents" in self.view_elements_mode)
         return grid, agents, mode
 
     def update_env(self):
-        for i,e in enumerate(self.kalQ):
-            print(e,"Beginning")
-        env:DGE.GridEnvironment = self.env
+        env: DGE.GridEnvironment = self.env
         data: dict
+        locations={}
         if env is None:
             data = {"msg": "Environment not loaded!"}
             grid, agents, mode = None, {}, self.view_mode
         else:
             data: dict = env.getDisplayData(self.obs_agent, self.view_mode)
-            grid, agents, mode=self.process_update_env(data)
+            grid, agents, mode = self.process_update_env(data)
             print()
+            locations=self.check_entity_locations(agents)
+        print("Locations:",locations)
         self.grid_display.update_grid(grid, agents, mode)
         self.show_iter()
-        self.kalQ.appendleft(agents)
+        return agents
+
+    def animate_update_env(self):
+
+        return
 
     def apply_manual_action_to_agents(self, action):
         if self.env is None:
@@ -269,19 +268,28 @@ class GridDisplayFrame(DIB.iTkFrame):
             agent: GraphicManualInputAgent
             agent.cur = action
 
+    def run_single_iteration(self, doUpdate=False, animate=False):
+        env: DGE.GridEnvironment = self.env
+        print("Before:", self.agent_locations)
+        env.runIteration()
+        if env.isWin():
+            self.winStatus = (True, self.env.cur_iter)
+        if doUpdate:
+            self.update_env()
+            self.update()
+        self.show_iter()
+        print("After:", self.agent_locations)
+
     def run_iteration(self, itercount=1, update_period=1):
+        animate = (update_period == 1)
         if self.env is None:
             return
         env: DGE.GridEnvironment = self.env
         for i in range(itercount):
-            env.runIteration()
-            if env.isWin():
-                self.winStatus = (True, self.env.cur_iter)
-            if (i + 1) % update_period == 0:
-                print("Iteration {}/{}".format(i, itercount))
-                self.show_iter()
-                self.update_env()
-                self.update()
+            doUpdate = (i + 1) % update_period == 0
+            if doUpdate:
+                print("Iteration {} ({}/{})".format(env.cur_iter, i, itercount))
+            self.run_single_iteration(doUpdate)
         self.update_env()
         self.update()
 
@@ -306,21 +314,21 @@ class GridDisplayFrame(DIB.iTkFrame):
                     self.buttons.grid()
                     return
                 if L[-2] == "View Type":
-                    if L[-1]=="Full":
-                        L[-1]="Grid Agents"
-                    S=set(L[-1].split())
-                    self.view_elements_mode=S
+                    if L[-1] == "Full":
+                        L[-1] = "Grid Agents"
+                    S = set(L[-1].split())
+                    self.view_elements_mode = S
                     self.update_env()
             self.return_lambda(E)
         if type(E) == tuple and len(E) == 2:
-            ind=ACTIONS.index(E)
+            ind = ACTIONS.index(E)
             self.apply_manual_action_to_agents(ind)
             self.run_iteration(1)
             return
         self.return_lambda(E)
 
     def receiveData(self, data: dict):
-        self.set_env(data.get('env',None),True)
+        self.set_env(data.get('env', None), True)
 
 
 def main():
