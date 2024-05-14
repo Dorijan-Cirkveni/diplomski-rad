@@ -1,6 +1,6 @@
 import util.CommonExceptions
 from interfaces import iRawInit
-from util.struct.Grid2D import Grid2D
+from util.struct.Grid2D import *
 
 
 class GridRoutine(iRawInit):

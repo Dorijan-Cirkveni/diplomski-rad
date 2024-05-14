@@ -1,5 +1,16 @@
 from environments.GridEnvironment import *
+import util.struct.Grid2D as G2Dlib
+from util.struct.baseClasses import *
 
+
+class CycleGridRoutine(GridRoutine):
+    def __init__(self, grid: G2Dlib.Grid2D):
+        super().__init__(grid)
+        return
+
+    @staticmethod
+    def from_string(s):
+        raise util.CommonExceptions.ImplementAsNeededException()
 
 class CyclingGoalEnvironment(GridEnvironment):
     def __init__(self, size:int, rounds:list[list[int]], entities: list[GridEntity], activeEntities: set,

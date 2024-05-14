@@ -15,7 +15,7 @@ class iGridDrawElement:
     An element used to draw in the grid with.
     """
 
-    def apply(self) -> list[tuple[tuple[int, int], int]]:
+    def apply(self,params:dict) -> list[tuple[tuple[int, int], int]]:
         """
         Apply the element
         """
@@ -37,7 +37,7 @@ class Rect(iGridDrawElement):
         self.last = (c, d)
         self.value = v
 
-    def apply(self) -> list[tuple[tuple[int, int], int]]:
+    def apply(self,params:dict=None) -> list[tuple[tuple[int, int], int]]:
         """
         Be there or be square.
         :return:
@@ -85,7 +85,11 @@ class Ring(iGridDrawElement):
             direction=Y.get(cur,direction)
             cur=Tadd(direction,cur,True)
 
-    def apply(self) -> list[tuple[tuple[int, int], int]]:
+    def apply(self,params:dict=None) -> list[tuple[tuple[int, int], int]]:
+        if not params:
+            return self.values
+        if "offset" in params:
+            values=[]
         return self.values
 
 
@@ -425,8 +429,10 @@ class Grid2D(iCombinable):
         NEWM = [E[::(-1) ** hor] for E in PARTM]
         return Grid2D(self.scale, NEWM)
 
-    def use_draw_element(self, element: iGridDrawElement):
-        for T, v in element.apply():
+    def use_draw_element(self, element: iGridDrawElement, data=None):
+        if data is None:
+            data = {}
+        for T, v in element.apply(data):
             T: tuple
             if self.hasTileOfIndex(T):
                 self[T] = v
@@ -590,12 +596,10 @@ def main():
     Currently testing:
     :return:
     """
+    X=Ring([r%9+1 for r in range(200)],4,0,(2,2))
     for i in range(10):
-        A = Grid2D((15,15))
-        X=Ring([r%9+1 for r in range(200)],i,0,(7,7))
-
-        print(i)
-        A.use_draw_element(X)
+        A = Grid2D((5,)*2)
+        A.use_draw_element(X,{'offset':i})
         print(A.get_text_display(lambda x:" 123456789"[x%10]))
     return
 
