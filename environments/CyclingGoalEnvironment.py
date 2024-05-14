@@ -50,26 +50,11 @@ class CycleGridRoutine(GridRoutine):
 
         return cur_grid
 
-class CyclingGoalEnvironment(GridEnvironment):
-    def __init__(self, size:int, rounds:list[list[int]], entities: list[GridEntity], activeEntities: set,
+class SpinningEnvironment(GridEnvironment):
+    def __init__(self, gridRoutines: dict[str, GridRoutine], entities: list[GridEntity], activeEntities: set,
                  tileTypes: list[Grid2DTile], effectTypes: list[itf.Effect], effects: list[itf.EffectTime],
                  extraData: dict):
-        self.scale=(size,)*2
-        base=Grid2D(self.scale)
-        period=1
-        isEven=1^(size&1)
-        for i,E in enumerate(rounds):
-
         super().__init__(gridRoutines, entities, activeEntities, tileTypes, effectTypes, effects, extraData)
-
-    def getScale(self):
-        """
-        Returns the scale (size) of the grid.
-
-        Returns:
-            tuple: Grid scale (number of rows, number of columns).
-        """
-        return self.solidGrid.scale
 
     def getGrid(self, gridType: str = None, default=None) -> Grid2D:
         """

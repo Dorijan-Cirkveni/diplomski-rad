@@ -16,6 +16,7 @@ class GridRoutine(iRawInit):
             return
         grids:list[Grid2D]
         self.grids:list[Grid2D] = grids
+        self.scale=grids[0].scale
         self.seq:list[int] = seq if seq else [i for i in range(len(grids))]
         self.loop = loop
 
@@ -64,7 +65,7 @@ class GridRoutine(iRawInit):
         return chosenGrid
 
     def expandMirror(self,dimension=0,wallsize=1,walltype=2,default=-1):
-        newGrid=Grid2D(self.grids[0].scale)
+        newGrid=Grid2D(self.scale)
         newGrids=[grid.collage(newGrid,dimension,default,wallsize,walltype) for grid in self.grids]
         return GridRoutine(newGrids,self.seq[::],self.loop)
 
