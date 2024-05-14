@@ -34,15 +34,29 @@ class CycleGridRoutine(GridRoutine):
         """
         raise util.CommonExceptions.ImplementAsNeededException()
 
-
     def getCurGrid(self, itid):
         """
         Get grid for current iteration.
+
         :param itid: Current iteration number.
         :return: Corresponding grid.
         """
-        # Return grid state in iteration
-        return grid
+        cur_grid:Grid2D = self.grids[0].copy() # Make a copy of the original grid
+
+        # Iterate through each layer and rotate it based on the specified speed
+        for i, speed in enumerate(self.speeds):
+            # Calculate the number of steps and direction
+            steps = abs(speed)
+            direction = 1 if speed >= 0 else -1
+
+            # Calculate the size of the layer
+            layer_size = min(cur_grid.scale) - i * 2
+
+            # Rotate the layer
+            for _ in range(steps):
+                cur_grid.rotateLayer(layer_size, direction)
+
+        return cur_grid
 
 class CyclingGoalEnvironment(GridEnvironment):
     def __init__(self, size:int, rounds:list[list[int]], entities: list[GridEntity], activeEntities: set,

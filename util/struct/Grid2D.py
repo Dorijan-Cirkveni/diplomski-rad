@@ -540,6 +540,34 @@ class Grid2D(iCombinable):
         A: Grid2D
         return A.collage(B, dimension, -1, gap, gapdefault)
 
+    def rotate_layer(self, layer: int, steps: int):
+        """
+        Rotate the specified layer of the grid.
+
+        :param layer: The index of the layer to rotate (0-indexed, where 0 is the outermost layer).
+        :param steps: The number of steps to rotate the layer (positive for clockwise, negative for counterclockwise).
+        """
+        # Check if the layer index is valid
+        if layer < 0 or layer >= min(self.scale) // 2:
+            raise ValueError("Invalid layer index")
+
+        # Determine the coordinates of the layer
+        top_left = (layer, layer)
+        bottom_right = (self.scale[0] - layer - 1, self.scale[1] - layer - 1)
+
+        # Extract the frame of the layer
+        frameLocations=[(layer,i) for i in range(layer,self.scale[1]-layer)]
+        frameLocations+=[(i,layer) for i in range(layer,self.scale[0]-layer)]
+        frameLocations=[(layer,i) for i in range(self.scale[1]-layer,layer,-1)]
+        frameLocations+=[(i,layer) for i in range(self.scale[0]-layer,layer,-1)]
+        frame = [self.M[E] for E in frameLocations]
+        steps%=len(frame)
+
+        # Place the rotated frame back into the grid
+        for i in range(len(frame)):
+            self.M[frameLocations[i]]=frame[i-steps]
+        return
+
 
 def init_framed_grid(size: tuple[int,int], frameType: int, fillType: int):
     frame = Rect((0, 0) + Tsub(size, (1, 1)) + (frameType,))
