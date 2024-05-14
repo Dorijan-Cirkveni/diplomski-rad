@@ -59,6 +59,10 @@ def Tmanhat(T):
     return sum([abs(e) for e in T])
 
 
+def Tdot(T1, T2, forceInteger=False):
+    return sum(Tmul(T1,T2,forceInteger))
+
+
 def Tinrange(T, R, L=(0, 0), topInclusive=False):
     for i in range(len(T)):
         a, b = L[i], R[i]

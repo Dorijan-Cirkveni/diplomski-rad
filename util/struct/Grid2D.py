@@ -15,7 +15,7 @@ class iGridDrawElement:
     An element used to draw in the grid with.
     """
 
-    def apply(self) -> list[tuple[int, int]]:
+    def apply(self) -> list[tuple[tuple[int, int], int]]:
         """
         Apply the element
         """
@@ -53,6 +53,43 @@ class Rect(iGridDrawElement):
             RES.append(((x1, dy), v))
             RES.append(((x2, dy), v))
         return RES
+
+def getCentrish(scale:tuple):
+    a,b=divmod(scale[0],2)
+    return a + 1 - b, scale[1] // 2
+
+class Ring(iGridDrawElement):
+    def __init__(self, L, diameter:int, offset:int, locoffset:tuple, default:int=0):
+        direction=(0,1)
+        radius, isEven=divmod(diameter,2)
+        self.values=[]
+        if radius==0 and not isEven:
+            self.values.append((locoffset,L[0]))
+            return
+        size=4*(radius*2+isEven)
+        V=[default for i in range(size)]
+        L=L[:size]
+        for i,e in enumerate(L):
+            V[i-offset]=e
+        start=Tadd(locoffset,(-radius,0))
+        X={
+            (-radius,radius):(1,0),
+            (radius+isEven,radius):(0,-1),
+            (radius+isEven,-radius-isEven):(-1,0),
+            (-radius,-radius-isEven):(0,1)
+        }
+        Y={Tadd(locoffset,E):V for E,V in X.items()}
+        cur=start
+        for E in V:
+            self.values.append((cur,E))
+            direction=Y.get(cur,direction)
+            cur=Tadd(direction,cur,True)
+
+    def apply(self) -> list[tuple[tuple[int, int], int]]:
+        return self.values
+
+
+
 
 
 class Grid2D(iCombinable):
@@ -531,8 +568,7 @@ def make_choose_disp(E):
     return chooseDisp
 
 
-# [[(i * 2 + j) % 5 for j in range(10)] for i in range(10)]
-def main():
+def test_1():
     """
     Currently testing: Grid collage
     :return:
@@ -546,6 +582,21 @@ def main():
     B: Grid2D = A.mirror(0, 1)
     C=init_framed_grid((25,25),2,0)
     print(C.get_text_display(displayMethod))
+
+
+# [[(i * 2 + j) % 5 for j in range(10)] for i in range(10)]
+def main():
+    """
+    Currently testing:
+    :return:
+    """
+    for i in range(10):
+        A = Grid2D((15,15))
+        X=Ring([r%9+1 for r in range(200)],i,0,(7,7))
+
+        print(i)
+        A.use_draw_element(X)
+        print(A.get_text_display(lambda x:" 123456789"[x%10]))
     return
 
 
