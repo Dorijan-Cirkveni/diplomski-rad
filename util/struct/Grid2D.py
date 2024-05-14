@@ -548,24 +548,26 @@ class Grid2D(iCombinable):
         :param steps: The number of steps to rotate the layer (positive for clockwise, negative for counterclockwise).
         """
         # Check if the layer index is valid
-        if layer < 0 or layer >= min(self.scale) // 2:
-            raise ValueError("Invalid layer index")
+        if layer not in range(min(self.scale) // 2):
+            return
 
         # Determine the coordinates of the layer
-        top_left = (layer, layer)
-        bottom_right = (self.scale[0] - layer - 1, self.scale[1] - layer - 1)
+        y2,x2 = (self.scale[0] - layer - 1, self.scale[1] - layer - 1)
 
         # Extract the frame of the layer
-        frameLocations=[(layer,i) for i in range(layer,self.scale[1]-layer)]
-        frameLocations+=[(i,layer) for i in range(layer,self.scale[0]-layer)]
-        frameLocations=[(layer,i) for i in range(self.scale[1]-layer,layer,-1)]
-        frameLocations+=[(i,layer) for i in range(self.scale[0]-layer,layer,-1)]
-        frame = [self.M[E] for E in frameLocations]
+        frameLocations=[(layer,i) for i in range(layer,x2)]
+        frameLocations+=[(i,x2) for i in range(layer,y2)]
+        frameLocations+=[(y2,i) for i in range(x2,layer,-1)]
+        frameLocations+=[(i,layer) for i in range(y2,layer,-1)]
+        frame = [self[E] for E in frameLocations]
+        print(frame)
         steps%=len(frame)
+        movedFrame=frame[-steps:]+frame[:-steps]
+        print(movedFrame)
 
         # Place the rotated frame back into the grid
         for i in range(len(frame)):
-            self.M[frameLocations[i]]=frame[i-steps]
+            self[frameLocations[i]]=movedFrame[i]
         return
 
 
@@ -618,17 +620,43 @@ def test_1():
     print(C.get_text_display(displayMethod))
 
 
+def demonstrate_rotate_layer():
+    # Create a 5x5 grid filled with zeros
+    grid = Grid2D((3,3),[
+        [8, 1, 2],
+        [7, 0, 3],
+        [6, 5, 4]
+    ])
+
+    print("Original Grid:")
+    print(grid.get_text_display(str))
+
+    # Rotate the outermost layer clockwise
+    grid.rotate_layer(0, 1)
+
+    print("\n1:")
+    print(grid.get_text_display(str))
+
+    # Rotate the innermost layer counterclockwise
+    grid.rotate_layer(1, -1)
+
+    print("\n2:")
+    print(grid.get_text_display(str))
+
+    # Rotate the outermost layer counterclockwise twice
+    grid.rotate_layer(0, -2)
+
+    print("\n3:")
+    print(grid.get_text_display(str))
+
+
 # [[(i * 2 + j) % 5 for j in range(10)] for i in range(10)]
 def main():
     """
     Currently testing:
     :return:
     """
-    X=Ring([r%9+1 for r in range(200)],4,0,(2,2))
-    for i in range(10):
-        A = Grid2D((5,)*2)
-        A.use_draw_element(X,{'offset':i})
-        print(A.get_text_display(lambda x:" 123456789"[x%10]))
+    demonstrate_rotate_layer()
     return
 
 

@@ -44,17 +44,9 @@ class CycleGridRoutine(GridRoutine):
         cur_grid:Grid2D = self.grids[0].copy() # Make a copy of the original grid
 
         # Iterate through each layer and rotate it based on the specified speed
+        self.speeds=self.speeds[min(cur_grid.scale)//2]
         for i, speed in enumerate(self.speeds):
-            # Calculate the number of steps and direction
-            steps = abs(speed)
-            direction = 1 if speed >= 0 else -1
-
-            # Calculate the size of the layer
-            layer_size = min(cur_grid.scale) - i * 2
-
-            # Rotate the layer
-            for _ in range(steps):
-                cur_grid.rotateLayer(layer_size, direction)
+            cur_grid.rotate_layer(i, speed)
 
         return cur_grid
 
