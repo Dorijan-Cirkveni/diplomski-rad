@@ -126,9 +126,13 @@ class Grid2D(iCombinable):
         """
         shapes = shapes if shapes else {}
         add = add if add else []
-        self.scale = scale
+        if type(scale)==list:
+            scale=tuple(scale)
+        if type(scale)!=tuple:
+            raise Exception("Dimensions tuple scale must be a tuple, not {}".format(type(scale)))
         if len(scale) != 2:
             raise Exception("Dimensions tuple scale must be 2, not {}".format(len(scale)))
+        self.scale = scale
         self.M = [[default for __ in range(scale[1])] for _ in range(scale[0])]
         self.fill_init(M)
         self.shapes = shapes
@@ -156,7 +160,7 @@ class Grid2D(iCombinable):
         :param params:
         :return:
         """
-        raw['M'] = raw.pop('grid', [])
+        raw['M'] = raw.get('grid', [])
         raw = iRawDictInit.raw_process_dict(raw, params)
         return raw
 
@@ -560,10 +564,8 @@ class Grid2D(iCombinable):
         frameLocations+=[(y2,i) for i in range(x2,layer,-1)]
         frameLocations+=[(i,layer) for i in range(y2,layer,-1)]
         frame = [self[E] for E in frameLocations]
-        print(frame)
         steps%=len(frame)
         movedFrame=frame[-steps:]+frame[:-steps]
-        print(movedFrame)
 
         # Place the rotated frame back into the grid
         for i in range(len(frame)):

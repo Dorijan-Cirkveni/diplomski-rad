@@ -28,6 +28,7 @@ class GridEnvironment(itf.iEnvironment):
     dir_down = 1
     dir_left = 2
     dir_right = 3
+    routineType=GridRoutine
 
     def __init__(self, gridRoutines: dict[str, GridRoutine],
                  entities: list[GridEntity], activeEntities: set,
@@ -86,7 +87,7 @@ class GridEnvironment(itf.iEnvironment):
         agmem = gridRoutines.get(AGENTMEMORY, None)
         if agmem is None:
             newgrid = Grid2D(self.scale, default=-1)
-            agmem = GridRoutine(newgrid)
+            agmem = self.routineType(newgrid)
             gridRoutines[AGENTMEMORY] = agmem
         agrid: Grid2D = agmem.getCurGrid(0)
         for entity in self.entities:
@@ -121,19 +122,19 @@ class GridEnvironment(itf.iEnvironment):
             X.append(Grid2DTile(tileBase, tileExceptions))
         return X
 
-    @staticmethod
-    def getGridRoutinesFromDict(raw: dict):
+    @classmethod
+    def getGridRoutinesFromDict(cls,raw: dict):
         gridRaw = raw[SOLID]
-        grid = GridRoutine.raw_init(gridRaw)
+        grid = cls.routineType.raw_init(gridRaw)
         if VIEWED in raw:
             gridRaw = raw[VIEWED]
-            visgrid = GridRoutine.raw_init(gridRaw)
+            visgrid = cls.routineType.raw_init(gridRaw)
         else:
             visgrid = grid
         all_grids: dict = raw.get("all_grids", dict())
         for e, v in all_grids.items():
             v: dict
-            all_grids[e] = GridRoutine.raw_init(v)
+            all_grids[e] = cls.routineType.raw_init(v)
         all_grids[SOLID] = grid
         all_grids[VIEWED] = visgrid
         return all_grids

@@ -1,9 +1,9 @@
 import util.CommonExceptions
-from interfaces import iRawInit
+from interfaces import *
 from util.struct.Grid2D import *
 
 
-class GridRoutine(iRawInit):
+class GridRoutine(iRawDictInit):
     """
     A set of grids in a chronological sequence.
     """
