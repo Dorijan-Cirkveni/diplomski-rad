@@ -23,6 +23,13 @@ class iPygameElement:
         """
         raise NotImplementedError
 
+    def interact(self,event:object):
+        """
+        Handles interaction with a click event.
+        :param event:
+        :return:
+        """
+
 
 class PygameImage(iPygameElement):
     def __init__(self, image_path):
