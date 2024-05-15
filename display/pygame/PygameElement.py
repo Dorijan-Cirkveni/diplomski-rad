@@ -88,7 +88,7 @@ class PygameVertScrollbar(iPygameElement):
     """
     A vertical scroll bar.
     """
-    def __init__(self, sb_body_img: PygameImage, sb_indicator_img: PygameImage,
+    def __init__(self, size:tuple, sb_body_img: PygameImage, sb_indicator_img: PygameImage,
                  top_arrow_img: PygameImage, bottom_arrow_img: PygameImage):
         """
         Initialize the scrollbar with PygameImage objects for components.
@@ -144,21 +144,14 @@ class PygameVertScrollbar(iPygameElement):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if rect.collidepoint(event.pos):
                 print(f"Scrollbar clicked at {event.pos}")
-
-
-def main():
+def test_pygame_image():
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
     clock = pygame.time.Clock()
 
-    # Create PygameImage objects for scrollbar components
-    sb_body_img = PygameImage("sb_body.png")
-    sb_indicator_img = PygameImage("sb_indicator.png")
-    top_arrow_img = PygameImage("top_arrow.png")
-    bottom_arrow_img = PygameImage("bottom_arrow.png")
-
-    # Create the scrollbar
-    scrollbar = PygameVertScrollbar(sb_body_img, sb_indicator_img, top_arrow_img, bottom_arrow_img)
+    # Create a PygameImage instance
+    image_path = "C:\\FER_diplomski\\dip_rad\\testenv\\diplomski-rad\\display\\pygame\\blueAgent.png"
+    image = PygameImage(image_path)
 
     running = True
     while running:
@@ -166,16 +159,21 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-            scrollbar.interact(event, scrollbar.sb_body_rect)
+            # Test interaction
+            image.interact(event, image.rect)
 
-        screen.fill((255, 255, 255))
+        screen.fill((255, 255, 255))  # Fill screen with white color
 
-        scrollbar.draw(screen, (100.0, 100.0), (1.0, 2.0))
+        # Example usage of PygameImage class
+        image.draw(screen, (100.0, 100.0), (1.0, 1.0))
 
-        pygame.display.flip()
-        clock.tick(60)
+        pygame.display.flip()  # Update the display
+        clock.tick(60)  # Cap the frame rate to 60 FPS
 
     pygame.quit()
+
+def main():
+    test_pygame_image()
 
 
 if __name__ == "__main__":
