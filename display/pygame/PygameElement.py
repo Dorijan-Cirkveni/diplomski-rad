@@ -15,6 +15,9 @@ class iPygameElement:
         raise NotImplementedError
 
     def __copy__(self):
+        """
+        Shallow copy method.
+        """
         cls = self.__class__
         result = cls.__new__(cls)
         result.__dict__.update(self.__dict__)
@@ -22,12 +25,14 @@ class iPygameElement:
 
     def copy(self):
         """
-
-        :return:
+        Shallow copy method.
         """
         return self.__copy__()
 
     def __deepcopy__(self, memodict=None):
+        """
+        Deep copy method.
+        """
         if memodict is None:
             memodict = {}
         cls = self.__class__
@@ -45,19 +50,35 @@ class iPygameElement:
         """
         raise NotImplementedError
 
+
 class PygameImage(iPygameElement):
     def __init__(self, image_path):
+        """
+        Initialize PygameImage with an image file path.
+        """
         self.image = pygame.image.load(image_path)
         self.rect = self.image.get_rect()
 
-    def draw(self, frame: pygame.Surface, location: tuple[float, float], scale: tuple[float, float],
-             animation_length: float = -1):
-        self.rect.topleft = location
+    def draw(self, frame: pygame.Surface, loc: tuple[float, float], scale: tuple[float, float],
+             anim_length: float = -1):
+        """
+        Draw the image on the frame.
+        :param frame: The pygame surface to draw the image on.
+        :param loc: The location of the top left point of the image.
+        :param scale: The image scale relative to the base image size.
+        :param anim_length: Time of fade-in in seconds. If not positive, the placement is instant.
+        """
+        self.rect.topleft = loc
         self.rect.width = int(self.rect.width * scale[0])
         self.rect.height = int(self.rect.height * scale[1])
         frame.blit(self.image, self.rect)
 
     def interact(self, event: pygame.event.EventType, rect: pygame.Rect):
+        """
+        Handles interaction with the image.
+        :param event: The pygame event object.
+        :param rect: The pygame Rect object representing the position and size of the image.
+        """
         if event.type == pygame.MOUSEBUTTONDOWN:
             if rect.collidepoint(event.pos):
                 print(f"Great Success! {event.pos}")
@@ -67,43 +88,59 @@ class PygameVertScrollbar(iPygameElement):
     """
     A vertical scroll bar.
     """
-    def __init__(self, sb_body_img, sb_indicator_img, top_arrow_img, bottom_arrow_img):
-        self.sb_body_img = pygame.image.load(sb_body_img)
-        self.sb_indicator_img = pygame.image.load(sb_indicator_img)
-        self.top_arrow_img = pygame.image.load(top_arrow_img)
-        self.bottom_arrow_img = pygame.image.load(bottom_arrow_img)
+    def __init__(self, sb_body_img: PygameImage, sb_indicator_img: PygameImage,
+                 top_arrow_img: PygameImage, bottom_arrow_img: PygameImage):
+        """
+        Initialize the scrollbar with PygameImage objects for components.
+        :param sb_body_img: The PygameImage object for the scrollbar body.
+        :param sb_indicator_img: The PygameImage object for the scrollbar indicator.
+        :param top_arrow_img: The PygameImage object for the top arrow.
+        :param bottom_arrow_img: The PygameImage object for the bottom arrow.
+        """
+        self.sb_body_img = sb_body_img
+        self.sb_indicator_img = sb_indicator_img
+        self.top_arrow_img = top_arrow_img
+        self.bottom_arrow_img = bottom_arrow_img
 
-        self.sb_body_rect = self.sb_body_img.get_rect()
-        self.sb_indicator_rect = self.sb_indicator_img.get_rect()
-        self.top_arrow_rect = self.top_arrow_img.get_rect()
-        self.bottom_arrow_rect = self.bottom_arrow_img.get_rect()
+        self.sb_body_rect = self.sb_body_img.rect.copy()
+        self.sb_indicator_rect = self.sb_indicator_img.rect.copy()
+        self.top_arrow_rect = self.top_arrow_img.rect.copy()
+        self.bottom_arrow_rect = self.bottom_arrow_img.rect.copy()
 
         self.active = False
 
     def draw(self, frame: pygame.Surface, loc: tuple[float, float], scale: tuple[float, float],
              anim_length: float = -1):
+        """
+        Draw the scrollbar components on the frame.
+        :param frame: The pygame surface to draw the scrollbar components on.
+        :param loc: The location of the top left point of the scrollbar.
+        :param scale: The scale of the scrollbar components relative to their original size.
+        :param anim_length: Time of animation in seconds. If not positive, the drawing is instant.
+        """
         self.top_arrow_rect.topleft = loc
         self.sb_body_rect.topleft = (loc[0], loc[1] + self.top_arrow_rect.height)
         self.sb_indicator_rect.topleft = (loc[0], loc[1] + self.top_arrow_rect.height)
         self.bottom_arrow_rect.topleft = (loc[0], loc[1] + scale[1] - self.bottom_arrow_rect.height)
 
-        self.top_arrow_rect.width = int(self.top_arrow_rect.width * scale[0])
-        self.top_arrow_rect.height = int(self.top_arrow_rect.height * scale[1])
-        self.sb_body_rect.width = int(self.sb_body_rect.width * scale[0])
-        self.sb_body_rect.height = int(self.sb_body_rect.height * scale[1])
-        self.sb_indicator_rect.width = int(self.sb_indicator_rect.width * scale[0])
-        self.sb_indicator_rect.height = int(self.sb_indicator_rect.height * scale[1])
-        self.bottom_arrow_rect.width = int(self.bottom_arrow_rect.width * scale[0])
-        self.bottom_arrow_rect.height = int(self.bottom_arrow_rect.height * scale[1])
+        self.top_arrow_rect.size = tuple(int(dim * scale[i]) for i, dim in enumerate(self.top_arrow_rect.size))
+        self.sb_body_rect.size = tuple(int(dim * scale[i]) for i, dim in enumerate(self.sb_body_rect.size))
+        self.sb_indicator_rect.size = tuple(int(dim * scale[i]) for i, dim in enumerate(self.sb_indicator_rect.size))
+        self.bottom_arrow_rect.size = tuple(int(dim * scale[i]) for i, dim in enumerate(self.bottom_arrow_rect.size))
 
         self.active = True
 
-        frame.blit(self.top_arrow_img, self.top_arrow_rect)
-        frame.blit(self.bottom_arrow_img, self.bottom_arrow_rect)
-        frame.blit(self.sb_body_img, self.sb_body_rect)
-        frame.blit(self.sb_indicator_img, self.sb_indicator_rect)
+        self.top_arrow_img.draw(frame, self.top_arrow_rect.topleft, scale)
+        self.bottom_arrow_img.draw(frame, self.bottom_arrow_rect.topleft, scale)
+        self.sb_body_img.draw(frame, self.sb_body_rect.topleft, scale)
+        self.sb_indicator_img.draw(frame, self.sb_indicator_rect.topleft, scale)
 
     def interact(self, event: pygame.event.EventType, rect: pygame.Rect):
+        """
+        Handle interaction with the scrollbar.
+        :param event: The pygame event object.
+        :param rect: The pygame Rect object representing the position and size of the scrollbar.
+        """
         if event.type == pygame.MOUSEBUTTONDOWN:
             if rect.collidepoint(event.pos):
                 print(f"Scrollbar clicked at {event.pos}")
@@ -114,7 +151,14 @@ def main():
     screen = pygame.display.set_mode((800, 600))
     clock = pygame.time.Clock()
 
-    scrollbar = PygameVertScrollbar("sb_body.png", "sb_indicator.png", "top_arrow.png", "bottom_arrow.png")
+    # Create PygameImage objects for scrollbar components
+    sb_body_img = PygameImage("sb_body.png")
+    sb_indicator_img = PygameImage("sb_indicator.png")
+    top_arrow_img = PygameImage("top_arrow.png")
+    bottom_arrow_img = PygameImage("bottom_arrow.png")
+
+    # Create the scrollbar
+    scrollbar = PygameVertScrollbar(sb_body_img, sb_indicator_img, top_arrow_img, bottom_arrow_img)
 
     running = True
     while running:
@@ -126,7 +170,7 @@ def main():
 
         screen.fill((255, 255, 255))
 
-        scrollbar.draw(screen, (100, 100), (1, 2))
+        scrollbar.draw(screen, (100.0, 100.0), (1.0, 2.0))
 
         pygame.display.flip()
         clock.tick(60)
