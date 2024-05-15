@@ -1,13 +1,10 @@
-import os
-import time
-
 import pygame
 import copy
 
 
 class iPygameElement:
     def draw(self, frame: pygame.Surface, location: tuple[float, float], scale: tuple[float, float],
-                 animation_length: float = -1):
+             animation_length: float = -1):
         """
         Places the element on the frame.
         :param frame: The pygame surface to place the element on.
@@ -23,12 +20,13 @@ class iPygameElement:
         """
         raise NotImplementedError
 
-    def interact(self,event:object):
+    def interact(self, event: pygame.event.EventType, rect: pygame.Rect):
         """
         Handles interaction with a click event.
-        :param event:
-        :return:
+        :param event: The pygame event object.
+        :param rect: The pygame Rect object representing the position and size of the element.
         """
+        raise NotImplementedError
 
 
 class PygameImage(iPygameElement):
@@ -38,7 +36,7 @@ class PygameImage(iPygameElement):
         self.active = False
 
     def draw(self, frame: pygame.Surface, location: tuple[float, float], scale: tuple[float, float],
-                 animation_length: float = -1):
+             animation_length: float = -1):
         self.rect.topleft = location
         self.rect.width = int(self.rect.width * scale[0])
         self.rect.height = int(self.rect.height * scale[1])
@@ -49,6 +47,11 @@ class PygameImage(iPygameElement):
         new_instance = copy.copy(self)
         new_instance.image = self.image.copy()
         return new_instance
+
+    def interact(self, event: pygame.event.EventType, rect: pygame.Rect):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if rect.collidepoint(event.pos):
+                print(f"Great Success! {event.pos}")
 
 
 def main():
@@ -65,18 +68,16 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
+            # Pass the event and the rect of the image to interact function
+            image.interact(event, image.rect)
+
         screen.fill((255, 255, 255))  # Fill screen with white color
 
         # Example usage of PygameImage class
-        image.activate(screen, (100, 100), (1, 1))
+        image.draw(screen, (100, 100), (1, 1))
 
         pygame.display.flip()  # Update the display
         clock.tick(60)  # Cap the frame rate to 60 FPS
-        for i in range(100):
-            time.sleep(0.1)
-            image.reposition(screen,(50,50),(2,2))
-            time.sleep(0.1)
-            image.reposition(screen,(100,100),(1,1))
 
     pygame.quit()
 
