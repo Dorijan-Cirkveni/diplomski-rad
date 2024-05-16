@@ -7,14 +7,13 @@ ROOTMNGR=RootPathManager()
 
 
 class iPygameElement:
-    def draw(self, frame: pygame.Surface, loc: tuple[float, float], scale: tuple[float, float],
-             anim_length: float = -1):
+    def draw(self, frame: pygame.Surface, loc: tuple[float, float], size: tuple[float, float], **kwargs: float):
         """
-        Places the element on the frame.
-        :param frame: The pygame surface to place the element on.
+        Draw the image on the frame.
+        :param frame: The pygame surface to draw the image on.
         :param loc: The location of the top left point of the image.
-        :param scale: The image scale relative to the base image size.
-        :param anim_length: Time of fade-in in seconds. If not positive, the placement is instant.
+        :param size: The size of the image.
+        :param kwargs: Time of fade-in in seconds. If not positive, the placement is instant.
         """
         raise NotImplementedError
 
@@ -60,22 +59,37 @@ class PygameImage(iPygameElement):
         """
         Initialize PygameImage with an image file path.
         """
-        self.image = pygame.image.load(image_path)
-        self.rect = self.image.get_rect()
+        try:
+            self.image = pygame.image.load(image_path)
+        except FileNotFoundError as e:
+            print(f"File '{image_path}' not found")
+            self.image = None
+        except pygame.error as e:
+            print(f"Error loading image from '{image_path}': {e}")
+            self.image = None
 
-    def draw(self, frame: pygame.Surface, loc: tuple[float, float], scale: tuple[float, float],
-             anim_length: float = -1):
+        if self.image:
+            self.rect = self.image.get_rect()
+        else:
+            self.rect = pygame.Rect(0, 0, 0, 0)
+
+    def draw(self, frame: pygame.Surface, loc: tuple[float, float], size: tuple[float, float], **kwargs: float):
         """
         Draw the image on the frame.
         :param frame: The pygame surface to draw the image on.
         :param loc: The location of the top left point of the image.
-        :param scale: The image scale relative to the base image size.
-        :param anim_length: Time of fade-in in seconds. If not positive, the placement is instant.
+        :param size: The size of the image.
+        :param kwargs: Time of fade-in in seconds. If not positive, the placement is instant.
         """
-        self.rect.topleft = loc
-        self.rect.width = int(self.rect.width * scale[0])
-        self.rect.height = int(self.rect.height * scale[1])
-        frame.blit(self.image, self.rect)
+        if self.image:
+            self.rect.topleft = loc
+            self.rect.width = int(size[0])
+            self.rect.height = int(size[1])
+            frame.blit(self.image, self.rect)
+        else:
+            pink_rect = pygame.Rect(loc, size)
+            print(loc,size)
+            pygame.draw.rect(frame, (255, 192, 203), pink_rect)
 
     def interact(self, event: pygame.event.EventType, rect: pygame.Rect):
         """
@@ -110,7 +124,7 @@ def test_pygame_image():
         screen.fill((255, 255, 255))  # Fill screen with white color
 
         # Example usage of PygameImage class
-        image.draw(screen, (100.0, 100.0), (1.0, 1.0))
+        image.draw(screen, (100.0, 100.0), (100.0, 100.0))
 
         pygame.display.flip()  # Update the display
         clock.tick(60)  # Cap the frame rate to 60 FPS
