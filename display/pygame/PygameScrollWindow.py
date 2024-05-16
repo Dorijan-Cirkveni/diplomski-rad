@@ -5,7 +5,7 @@ class PygameVertScrollbar(iPygameElement):
     """
     A vertical scroll bar.
     """
-    def __init__(self, size:tuple, sb_body_img: PygameImage, sb_indicator_img: PygameImage,
+    def __init__(self, sb_body_img: PygameImage, sb_indicator_img: PygameImage,
                  top_arrow_img: PygameImage, bottom_arrow_img: PygameImage):
         """
         Initialize the scrollbar with PygameImage objects for components.
