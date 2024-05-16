@@ -66,6 +66,8 @@ class PygameVertScrollbar(iPygameElement):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if rect.collidepoint(event.pos):
                 print(f"Scrollbar clicked at {event.pos}")
+        if event.type == pygame.MOUSEBUTTONUP:
+            print("Scrollbar released")
 
 
 def TestScrollBar():
