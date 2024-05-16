@@ -26,29 +26,32 @@ class PygameVertScrollbar(iPygameElement):
 
         self.active = False
 
-    def draw(self, frame: pygame.Surface, loc: tuple[float, float], size: tuple[float, float], **kwargs: float):
+    def draw(self, frame: pygame.Surface, loc: tuple[float, float], size: tuple[float, float], *args: float):
         """
         Draw the scrollbar components on the frame.
         :param frame: The pygame surface to draw the scrollbar components on.
         :param loc: The location of the top left point of the scrollbar.
-        :param kwargs: Time of animation in seconds. If not positive, the drawing is instant.
+        :param args: Time of animation in seconds. If not positive, the drawing is instant.
         """
-        self.top_arrow_rect.topleft = loc
-        self.sb_body_rect.topleft = (loc[0], loc[1] + self.top_arrow_rect.height)
-        self.sb_indicator_rect.topleft = (loc[0], loc[1] + self.top_arrow_rect.height)
-        self.bottom_arrow_rect.topleft = (loc[0], loc[1] + scale[1] - self.bottom_arrow_rect.height)
-
-        self.top_arrow_rect.size = tuple(int(dim * scale[i]) for i, dim in enumerate(self.top_arrow_rect.size))
-        self.sb_body_rect.size = tuple(int(dim * scale[i]) for i, dim in enumerate(self.sb_body_rect.size))
-        self.sb_indicator_rect.size = tuple(int(dim * scale[i]) for i, dim in enumerate(self.sb_indicator_rect.size))
-        self.bottom_arrow_rect.size = tuple(int(dim * scale[i]) for i, dim in enumerate(self.bottom_arrow_rect.size))
+        if len(args)<3:
+            raise Exception("Not enough data!")
+        i_area_size=args[0]
+        i_ind_pos=args[1]
+        i_ind_size=args[2]
+        if size[1]<size[0]*5:
+            raise Exception("Width/height too large ({}/{}>0.2)!".format(*size))
+        arrow_size=(size[0],)*2
+        down_arrow_loc=(loc[0],loc[1]+size[1]-size[0])
 
         self.active = True
 
-        self.top_arrow_img.draw(frame, self.top_arrow_rect.topleft, scale)
-        self.bottom_arrow_img.draw(frame, self.bottom_arrow_rect.topleft, scale)
-        self.sb_body_img.draw(frame, self.sb_body_rect.topleft, scale)
-        self.sb_indicator_img.draw(frame, self.sb_indicator_rect.topleft, scale)
+        print(loc,arrow_size)
+        print(down_arrow_loc, arrow_size)
+        print(loc, size)
+        self.sb_body_img.draw(frame, loc, size)
+        # self.sb_indicator_img.draw(frame, self.sb_indicator_rect.topleft, scale)
+        self.top_arrow_img.draw(frame, loc, arrow_size, (255, 0, 0))
+        self.bottom_arrow_img.draw(frame, down_arrow_loc, arrow_size, (0, 255, 0))
 
     def interact(self, event: pygame.event.EventType, rect: pygame.Rect):
         """
@@ -65,8 +68,6 @@ def TestScrollBar():
     screen = pygame.display.set_mode((800, 600))
     clock = pygame.time.Clock()
 
-    default_img = ROOTMNGR.GetFullPath()
-
     # Load images for scrollbar components
     sb_body_img = PygameImage("sb_body_img.png")
     sb_indicator_img = PygameImage("sb_indicator_img.png")
@@ -74,9 +75,12 @@ def TestScrollBar():
     bottom_arrow_img = PygameImage("bottom_arrow_img.png")
 
     # Create a PygameVertScrollbar instance
-    scrollbar = PygameVertScrollbar((20, 400), sb_body_img, sb_indicator_img, top_arrow_img, bottom_arrow_img)
+    scrollbar = PygameVertScrollbar(sb_body_img, sb_indicator_img, top_arrow_img, bottom_arrow_img)
 
     running = True
+
+    screen.fill((255, 255, 255))
+    scrollbar.draw(screen, (100, 100), (10, 100), 100, 10, 5)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -84,11 +88,6 @@ def TestScrollBar():
 
             # Pass the event and scrollbar rect to interact with the scrollbar
             scrollbar.interact(event, pygame.Rect(100, 100, 20, 400))
-
-        screen.fill((255, 255, 255))
-
-        # Draw the scrollbar
-        scrollbar.draw(screen, (100, 100), (1, 1))
 
         pygame.display.flip()
         clock.tick(60)
