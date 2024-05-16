@@ -72,8 +72,9 @@ class RootPathManager:
 def main():
     # Example usage
     dm: RootPathManager = RootPathManager.GetMain('testenv')
-    dm: RootPathManager = RootPathManager.GetMain()
+    dm2: RootPathManager = RootPathManager.GetMain()
     print(dm.root)
+    print(dm2.root)
     print(dm.MAIN.root)
 
 
