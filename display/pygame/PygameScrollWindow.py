@@ -35,8 +35,6 @@ class PygameVertScrollbar(iPygameElement):
         :param i_ind_size: The size of the scroll bar indicator.
         :param args: Additional arguments (e.g., time of animation in seconds). If not positive, the drawing is instant.
         """
-        if len(args) < 3:
-            raise Exception("Not enough data!")
         quart = size[0] / 4
         ratio_pos = i_ind_pos / i_area_size
         ratio_size = i_ind_size / i_area_size
