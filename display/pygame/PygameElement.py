@@ -1,6 +1,10 @@
 import pygame
 import copy
 
+from util.RootPathManager import RootPathManager
+
+ROOTMNGR=RootPathManager()
+
 
 class iPygameElement:
     def draw(self, frame: pygame.Surface, loc: tuple[float, float], scale: tuple[float, float],
