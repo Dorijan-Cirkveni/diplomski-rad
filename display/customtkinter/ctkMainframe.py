@@ -1,5 +1,26 @@
-from test_json.test_json_manager import *
+import test_json.test_json_manager as jsonmngr
 from ctkScrollableFrames import *
+
+
+class EnvCustomFrame(ctk.CTkFrame):
+    def __init__(self, master, run_command, **kwargs):
+        super().__init__(master, **kwargs)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+
+        self.name = ctk.CTkLabel(self, font=("Helvetica", 18)).grid(row=0, column=0, pady=20)
+
+        self.text_box = ctk.CTkTextbox(self, text="wasd", width=200, height=200)
+        self.text_box.grid(row=1, column=0, padx=20, pady=10, sticky="nsew")
+
+        self.run_button = ctk.CTkButton(self, text="Run environment", command=run_command)
+        self.run_button.grid(row=2, column=0, pady=10)
+
+    def set_env(self, file, ind, name):
+        self.name.text=file+"."+name
+        envraw=jsonmngr.ImportManagedJSON(f"{file}|{ind}")
+        # Replace text box content with envraw
+        return
 
 
 class MainCTKFrame(ctk.CTkFrame):
@@ -8,7 +29,7 @@ class MainCTKFrame(ctk.CTkFrame):
         self.master: ctk.CTk
         self.master.geometry("{}x{}".format(*dimensions))
         self.master.title("CustomTkinter Scrollable Frames Example")
-        self.env_names = getNamesAndIndices() # Format: [("file",["Env1","Env2","Env3"])]
+        self.env_names = jsonmngr.getNamesAndIndices() # Format: [("file",["Env1","Env2","Env3"])]
 
     def get_env_cats(self):
         cats=[]
@@ -34,18 +55,9 @@ class MainCTKFrame(ctk.CTkFrame):
         left_frame.set_elements(self.get_env_cats())
 
         # Middle frame with text, entry, and button
-        middle_frame = ctk.CTkFrame(self.master)
+        middle_frame = EnvCustomFrame(self.master,self.run_environment)
         middle_frame.grid(row=0, column=1, sticky="nsew")
-        middle_frame.grid_columnconfigure(0, weight=1)
-        middle_frame.grid_rowconfigure(1, weight=1)
-
-        ctk.CTkLabel(middle_frame, text="Environment Setup", font=("Helvetica", 18)).grid(row=0, column=0, pady=20)
-
-        self.text_box = ctk.CTkTextbox(middle_frame, width=200, height=200)
-        self.text_box.grid(row=1, column=0, padx=20, pady=10, sticky="nsew")
-
-        self.run_button = ctk.CTkButton(middle_frame, text="Run environment", command=self.run_environment)
-        self.run_button.grid(row=2, column=0, pady=10)
+        middle_frame.create_widgets(self.run_environment)
 
         # Right frame with scrollbar
 
@@ -56,7 +68,6 @@ class MainCTKFrame(ctk.CTkFrame):
 
     def run_environment(self):
         print("Running environment with input:")
-        print(self.text_box.get("1.0", tk.END))
 
 
 def main():
