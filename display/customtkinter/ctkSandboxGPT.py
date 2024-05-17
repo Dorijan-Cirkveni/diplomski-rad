@@ -4,52 +4,11 @@ import customtkinter as ctk
 from ctkDefinitions import *
 
 
-class ScrollableFrame(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
-        super().__init__(master, **kwargs)
-
-    def create_widgets(self, inputs=None, text_side: SIDES = "left", bar_side: SIDES = "right"):
-        anchor_side: Literal["nw", "ne", "n"]
-        if text_side == "left":
-            anchor_side = "nw"
-        elif text_side == "right":
-            anchor_side = "ne"
-        else:
-            anchor_side = "n"
-        input_anchor_side:Literal["w","e","n"]
-        if text_side == "left":
-            input_anchor_side = "e"
-        elif text_side == "right":
-            input_anchor_side = "w"
-        else:
-            input_anchor_side = "n"
-        if inputs is None:
-            inputs = [f"Item {i + 1}" + "-" * (i % 10) for i in range(50)]
-
-        left_canvas = tk.Canvas(self, bg='gray')
-        left_scrollbar = ctk.CTkScrollbar(self, command=left_canvas.yview)
-        left_canvas.configure(yscrollcommand=left_scrollbar.set)
-
-        left_scrollable_frame = ctk.CTkFrame(left_canvas)
-
-        left_scrollable_frame.bind(
-            "<Configure>",
-            lambda e: left_canvas.configure(
-                scrollregion=left_canvas.bbox("all")
-            )
-        )
-
-        left_canvas.create_window((0, 0), window=left_scrollable_frame, anchor=anchor_side)
-        left_canvas.pack(side=text_side, fill="both", expand=True)
-        left_scrollbar.pack(side=bar_side, fill="y")
-
-        for e in inputs:
-            ctk.CTkLabel(left_scrollable_frame, text=e).pack(pady=5, padx=10, anchor=input_anchor_side)
-
 class ScrollableFrameBase(ctk.CTkScrollableFrame):
     def __init__(self, master, swap_bar:bool=False):
         self.swap_bar:bool=swap_bar
         super().__init__(master)
+        self.listed_elements=[]
 
     def _create_grid(self):
         border_spacing = self._apply_widget_scaling(self._parent_frame.cget("corner_radius") + self._parent_frame.cget("border_width"))
@@ -66,7 +25,7 @@ class ScrollableFrameBase(ctk.CTkScrollableFrame):
                 self._label.grid_forget()
         elif self._orientation == "vertical":
             self._parent_frame.grid_columnconfigure(self.swap_bar, weight=1)
-            self._parent_frame.grid_columnconfigure(1 - self.swap_bar, weight=1)
+            self._parent_frame.grid_columnconfigure(1 - self.swap_bar, weight=0)
             self._parent_frame.grid_rowconfigure(1, weight=1)
             self._parent_canvas.grid(row=1, column=self.swap_bar, sticky="nsew", padx=(border_spacing, 0),
                                      pady=border_spacing)
@@ -76,6 +35,10 @@ class ScrollableFrameBase(ctk.CTkScrollableFrame):
                 self._label.grid(row=0, column=0, columnspan=2, sticky="ew", padx=border_spacing, pady=border_spacing)
             else:
                 self._label.grid_forget()
+
+
+    def set_inputs(self):
+
 
     def create_widgets(self, inputs=None):
         if inputs is None:
