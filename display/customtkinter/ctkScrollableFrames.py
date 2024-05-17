@@ -77,9 +77,9 @@ class ScrollableFrameBase(ctk.CTkScrollableFrame):
             elements = []
             for i in range(50):
                 text = "Button {}".format(i)
-                command = lambda: print(i)
+                command = lambda e=i: print(e)
                 offset = i % 5 == 0
-                elements.append(ButtonData(text, command, offset))
+                elements.append(ButtonData(text, command, offset+1))
         self.set_elements(elements)
         return
 
@@ -114,7 +114,8 @@ class CategoryData(ButtonData):
     def MakeButton(self, master):
         arch_res = ctk.CTkFrame(master)
         self.arch = arch_res
-        res = ctk.CTkButton(arch_res, text=self.text, command=self.function)
+        cat_style={}
+        res = ctk.CTkButton(arch_res, text=self.text, command=self.function, **cat_style)
         res.pack()
         if self.offset:
             arch_res.pack(pady=5, padx=(20, 10), anchor="w")
