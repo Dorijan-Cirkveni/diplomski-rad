@@ -1,17 +1,16 @@
 import tkinter as tk
 import customtkinter as ctk
 
-
-
+from ctkDefinitions import SIDES
 
 
 class ScrollableFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
 
-    def create_widgets(self, inputs=None, text_side:Literal="left", bar_side="right"):
+    def create_widgets(self, inputs=None, text_side: SIDES = "left", bar_side: SIDES = "right"):
         if inputs is None:
-            inputs = [f"Item {i + 1}"+"-"*(i%10) for i in range(50)]
+            inputs = [f"Item {i + 1}" + "-" * (i % 10) for i in range(50)]
 
         left_canvas = tk.Canvas(self, bg='gray')
         left_scrollbar = ctk.CTkScrollbar(self, command=left_canvas.yview)
@@ -27,13 +26,11 @@ class ScrollableFrame(ctk.CTkFrame):
         )
 
         left_canvas.create_window((0, 0), window=left_scrollable_frame, anchor="nw")
-        left_canvas.pack(side="left", fill="both", expand=True)
+        left_canvas.pack(side=text_side, fill="both", expand=True)
         left_scrollbar.pack(side=bar_side, fill="y")
 
         for e in inputs:
             ctk.CTkLabel(left_scrollable_frame, text=e).pack(pady=5, padx=10)
-
-
 
 
 class MainCTKFrame:
@@ -49,30 +46,9 @@ class MainCTKFrame:
         self.root.grid_rowconfigure(0, weight=1)
 
         # Left frame with scrollbar
-        left_frame = ctk.CTkFrame(self.root)
+        left_frame=ScrollableFrame(self.root)
         left_frame.grid(row=0, column=0, sticky="nsew")
-
-        left_canvas = tk.Canvas(left_frame, bg='gray')
-        left_scrollbar = ctk.CTkScrollbar(left_frame, command=left_canvas.yview)
-        left_canvas.configure(yscrollcommand=left_scrollbar.set)
-
-        left_scrollable_frame = ctk.CTkFrame(left_canvas)
-
-        left_scrollable_frame.bind(
-            "<Configure>",
-            lambda e: left_canvas.configure(
-                scrollregion=left_canvas.bbox("all")
-            )
-        )
-        side="left"
-        left_canvas.create_window((0, 0), window=left_scrollable_frame, anchor="nw")
-        left_canvas.pack(side=side, fill="both", expand=True)
-        left_scrollbar.pack(side="right", fill="y")
-
-        testitems=[f"Item {i + 1}"+"-"*(i%10) for i in range(50)]
-
-        for e in testitems:
-            ctk.CTkLabel(left_scrollable_frame, text=e).pack(pady=5, padx=10)
+        left_frame.create_widgets(text_side='left',bar_side='right')
 
         # Middle frame with text, entry, and button
         middle_frame = ctk.CTkFrame(self.root)
