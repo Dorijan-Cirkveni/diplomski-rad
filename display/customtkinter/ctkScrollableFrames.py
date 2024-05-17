@@ -9,10 +9,10 @@ class ButtonData:
 
     """
 
-    def __init__(self, text, function, offset=False):
-        self.text = text
-        self.function = function
-        self.offset = offset
+    def __init__(self, text:str, function:callable, offset:int):
+        self.text:str = text
+        self.function:callable = function
+        self.offset:int = offset
 
     def MakeButton(self, master):
         """
@@ -26,6 +26,7 @@ class ButtonData:
         else:
             res.pack(pady=5, padx=10)
         return res
+
 
 
 class ScrollableFrameBase(ctk.CTkScrollableFrame):
@@ -82,6 +83,28 @@ class ScrollableFrameBase(ctk.CTkScrollableFrame):
     def create_widgets(self, inputs=None):
         self.set_elements(inputs)
         return
+
+
+class CategoryData(ButtonData):
+    def __init__(self,text,buttons:list[ButtonData], offset=0):
+        self.text=text
+        self.buttons=buttons
+        self.offset=offset
+    def MakeButton(self, master):
+        arch_res=ctk.CTkFrame(master)
+        res = ctk.CTkButton(res, text=self.text, command=self.function)
+        res.pack()
+        if self.offset:
+            res.pack(pady=5, padx=(20, 10), anchor="w")
+        else:
+            res.pack(pady=5, padx=10)
+        return arch_res
+
+
+class CategoricalScrollableFrame(ScrollableFrameBase):
+    def __init__(self, master):
+        super().__init__(master)
+        self.categories=[]
 
 
 def main():
