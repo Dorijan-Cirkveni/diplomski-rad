@@ -9,10 +9,10 @@ class ButtonData:
 
     """
 
-    def __init__(self, text:str, function:callable, offset:int):
-        self.text:str = text
-        self.function:callable = function
-        self.offset:int = offset
+    def __init__(self, text: str, function: callable, offset: int):
+        self.text: str = text
+        self.function: callable = function
+        self.offset: int = offset
 
     def MakeButton(self, master):
         """
@@ -26,7 +26,6 @@ class ButtonData:
         else:
             res.pack(pady=5, padx=10)
         return res
-
 
 
 class ScrollableFrameBase(ctk.CTkScrollableFrame):
@@ -62,14 +61,7 @@ class ScrollableFrameBase(ctk.CTkScrollableFrame):
             else:
                 self._label.grid_forget()
 
-    def set_elements(self, elements: list[ButtonData] = None):
-        if elements is None:
-            elements = []
-            for i in range(50):
-                text = "Button {}".format(i)
-                command = lambda: print(i)
-                offset = i % 5 == 0
-                elements.append(ButtonData(text, command, offset))
+    def set_elements(self, elements: list[ButtonData]):
         for cur in self.listed_elements:
             cur: ctk.CTkBaseClass
             cur.destroy()
@@ -80,35 +72,94 @@ class ScrollableFrameBase(ctk.CTkScrollableFrame):
             self.listed_elements.append(B)
         return
 
-    def create_widgets(self, inputs=None):
-        self.set_elements(inputs)
+    def create_widgets(self, elements=None):
+        if elements is None:
+            elements = []
+            for i in range(50):
+                text = "Button {}".format(i)
+                command = lambda: print(i)
+                offset = i % 5 == 0
+                elements.append(ButtonData(text, command, offset))
+        self.set_elements(elements)
         return
 
 
 class CategoryData(ButtonData):
-    def __init__(self,text,buttons:list[ButtonData], offset=0):
-        self.text=text
-        self.buttons=buttons
-        self.offset=offset
+    def __init__(self, text, buttons: list[ButtonData], offset=0):
+        super().__init__(text, self.Toggle, offset)
+        self.text = text
+        self.buttons = buttons
+        self.offset = offset
+        self.arch = None
+        self.widgets = []
+
+    def Expand(self):
+        if not self.arch:
+            raise Exception("Do not call upon this function directly.")
+        if self.widgets:
+            return
+        for data in self.buttons:
+            B = data.MakeButton(self.arch)
+            self.widgets.append(B)
+
+    def Collapse(self):
+        while self.widgets:
+            self.widgets.pop().destroy()
+
+    def Toggle(self):
+        if self.widgets:
+            return self.Collapse()
+        return self.Expand()
+
     def MakeButton(self, master):
-        arch_res=ctk.CTkFrame(master)
-        res = ctk.CTkButton(res, text=self.text, command=self.function)
+        arch_res = ctk.CTkFrame(master)
+        self.arch = arch_res
+        res = ctk.CTkButton(arch_res, text=self.text, command=self.function)
         res.pack()
         if self.offset:
-            res.pack(pady=5, padx=(20, 10), anchor="w")
+            arch_res.pack(pady=5, padx=(20, 10), anchor="w")
         else:
-            res.pack(pady=5, padx=10)
+            arch_res.pack(pady=5, padx=10)
+        print(self.text)
         return arch_res
 
 
 class CategoricalScrollableFrame(ScrollableFrameBase):
     def __init__(self, master):
         super().__init__(master)
-        self.categories=[]
+        self.categories = []
+
+    def create_widgets(self, elements=None):
+        """
+
+        :param elements:
+        :return:
+        """
+        cats = []
+        if elements is None:
+            elements = []
+            for i in range(50):
+                text = "Button {}".format(i)
+                command = lambda e=i: print(e)
+                elements.append(ButtonData(text, command, 1))
+                if (i + 1) % 5 == 0:
+                    i2 = i // 5
+                    text = "Category {}".format(i2)
+                    cats.append(CategoryData(text, elements, 0))
+                    elements = []
+        self.set_elements(cats)
+        return
 
 
 def main():
-    return
+    root = ctk.CTk()
+    root.geometry("800x600")
+
+    scroll_frame = CategoricalScrollableFrame(root)
+    scroll_frame.pack(fill="both", expand=True)
+    scroll_frame.create_widgets()
+
+    root.mainloop()
 
 
 if __name__ == "__main__":
