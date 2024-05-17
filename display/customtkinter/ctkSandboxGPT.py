@@ -1,7 +1,7 @@
 import tkinter as tk
 import customtkinter as ctk
 
-from ctkDefinitions import SIDES
+from ctkDefinitions import *
 
 
 class ScrollableFrame(ctk.CTkFrame):
@@ -9,6 +9,20 @@ class ScrollableFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
 
     def create_widgets(self, inputs=None, text_side: SIDES = "left", bar_side: SIDES = "right"):
+        anchor_side: Literal["nw", "ne", "n"]
+        if text_side == "left":
+            anchor_side = "nw"
+        elif text_side == "right":
+            anchor_side = "ne"
+        else:
+            anchor_side = "n"
+        input_anchor_side:Literal["w","e","n"]
+        if text_side == "left":
+            input_anchor_side = "e"
+        elif text_side == "right":
+            input_anchor_side = "w"
+        else:
+            input_anchor_side = "n"
         if inputs is None:
             inputs = [f"Item {i + 1}" + "-" * (i % 10) for i in range(50)]
 
@@ -25,12 +39,12 @@ class ScrollableFrame(ctk.CTkFrame):
             )
         )
 
-        left_canvas.create_window((0, 0), window=left_scrollable_frame, anchor="nw")
+        left_canvas.create_window((0, 0), window=left_scrollable_frame, anchor=anchor_side)
         left_canvas.pack(side=text_side, fill="both", expand=True)
         left_scrollbar.pack(side=bar_side, fill="y")
 
         for e in inputs:
-            ctk.CTkLabel(left_scrollable_frame, text=e).pack(pady=5, padx=10)
+            ctk.CTkLabel(left_scrollable_frame, text=e).pack(pady=5, padx=10, anchor=input_anchor_side)
 
 
 class MainCTKFrame:
@@ -46,9 +60,9 @@ class MainCTKFrame:
         self.root.grid_rowconfigure(0, weight=1)
 
         # Left frame with scrollbar
-        left_frame=ScrollableFrame(self.root)
+        left_frame = ScrollableFrame(self.root)
         left_frame.grid(row=0, column=0, sticky="nsew")
-        left_frame.create_widgets(text_side='left',bar_side='right')
+        left_frame.create_widgets(text_side='left', bar_side='right')
 
         # Middle frame with text, entry, and button
         middle_frame = ctk.CTkFrame(self.root)
@@ -66,10 +80,9 @@ class MainCTKFrame:
 
         # Right frame with scrollbar
 
-
-        right_frame=ScrollableFrame(self.root)
+        right_frame = ScrollableFrame(self.root)
         right_frame.grid(row=0, column=2, sticky="nsew")
-        right_frame.create_widgets(text_side='right',bar_side='left')
+        right_frame.create_widgets(text_side='left', bar_side='right')
         return
 
     def run_environment(self):
