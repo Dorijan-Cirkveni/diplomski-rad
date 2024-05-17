@@ -1,51 +1,8 @@
 import tkinter as tk
 import customtkinter as ctk
 
-from ctkDefinitions import *
 
-
-class ScrollableFrameBase(ctk.CTkScrollableFrame):
-    def __init__(self, master, swap_bar:bool=False):
-        self.swap_bar:bool=swap_bar
-        super().__init__(master)
-        self.listed_elements=[]
-
-    def _create_grid(self):
-        border_spacing = self._apply_widget_scaling(self._parent_frame.cget("corner_radius") + self._parent_frame.cget("border_width"))
-
-        if self._orientation == "horizontal":
-            self._parent_frame.grid_columnconfigure(0, weight=1)
-            self._parent_frame.grid_rowconfigure(1, weight=1)
-            self._parent_canvas.grid(row=1, column=0, sticky="nsew", padx=border_spacing, pady=(border_spacing, 0))
-            self._scrollbar.grid(row=0 if self.swap_bar else 2, column=0, sticky="nsew", padx=border_spacing)
-
-            if self._label_text is not None and self._label_text != "":
-                self._label.grid(row=0, column=0, sticky="ew", padx=border_spacing, pady=border_spacing)
-            else:
-                self._label.grid_forget()
-        elif self._orientation == "vertical":
-            self._parent_frame.grid_columnconfigure(self.swap_bar, weight=1)
-            self._parent_frame.grid_columnconfigure(1 - self.swap_bar, weight=0)
-            self._parent_frame.grid_rowconfigure(1, weight=1)
-            self._parent_canvas.grid(row=1, column=self.swap_bar, sticky="nsew", padx=(border_spacing, 0),
-                                     pady=border_spacing)
-            self._scrollbar.grid(row=1, column=1 - self.swap_bar, sticky="nsew", pady=border_spacing)
-
-            if self._label_text is not None and self._label_text != "":
-                self._label.grid(row=0, column=0, columnspan=2, sticky="ew", padx=border_spacing, pady=border_spacing)
-            else:
-                self._label.grid_forget()
-
-
-    def set_inputs(self):
-
-
-    def create_widgets(self, inputs=None):
-        if inputs is None:
-            inputs = [f"Item {i + 1}" + "-" * (i % 10) for i in range(200)]
-        for e in inputs:
-            ctk.CTkLabel(self, text=e).pack(pady=5, padx=10)
-        return
+from ctkScrollableFrames import ScrollableFrameBase
 
 
 class MainCTKFrame:
