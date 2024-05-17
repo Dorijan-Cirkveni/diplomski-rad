@@ -42,7 +42,6 @@ def filter_env_paths(filedict:dict, forbidden:set=None):
     filtered=[]
     for name,path in filedict.items():
         S=set(path.split("\\"))
-        print(S,S&forbidden)
         if S&forbidden:
             continue
         filtered.append(name)
@@ -65,7 +64,7 @@ def read_all_files():
             processed = json.loads(raw)
             resdict[name] = processed
         except json.decoder.JSONDecodeError as err:
-            print(filepath, err)
+            raise Exception(filepath, err)
     return resdict
 
 
@@ -92,12 +91,22 @@ def ImportManagedJSON(address, files: dict = None, applyToMain=False):
 def test(full_addr):
     print(ImportManagedJSON(full_addr))
 
+def getNamesAndIndices(files=None):
+    if files is None:
+        files = get_grid_files()
+    data={file:[] for file in files}
+    for file in files:
+        L=ImportManagedJSON(file)
+        for i,D in enumerate(L):
+            name=D.get('name','{}-{}'.format(file,i))
+            data[file].append(name)
+    return [(file,data[file]) for file in files]
+
 
 def main():
-    X=["tilecond|imagered"]
-    X.clear()
-    for e in X:
-        test(e)
+    res=getNamesAndIndices()
+    for E in res:
+        print(E)
     return
 
 

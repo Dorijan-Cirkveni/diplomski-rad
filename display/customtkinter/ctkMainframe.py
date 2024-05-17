@@ -1,16 +1,26 @@
-import tkinter as tk
-import customtkinter as ctk
-
-
-from ctkScrollableFrames import ScrollableFrameBase, CategoricalScrollableFrame
+from test_json.test_json_manager import *
+from ctkScrollableFrames import *
 
 
 class MainCTKFrame(ctk.CTkFrame):
-    def __init__(self, master:ctk.CTk, dimensions: tuple[int, int], **kwargs):
+    def __init__(self, master: ctk.CTk, dimensions: tuple[int, int], **kwargs):
         super().__init__(master, **kwargs)
-        self.master:ctk.CTk
+        self.master: ctk.CTk
         self.master.geometry("{}x{}".format(*dimensions))
         self.master.title("CustomTkinter Scrollable Frames Example")
+        self.env_names = getNamesAndIndices() # Format: [("file",["Env1","Env2","Env3"])]
+
+    def get_env_cats(self):
+        cats=[]
+        for filename, envs in self.env_names:
+            elements=[]
+            for ind,name in enumerate(envs):
+                function = lambda e=name, i=ind:print("Chosen {}:{}".format(i, e))
+                elements.append(ButtonData(name, function, 1))
+            cat=CategoryData(filename, elements, 0)
+            cats.append(cat)
+        return cats
+
 
     def create_widgets(self):
         self.master.grid_columnconfigure(0, weight=1)
@@ -21,7 +31,7 @@ class MainCTKFrame(ctk.CTkFrame):
         # Left frame with scrollbar
         left_frame = CategoricalScrollableFrame(self.master)
         left_frame.grid(row=0, column=0, sticky="nsew")
-        left_frame.create_widgets()
+        left_frame.set_elements(self.get_env_cats())
 
         # Middle frame with text, entry, and button
         middle_frame = ctk.CTkFrame(self.master)
@@ -39,7 +49,7 @@ class MainCTKFrame(ctk.CTkFrame):
 
         # Right frame with scrollbar
 
-        right_frame = ScrollableFrameBase(self.master,True)
+        right_frame = ScrollableFrameBase(self.master, True)
         right_frame.grid(row=0, column=2, sticky="nsew")
         right_frame.create_widgets()
         return
@@ -51,7 +61,7 @@ class MainCTKFrame(ctk.CTkFrame):
 
 def main():
     ctk.set_appearance_mode("dark")  # Set the theme to dark
-    CTK=ctk.CTk()
+    CTK = ctk.CTk()
     mainframe = MainCTKFrame(CTK, (1000, 600))
     mainframe.create_widgets()
     CTK.mainloop()
