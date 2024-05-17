@@ -65,30 +65,12 @@ class MainCTKFrame:
         self.run_button.grid(row=2, column=0, pady=10)
 
         # Right frame with scrollbar
-        right_frame = ctk.CTkFrame(self.root)
+
+
+        right_frame=ScrollableFrame(self.root)
         right_frame.grid(row=0, column=2, sticky="nsew")
-
-        right_canvas = tk.Canvas(right_frame, bg='gray')
-        right_scrollbar = ctk.CTkScrollbar(right_frame, command=right_canvas.yview)
-        right_canvas.configure(yscrollcommand=right_scrollbar.set)
-
-        right_scrollable_frame = ctk.CTkFrame(right_canvas)
-
-        right_scrollable_frame.bind(
-            "<Configure>",
-            lambda e: right_canvas.configure(
-                scrollregion=right_canvas.bbox("all")
-            )
-        )
-
-        right_canvas.create_window((0, 0), window=right_scrollable_frame, anchor="nw")
-        right_canvas.pack(side="right", fill="both", expand=True)
-        right_scrollbar.pack(side="left", fill="y")
-
-        testitems = [f"Item {i + 1}" + "-" * i for i in range(50)]
-
-        for e in testitems:
-            ctk.CTkLabel(right_scrollable_frame, text=e).pack(pady=5, padx=10)
+        right_frame.create_widgets(text_side='right',bar_side='left')
+        return
 
     def run_environment(self):
         print("Running environment with input:")
