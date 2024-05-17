@@ -36,8 +36,10 @@ class MainCTKFrame:
         left_canvas.pack(side="left", fill="both", expand=True)
         left_scrollbar.pack(side="right", fill="y")
 
-        for i in range(50):
-            ctk.CTkLabel(left_scrollable_frame, text=f"Left item {i + 1}").pack(pady=5, padx=10)
+        testitems=[f"Item {i + 1}"+"-"*(i%10) for i in range(50)]
+
+        for e in testitems:
+            ctk.CTkLabel(left_scrollable_frame, text=e).pack(pady=5, padx=10)
 
         # Middle frame with text, entry, and button
         middle_frame = ctk.CTkFrame(self.root)
@@ -74,8 +76,9 @@ class MainCTKFrame:
         right_canvas.pack(side="left", fill="both", expand=True)
         right_scrollbar.pack(side="right", fill="y")
 
-        for i in range(50):
-            ctk.CTkLabel(right_scrollable_frame, text=f"Right item {i + 1}").pack(pady=5, padx=10)
+
+        for e in testitems:
+            ctk.CTkLabel(right_scrollable_frame, text=e).pack(pady=5, padx=10)
 
     def run_environment(self):
         print("Running environment with input:")
@@ -87,7 +90,7 @@ class MainCTKFrame:
 
 def main():
     ctk.set_appearance_mode("dark")  # Set the theme to dark
-    mainframe = MainCTKFrame(ctk.CTk(), (800, 600))
+    mainframe = MainCTKFrame(ctk.CTk(), (1000, 600))
     mainframe.run()
 
 
