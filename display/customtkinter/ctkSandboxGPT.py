@@ -64,12 +64,13 @@ class ScrollableFrameBase(ctk.CTkScrollableFrame):
                 self._label.grid(row=0, column=0, sticky="ew", padx=border_spacing, pady=border_spacing)
             else:
                 self._label.grid_forget()
-
         elif self._orientation == "vertical":
-            self._parent_frame.grid_columnconfigure(0, weight=1)
+            self._parent_frame.grid_columnconfigure(self.swap_bar, weight=1)
+            self._parent_frame.grid_columnconfigure(1 - self.swap_bar, weight=1)
             self._parent_frame.grid_rowconfigure(1, weight=1)
-            self._parent_canvas.grid(row=1, column=self.swap_bar, sticky="nsew", padx=(border_spacing, 0), pady=border_spacing)
-            self._scrollbar.grid(row=1, column=1-self.swap_bar, sticky="nsew", pady=border_spacing)
+            self._parent_canvas.grid(row=1, column=self.swap_bar, sticky="nsew", padx=(border_spacing, 0),
+                                     pady=border_spacing)
+            self._scrollbar.grid(row=1, column=1 - self.swap_bar, sticky="nsew", pady=border_spacing)
 
             if self._label_text is not None and self._label_text != "":
                 self._label.grid(row=0, column=0, columnspan=2, sticky="ew", padx=border_spacing, pady=border_spacing)
@@ -78,7 +79,7 @@ class ScrollableFrameBase(ctk.CTkScrollableFrame):
 
     def create_widgets(self, inputs=None):
         if inputs is None:
-            inputs = [f"Item {i + 1}" + "-" * (i % 10) for i in range(50)]
+            inputs = [f"Item {i + 1}" + "-" * (i % 10) for i in range(200)]
         for e in inputs:
             ctk.CTkLabel(self, text=e).pack(pady=5, padx=10)
         return
