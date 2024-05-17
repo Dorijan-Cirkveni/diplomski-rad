@@ -47,10 +47,36 @@ class ScrollableFrame(ctk.CTkFrame):
             ctk.CTkLabel(left_scrollable_frame, text=e).pack(pady=5, padx=10, anchor=input_anchor_side)
 
 class ScrollableFrameBase(ctk.CTkScrollableFrame):
-    def __init__(self, master):
+    def __init__(self, master, swap_bar:bool=False):
+        self.swap_bar:bool=swap_bar
         super().__init__(master)
 
-    def create_widgets(self, inputs=None, text_side='left', bar_side='right'):
+    def _create_grid(self):
+        border_spacing = self._apply_widget_scaling(self._parent_frame.cget("corner_radius") + self._parent_frame.cget("border_width"))
+
+        if self._orientation == "horizontal":
+            self._parent_frame.grid_columnconfigure(0, weight=1)
+            self._parent_frame.grid_rowconfigure(1, weight=1)
+            self._parent_canvas.grid(row=1, column=0, sticky="nsew", padx=border_spacing, pady=(border_spacing, 0))
+            self._scrollbar.grid(row=0 if self.swap_bar else 2, column=0, sticky="nsew", padx=border_spacing)
+
+            if self._label_text is not None and self._label_text != "":
+                self._label.grid(row=0, column=0, sticky="ew", padx=border_spacing, pady=border_spacing)
+            else:
+                self._label.grid_forget()
+
+        elif self._orientation == "vertical":
+            self._parent_frame.grid_columnconfigure(0, weight=1)
+            self._parent_frame.grid_rowconfigure(1, weight=1)
+            self._parent_canvas.grid(row=1, column=self.swap_bar, sticky="nsew", padx=(border_spacing, 0), pady=border_spacing)
+            self._scrollbar.grid(row=1, column=1-self.swap_bar, sticky="nsew", pady=border_spacing)
+
+            if self._label_text is not None and self._label_text != "":
+                self._label.grid(row=0, column=0, columnspan=2, sticky="ew", padx=border_spacing, pady=border_spacing)
+            else:
+                self._label.grid_forget()
+
+    def create_widgets(self, inputs=None):
         if inputs is None:
             inputs = [f"Item {i + 1}" + "-" * (i % 10) for i in range(50)]
         for e in inputs:
@@ -73,7 +99,7 @@ class MainCTKFrame:
         # Left frame with scrollbar
         left_frame = ScrollableFrameBase(self.root)
         left_frame.grid(row=0, column=0, sticky="nsew")
-        left_frame.create_widgets(text_side='left', bar_side='right')
+        left_frame.create_widgets()
 
         # Middle frame with text, entry, and button
         middle_frame = ctk.CTkFrame(self.root)
@@ -91,9 +117,9 @@ class MainCTKFrame:
 
         # Right frame with scrollbar
 
-        right_frame = ScrollableFrame(self.root)
+        right_frame = ScrollableFrameBase(self.root,True)
         right_frame.grid(row=0, column=2, sticky="nsew")
-        right_frame.create_widgets(text_side='left', bar_side='right')
+        right_frame.create_widgets()
         return
 
     def run_environment(self):
