@@ -46,6 +46,17 @@ class ScrollableFrame(ctk.CTkFrame):
         for e in inputs:
             ctk.CTkLabel(left_scrollable_frame, text=e).pack(pady=5, padx=10, anchor=input_anchor_side)
 
+class ScrollableFrameBase(ctk.CTkScrollableFrame):
+    def __init__(self, master):
+        super().__init__(master)
+
+    def create_widgets(self, inputs=None, text_side='left', bar_side='right'):
+        if inputs is None:
+            inputs = [f"Item {i + 1}" + "-" * (i % 10) for i in range(50)]
+        for e in inputs:
+            ctk.CTkLabel(self, text=e).pack(pady=5, padx=10)
+        return
+
 
 class MainCTKFrame:
     def __init__(self, root: ctk.CTk, dimensions: tuple[int, int]):
@@ -60,7 +71,7 @@ class MainCTKFrame:
         self.root.grid_rowconfigure(0, weight=1)
 
         # Left frame with scrollbar
-        left_frame = ScrollableFrame(self.root)
+        left_frame = ScrollableFrameBase(self.root)
         left_frame.grid(row=0, column=0, sticky="nsew")
         left_frame.create_widgets(text_side='left', bar_side='right')
 
