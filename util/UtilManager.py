@@ -9,6 +9,10 @@ class Counter:
         self.value += 1
         return self.value
 
+    def __call__(self):
+        self.value+=1
+        return self.value
+
 
 class SetQueue:
     def __init__(self):
