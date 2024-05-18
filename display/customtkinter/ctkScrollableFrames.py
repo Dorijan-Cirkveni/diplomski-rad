@@ -126,8 +126,8 @@ class CategoryData(ButtonData):
 
 
 class CategoricalScrollableFrame(ScrollableFrameBase):
-    def __init__(self, master):
-        super().__init__(master)
+    def __init__(self, master, swap_bar: bool = False):
+        super().__init__(master, swap_bar)
         self.categories = []
 
     def create_widgets(self, elements=None):
