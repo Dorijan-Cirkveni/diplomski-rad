@@ -202,33 +202,53 @@ class DirectionsConsole(iTkFrameDef):
 
 
 class SideMenu(iTkFrameDef):
-    def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
+    def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int],
+                 ):
+        self.gridtype = None
+        self.viewpoint = None
+        self.console = None
+        self.iterations = None
         super().__init__(master, "SideMenu", return_lambda, screen_size)
 
     def create_widgets(self):
         curow=Counter()
-        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure("all", weight=1)
         self.grid_columnconfigure("all", weight=1)
-        self.iterations = InputFrame(self,self.prefix_input("Iterations"),(200,200),
+        self.iterations = InputFrame(self,self.prefix_input("Iterations"),(200,100),
                                              lambda s:s.isdigit(),"1")
         self.iterations.grid(row=curow(), column=0, sticky="nsew")
 
         self.console = DirectionsConsole(self,self.prefix_input("Move"),(200,200))
         self.console.grid(row=curow(), column=0, sticky="nsew")
 
-        self.viewpoint = InputFrameDropdown(self,"Move",
+        self.viewpoint = InputFrameDropdown(self,"Viewpoint:",
                                            self.return_lambda,(200,200),
-                                           list('ABCD'),"Viewpoint:","Potato",True,True)
+                                           list('ABCD'),"Viewpoint:","Apply",True,True)
         self.viewpoint.grid(row=curow(), column=0, sticky="nsew")
 
-        self.gridtype = InputFrameDropdown(self,"Move",
+        self.gridtype = InputFrameDropdown(self,"Grid type:",
                                            self.return_lambda,(200,200),
-                                           list('ABCD'),"Grid type:","Potato",True,True)
+                                           list('ABCD'),"Grid type:","Apply",True,True)
         self.gridtype.grid(row=curow(), column=0, sticky="nsew")
     def prefix_input(self,prefix):
         def fn(e):
             self.return_lambda(prefix+":"+str(e))
         return fn
+
+    def change_dropdowns(self, view_list: list, type_list: list):
+        # Set dropdown lists to view_list and type_list respectively.
+        self.viewpoint.options = view_list
+        self.gridtype.options = type_list
+
+        # Set selected value to the first item in the list
+        if view_list:
+            self.viewpoint.dropdown.set(view_list[0])
+        if type_list:
+            self.gridtype.dropdown.set(type_list[0])
+
+        # Refresh the dropdowns to reflect the changes
+        self.viewpoint.dropdown['values'] = view_list
+        self.gridtype.dropdown['values'] = type_list
 
 
 def main():
