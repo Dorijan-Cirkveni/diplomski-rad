@@ -90,15 +90,16 @@ class iTkFrame(iTkFrameDef):
 
 class InputFrame(iTkFrameDef):
     counter = Counter(0)
-    def __init__(self, master, return_lambda: callable, screen_size: tuple, rule: callable, defaultValue="", text="Iterations:", butext="Run"):
-        print(screen_size, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+
+    def __init__(self, master, return_lambda: callable, screen_size: tuple, rule: callable, defaultValue="",
+                 text="Iterations:", butext="Run"):
         self.label = None
         self.rule = rule
         self.input = defaultValue
         self.button = None
         self.id = self.counter.use()
-        self.text=text
-        self.butext=butext
+        self.text = text
+        self.butext = butext
         super().__init__(master, "Input Frame", return_lambda, screen_size)
 
     def create_widgets(self):
@@ -112,67 +113,121 @@ class InputFrame(iTkFrameDef):
         self.input.delete(0, ctk.END)
         self.input.insert(0, defaultValue)
 
-    def set(self,s):
-        self.input:ctk.CTkEntry
+    def set(self, s):
+        self.input: ctk.CTkEntry
         self.input.delete(0, ctk.END)
         self.input.insert(0, s)
 
     def doOutput(self):
-        assert type(self.input)==ctk.CTkEntry
-        self.input:ctk.CTkEntry
+        assert type(self.input) == ctk.CTkEntry
+        self.input: ctk.CTkEntry
         s = self.input.get()
         if not self.rule(s):
             print("{} not valid!".format(s))
             return
         self.return_lambda(s)
 
+class InputFrameDropdown(iTkFrameDef):
+    counter = Counter(0)
+
+    def __init__(self, master, name, return_lambda: callable,
+                 screen_size: tuple, options: list,
+                 text="Select option:", butext="Run", use_button=True, use_tracker):
+        self.label = None
+        self.options = options
+        self.dropdown = None
+        self.button = None
+        self.id = self.counter.use()
+        self.text = text
+        self.butext = butext
+        self.use_button=use_button
+        self.use_tracker=use_tracker
+        super().__init__(master, name, return_lambda, screen_size)
+
+    def create_widgets(self):
+        self.label = ctk.CTkLabel(self, text=self.text)
+        self.dropdown = ctk.CTkComboBox(self, values=self.options)
+        self.button = ctk.CTkButton(self, text=self.butext, command=self.doOutput)
+        self.label.grid(row=0, column=0)
+        self.dropdown.grid(row=0, column=1)
+        if self.use_button:
+            self.button.grid(row=1, column=0, columnspan=2, pady=10,)
+        if self.use_tracker:
+            # set up dropdown to call doOutput on every change
+
+    def doOutput(self):
+        s = self.dropdown.get()
+        self.return_lambda(self.name+":"+s)
+
+
 
 class DirectionsConsole(iTkFrameDef):
     def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
-        self.buttons={}
+        self.buttons = {}
         super().__init__(master, "DirectionsConsole", return_lambda, screen_size)
 
-    def make_button_fn(self,direction:tuple[int,int]):
+    def make_button_fn(self, direction: tuple[int, int]):
         def button_fn():
             return self.return_lambda(direction)
+
         return button_fn
 
     def create_widgets(self):
-        button_data={
-            "Up": (0,1),
-            "Left": (1,0),
-            "Wait": (1,1),
-            "Right": (1,2),
-            "Down": (2,1),
+        button_data = {
+            "Up": (0, 1),
+            "Left": (1, 0),
+            "Wait": (1, 1),
+            "Right": (1, 2),
+            "Down": (2, 1),
         }
-        self.grid_rowconfigure("all", weight=1)
-        self.grid_columnconfigure("all", weight=1)
-        for name,(y,x) in button_data.items():
-            button=ctk.CTkButton(self, text=name,command=self.make_button_fn((y-1,x-1)))
+
+        for i in range(3):
+            self.grid_rowconfigure(i, weight=1)
+            self.grid_columnconfigure(i, weight=1)
+
+        for name, (y, x) in button_data.items():
+            button = ctk.CTkButton(self, text=name, command=self.make_button_fn((y - 1, x - 1)))
             button.grid(row=y, column=x, padx=5, pady=5)
-            self.buttons[(y,x)]=button
+            self.buttons[(y, x)] = button
 
-# Testing the ControlGridFrame within the main app
-class MainApp(ctk.CTkFrame):
-    def __init__(self, master):
-        super().__init__(master)
-        self.master:ctk.CTk = master
-        self.master.geometry("200x200")
-        self.master.title("CustomTkinter Grid Example")
+        # Set fixed size for each button to ensure they fit in the grid properly
+        button_size = 50  # Adjust this size as necessary
+        for button in self.buttons.values():
+            button.configure(width=button_size, height=button_size, corner_radius=0)
 
+
+class SideMenu(iTkFrameDef):
+    def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
+        super().__init__(master, "SideMenu", return_lambda, screen_size)
+
+    def create_widgets(self):
+        curow=Counter()
         self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure("all", weight=1)
+        self.iterations = InputFrame(self,self.prefix_input("Iterations"),(200,200),
+                                             lambda s:s.isdigit(),"1")
+        self.iterations.grid(row=curow(), column=0, sticky="nsew")
 
-        # Add the control grid frame
-        self.control_grid_frame = DirectionsConsole(self,print,(200,200))
-        self.control_grid_frame.grid(row=0, column=0, sticky="nsew")
+        self.console = DirectionsConsole(self,self.prefix_input("Move"),(200,200))
+        self.console.grid(row=curow(), column=0, sticky="nsew")
+
+        self.dropdown = InputFrameDropdown(self,"Move",self.prefix_input("Move"),(200,200),
+                                           list('ABCD'))
+        self.dropdown.grid(row=curow(), column=0, sticky="nsew")
+    def prefix_input(self,prefix):
+        def fn(e):
+            return prefix+":"+str(e)
+        return fn
+
 
 def main():
     root = ctk.CTk()
-    app = MainApp(root)
+    root.geometry("200x600")
+    root.title("CustomTkinter Grid Example")
+    app = SideMenu(root,print,(200,600))
     app.pack(fill="both", expand=True)
     root.mainloop()
 
+
 if __name__ == "__main__":
     main()
-
