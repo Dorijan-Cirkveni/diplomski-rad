@@ -99,15 +99,15 @@ class SelectionFrame(iTkFrame):
         agentkey=agentkey[14:]
         self.agentkey=agentkey
         ag=self.agents[agentkey]
-        self.dest.agent=ag(ag.defaultInput)
+        self.dest.agent=ag(ag.DEFAULT_INPUT)
         self.agInputScreen:InputFrame
-        self.agInputScreen.set(ag.defaultInput)
+        self.agInputScreen.set(ag.DEFAULT_INPUT)
         return
 
     def set_agentdata(self,agentdata):
         agentkey=self.agentkey
         ag=self.agents[agentkey]
-        self.dest.agent=ag(ag.defaultInput)
+        self.dest.agent=ag(ag.DEFAULT_INPUT)
         return
 
 

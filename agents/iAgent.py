@@ -7,7 +7,7 @@ from util.InformationCompiler import InformationCompiler
 
 class iAgent(baseClasses.iRawInit):
     """
-
+    Base agent interface.
     """
 
     def __init__(self):
@@ -18,7 +18,8 @@ class iAgent(baseClasses.iRawInit):
     """
 
     fullname = "Untitled Agent Type"
-    defaultInput = None
+    DEFAULT_INPUT = None
+    INPUT_PRESETS = {}
 
     @classmethod
     def get_full_name(cls):
@@ -27,6 +28,12 @@ class iAgent(baseClasses.iRawInit):
     @staticmethod
     def from_string(s):
         pass
+
+    @classmethod
+    def get_preset_list(cls):
+        X = sorted(list(cls.INPUT_PRESETS.items()))
+        X.append(("Default",cls.DEFAULT_INPUT))
+        return X
 
     def receiveEnvironmentData(self, data):
         """
@@ -55,10 +62,10 @@ class iAgent(baseClasses.iRawInit):
                 result[entryKey] = entryValue
         return result
 
-    def receiveData(self, data:dict, modes:dict=None):
+    def receiveData(self, data: dict, modes: dict = None):
         if modes is None:
             modes = {}
-        self.memory.absorb_data(data,modes)
+        self.memory.absorb_data(data, modes)
 
 
 def main():

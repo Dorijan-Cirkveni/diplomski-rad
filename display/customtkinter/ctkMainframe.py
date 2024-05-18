@@ -75,10 +75,11 @@ class MainCTKFrame(ctk.CTkFrame):
         middle_frame.grid(row=0, column=1, sticky="nsew")
 
         # Right frame with scrollbar
-
-        right_frame = ScrollableFrameBase(self.master, True)
+        right_frame = CategoricalScrollableFrame(self.master, True)
         right_frame.grid(row=0, column=2, sticky="nsew")
-        right_frame.create_widgets()
+        right_frame.set_elements(self.get_agent_presets())
+
+        # Save frames
         self.envs=left_frame
         self.agents=right_frame
         self.data=middle_frame
@@ -89,9 +90,10 @@ class MainCTKFrame(ctk.CTkFrame):
             return self.data.set_env(file,ind,name)
         return env
 
-    def factory_agent(self,agentname,agentclass=None):
+    def factory_agent(self,agentname,agentdata):
         def agent():
-            return self.data.set_agent(agentname,agentclass)
+            return self.data.set_agent(agentname,agentdata)
+        return agent
 
 
     def get_env_cats(self):
@@ -105,6 +107,15 @@ class MainCTKFrame(ctk.CTkFrame):
         return cats
 
     def get_agent_presets(self):
+        cats=[]
+        for agname, agclass in agentmngr.ALL_AGENTS.items():
+            agclass:agentmngr.iAgent
+            elements=[]
+            for name, data in agclass.get_preset_list():
+                elements.append(ButtonData(name, self.factory_agent(name,data), 1))
+            cat=CategoryData(agname, elements, 0)
+            cats.append(cat)
+        return cats
 
 
     def run_environment(self):
