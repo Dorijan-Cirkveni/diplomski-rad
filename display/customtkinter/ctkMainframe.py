@@ -66,24 +66,25 @@ class MainCTKFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
         self.master: ctk.CTk
         self.master.geometry("{}x{}".format(*dimensions))
+        self.pack(fill="both", expand=True)
         self.master.title("CustomTkinter Scrollable Frames Example")
         self.env_names = jsonmngr.getNamesAndIndices()  # Format: [("file",["Env1","Env2","Env3"])]
-        self.master.grid_columnconfigure(0, weight=1)
-        self.master.grid_columnconfigure(1, weight=1)
-        self.master.grid_columnconfigure(2, weight=1)
-        self.master.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure(2, weight=1)
+        self.grid_rowconfigure(0, weight=1)
 
         # Left frame with scrollbar
-        left_frame = CategoricalScrollableFrame(self.master)
+        left_frame = CategoricalScrollableFrame(self)
         left_frame.grid(row=0, column=0, sticky="nsew")
         left_frame.set_elements(self.get_env_cats())
 
         # Middle frame with text, entry, and button
-        middle_frame = EnvCustomFrame(self.master, self.run_environment)
+        middle_frame = EnvCustomFrame(self, self.run_environment)
         middle_frame.grid(row=0, column=1, sticky="nsew")
 
         # Right frame with scrollbar
-        right_frame = CategoricalScrollableFrame(self.master, True)
+        right_frame = CategoricalScrollableFrame(self, True)
         right_frame.grid(row=0, column=2, sticky="nsew")
         right_frame.set_elements(self.get_agent_presets())
 
