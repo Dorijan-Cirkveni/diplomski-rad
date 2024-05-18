@@ -132,7 +132,7 @@ class InputFrameDropdown(iTkFrameDef):
 
     def __init__(self, master, name, return_lambda: callable,
                  screen_size: tuple, options: list,
-                 text="Select option:", butext="Run", use_button=True, use_tracker):
+                 text="Select option:", butext="Run", use_button=True, use_tracker=False):
         self.label = None
         self.options = options
         self.dropdown = None
@@ -140,8 +140,8 @@ class InputFrameDropdown(iTkFrameDef):
         self.id = self.counter.use()
         self.text = text
         self.butext = butext
-        self.use_button=use_button
-        self.use_tracker=use_tracker
+        self.use_button = use_button
+        self.use_tracker = use_tracker
         super().__init__(master, name, return_lambda, screen_size)
 
     def create_widgets(self):
@@ -151,13 +151,18 @@ class InputFrameDropdown(iTkFrameDef):
         self.label.grid(row=0, column=0)
         self.dropdown.grid(row=0, column=1)
         if self.use_button:
-            self.button.grid(row=1, column=0, columnspan=2, pady=10,)
+            self.button.grid(row=1, column=0, columnspan=2, pady=10)
         if self.use_tracker:
-            # set up dropdown to call doOutput on every change
+            print("Dropdown bound ",self.name)
+            self.dropdown.bind("<<ComboboxSelected>>", self.doEvent)
+
+    def doEvent(self,*args):
+        print(args)
 
     def doOutput(self):
         s = self.dropdown.get()
-        self.return_lambda(self.name+":"+s)
+        print("Calling output")
+        self.return_lambda(self.name + ":" + s)
 
 
 
@@ -211,12 +216,18 @@ class SideMenu(iTkFrameDef):
         self.console = DirectionsConsole(self,self.prefix_input("Move"),(200,200))
         self.console.grid(row=curow(), column=0, sticky="nsew")
 
-        self.dropdown = InputFrameDropdown(self,"Move",self.prefix_input("Move"),(200,200),
-                                           list('ABCD'))
-        self.dropdown.grid(row=curow(), column=0, sticky="nsew")
+        self.viewpoint = InputFrameDropdown(self,"Move",
+                                           self.return_lambda,(200,200),
+                                           list('ABCD'),"Viewpoint:","Potato",True,True)
+        self.viewpoint.grid(row=curow(), column=0, sticky="nsew")
+
+        self.gridtype = InputFrameDropdown(self,"Move",
+                                           self.return_lambda,(200,200),
+                                           list('ABCD'),"Grid type:","Potato",True,True)
+        self.gridtype.grid(row=curow(), column=0, sticky="nsew")
     def prefix_input(self,prefix):
         def fn(e):
-            return prefix+":"+str(e)
+            self.return_lambda(prefix+":"+str(e))
         return fn
 
 
