@@ -33,20 +33,23 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.run_button.grid(row=count(), column=0, pady=10)
 
     def set_env(self, file, ind, name):
-        self.env_label.text=utilmngr.MakeClassNameReadable(file)+": "+name
+        entityname=utilmngr.MakeClassNameReadable(file)+": "+name
+        self.env_label.text=entityname
+
         envraw = jsonmngr.ImportManagedJSON(f"{file}|{ind}")
         # Replace text box content with envraw
         self.env_data_box.delete("1.0", "end")
         self.env_data_box.insert("1.0", envraw)
 
-    def set_agent(self, agentname):
+    def set_agent(self, agentname, agentraw):
         agentclass=agentmngr.ALL_AGENTS[agentname]
         classname=utilmngr.MakeClassNameReadable(agentclass.__name__)
+        self.agent_label.text=classname
+
         self.agentclass=agentclass
-        envraw = agentclass.defaultInput
         # Replace text box content with envraw
-        self.env_data_box.delete("1.0", "end")
-        self.env_data_box.insert("1.0", envraw)
+        self.agent_data_box.delete("1.0", "end")
+        self.agent_data_box.insert("1.0", agentraw)
 
 
 
@@ -86,6 +89,10 @@ class MainCTKFrame(ctk.CTkFrame):
             return self.data.set_env(file,ind,name)
         return env
 
+    def factory_agent(self,agentname,agentclass=None):
+        def agent():
+            return self.data.set_agent(agentname,agentclass)
+
 
     def get_env_cats(self):
         cats=[]
@@ -96,6 +103,9 @@ class MainCTKFrame(ctk.CTkFrame):
             cat=CategoryData(filename, elements, 0)
             cats.append(cat)
         return cats
+
+    def get_agent_presets(self):
+
 
     def run_environment(self):
         print("Running environment with input:")
