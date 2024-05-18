@@ -7,6 +7,7 @@ from ctkScrollableFrames import *
 class EnvCustomFrame(ctk.CTkFrame):
     def __init__(self, master, run_command, **kwargs):
         super().__init__(master, **kwargs)
+        self.run_command=run_command
         count = utilmngr.Counter(0)
         self.grid_columnconfigure(count(), weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -31,7 +32,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agent_data_box = ctk.CTkTextbox(self, width=200, height=100)
         self.agent_data_box.grid(row=count(), column=0, padx=20, pady=10, sticky="nsew")
 
-        self.run_button = ctk.CTkButton(self, text="Run environment", command=run_command)
+        self.run_button = ctk.CTkButton(self, text="Run environment", command=self.run_env)
         self.run_button.grid(row=count(), column=0, pady=10)
 
     def set_env(self, file, ind, name):
@@ -52,6 +53,12 @@ class EnvCustomFrame(ctk.CTkFrame):
         # Replace text box content with envraw
         self.agent_data_box.delete("1.0", "end")
         self.agent_data_box.insert("1.0", agentraw)
+
+    def run_env(self):
+        print("-"*160)
+        print(self.env_data_box.get("1.0", "end"))
+        print(self.agentclass)
+        print(self.agent_data_box.get("1.0", "end"))
 
 
 class MainCTKFrame(ctk.CTkFrame):
