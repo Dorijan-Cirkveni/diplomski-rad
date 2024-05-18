@@ -4,10 +4,7 @@ import customtkinter as ctk
 from PIL import Image, ImageTk
 import pygame
 
-from util.struct.TupleDotOperations import *
-import environments.EnvironmentManager as env_mngr
 from environments.GridEnvironment import *
-from agents.Agent import GraphicManualInputAgent
 import util.RootPathManager as RPM
 
 fixedBG = (0, 0, 0)
