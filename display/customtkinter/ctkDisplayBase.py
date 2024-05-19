@@ -11,8 +11,8 @@ class iTkFrameDef(ctk.CTkFrame):
         self.widgets = {}
         self.return_lambda = print if not return_lambda else return_lambda
         self.screen_size = screen_size
-        self.create_widgets()
         self.configure(width=screen_size[0], height=screen_size[1])
+        self.create_widgets()
 
     def getname(self):
         return self.name
