@@ -9,11 +9,11 @@ class DisplayFrame(ctkDiB.iTkFrameDef):
 
     def create_widgets(self):
         # Frame on the right, 200 wide
-        right_frame = ctk.CTkFrame(self, width=200, bg_color="blue",fg_color="blue")
+        right_frame = ctkDiB.SideMenu(self,print,(200,self.screen_size[1]))
         right_frame.pack(side=ctk.RIGHT, fill=ctk.Y)
 
         # Frame on the bottom, 200 high, filling the remaining space
-        bottom_frame = ctk.CTkFrame(self, height=200, bg_color="green")
+        bottom_frame = ctk.CTkFrame(self, height=200, bg_color="blue", fg_color="blue")
         bottom_frame.pack(side=ctk.BOTTOM, fill=ctk.X)
 
         # Frame in the top left, filling the remaining space
