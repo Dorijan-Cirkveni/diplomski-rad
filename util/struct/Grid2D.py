@@ -531,6 +531,15 @@ class Grid2D(iCombinable):
         other:Grid2D
         return self.dual_strict(other,lambda a,b: -int(a==b))
 
+    def anim_change(self, other, specials:set[tuple]):
+        other:Grid2D
+        diff_map=self.diff(other)
+        for T in specials:
+            diff_map[T]=0
+        res_map=deepcopy(diff_map)
+        res_map.overlap(diff_map,(1,0))
+        return res_map
+
 
     def collage_v(self, other, default: int = -1, gap: int = 0, gapdefault: int = 2):
         other: Grid2D
