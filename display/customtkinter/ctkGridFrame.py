@@ -108,6 +108,59 @@ class GridDisplayFrame(DiB.iTkFrameDef):
             self.canvas.create_image(location, image=image)
 
 
+    def display_grid_in_frame(self,grid:Grid2D):
+        """
+        Display a Grid2D grid in the given frame, scaling the images of tiles to fit perfectly within the frame.
+
+        Args:
+
+            grid (Grid2D): The Grid2D instance to display.
+            frame (GridDisplayFrame): The frame in which to display the grid.
+        """
+        # Get the dimensions of the grid and the frame
+        grid_width, grid_height = grid.size
+        frame_width, frame_height = self.screen_size
+
+        # Calculate the size of each cell in the grid
+        cell_width = frame_width // grid_width
+        cell_height = frame_height // grid_height
+
+        # Clear the canvas
+        self.canvas.delete("all")
+
+        # Iterate over each cell in the grid
+        for y in range(grid_height):
+            for x in range(grid_width):
+                # Get the tile at the current position
+                tile = grid[(x, y)]
+
+                # Calculate the position of the cell in the frame
+                cell_x = x * cell_width
+                cell_y = y * cell_height
+
+                # Calculate the size of the tile image
+                tile_width, tile_height = tile.size
+
+                # Scale the tile image to fit within the cell
+                if tile_width > cell_width or tile_height > cell_height:
+                    # Tile image is larger than the cell, need to scale it down
+                    scale_factor = min(cell_width / tile_width, cell_height / tile_height)
+                    scaled_tile_width = int(tile_width * scale_factor)
+                    scaled_tile_height = int(tile_height * scale_factor)
+                    scaled_tile = tile.image.resize((scaled_tile_width, scaled_tile_height), Image.ANTIALIAS)
+                else:
+                    # Tile image fits within the cell, no need to scale
+                    scaled_tile = tile.image
+
+                # Display the scaled tile image on the canvas
+                self.canvas.create_image(cell_x + cell_width // 2, cell_y + cell_height // 2, image=ImageTk.PhotoImage(scaled_tile))
+
+# Now you can call this function with your Grid2D instance and the frame where you want to display it
+# For example:
+# grid = ...  # Your Grid2D instance
+# frame = GridDisplayFrame(...)  # Your GridDisplayFrame instance
+# display_grid_in_frame(grid, frame)
+
 
 
 def main():

@@ -113,7 +113,7 @@ class Grid2D(iCombinable):
         "rect": Rect
     }
 
-    def __init__(self, scale: tuple, M: list[list] = None, default=0,
+    def __init__(self, scale: [tuple,None,list], M: list[list] = None, default=0,
                  shapes: dict = None, add: list = None):
         """
         Initialize a 2D grid with given dimensions.
@@ -126,6 +126,8 @@ class Grid2D(iCombinable):
         """
         shapes = shapes if shapes else {}
         add = add if add else []
+        if scale is None and M and M[0]:
+            scale=(len(M),len(M[0]))
         if type(scale)==list:
             scale=tuple(scale)
         if type(scale)!=tuple:
@@ -531,14 +533,25 @@ class Grid2D(iCombinable):
         other:Grid2D
         return self.dual_strict(other,lambda a,b: -int(a==b))
 
+    def anim_shade(self):
+        slider=[-1]*self.scale[1]
+        for E in self.M:
+            for i,e in enumerate(E):
+                f=slider[i]
+                slider[i]=e
+                if (f,e) != (0,-1):
+                    continue
+                E[i]=1
+        return
+
+
     def anim_change(self, other, specials:set[tuple]):
         other:Grid2D
         diff_map=self.diff(other)
         for T in specials:
             diff_map[T]=0
-        res_map=deepcopy(diff_map)
-        res_map.overlap(diff_map,(1,0),{-1})
-        return res_map
+        diff_map.anim_shade()
+        return diff_map
 
 
     def collage_v(self, other, default: int = -1, gap: int = 0, gapdefault: int = 2):
@@ -720,7 +733,6 @@ def test_diff():
 
 
 def main():
-    test_diff()
     return
 
 
