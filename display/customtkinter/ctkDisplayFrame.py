@@ -64,7 +64,10 @@ class DisplayFrame(DiB.iTkFrameDef):
 
 def main():
     root = ctk.CTk()
-    app = DisplayFrame(root, print, (800, 600))
+    scale=(800, 600)
+    app = DisplayFrame(root, print, scale)
+    root.geometry("{}x{}".format(*scale))
+    root.minsize(*scale)
     grid=GrF.Grid2D((20,)*2,[[],[i for i in range(10)]])
     app.display.display_grid_in_frame(grid,{(2,2):0})
     root.mainloop()

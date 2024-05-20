@@ -101,7 +101,7 @@ class GridDisplayFrame(DiB.iTkFrameDef):
 
     def create_widgets(self):
         self.canvas = ctk.CTkCanvas(self, width=self.screen_size[0], height=self.screen_size[1], bg="blue")
-        self.canvas.pack(fill="both", expand=True)
+        self.canvas.place(relx=0.5,rely=0.5,anchor=ctk.CENTER)
 
         self.grid_elements, self.agent_elements = get_grid_tile_images(),get_agent_tile_images()
 
