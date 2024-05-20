@@ -28,7 +28,7 @@ class GridEnvironment(itf.iEnvironment):
     dir_down = 1
     dir_left = 2
     dir_right = 3
-    routineType=GridRoutine
+    routineType = GridRoutine
 
     def __init__(self, gridRoutines: dict[str, GridRoutine],
                  entities: list[GridEntity], activeEntities: set,
@@ -60,7 +60,7 @@ class GridEnvironment(itf.iEnvironment):
                          effects=effects,
                          extraData=extraData)
         self.entities: list[GridEntity]
-        self.entityDeathTimes=[float("inf")]*len(entities)
+        self.entityDeathTimes = [float("inf")] * len(entities)
         self.scale = None
         self.init_grids_and_memory(gridRoutines)
         self.gridRoutines = gridRoutines
@@ -123,7 +123,7 @@ class GridEnvironment(itf.iEnvironment):
         return X
 
     @classmethod
-    def getGridRoutinesFromDict(cls,raw: dict):
+    def getGridRoutinesFromDict(cls, raw: dict):
         gridRaw = raw[SOLID]
         grid = cls.routineType.raw_init(gridRaw)
         if VIEWED in raw:
@@ -249,12 +249,12 @@ class GridEnvironment(itf.iEnvironment):
         return grid.get_text_display(guide, self.taken)
 
     def get_grids(self):
-        S=set(self.grids.keys())
-        L=[]
-        for e in ("solid","viewed"):
+        S = set(self.grids.keys())
+        L = []
+        for e in ("solid", "viewed"):
             if e in S:
                 L.append(e)
-        S-={"solid","viewed",AGENTMEMORY}
+        S -= {"solid", "viewed", AGENTMEMORY}
         return L + ["agentmemory"]
 
     def getGridByInd(self, ind: int):
@@ -423,8 +423,6 @@ class GridEnvironment(itf.iEnvironment):
             if otherID == entityID:
                 continue
             otherent: GridEntity = self.entities[otherID]
-            if otherent is None:
-                continue
             otherloc = otherent.get(otherent.LOCATION, None)
             if gridData[otherloc] == -1:
                 continue
@@ -446,8 +444,6 @@ class GridEnvironment(itf.iEnvironment):
             return
         entID = self.taken[E]
         ent: GridEntity = self.entities[entID]
-        if ent is None:
-            return
         imageID = ent.getDisplay()
         agents[E] = imageID
         return
@@ -475,7 +471,7 @@ class GridEnvironment(itf.iEnvironment):
             return_grid = self.convertGrid(grid, None)
             return {"grid": return_grid, "agents": agents}
         entityID: int
-        if self.entities[entityID] is None:
+        if self.entities[entityID] is None:  # TODO make death spot displayed
             return {"msg": "Entity terminated"}
         entity: GridEntity = self.entities[entityID]
         if gridType == AGENTMEMORY:
@@ -483,7 +479,7 @@ class GridEnvironment(itf.iEnvironment):
         else:
             if entity.isInState(entity.S_blind):
                 return {"msg": "Entity blinded"}
-            data = self.getEnvData(entityID,gridType)
+            data = self.getEnvData(entityID, gridType)
         if "grid" not in data:
             return {"msg": "ERROR:\n" + str(data)}
         grid: Grid2D = data['grid']
@@ -513,8 +509,8 @@ class GridEnvironment(itf.iEnvironment):
                 return global_moves
         else:
             entity: GridEntity = self.entities[entityID]
-            if entity is None:
-                return []  # Entity is destroyed.
+            if self.entityDeathTimes[entity] <= self.cur_iter:
+                return []
             location = entity.get(entity.LOCATION, None) if customLocation is None else customLocation
             properties = entity.properties
         goodMoves = []
@@ -573,7 +569,7 @@ class GridEnvironment(itf.iEnvironment):
         """
         ent: GridEntity = self.entities[entID]
         grid: Grid2D = self.solidGrid
-        if ent is None:
+        if self.entityDeathTimes[entID]<self.cur_iter:
             return True
         if not grid.hasTileOfIndex(destination):
             return False
@@ -599,11 +595,13 @@ class GridEnvironment(itf.iEnvironment):
         """
         if direction is None:
             return
-        if not isinstance(direction,tuple):
-            raise Exception(type(direction),direction)
+        if not isinstance(direction, tuple):
+            raise Exception(type(direction), direction)
         locations = []
         for ID in movingEntIDs:
             ent: GridEntity = self.entities[ID]
+            if self.entityDeathTimes[ID]<self.cur_iter:
+                continue
             locations.append(ent.get(ent.LOCATION, None))
         M = T_generate_links(set(self.taken.keys()), locations, direction)
         for L in M:
@@ -623,16 +621,17 @@ class GridEnvironment(itf.iEnvironment):
         Args:
             moves (dict): Dictionary containing entity movements.
         """
-        self.deleted_locations={}
+        anim_moves=dict()
+        anim_deletions=dict()
         moveTypes = {e: [] for e in moves.values()}
         for entityID, moveID in moves.items():
-            if type(moveID)==int:
-                moveID=ACTIONS[moveID]
+            if type(moveID) == int:
+                moveID = ACTIONS[moveID]
             moveTypes[moveID].append(entityID)
         terminatedEntities = set()
         for e, V in moveTypes.items():
-            if type(e)==int:
-                e=ACTIONS[e]
+            if type(e) == int:
+                e = ACTIONS[e]
             if e is None or e == (0, 0):
                 continue
             self.moveDirection(V, e, terminatedEntities)
@@ -640,11 +639,11 @@ class GridEnvironment(itf.iEnvironment):
             ent: GridEntity = self.entities[e]
             entpos = ent.get(GridEntity.LOCATION, None)
             self.taken.pop(entpos)
-            self.deleted_locations[e]=entpos
+            self.deleted_locations[e] = entpos
             self.entities[e] = None
             self.activeEntities -= {e}
         self.updateGrids()
-        return
+        return anim_moves,anim_deletions
 
     def runEnvChanges(self):
         routines = self.data.get("routines", {})
