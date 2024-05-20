@@ -8,18 +8,17 @@ import environments.EnvironmentManager as env_mngr
 from environments.GridEnvironment import *
 from agents.Agent import GraphicManualInputAgent
 from util.RootPathManager import RootPathManager
-rpm=RootPathManager()
+
+rpm = RootPathManager()
 
 fixedBG = (0, 0, 0)
 GRID_COLOR = (255, 255, 255)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-path = os.path.abspath("../..")
-json_file_path = os.path.join(path, "grid_tile_data.json")
-F = open("../../grid_tiles/grid_tile_data.json", "r")
-element_raw = json.loads(F.read())
-F.close()
+json_file_path = rpm.GetFullPath("grid_tiles/grid_tile_data.json")
+with open(json_file_path, "r") as F:
+    element_raw = json.loads(F.read())
 
 
 class GridElementDisplay:
@@ -72,11 +71,11 @@ def get_grid_tile_images():
     element_grid = []
     agent_grid = []
     for (name, A, B) in element_raw:
-        element = GridElementDisplay(os.path.join(path, name), tuple(A), tuple(B), name)
+        element = GridElementDisplay(rpm.GetFullPath(name), tuple(A), tuple(B), name)
         element_grid.append(element)
     agent_GL = ["red{}", "yellow{}", "green{}", "blue{}", "box"]
     for e in agent_GL:
-        element = GridElementDisplay(path + "\\grid_tiles\\{}.png".format(e.format("Agent")), (0, -0.3), (1, 1.5))
+        element = GridElementDisplay(rpm.GetFullPath(f"grid_tiles/{e.format('Agent')}.png"), (0, -0.3), (1, 1.5))
         agent_grid.append(element)
     return element_grid, agent_grid
 
