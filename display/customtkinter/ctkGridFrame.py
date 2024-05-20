@@ -71,26 +71,30 @@ class GridElementDisplay:
 
 def get_grid_tile_images():
     element_grid = []
-    agent_grid = []
     for (name, A, B) in element_raw:
         element = GridElementDisplay(rpm.GetFullPath(name), tuple(A), tuple(B), name)
         element_grid.append(element)
+    return element_grid
+def get_agent_tile_images():
+    agent_grid = []
     agent_GL = ["red{}", "yellow{}", "green{}", "blue{}", "box"]
     for e in agent_GL:
         element = GridElementDisplay(rpm.GetFullPath(f"grid_tiles/{e.format('Agent')}.png"), (0, -0.3), (1, 1.5))
         agent_grid.append(element)
-    return element_grid, agent_grid
+    return agent_grid
 
 
 class GridDisplayFrame(DiB.iTkFrameDef):
     def __init__(self, master, name: str, return_lambda: callable, screen_size: tuple[int, int]):
+        self.agent_elements = None
+        self.grid_elements = None
         super().__init__(master, name, return_lambda, screen_size)
 
     def create_widgets(self):
         self.canvas = ctk.CTkCanvas(self, width=self.screen_size[0], height=self.screen_size[1], bg="blue")
         self.canvas.pack(fill="both", expand=True)
 
-        self.grid_elements, self.agent_elements = get_grid_tile_images()
+        self.grid_elements, self.agent_elements = get_grid_tile_images(),get_agent_tile_images()
 
         # Display the first grid tile image (E[0]) in the center
         self.display_first_grid_tile()
@@ -108,38 +112,29 @@ class GridDisplayFrame(DiB.iTkFrameDef):
             self.canvas.create_image(location, image=image)
 
 
-    def display_grid_in_frame(self,grid:Grid2D):
+    def display_grid_in_frame(self, grid:Grid2D, agents:dict[tuple,int]):
         """
         Display a Grid2D grid in the given frame, scaling the images of tiles to fit perfectly within the frame.
 
-        Args:
-
-            grid (Grid2D): The Grid2D instance to display.
-            frame (GridDisplayFrame): The frame in which to display the grid.
+        :param grid:
+        :param agents:
         """
-        # Get the dimensions of the grid and the frame
-        grid_width, grid_height = grid.scale
-        frame_width, frame_height = self.screen_size
-
-        # Calculate the size of each cell in the grid
-        cell_width = frame_width // grid_width
-        cell_height = frame_height // grid_height
+        cell_size=Tdiv(self.screen_size,grid.scale)
 
         # Clear the canvas
         self.canvas.delete("all")
-
-        # Iterate over each cell in the grid
-        for y in range(grid_height):
-            for x in range(grid_width):
-                # Get the tile at the current position
-                tile = grid[(x, y)]
-
-                # Calculate the position of the cell in the frame
-                cell_x = x * cell_width
-                cell_y = y * cell_height
+        for y,E in enumerate(grid):
+            for x,tile in enumerate(E):
+                cell_start_f=Tmul((x,y),cell_size)
+                cell_x = round(cell_start_f[0])
+                cell_y = round(cell_start_f[1])
 
                 # Calculate the size of the tile image
                 tile_width, tile_height = tile.size
+
+                tile_type:GridElementDisplay=self.grid_elements[tile%len(self.grid_elements)]
+                pos, image = tile_type.apply(cell_start_f,cell_size)
+
 
                 # Scale the tile image to fit within the cell
                 if tile_width > cell_width or tile_height > cell_height:
