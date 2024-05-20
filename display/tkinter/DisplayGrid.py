@@ -244,7 +244,7 @@ class GridDisplayFrame(DIB.iTkFrame):
         mode = 2 * int("Grid" in self.view_elements_mode) + int("Agents" in self.view_elements_mode)
         return grid, agents, mode
 
-    def update_env(self, animation_steps:int=2):
+    def update_env(self, animation_steps:int=10):
         env: DGE.GridEnvironment = self.env
         data: dict
         locations={}

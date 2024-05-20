@@ -59,8 +59,8 @@ class GridEnvironment(itf.iEnvironment):
                          effectTypes=effectTypes,
                          effects=effects,
                          extraData=extraData)
-        self.deleted_locations={}
         self.entities: list[GridEntity]
+        self.entityDeathTimes=[float("inf")]*len(entities)
         self.scale = None
         self.init_grids_and_memory(gridRoutines)
         self.gridRoutines = gridRoutines
@@ -404,8 +404,6 @@ class GridEnvironment(itf.iEnvironment):
         if entityID not in range(len(self.entities)):
             return None
         entity: GridEntity = self.entities[entityID]
-        if entity is None:
-            return None  # Intended error
         location: tuple = entity.get(entity.LOCATION, None)
         if type(location) != tuple:
             raise Exception(f"Location must be a tuple, not {type(location)}!")
