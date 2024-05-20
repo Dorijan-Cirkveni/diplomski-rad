@@ -3,10 +3,7 @@ import os
 import customtkinter as ctk
 from PIL import Image, ImageTk
 
-from util.struct.TupleDotOperations import *
-import environments.EnvironmentManager as env_mngr
 from environments.GridEnvironment import *
-from agents.Agent import GraphicManualInputAgent
 from util.RootPathManager import RootPathManager
 
 rpm = RootPathManager()
@@ -64,7 +61,7 @@ class GridElementDisplay:
             imgres = imgres.resize(realSize, Image.Resampling.NEAREST)
             photo_image = ImageTk.PhotoImage(imgres)
             self.curScaleImage = photo_image
-        return true_location
+        return true_location, self.curScaleImage
 
 
 def get_grid_tile_images():
@@ -80,16 +77,37 @@ def get_grid_tile_images():
     return element_grid, agent_grid
 
 
+class MainApp(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+
+        self.title("CustomTkinter and Pygame Integration")
+        self.geometry("600x600")
+
+        self.canvas = ctk.CTkCanvas(self, width=600, height=600, bg="blue")
+        self.canvas.pack(fill="both", expand=True)
+
+        self.grid_elements, self.agent_elements = get_grid_tile_images()
+
+        # Display the first grid tile image (E[0]) in the center
+        self.display_first_grid_tile()
+
+    def display_first_grid_tile(self):
+        if self.grid_elements:
+            grid_element = self.grid_elements[0]
+            # Calculate center position
+            canvas_width = self.canvas.winfo_width()
+            canvas_height = self.canvas.winfo_height()
+            center_x = canvas_width // 2
+            center_y = canvas_height // 2
+            size = (100, 100)  # Example size for scaling
+            location, image = grid_element.apply((center_x, center_y), size)
+            self.canvas.create_image(location, image=image)
+
+
 def main():
-    root = ctk.CTk()
-    root.title("CustomTkinter and Pygame Integration")
-    root.geometry("600x600")
-
-    E, A = get_grid_tile_images()
-    for el in E:
-        print(el.image.filename, el.offset, el.size)
-
-    root.mainloop()
+    app = MainApp()
+    app.mainloop()
 
 
 if __name__ == "__main__":
