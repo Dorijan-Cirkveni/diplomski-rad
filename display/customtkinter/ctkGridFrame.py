@@ -3,8 +3,13 @@ import os
 import customtkinter as ctk
 from PIL import Image, ImageTk
 
+from util.struct.TupleDotOperations import *
+import environments.EnvironmentManager as env_mngr
 from environments.GridEnvironment import *
+from agents.Agent import GraphicManualInputAgent
 from util.RootPathManager import RootPathManager
+from util.UtilManager import Counter
+import ctkDisplayBase as DiB
 
 rpm = RootPathManager()
 
@@ -77,14 +82,12 @@ def get_grid_tile_images():
     return element_grid, agent_grid
 
 
-class MainApp(ctk.CTk):
-    def __init__(self):
-        super().__init__()
+class GridDisplayFrame(DiB.iTkFrameDef):
+    def __init__(self, master, name: str, return_lambda: callable, screen_size: tuple[int, int]):
+        super().__init__(master, name, return_lambda, screen_size)
 
-        self.title("CustomTkinter and Pygame Integration")
-        self.geometry("600x600")
-
-        self.canvas = ctk.CTkCanvas(self, width=600, height=600, bg="blue")
+    def create_widgets(self):
+        self.canvas = ctk.CTkCanvas(self, width=self.screen_size[0], height=self.screen_size[1], bg="blue")
         self.canvas.pack(fill="both", expand=True)
 
         self.grid_elements, self.agent_elements = get_grid_tile_images()
@@ -96,8 +99,8 @@ class MainApp(ctk.CTk):
         if self.grid_elements:
             grid_element = self.grid_elements[0]
             # Calculate center position
-            canvas_width = self.canvas.winfo_width()
-            canvas_height = self.canvas.winfo_height()
+            canvas_width = self.screen_size[0]
+            canvas_height = self.screen_size[1]
             center_x = canvas_width // 2
             center_y = canvas_height // 2
             size = (100, 100)  # Example size for scaling
@@ -105,9 +108,17 @@ class MainApp(ctk.CTk):
             self.canvas.create_image(location, image=image)
 
 
+
+
 def main():
-    app = MainApp()
-    app.mainloop()
+    root = ctk.CTk()
+    root.title("CustomTkinter and Pygame Integration")
+    root.geometry("600x600")
+
+    grid_display_frame = GridDisplayFrame(root, "GridDisplay", print, (600, 600))
+    grid_display_frame.pack(fill="both", expand=True)
+
+    root.mainloop()
 
 
 if __name__ == "__main__":
