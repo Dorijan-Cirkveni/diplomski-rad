@@ -537,7 +537,7 @@ class Grid2D(iCombinable):
         for T in specials:
             diff_map[T]=0
         res_map=deepcopy(diff_map)
-        res_map.overlap(diff_map,(1,0))
+        res_map.overlap(diff_map,(1,0),{-1})
         return res_map
 
 
