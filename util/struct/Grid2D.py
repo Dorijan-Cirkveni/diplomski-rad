@@ -510,6 +510,28 @@ class Grid2D(iCombinable):
                 self.M[i][j] = e
         return
 
+    def dual_strict(self, other, func:callable, default_self=-1,default_other=-1):
+        other:Grid2D
+        A = self.scale
+        B = other.scale
+        if A!=B:
+            raise Exception("Scales do not match: {}!={}".format(A,B))
+        M=[]
+        for i,E in enumerate(self.M):
+            E2=other.M[i]
+            L=[]
+            for j,e in enumerate(E):
+                e2=E2[j]
+                res=func(e,e2)
+                L.append(res)
+            M.append(L)
+        return Grid2D(A,M)
+
+    def diff(self,other):
+        other:Grid2D
+        return self.dual_strict(other,lambda a,b: -int(a==b))
+
+
     def collage_v(self, other, default: int = -1, gap: int = 0, gapdefault: int = 2):
         other: Grid2D
         final0 = self.scale[0] + other.scale[0] + gap
@@ -653,14 +675,46 @@ def demonstrate_rotate_layer():
 
 
 # [[(i * 2 + j) % 5 for j in range(10)] for i in range(10)]
+def test_diff():
+    # Create two grids with slight differences
+    grid1_data = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ]
+
+    grid2_data = [
+        [1, 2, 3],
+        [4, 0, 6],  # Difference here (5 -> 0)
+        [7, 8, 9]
+    ]
+
+    grid1 = Grid2D((3, 3), grid1_data)
+    grid2 = Grid2D((3, 3), grid2_data)
+
+    # Apply the diff function
+    diff_grid = grid1.diff(grid2)
+
+    # Expected diff result
+    expected_diff_data = [
+        [-1, -1, -1],
+        [-1, 0, -1],
+        [-1, -1, -1]
+    ]
+
+    expected_diff_grid = Grid2D((3, 3), expected_diff_data)
+
+    # Check if the diff grid matches the expected result
+    assert diff_grid.M == expected_diff_grid.M, f"Expected {expected_diff_grid.M}, but got {diff_grid.M}"
+
+    print("Test for diff function passed!")
+
+
 def main():
-    """
-    Currently testing:
-    :return:
-    """
-    demonstrate_rotate_layer()
+    test_diff()
     return
 
 
 if __name__ == "__main__":
     main()
+
