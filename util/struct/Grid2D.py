@@ -535,13 +535,16 @@ class Grid2D(iCombinable):
 
     def anim_shade(self):
         slider=[-1]*self.scale[1]
+        last=[0]*self.scale[1]
         for E in self.M:
-            for i,e in enumerate(E):
-                f=slider[i]
-                slider[i]=e
-                if (f,e) != (0,-1):
-                    continue
-                E[i]=1
+            for j,e in enumerate(E):
+                f=slider[j]
+                slider[j]=e
+                if (f,e) == (0,-1):
+                    E[j]=1
+                if (f,e) == (-1,0):
+                    last[j]=2
+            last=E
         return
 
 

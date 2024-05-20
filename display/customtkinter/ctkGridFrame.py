@@ -118,7 +118,7 @@ class GridDisplayFrame(DiB.iTkFrameDef):
             frame (GridDisplayFrame): The frame in which to display the grid.
         """
         # Get the dimensions of the grid and the frame
-        grid_width, grid_height = grid.size
+        grid_width, grid_height = grid.scale
         frame_width, frame_height = self.screen_size
 
         # Calculate the size of each cell in the grid
