@@ -37,7 +37,7 @@ class GridElementDisplay:
         self.name = name
         self.filename = filename
         self.image = Image.open(filename)
-        self.curScaleImage = None
+        self.curScaleImages=dict()
         self.offset = offset
         self.size = size
 
@@ -50,23 +50,25 @@ class GridElementDisplay:
         :return:
         """
 
-        original_width = self.image.width
-        original_height = self.image.height
-        og = (original_width, original_height)
+        og = (self.image.width, self.image.height)
         realOffset = Tmul(size, self.offset)
-        realSize = Tmul(size, self.size, forceInteger=True)
+        realSize = Tmul(size, self.size)
 
         true_location = Tadd(location, realOffset)
-        ratio = Tdiv(realSize, og)
+        true_end=Tadd(true_location,realSize)
+        int_true_location=Tadd(true_location,(0.5,)*2,True)
+        int_true_end=Tadd(true_end,(0.5,)*2,True)
+        int_real_size=Tsub(int_true_end,int_true_location,True)
+        ratio = Tdiv(int_real_size, og)
         curatio = ratio[0] / ratio[1]
         if not (0.8 <= curatio <= 1.25):
             raise Exception("Distortion!")
-        if self.curScaleImage is None:
+        if int_real_size not in self.curScaleImages:
             imgres = Image.open(self.filename)
-            imgres = imgres.resize(realSize, Image.Resampling.NEAREST)
+            imgres = imgres.resize(int_real_size, Image.Resampling.NEAREST)
             photo_image = ImageTk.PhotoImage(imgres)
-            self.curScaleImage = photo_image
-        return true_location, self.curScaleImage
+            self.curScaleImages[int_real_size] = photo_image
+        return int_true_location, self.curScaleImages[int_real_size]
 
 
 def get_grid_tile_images():
@@ -86,6 +88,7 @@ def get_agent_tile_images():
 
 class GridDisplayFrame(DiB.iTkFrameDef):
     def __init__(self, master, name: str, return_lambda: callable, screen_size: tuple[int, int]):
+        self.canvas = None
         self.agent_elements = None
         self.grid_elements = None
         super().__init__(master, name, return_lambda, screen_size)
@@ -95,19 +98,6 @@ class GridDisplayFrame(DiB.iTkFrameDef):
         self.canvas.pack(fill="both", expand=True)
 
         self.grid_elements, self.agent_elements = get_grid_tile_images(),get_agent_tile_images()
-
-    def display_first_grid_tile(self):
-        if self.grid_elements:
-            grid_element = self.grid_elements[0]
-            # Calculate center position
-            canvas_width = self.screen_size[0]
-            canvas_height = self.screen_size[1]
-            center_x = canvas_width // 2
-            center_y = canvas_height // 2
-            size = (100, 100)  # Example size for scaling
-            location, image = grid_element.apply((center_x, center_y), size)
-            self.canvas.create_image(location, image=image)
-
 
     def display_grid_in_frame(self, grid:Grid2D, agents:dict[tuple,int]):
         """
@@ -121,17 +111,21 @@ class GridDisplayFrame(DiB.iTkFrameDef):
 
         # Clear the canvas
         self.canvas.delete("all")
+        self.canvas.create_rectangle((580,)*2+(620,)*2)
+        self.canvas:ctk.CTkCanvas
+        print(self.canvas)
         for y,E in enumerate(grid):
             for x,tile in enumerate(E):
                 cell_start_f=Tmul((x,y),cell_size)
-                print(cell_start_f,end="|")
 
                 tile_type:GridElementDisplay=self.grid_elements[tile%len(self.grid_elements)]
                 pos, image = tile_type.apply(cell_start_f,cell_size)
 
                 # Display the scaled tile image on the canvas
-                self.canvas.create_image(*pos, image=image, anchor="nw")
-            print()
+                self.canvas.create_image(*Tadd(pos,(2,2)), image=image, anchor="nw")
+        test:GridElementDisplay=self.grid_elements[0]
+        print(test.curScaleImages.keys())
+        return
 
 
 def main():
@@ -139,9 +133,9 @@ def main():
     root.title("Grid Display Test")
     root.geometry("600x600")
 
-    grid_display_frame = GridDisplayFrame(root, "GridDisplay", print, (600, 600))
-    grid_display_frame.pack(fill="both", expand=True)
-    grid_display_frame.display_grid_in_frame(Grid2D((20,20)),{(2,2):0})
+    grid_display_frame = GridDisplayFrame(root, "GridDisplay", print, (600,)*2)
+    grid_display_frame.pack()
+    grid_display_frame.display_grid_in_frame(Grid2D((13,)*2),{(2,2):0})
     root.mainloop()
 
 
