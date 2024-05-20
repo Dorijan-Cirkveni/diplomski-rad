@@ -32,10 +32,10 @@ class GridEnvironment(itf.iEnvironment):
 
     def __init__(self, gridRoutines: dict[str, GridRoutine],
                  entities: list[GridEntity], activeEntities: set,
-                 tileTypes: list[Grid2DTile],
-                 effectTypes: list[itf.Effect],
-                 effects: list[itf.EffectTime],
-                 extraData: dict):
+                 tileTypes: list[Grid2DTile] = None,
+                 effectTypes: list[itf.Effect] = None,
+                 effects: list[itf.EffectTime] = None,
+                 extraData=None):
         """
         Initializes a new GridEnvironment instance.
 
@@ -52,6 +52,8 @@ class GridEnvironment(itf.iEnvironment):
             extraData (dict, optional): Extra data for the environment. Defaults to None.
         """
 
+        if extraData is None:
+            extraData = {}
         if effectTypes is None:
             effectTypes = extraData.get("effectTypes", [])
         super().__init__(entities=entities,
@@ -569,7 +571,7 @@ class GridEnvironment(itf.iEnvironment):
         """
         ent: GridEntity = self.entities[entID]
         grid: Grid2D = self.solidGrid
-        if self.entityDeathTimes[entID]<self.cur_iter:
+        if self.entityDeathTimes[entID] < self.cur_iter:
             return True
         if not grid.hasTileOfIndex(destination):
             return False
@@ -600,7 +602,7 @@ class GridEnvironment(itf.iEnvironment):
         locations = []
         for ID in movingEntIDs:
             ent: GridEntity = self.entities[ID]
-            if self.entityDeathTimes[ID]<self.cur_iter:
+            if self.entityDeathTimes[ID] < self.cur_iter:
                 continue
             locations.append(ent.get(ent.LOCATION, None))
         M = T_generate_links(set(self.taken.keys()), locations, direction)
@@ -621,8 +623,8 @@ class GridEnvironment(itf.iEnvironment):
         Args:
             moves (dict): Dictionary containing entity movements.
         """
-        anim_moves=dict()
-        anim_deletions=dict()
+        anim_moves = dict()
+        anim_deletions = dict()
         moveTypes = {e: [] for e in moves.values()}
         for entityID, moveID in moves.items():
             if type(moveID) == int:
@@ -635,15 +637,14 @@ class GridEnvironment(itf.iEnvironment):
             if e is None or e == (0, 0):
                 continue
             self.moveDirection(V, e, terminatedEntities)
-        for e in terminatedEntities:
-            ent: GridEntity = self.entities[e]
+        for ent_id in terminatedEntities:
+            ent: GridEntity = self.entities[ent_id]
             entpos = ent.get(GridEntity.LOCATION, None)
             self.taken.pop(entpos)
-            self.deleted_locations[e] = entpos
-            self.entities[e] = None
-            self.activeEntities -= {e}
+            anim_deletions[ent_id] = entpos
+            self.activeEntities -= {ent_id}
         self.updateGrids()
-        return anim_moves,anim_deletions
+        return anim_moves, anim_deletions
 
     def runEnvChanges(self):
         routines = self.data.get("routines", {})
@@ -670,11 +671,10 @@ class GridEnvironment(itf.iEnvironment):
         Returns:
             bool: True if it's a win state, False otherwise.
         """
-        for ID in self.activeEntities:
+        S = self.activeEntities - set(self.entityDeathTimes)
+        for ID in S:
             ent: GridEntity = self.entities[ID]
             entpos: tuple = ent.get(GridEntity.LOCATION, None)
-            if entpos is None:
-                continue
             tileID = self.get_tile(entpos, SOLID)
             if tileID not in range(len(self.tileTypes)):
                 raise Exception("Tile index invalid!")
@@ -685,12 +685,15 @@ class GridEnvironment(itf.iEnvironment):
         return False
 
     def isLoss(self):
-        for ID in self.activeEntities:
-            ent: GridEntity = self.entities[ID]
-            entpos: tuple = ent.get(GridEntity.LOCATION, None)
-            if entpos is not None:
+        loss_condition = self.data.get("loss", {"destroyed": "all"})
+        if "destroyed" in loss_condition:
+            v = loss_condition["destroyed"]
+            S = self.activeEntities - {e for e, v in self.entityDeathTimes if v <= self.cur_iter}
+            if v == "all" and not S:
+                return True
+            if v == "one" and len(S) != len(self.activeEntities):
                 return False
-        return True
+        return False
 
     def evaluate(self, results: list):
         return sum(results)

@@ -1,8 +1,10 @@
 import json
+import math
 import os
 import customtkinter as ctk
 from PIL import Image, ImageTk
 
+import definitions
 from util.struct.TupleDotOperations import *
 import environments.EnvironmentManager as env_mngr
 from environments.GridEnvironment import *
@@ -87,6 +89,10 @@ def get_agent_tile_images():
 
 
 class GridDisplayFrame(DiB.iTkFrameDef):
+    DISPLAY_NULL=0
+    DISPLAY_AGENTS=1
+    DISPLAY_GRID=2
+    DISPLAY_ALL=3
     def __init__(self, master, name: str, return_lambda: callable, screen_size: tuple[int, int]):
         self.canvas = None
         self.agent_elements = None
@@ -99,32 +105,44 @@ class GridDisplayFrame(DiB.iTkFrameDef):
 
         self.grid_elements, self.agent_elements = get_grid_tile_images(),get_agent_tile_images()
 
-    def display_grid_in_frame(self, grid:Grid2D, agents:dict[tuple,int]):
+    def display_grid_in_frame(self, grid:Grid2D, agents:dict[tuple,int],
+                              display_mode:int=3):
         """
         Display a Grid2D grid in the given frame, scaling the images of tiles to fit perfectly within the frame.
 
+        :param display_mode:
         :param grid:
         :param agents:
         """
         cell_size=Tdiv(self.screen_size,grid.scale)
         print(self.screen_size,cell_size,grid.scale)
-
+        tile_k=len(self.grid_elements)
+        agent_k=len(self.agent_elements)
+        byRow: list[list[tuple]] = [[] for _ in grid]
+        for loc, agent_index in agents.items():
+            L = byRow[math.ceil(loc[0]-definitions.EPSILONLITE)]
+            L.append((loc[0],loc[1], agent_index))
         # Clear the canvas
         self.canvas.delete("all")
         self.canvas.create_rectangle((580,)*2+(620,)*2)
         self.canvas:ctk.CTkCanvas
         print(self.canvas)
-        for y,E in enumerate(grid):
-            for x,tile in enumerate(E):
-                cell_start_f=Tmul((x,y),cell_size)
+        for row_int,E in enumerate(grid):
+            if display_mode&self.DISPLAY_GRID:
+                for x,tile in enumerate(E):
+                    cell_start_f=Tmul((x,row_int),cell_size)
 
-                tile_type:GridElementDisplay=self.grid_elements[tile%len(self.grid_elements)]
-                pos, image = tile_type.apply(cell_start_f,cell_size)
+                    tile_type:GridElementDisplay=self.grid_elements[tile%tile_k]
+                    pos, image = tile_type.apply(cell_start_f,cell_size)
 
-                # Display the scaled tile image on the canvas
-                self.canvas.create_image(*Tadd(pos,(2,2)), image=image, anchor="nw")
-        test:GridElementDisplay=self.grid_elements[0]
-        print(test.curScaleImages.keys())
+                    # Display the scaled tile image on the canvas
+                    self.canvas.create_image(*Tadd(pos,(2,2)), image=image, anchor="nw")
+            if display_mode&self.DISPLAY_AGENTS:
+                for (row, col, agent_index) in byRow[row_int]:
+                    P0 = Tmul((col, row), cell_size, True)
+                    agent = self.agent_elements[agent_index % agent_k]
+                    loc0, img = agent.apply(P0, cell_size)
+                    self.canvas.create_image(*loc0, image=img, anchor="nw")
         return
 
 
@@ -135,7 +153,8 @@ def main():
 
     grid_display_frame = GridDisplayFrame(root, "GridDisplay", print, (600,)*2)
     grid_display_frame.pack()
-    grid_display_frame.display_grid_in_frame(Grid2D((13,)*2),{(2,2):0})
+    grid=Grid2D((13,)*2,[[],[i for i in range(10)]])
+    grid_display_frame.display_grid_in_frame(grid,{(2,2):0})
     root.mainloop()
 
 

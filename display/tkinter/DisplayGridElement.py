@@ -85,7 +85,7 @@ def main():
     tkin = tk.Tk()
     E, A = get_grid_tile_images()
     for el in E:
-        print(el.image.name, el.offset, el.size)
+        print(el.name, el.offset, el.size)
     return
 
 
