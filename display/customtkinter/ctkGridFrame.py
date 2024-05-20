@@ -135,26 +135,8 @@ class GridDisplayFrame(DiB.iTkFrameDef):
                 tile_type:GridElementDisplay=self.grid_elements[tile%len(self.grid_elements)]
                 pos, image = tile_type.apply(cell_start_f,cell_size)
 
-
-                # Scale the tile image to fit within the cell
-                if tile_width > cell_width or tile_height > cell_height:
-                    # Tile image is larger than the cell, need to scale it down
-                    scale_factor = min(cell_width / tile_width, cell_height / tile_height)
-                    scaled_tile_width = int(tile_width * scale_factor)
-                    scaled_tile_height = int(tile_height * scale_factor)
-                    scaled_tile = tile.image.resize((scaled_tile_width, scaled_tile_height), Image.ANTIALIAS)
-                else:
-                    # Tile image fits within the cell, no need to scale
-                    scaled_tile = tile.image
-
                 # Display the scaled tile image on the canvas
-                self.canvas.create_image(cell_x + cell_width // 2, cell_y + cell_height // 2, image=ImageTk.PhotoImage(scaled_tile))
-
-# Now you can call this function with your Grid2D instance and the frame where you want to display it
-# For example:
-# grid = ...  # Your Grid2D instance
-# frame = GridDisplayFrame(...)  # Your GridDisplayFrame instance
-# display_grid_in_frame(grid, frame)
+                self.canvas.create_image(*pos, image=image)
 
 
 
