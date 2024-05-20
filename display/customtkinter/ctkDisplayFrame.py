@@ -5,6 +5,7 @@ import ctkGridFrame as GrF
 import customtkinter as ctk
 import interfaces as itf
 from agents.Agent import GraphicManualInputAgent
+import test_json.test_json_manager as jsonmngr
 
 
 from util.struct.TupleDotOperations import *
@@ -36,7 +37,7 @@ class DataDisplayFrame(DiB.iTkFrameDef):
         L.sort()
         for e in L:
             RES.append(str(e) + str(self.data[e]))
-        self.data_label.config(text="\n".join(RES))
+        self.data_label.configure(text="\n".join(RES))
 
     def update_text(self, new_data: dict):
         self.data.update(new_data)
@@ -47,6 +48,7 @@ DFDF={}
 
 class DisplayFrame(DiB.iTkFrameDef):
     def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
+        self.running = False
         self.w_display = None
         self.w_data = None
         self.w_buttons = None
@@ -85,7 +87,8 @@ class DisplayFrame(DiB.iTkFrameDef):
     def make_iter_text(self):
         if self.env is None:
             return "No environment"
-        winStatus, winIndex = self.winStatus
+        self.env:GrF.GridEnvironment
+        winStatus, winIndex = self.env.winStatus
         self.env: GrF.GridEnvironment
         s = "Current step:{}".format(self.env.cur_iter)
         if winStatus is True:
@@ -96,7 +99,7 @@ class DisplayFrame(DiB.iTkFrameDef):
 
     def show_iter(self):
         text = {"winstatus": self.make_iter_text()}
-        self.w_display.update_text(text)
+        self.w_data.update_text(text)
 
     def set_env(self, env: GrF.GridEnvironment = None, init=False):
         self.env = env
@@ -104,8 +107,8 @@ class DisplayFrame(DiB.iTkFrameDef):
             self.agent_looks={}
             self.agent_locations={}
             self.view_elements_mode = {"Grid", "Agents"}
-            self.env.cur_iter = 0
-            self.winStatus = (None, 0)
+            env.cur_iter = 0
+            env.winStatus = (None, 0)
         self.update_env()
 
     def check_entity_locations(self, seen: dict, ):
@@ -159,7 +162,6 @@ class DisplayFrame(DiB.iTkFrameDef):
                 cdiff=Tmul(diff,(i/animation_steps,)*2,False)
                 cur=Tadd(start,cdiff)
                 offset_agents[e]=cur
-            print(offset_agents,agents)
             offset_entities={}
             for entID in offset_agents:
                 entloc=locations[entID]
@@ -194,7 +196,7 @@ class DisplayFrame(DiB.iTkFrameDef):
         print("Before:", self.agent_locations)
         env.runIteration()
         if env.isWin():
-            self.winStatus = (True, self.env.cur_iter)
+            env.winStatus = (True, self.env.cur_iter)
         if doUpdate:
             self.update_env()
             self.update()
@@ -208,24 +210,38 @@ class DisplayFrame(DiB.iTkFrameDef):
             return
         env: GrF.GridEnvironment = self.env
         for i in range(itercount):
+            self.w_buttons.display_running(i,itercount)
             doUpdate = (i + 1) % update_period == 0
             if doUpdate:
                 print("Iteration {} ({}/{})".format(env.cur_iter, i, itercount))
             self.run_single_iteration(doUpdate,anim_steps)
+        self.w_buttons.display_running(0,0)
         self.update_env()
         self.update()
     
     def process_move(self,moves:str):
-        move=ast.literal_eval(moves)
-        print("Do move", move)
+        ind = int(moves)
+        self.apply_manual_action_to_agents(ind)
+        self.process_iterations(1)
+        return
     
-    def process_grid_type(self,gt:str):
-        print("Grid type set to",gt)
+    def process_viewtype(self, gt:str):
+        self.view_mode=gt
+        self.update_env()
     
-    def process_viewpoint(self,vp:str):
-        print("Viewpoint set to",vp)
+    def process_obsagent(self, vp:str):
+        self.obs_agent = None if vp == "None" else int(vp)
+        self.view_mode=vp
+        self.update_env()
+
+    def process_iterations(self,ite):
+        self.running=True
+        self.run_iteration(int(ite))
+        self.running=False
 
     def process_input(self,raw:str):
+        if self.running:
+            return
         L=raw.split(":")
         if L[0] not in DFDF:
             print("{} not found, {} not handled".format(L[0],raw))
@@ -234,9 +250,9 @@ class DisplayFrame(DiB.iTkFrameDef):
 
 DFDF.update({
     "Move":DisplayFrame.process_move,
-    "Grid toype":DisplayFrame.process_grid_type,
-    "Viewpoint":DisplayFrame.process_viewpoint,
-    "Iterations":print,
+    "Grid toype":DisplayFrame.process_viewtype,
+    "Viewpoint":DisplayFrame.process_obsagent,
+    "Iterations":DisplayFrame.process_iterations,
     "wasd":print
 })
 
@@ -248,30 +264,12 @@ def main():
     app = DisplayFrame(root, print, scale)
     root.geometry("{}x{}".format(*scale))
     root.minsize(*scale)
-    gr = [
-        [],
-        [2] * 10,
-        [0] * 5 + [2] * 10,
-        [2] * 10,
-        [0] * 5 + [2] * 10,
-        [2] * 10,
-        [0] * 5 + [2] * 10,
-        [2] * 10,
-        [0] * 5 + [2] * 10,
-        []
-    ]
-    grid = GrF.Grid2D(gridscale, gr)
-    cha = [
-        [0] * 20,
-        [1] * 20,
-        [2] * 20,
-        [1] * 20,
-        [0] * 20,
-        [2] * 20,
-        [1] * 20
-    ]
-    ch_grid = GrF.Grid2D(gridscale, cha, -1)
-    app.w_display.display_grid_in_frame(grid, {(2, 2): 0})
+
+    raw=jsonmngr.ImportManagedJSON("t_base|0")
+    env=GrF.GridEnvironment.raw_init(raw)
+    env:GrF.GridEnvironment
+    env.changeActiveEntityAgents([GraphicManualInputAgent()])
+    app.set_env(env,True)
     root.mainloop()
     return
 

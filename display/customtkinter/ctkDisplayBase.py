@@ -171,27 +171,27 @@ class DirectionsConsole(iTkFrameDef):
         self.buttons = {}
         super().__init__(master, "DirectionsConsole", return_lambda, screen_size)
 
-    def make_button_fn(self, direction: tuple[int, int]):
+    def make_button_fn(self, dirID: int):
         def button_fn():
-            return self.return_lambda(direction)
+            return self.return_lambda(dirID)
 
         return button_fn
 
     def create_widgets(self):
-        button_data = {
-            "Up": (0, 1),
-            "Left": (1, 0),
-            "Wait": (1, 1),
-            "Right": (1, 2),
-            "Down": (2, 1),
-        }
-
+        button_data = [
+            ["Right", (1, 2)],
+            ["Down", (2, 1)],
+            ["Left", (1, 0)],
+            ["Up", (0, 1)],
+            ["Wait", (1, 1)]
+        ]
         for i in range(3):
             self.grid_rowconfigure(i, weight=1)
             self.grid_columnconfigure(i, weight=1)
 
-        for name, (y, x) in button_data.items():
-            button = ctk.CTkButton(self, text=name, command=self.make_button_fn((y - 1, x - 1)))
+        for i,E in enumerate(button_data):
+            name, (y, x)=E
+            button = ctk.CTkButton(self, text=name, command=self.make_button_fn(i))
             button.grid(row=y, column=x, padx=5, pady=5)
             self.buttons[(y, x)] = button
 
@@ -204,6 +204,7 @@ class DirectionsConsole(iTkFrameDef):
 class SideMenu(iTkFrameDef):
     def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int],
                  ):
+        self.running_status = None
         self.gridtype = None
         self.viewpoint = None
         self.console = None
@@ -214,6 +215,9 @@ class SideMenu(iTkFrameDef):
         curow=Counter()
         self.grid_rowconfigure("all", weight=1)
         self.grid_columnconfigure("all", weight=1)
+        self.running_status=ctk.CTkLabel(self,text="TEST")
+        self.running_status.grid(row=curow(), column=0, sticky="nsew")
+        self.display_running(0,0)
         self.iterations = InputFrame(self,self.prefix_input("Iterations"),(200,100),
                                              lambda s:s.isdigit(),"1")
         self.iterations.grid(row=curow(), column=0, sticky="nsew")
@@ -249,6 +253,13 @@ class SideMenu(iTkFrameDef):
         # Refresh the dropdowns to reflect the changes
         self.viewpoint.dropdown['values'] = view_list
         self.gridtype.dropdown['values'] = type_list
+
+    def display_running(self,i,ite):
+        if ite==0:
+            s="Ready"
+        else:
+            s="Running ({}/{})".format(i,ite)
+        self.running_status.configure(text=s)
 
 
 def main():

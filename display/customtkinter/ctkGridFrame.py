@@ -125,8 +125,8 @@ class GridDisplayFrame(DiB.iTkFrameDef):
 
         self.grid_elements, self.agent_elements = get_grid_tile_images(), get_agent_tile_images()
 
-    def display_grid_in_frame(self, grid: Grid2D, agents: dict[tuple, int],
-                              display_mode: int = 3, move_locations=None):
+    def update_grid(self, grid: Grid2D, agents: dict[tuple, int],
+                    display_mode: int = 3, move_locations=None):
         """
         Display a Grid2D grid in the given frame, scaling the images of tiles to fit perfectly within the frame.
 
@@ -143,7 +143,6 @@ class GridDisplayFrame(DiB.iTkFrameDef):
         else:
             changesGrid=Grid2D(grid.scale)
         cell_size = Tdiv(self.screen_size, grid.scale)
-        print(self.screen_size, cell_size, grid.scale)
         tile_k = len(self.grid_elements)
         agent_k = len(self.agent_elements)
         byRow: list[list[tuple]] = [[] for _ in grid]
@@ -153,7 +152,6 @@ class GridDisplayFrame(DiB.iTkFrameDef):
         self.canvas.delete("all")
         self.canvas.create_rectangle((580,) * 2 + (620,) * 2)
         self.canvas: ctk.CTkCanvas
-        print(self.canvas)
         magic_offset=(2,2)
         for row_int, E in enumerate(grid):
             if display_mode & self.DISPLAY_GRID:
@@ -185,7 +183,7 @@ def main():
     grid_display_frame = GridDisplayFrame(root, "GridDisplay", print, (600,) * 2)
     grid_display_frame.pack()
     grid = Grid2D((13,) * 2, [[], [i for i in range(10)]])
-    grid_display_frame.display_grid_in_frame(grid, {(2, 2): 0})
+    grid_display_frame.update_grid(grid, {(2, 2): 0})
     root.mainloop()
 
 

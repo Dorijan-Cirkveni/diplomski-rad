@@ -89,8 +89,6 @@ def main():
     root.title("CustomTkinter Grid Example")
 
     E, A = get_grid_tile_images()
-    for el in E:
-        print(el.image.filename, el.offset, el.size)
 
     def update_screen():
         screen.fill(fixedBG)

@@ -69,9 +69,10 @@ def read_all_files():
 
 
 JSON_data = read_all_files()
+GRIDFILES=get_grid_files()
 
 
-def ImportManagedJSON(address, files: dict = None, applyToMain=False):
+def ImportManagedJSON(address, files: dict = None, applyToMain=False, error_if_not_env=True):
     """
 
     :param applyToMain: Toggles whether the main_file entry is replaced with a full version when complete.
@@ -82,6 +83,14 @@ def ImportManagedJSON(address, files: dict = None, applyToMain=False):
     X=address.split("|")
     main_file=X[0]
     files = JSON_data if files is None else files
+    if main_file not in files:
+        s="{} does not exist, try one of these: {}"
+        s2=s.format(main_file,GRIDFILES)
+        raise FragmentedJSONException(s2)
+    if error_if_not_env and main_file not in GRIDFILES:
+        s="{} is not a registered environment! Must be on list {}"
+        s2=s.format(main_file,GRIDFILES)
+        raise FragmentedJSONException(s2)
     full_main = ImportFragmentedJSON(main_file, JSON_data)
     if applyToMain:
         files[main_file] = full_main
