@@ -284,8 +284,9 @@ class iEnvironment(iRawDictInit):
             chosenAction=definitions.ACTIONS[chosenActionID]
             cur_D[entityID] = chosenAction
         D.update(cur_D)
-        self.step(D)
+        res = self.step(D)
         self.applyEffects()
+        return res
 
     def isWin(self):
         raise NotImplementedError

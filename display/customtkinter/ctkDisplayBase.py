@@ -221,12 +221,12 @@ class SideMenu(iTkFrameDef):
         self.console = DirectionsConsole(self,self.prefix_input("Move"),(200,200))
         self.console.grid(row=curow(), column=0, sticky="nsew")
 
-        self.viewpoint = InputFrameDropdown(self,"Viewpoint:",
+        self.viewpoint = InputFrameDropdown(self,"Viewpoint",
                                            self.return_lambda,(200,200),
                                            list('ABCD'),"Viewpoint:","Apply",True,True)
         self.viewpoint.grid(row=curow(), column=0, sticky="nsew")
 
-        self.gridtype = InputFrameDropdown(self,"Grid type:",
+        self.gridtype = InputFrameDropdown(self,"Grid type",
                                            self.return_lambda,(200,200),
                                            list('ABCD'),"Grid type:","Apply",True,True)
         self.gridtype.grid(row=curow(), column=0, sticky="nsew")

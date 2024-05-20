@@ -220,12 +220,7 @@ class GridDisplayFrame(DIB.iTkFrame):
         entities = env.entities
         res = {}
         for i, ent in enumerate(entities):
-            if not ent:
-                if i in env.deleted_locations:
-                    res[i] = env.deleted_locations[i]
-                continue
-            else:
-                pos = ent.get(ent.LOCATION)
+            pos = ent.get(ent.LOCATION)
             if pos in seen:
                 res[i] = pos
                 self.agent_looks[i]=seen[pos]

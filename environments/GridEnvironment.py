@@ -286,6 +286,23 @@ class GridEnvironment(itf.iEnvironment):
         tileguide.append(-1)
         return tileguide
 
+    def get_location_if_aliveish(self, entityID:int):
+        if self.entityDeathTimes[entityID]<self.cur_iter:
+            return None
+        ent:GridEntity=self.entities[entityID]
+        return ent.get(ent.LOCATION)
+
+    def get_all_locations(self, seen:dict=None):
+        X=[]
+        for entityID, ent in enumerate(self.entities):
+            pos = ent.get(ent.LOCATION)
+            if self.entityDeathTimes[entityID]<self.cur_iter:
+                pos=None
+            elif seen and pos not in seen:
+                pos=None
+            X.append(pos)
+        return X
+
     def convertGrid(self, grid, entityID):
         tileguide = self.getTileGuide(entityID)
         resgrid = grid.makeNew(lambda x: tileguide[x])
@@ -705,9 +722,9 @@ class GridEnvironment(itf.iEnvironment):
         Args:
             moves (dict): Dictionary containing entity movements.
         """
-        self.runChanges(moves)
+        res = self.runChanges(moves)
         self.runEnvChanges()
-        return
+        return res
 
     def GenerateGroup(self, size, learning_aspects, requests: dict) -> list['GridEnvironment']:
         """
