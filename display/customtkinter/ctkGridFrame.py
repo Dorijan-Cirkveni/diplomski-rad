@@ -96,9 +96,6 @@ class GridDisplayFrame(DiB.iTkFrameDef):
 
         self.grid_elements, self.agent_elements = get_grid_tile_images(),get_agent_tile_images()
 
-        # Display the first grid tile image (E[0]) in the center
-        self.display_first_grid_tile()
-
     def display_first_grid_tile(self):
         if self.grid_elements:
             grid_element = self.grid_elements[0]
@@ -120,34 +117,31 @@ class GridDisplayFrame(DiB.iTkFrameDef):
         :param agents:
         """
         cell_size=Tdiv(self.screen_size,grid.scale)
+        print(self.screen_size,cell_size,grid.scale)
 
         # Clear the canvas
         self.canvas.delete("all")
         for y,E in enumerate(grid):
             for x,tile in enumerate(E):
                 cell_start_f=Tmul((x,y),cell_size)
-                cell_x = round(cell_start_f[0])
-                cell_y = round(cell_start_f[1])
-
-                # Calculate the size of the tile image
-                tile_width, tile_height = tile.size
+                print(cell_start_f,end="|")
 
                 tile_type:GridElementDisplay=self.grid_elements[tile%len(self.grid_elements)]
                 pos, image = tile_type.apply(cell_start_f,cell_size)
 
                 # Display the scaled tile image on the canvas
-                self.canvas.create_image(*pos, image=image)
-
+                self.canvas.create_image(*pos, image=image, anchor="nw")
+            print()
 
 
 def main():
     root = ctk.CTk()
-    root.title("CustomTkinter and Pygame Integration")
+    root.title("Grid Display Test")
     root.geometry("600x600")
 
     grid_display_frame = GridDisplayFrame(root, "GridDisplay", print, (600, 600))
     grid_display_frame.pack(fill="both", expand=True)
-
+    grid_display_frame.display_grid_in_frame(Grid2D((20,20)),{(2,2):0})
     root.mainloop()
 
 
