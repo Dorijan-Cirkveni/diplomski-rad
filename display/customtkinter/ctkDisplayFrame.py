@@ -212,7 +212,6 @@ class DisplayFrame(iTkFrame):
             if doUpdate:
                 print("Iteration {} ({}/{})".format(env.cur_iter, i, itercount))
             self.run_single_iteration(doUpdate, anim_steps)
-        self.w_buttons.display_running(0, 0)
         self.update_env()
         self.update()
 
@@ -232,9 +231,11 @@ class DisplayFrame(iTkFrame):
         self.update_env()
 
     def process_iterations(self, ite):
+        self.w_buttons.display_running(0, int(ite))
         self.running = True
         self.run_iteration(int(ite))
         self.running = False
+        self.w_buttons.display_running(0, 0)
 
     def process_input(self, raw: str):
         if self.running:
