@@ -51,7 +51,7 @@ class GridInteractive:
         if errormsg:
             print(file, ind, errormsg)
             return False
-        self.grid.changeActiveEntityAgents([GraphicManualInputAgent()])
+        self.grid.assign_active_agent(GraphicManualInputAgent())
         self.init_display(element_grid, agent_grid)
         self.run()
         return True
@@ -64,7 +64,7 @@ class GridInteractive:
         if errormsg:
             print(file, ind, errormsg)
             return None
-        self.grid.changeActiveEntityAgents([GraphicManualInputAgent()])
+        self.grid.assign_active_agent(GraphicManualInputAgent())
         return self
 
     def load_grid(self, gridEnv: GridEnvironment):
@@ -113,7 +113,7 @@ class GridInteractive:
         success = self.load_grid_from_fragment(file, ind)
         if not success:
             return False
-        self.grid.changeActiveEntityAgents([GraphicManualInputAgent()])
+        self.grid.assign_active_agent(GraphicManualInputAgent())
         self.init_display(element_grid, agent_grid)
         self.run()
         return True
@@ -121,7 +121,7 @@ class GridInteractive:
     def change_agents(self, agentName, agentData):
         agentMaker: itf.iAgent = ag_mngr.ALL_AGENTS[agentName]
         agent = agentMaker.from_string(agentData)
-        self.grid.changeActiveEntityAgents([agent])
+        self.grid.assign_active_agent(agent)
 
 
 def testBatch(cli: CLI.CommandLine, file: str, start: int, stop: int, subroutineName: str = "individual"):

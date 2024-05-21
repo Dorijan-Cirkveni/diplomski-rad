@@ -106,9 +106,10 @@ class DisplayFrame(iTkFrame):
         agentclass:iAgent=data["agent_class"]
         agentdata=data["agent_data"]
         envraw=json.loads(envstr)
-        env=environments.EnvironmentManager.readEnvironment([envraw],0)
+        env:GridEnvironment=environments.EnvironmentManager.readEnvironment([envraw],0)
         agent=agentclass.from_string(agentdata)
-        env.changeActiveEntityAgents(agent)
+        env.assign_active_agent(agent)
+        self.set_env(env,True)
         return
 
     def set_env(self, env: GridEnvironment = None, init=False):
@@ -286,7 +287,7 @@ def main():
     raw = jsonmngr.ImportManagedJSON("t_base|0")
     env = GridEnvironment.raw_init(raw)
     env: GridEnvironment
-    env.changeActiveEntityAgents([GraphicManualInputAgent()])
+    env.assign_active_agent(GraphicManualInputAgent())
     app.set_env(env, True)
     root.mainloop()
     return

@@ -149,7 +149,7 @@ class DisplayInitialiser(iTkFrame):
             print("Cannot display None!")
             return
         print(self.agent)
-        env.changeActiveEntityAgents([self.agent])
+        env.assign_active_agent(self.agent)
         controller = self.controller
         controller.show_frame("GridDisplay")
         the_frame: iTkFrame = controller.frames["GridDisplay"]

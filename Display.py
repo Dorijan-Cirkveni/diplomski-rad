@@ -51,7 +51,7 @@ def runInteractive(file, ind):
     testGI = GridInteractive()
     testGI.load_grid_from_fragment(file, ind)
     grid: GridEnvironment = testGI.grid
-    grid.changeActiveEntityAgents([GraphicManualInputAgent()])
+    grid.assign_active_agent(GraphicManualInputAgent())
 
     testGI.init_display(element_grid, agent_grid)
     testGI.run()
@@ -78,7 +78,7 @@ def CustomTest(file, ind, preimported_raw: list = None):
     success = testGI.load_grid_from_fragment(file, ind)
     if not success:
         return False
-    # testGI.grid.changeActiveEntityAgents([GraphicManualInputAgent(((-5, 5), (5, 5)), ACTIONS)])
+    # testGI.grid.assign_active_agent(GraphicManualInputAgent())
 
     testGI.init_display(element_grid, agent_grid)
     testGI.run()
@@ -130,7 +130,7 @@ def CustomTestWithCommands(file, ind, commandStack=None,
             if testMode:
                 printOutput("(This is where the agents would be set to {} {})".format(agentName, agentData))
             else:
-                testGI.grid.changeActiveEntityAgents([agent])
+                testGI.grid.assign_active_agent(agent)
     return None
 
 

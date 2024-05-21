@@ -142,7 +142,8 @@ class RecordedActionsAgent(itf.iAgent):
         :param s: The string.
         :return: The agent.
         """
-        return RecordedActionsAgent(s)
+        s2="".join([e for e in s if e.isdigit()])
+        return RecordedActionsAgent(s2)
 
     def receiveEnvironmentData(self, data):
         """

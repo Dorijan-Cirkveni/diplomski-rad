@@ -33,7 +33,7 @@ def testframe():
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     X = readPlaneEnvironment(data, 0)
     Y = X.__copy__()
-    Y.changeActiveEntityAgents([AgentManager.ALL_AGENTS['GMI']("")])
+    Y.assign_active_agent(AgentManager.ALL_AGENTS['GMI'](""))
     return Y
 
 

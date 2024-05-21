@@ -61,6 +61,11 @@ class TestGridEnvironment(unittest.TestCase):
         self.assertIn((1, 0), moves)
         self.assertIn((0, 1), moves)
 
+    def test_assign_active_agent(self):
+        new_agent = BoxAgent()
+        self.env.assign_active_agent(new_agent)
+        self.assertEqual(self.entities[0].agent, new_agent)
+
     def test_changeActiveEntityAgents(self):
         new_agent = BoxAgent()
         self.env.changeActiveEntityAgents([new_agent])

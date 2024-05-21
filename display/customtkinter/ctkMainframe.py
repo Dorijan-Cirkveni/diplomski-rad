@@ -159,7 +159,7 @@ def testframe():
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     X = readPlaneEnvironment(data, 0)
     Y = X.__copy__()
-    Y.changeActiveEntityAgents([agentmngr.ALL_AGENTS['GMI']("")])
+    Y.assign_active_agent(agentmngr.ALL_AGENTS['GMI'](""))
     return Y
 
 def main():
@@ -180,7 +180,7 @@ def main():
     raw = jsonmngr.ImportManagedJSON("t_base|0")
     env = GridEnvironment.raw_init(raw)
     env: GridEnvironment
-    env.changeActiveEntityAgents([GraphicManualInputAgent()])
+    env.assign_active_agent(GraphicManualInputAgent())
     grid_display_frame.set_env(env,True)
     root.mainloop()
     return

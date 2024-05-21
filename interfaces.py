@@ -182,6 +182,18 @@ class iEnvironment(iRawDictInit):
         self.runData = dict()
         self.cur_iter = 0
 
+    def assign_active_agent(self, agent: iAgent):
+        """
+        Changes active entity agents.
+
+        Args:
+            newAgents (list[itf.iAgent]): List of new agents.
+        """
+        for i, E in enumerate(self.activeEntities):
+            ent: iEntity = self.entities[E]
+            ent.agent = agent
+        return
+
     def changeActiveEntityAgents(self, newAgents: list[iAgent]):
         """
         Changes active entity agents.
@@ -298,7 +310,7 @@ class iEnvironment(iRawDictInit):
         raise NotImplementedError
 
     def run(self, agent: iAgent, timeLimit: int, timeoutWin: bool = True):
-        self.changeActiveEntityAgents([agent])
+        self.assign_active_agent(agent)
         for i in range(timeLimit):
             self.runIteration()
             if self.isLoss():

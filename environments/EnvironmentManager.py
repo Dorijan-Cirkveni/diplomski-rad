@@ -17,7 +17,7 @@ envList = {
 }
 
 
-def readEnvironment(jsonL:list, ind:int, agentDict=None)->itf.iEnvironment:
+def readEnvironment(jsonL:list, ind:int, agentDict=None)->grid_env.GridEnvironment:
     """
     Reads environment data from a JSON string and initializes the corresponding environment.
 
