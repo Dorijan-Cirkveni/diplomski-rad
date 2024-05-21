@@ -2,6 +2,9 @@ import test_json.test_json_manager as jsonmngr
 import util.UtilManager as utilmngr
 import agents.AgentManager as agentmngr
 from ctkScrollableFrames import *
+from ctkDisplayBase import *
+import environments.GridEnvironment as GridEnv
+from display.customtkinter.ctkDisplayFrame import DisplayFrame
 
 
 class EnvCustomFrame(ctk.CTkFrame):
@@ -61,8 +64,8 @@ class EnvCustomFrame(ctk.CTkFrame):
         print(self.agent_data_box.get("1.0", "end"))
 
 
-class MainCTKFrame(ctk.CTkFrame):
-    def __init__(self, master: ctk.CTk, dimensions: tuple[int, int], **kwargs):
+class SelectionFrame(iTkFrame):
+    def __init__(self, master: SwapFrame, dimensions: tuple[int, int], **kwargs):
         super().__init__(master, **kwargs)
         self.master: ctk.CTk
         self.master.geometry("{}x{}".format(*dimensions))
@@ -131,11 +134,36 @@ class MainCTKFrame(ctk.CTkFrame):
     def run_environment(self):
         print("Running environment with input:")
 
+class MainFrame(SwapFrame):
+    def __init__(self, master:tk.Tk, return_lambda: callable, screen_size: tuple[int, int]):
+        super().__init__(master, "MainFrame", return_lambda, screen_size)
+        master.geometry("{}x{}".format(*screen_size))
+
+def testframe():
+    data = jsonmngr.ImportManagedJSON('t_base')
+    guide = {e: 1 if e in GridEnv.default_opaque else 0 for e in range(GridEnv.tile_counter.value)}
+    X = GridEnv.readPlaneEnvironment(data, 0)
+    Y = X.__copy__()
+    Y.changeActiveEntityAgents([agentmngr.ALL_AGENTS['GMI']("")])
+    return Y
+
+
+def main_depr():
+    ws = (800, 600)
+    mainframe = MainFrame(tk.Tk(),print,ws)
+    grid_display_frame = DisplayFrame(mainframe, GRIDDISPLAY)
+    dispinit = SelectionFrame(mainframe,ws)
+    grid_display_frame.set_env(testframe())
+    mainframe.add_frame(dispinit)
+    mainframe.add_frame(grid_display_frame)
+    mainframe.run(dispinit.name)
+    return
+
 
 def main():
     ctk.set_appearance_mode("dark")  # Set the theme to dark
     CTK = ctk.CTk()
-    mainframe = MainCTKFrame(CTK, (1000, 600))
+    mainframe = SelectionFrame(CTK, (1000, 600))
     CTK.mainloop()
 
 

@@ -1,17 +1,16 @@
 import ast
 
-import ctkDisplayBase as DiB
-import ctkGridFrame as GrF
+from ctkDisplayBase import *
+from ctkGridFrame import *
 import customtkinter as ctk
 import interfaces as itf
 from agents.Agent import GraphicManualInputAgent
 import test_json.test_json_manager as jsonmngr
 
-
 from util.struct.TupleDotOperations import *
 
 
-class DataDisplayFrame(DiB.iTkFrameDef):
+class DataDisplayFrame(iTkFrameDef):
 
     def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
         self.data = {
@@ -44,30 +43,31 @@ class DataDisplayFrame(DiB.iTkFrameDef):
         self.display_text()
         self.update()
 
-DFDF={}
 
-class DisplayFrame(DiB.iTkFrameDef):
-    def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
+DFDF = {}
+
+
+class DisplayFrame(iTkFrame):
+    def __init__(self, master, screen_size: tuple[int, int]):
         self.running = False
         self.w_display = None
         self.w_data = None
         self.w_buttons = None
-        self.k=0
-        self.inputs=set()
+        self.k = 0
+        self.inputs = set()
 
         self.agent_looks = {}
         self.view_elements_mode = {"Grid", "Agents"}
         self.agent_locations = dict()
-        screen_size = (800, 700)
-        self.env: [GrF.GridEnvironment, None] = None
+        self.env: [GridEnvironment, None] = None
         self.obs_agent = None
         self.view_mode = "solid"
-        super().__init__(master, "DisplayFrame", return_lambda, screen_size)
+        super().__init__(master, "DisplayFrame", screen_size)
         self.pack(fill=ctk.BOTH, expand=True)
 
     def create_widgets(self):
         # Frame on the right, 200 wide
-        right_frame = DiB.SideMenu(self, self.process_input, (200, self.screen_size[1]))
+        right_frame = SideMenu(self, self.process_input, (200, self.screen_size[1]))
         right_frame.pack(side=ctk.RIGHT, fill=ctk.Y)
 
         # Frame on the bottom, 200 high, filling the remaining space
@@ -76,7 +76,7 @@ class DisplayFrame(DiB.iTkFrameDef):
         bottom_frame.pack(side=ctk.BOTTOM, fill=ctk.X)
 
         # Frame in the top left, filling the remaining space
-        top_left_frame = GrF.GridDisplayFrame(self, "GridDisplay", self.process_input, (600,) * 2)
+        top_left_frame = GridDisplayFrame(self, "GridDisplay", self.process_input, (600,) * 2)
         top_left_frame.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True)
 
         self.w_buttons = right_frame
@@ -87,9 +87,9 @@ class DisplayFrame(DiB.iTkFrameDef):
     def make_iter_text(self):
         if self.env is None:
             return "No environment"
-        self.env:GrF.GridEnvironment
+        self.env: GridEnvironment
         winStatus, winIndex = self.env.winStatus
-        self.env: GrF.GridEnvironment
+        self.env: GridEnvironment
         s = "Current step:{}".format(self.env.cur_iter)
         if winStatus is True:
             s = "Win on step {}".format(winIndex)
@@ -101,31 +101,31 @@ class DisplayFrame(DiB.iTkFrameDef):
         text = {"winstatus": self.make_iter_text()}
         self.w_data.update_text(text)
 
-    def set_env(self, env: GrF.GridEnvironment = None, init=False):
+    def set_env(self, env: GridEnvironment = None, init=False):
         self.env = env
         if self.env and init:
-            self.agent_looks={}
-            self.agent_locations={}
+            self.agent_looks = {}
+            self.agent_locations = {}
             self.view_elements_mode = {"Grid", "Agents"}
             env.cur_iter = 0
             env.winStatus = (None, 0)
         self.update_env()
 
     def check_entity_locations(self, seen: dict, ):
-        env: GrF.GridEnvironment
+        env: GridEnvironment
         env = self.env
-        entities: list[GrF.GridEntity]
+        entities: list[GridEntity]
         entities = env.entities
         res = {}
         for i, ent in enumerate(entities):
             pos = ent.get(ent.LOCATION)
             if pos in seen:
                 res[i] = pos
-                self.agent_looks[i]=seen[pos]
+                self.agent_looks[i] = seen[pos]
         return res
 
     def process_update_env(self, data: dict):
-        grid: GrF.Grid2D = data.get('grid', None)
+        grid: Grid2D = data.get('grid', None)
         agents: dict = data.get('agents', dict())
         print(agents)
         if grid is None:
@@ -133,16 +133,16 @@ class DisplayFrame(DiB.iTkFrameDef):
             if len(msg) > 25:
                 # self.w_data
                 # self.w_data
-                self.w_data:DataDisplayFrame
-                self.w_data.update_text({"error":msg})
+                self.w_data: DataDisplayFrame
+                self.w_data.update_text({"error": msg})
                 data['msg'] = "See below"
         mode = 2 * int("Grid" in self.view_elements_mode) + int("Agents" in self.view_elements_mode)
         return grid, agents, mode
 
-    def update_env(self, animation_steps:int=10):
-        env: GrF.GridEnvironment = self.env
+    def update_env(self, animation_steps: int = 10):
+        env: GridEnvironment = self.env
         data: dict
-        locations={}
+        locations = {}
         if env is None:
             data = {"msg": "Environment not loaded!"}
             grid, agents, mode = None, {}, self.view_mode
@@ -150,31 +150,31 @@ class DisplayFrame(DiB.iTkFrameDef):
             data: dict = env.getDisplayData(self.obs_agent, self.view_mode)
             grid, agents, mode = self.process_update_env(data)
             print()
-            locations=self.check_entity_locations(agents)
-        print("Old locations:",self.agent_locations)
-        print("Locations:",locations)
-        pers_agents={e:(
-            self.agent_locations[e],Tsub(locations[e],self.agent_locations[e],True)
+            locations = self.check_entity_locations(agents)
+        print("Old locations:", self.agent_locations)
+        print("Locations:", locations)
+        pers_agents = {e: (
+            self.agent_locations[e], Tsub(locations[e], self.agent_locations[e], True)
         ) for e in locations if e in self.agent_locations}
-        for i in range(1,animation_steps):
+        for i in range(1, animation_steps):
             offset_agents = {}
-            for e,(start,diff) in pers_agents.items():
-                cdiff=Tmul(diff,(i/animation_steps,)*2,False)
-                cur=Tadd(start,cdiff)
-                offset_agents[e]=cur
-            offset_entities={}
+            for e, (start, diff) in pers_agents.items():
+                cdiff = Tmul(diff, (i / animation_steps,) * 2, False)
+                cur = Tadd(start, cdiff)
+                offset_agents[e] = cur
+            offset_entities = {}
             for entID in offset_agents:
-                entloc=locations[entID]
-                offloc=offset_agents[entID]
-                entlook=agents.get(entloc,self.agent_looks[entID])
-                offset_entities[offloc]=entlook
+                entloc = locations[entID]
+                offloc = offset_agents[entID]
+                entlook = agents.get(entloc, self.agent_looks[entID])
+                offset_entities[offloc] = entlook
             self.w_display.update_grid(grid, offset_entities, mode)
             self.w_display.update()
             self.update()
         self.w_display.update_grid(grid, agents, mode)
         self.update()
         self.show_iter()
-        self.agent_locations=locations
+        self.agent_locations = locations
         return agents
 
     def apply_manual_action_to_agents(self, action):
@@ -192,7 +192,7 @@ class DisplayFrame(DiB.iTkFrameDef):
             agent.cur = action
 
     def run_single_iteration(self, doUpdate=False, anim_steps=1):
-        env: GrF.GridEnvironment = self.env
+        env: GridEnvironment = self.env
         print("Before:", self.agent_locations)
         env.runIteration()
         if env.isWin():
@@ -204,72 +204,73 @@ class DisplayFrame(DiB.iTkFrameDef):
         print("After:", self.agent_locations)
 
     def run_iteration(self, itercount=1, update_period=1, anim_steps=5):
-        if update_period!=1:
-            anim_steps=1
+        if update_period != 1:
+            anim_steps = 1
         if self.env is None:
             return
-        env: GrF.GridEnvironment = self.env
+        env: GridEnvironment = self.env
         for i in range(itercount):
-            self.w_buttons.display_running(i,itercount)
+            self.w_buttons.display_running(i, itercount)
             doUpdate = (i + 1) % update_period == 0
             if doUpdate:
                 print("Iteration {} ({}/{})".format(env.cur_iter, i, itercount))
-            self.run_single_iteration(doUpdate,anim_steps)
-        self.w_buttons.display_running(0,0)
+            self.run_single_iteration(doUpdate, anim_steps)
+        self.w_buttons.display_running(0, 0)
         self.update_env()
         self.update()
-    
-    def process_move(self,moves:str):
+
+    def process_move(self, moves: str):
         ind = int(moves)
         self.apply_manual_action_to_agents(ind)
         self.process_iterations(1)
         return
-    
-    def process_viewtype(self, gt:str):
-        self.view_mode=gt
+
+    def process_viewtype(self, gt: str):
+        self.view_mode = gt
         self.update_env()
-    
-    def process_obsagent(self, vp:str):
+
+    def process_obsagent(self, vp: str):
         self.obs_agent = None if vp == "None" else int(vp)
-        self.view_mode=vp
+        self.view_mode = vp
         self.update_env()
 
-    def process_iterations(self,ite):
-        self.running=True
+    def process_iterations(self, ite):
+        self.running = True
         self.run_iteration(int(ite))
-        self.running=False
+        self.running = False
 
-    def process_input(self,raw:str):
+    def process_input(self, raw: str):
         if self.running:
             return
-        L=raw.split(":")
+        L = raw.split(":")
         if L[0] not in DFDF:
-            print("{} not found, {} not handled".format(L[0],raw))
+            print("{} not found, {} not handled".format(L[0], raw))
             return
-        DFDF[L[0]](self,L[-1])
+        DFDF[L[0]](self, L[-1])
+
 
 DFDF.update({
-    "Move":DisplayFrame.process_move,
-    "Grid toype":DisplayFrame.process_viewtype,
-    "Viewpoint":DisplayFrame.process_obsagent,
-    "Iterations":DisplayFrame.process_iterations,
-    "wasd":print
+    "Move": DisplayFrame.process_move,
+    "Grid toype": DisplayFrame.process_viewtype,
+    "Viewpoint": DisplayFrame.process_obsagent,
+    "Iterations": DisplayFrame.process_iterations,
+    "wasd": print
 })
 
 
 def main():
     root = ctk.CTk()
     scale = (800, 600)
-    gridscale = (20, 20)
-    app = DisplayFrame(root, print, scale)
+    frame=SwapFrame()
+    app = DisplayFrame(root, scale)
     root.geometry("{}x{}".format(*scale))
     root.minsize(*scale)
 
-    raw=jsonmngr.ImportManagedJSON("t_base|0")
-    env=GrF.GridEnvironment.raw_init(raw)
-    env:GrF.GridEnvironment
+    raw = jsonmngr.ImportManagedJSON("t_base|0")
+    env = GridEnvironment.raw_init(raw)
+    env: GridEnvironment
     env.changeActiveEntityAgents([GraphicManualInputAgent()])
-    app.set_env(env,True)
+    app.set_env(env, True)
     root.mainloop()
     return
 
