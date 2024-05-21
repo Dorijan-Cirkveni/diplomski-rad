@@ -1,3 +1,5 @@
+import json
+
 import test_json.test_json_manager as jsonmngr
 import util.UtilManager as utilmngr
 import agents.AgentManager as agentmngr
@@ -46,7 +48,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         envraw = jsonmngr.ImportManagedJSON(f"{file}|{ind}")
         # Replace text box content with envraw
         self.env_data_box.delete("1.0", "end")
-        self.env_data_box.insert("1.0", envraw)
+        self.env_data_box.insert("1.0", json.dumps(envraw))
 
     def set_agent(self, agentname, agentraw):
         agentclass = agentmngr.ALL_AGENTS[agentname]
@@ -173,7 +175,7 @@ def main():
     dispinit = SelectionFrame(frame,scale)
     frame.add_frame(dispinit)
     frame.add_frame(grid_display_frame)
-    frame.show_frame(GRIDDISPLAY)
+    frame.show_frame(GRIDSELECT)
 
     raw = jsonmngr.ImportManagedJSON("t_base|0")
     env = GridEnvironment.raw_init(raw)

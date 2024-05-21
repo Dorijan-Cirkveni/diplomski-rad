@@ -47,14 +47,18 @@ def filter_env_paths(filedict:dict, forbidden:set=None):
         filtered.append(name)
     return filtered
 
-def get_grid_files():
+def get_grid_files(custom_exceptions=None):
     D=search_files(current_dir)
-    res=filter_env_paths(D)
+    res=filter_env_paths(D,custom_exceptions)
     return res
 
 
-def read_all_files():
-    paths:dict=search_files(current_dir)
+def read_all_files(exceptions=None):
+    if exceptions is None:
+        exceptions = {"sandbox.json"}
+    all_paths:dict=search_files(current_dir)
+    filt=filter_env_paths(all_paths,exceptions)
+    paths={e:all_paths[e] for e in filt}
     resdict = dict()
     for name, filepath in paths.items():
         F = open(filepath, 'r')

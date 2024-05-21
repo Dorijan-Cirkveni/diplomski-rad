@@ -107,7 +107,7 @@ class DisplayFrame(iTkFrame):
         agentdata=data["agent_data"]
         envraw=json.loads(envstr)
         env=environments.EnvironmentManager.readEnvironment([envraw],0)
-        agent=agentclass.raw_init(agentdata)
+        agent=agentclass.from_string(agentdata)
         env.changeActiveEntityAgents(agent)
         return
 

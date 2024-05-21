@@ -545,7 +545,9 @@ class GridEnvironment(itf.iEnvironment):
     #   Setters / updaters / processors
     #   ------------------------------------------------------------------------
 
-    def changeActiveEntityAgents(self, newAgents: list[iAgent], preserveMemory=True):
+    def assign_active_agent(self,agent:iAgent, preserveMemory=True):
+
+    def changeActiveEntityAgents(self, newAgentsInput: [iAgent,list[iAgent]], preserveMemory=True):
         """
         Changes active entity agents.
 
@@ -553,6 +555,12 @@ class GridEnvironment(itf.iEnvironment):
             newAgents (list[itf.iAgent]): List of new agents.
             :param preserveMemory:
         """
+        newAgents:list[iAgent]
+        if type(newAgentsInput) is iAgent:
+            newAgents=[newAgentsInput]
+        else:
+            newAgentsInput:list[iAgent]
+            newAgents=newAgentsInput
         for i, E in enumerate(self.activeEntities):
             ent: itf.iEntity = self.entities[E]
             old_agent = ent.agent
