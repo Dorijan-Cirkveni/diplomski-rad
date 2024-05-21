@@ -1,6 +1,7 @@
 import test_json.test_json_manager as jsonmngr
 import util.UtilManager as utilmngr
 import agents.AgentManager as agentmngr
+from agents.Agent import GraphicManualInputAgent
 from ctkScrollableFrames import *
 from ctkDisplayBase import *
 from environments.GridEnvironment import *
@@ -73,7 +74,6 @@ class SelectionFrame(iTkFrame):
         super().__init__(master, GRIDSELECT, dimensions)
 
     def create_widgets(self):
-        self.pack(fill="both", expand=True)
         self.env_names = jsonmngr.getNamesAndIndices()  # Format: [("file",["Env1","Env2","Env3"])]
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
@@ -161,14 +161,14 @@ def main():
     
     grid_display_frame = DisplayFrame(frame,scale)
     dispinit = SelectionFrame(frame,scale)
-    frame.add_frame(grid_display_frame)
     frame.add_frame(dispinit)
+    frame.add_frame(grid_display_frame)
     frame.show_frame(GRIDDISPLAY)
 
     raw = jsonmngr.ImportManagedJSON("t_base|0")
     env = GridEnvironment.raw_init(raw)
     env: GridEnvironment
-    env.changeActiveEntityAgents([agentmngr.GraphicManualInputAgent()])
+    env.changeActiveEntityAgents([GraphicManualInputAgent()])
     grid_display_frame.set_env(env,True)
     root.mainloop()
     return

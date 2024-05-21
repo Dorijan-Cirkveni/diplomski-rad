@@ -60,8 +60,7 @@ class DisplayFrame(iTkFrame):
         self.env: [GridEnvironment, None] = None
         self.obs_agent = None
         self.view_mode = "solid"
-        super().__init__(master, "DisplayFrame", screen_size)
-        self.pack(fill=ctk.BOTH, expand=True)
+        super().__init__(master, GRIDDISPLAY, screen_size)
 
     def create_widgets(self):
         # Frame on the right, 200 wide
