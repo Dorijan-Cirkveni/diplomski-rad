@@ -4,6 +4,7 @@ import customtkinter as ctk
 SIDES = Literal['left', 'right', 'up', 'down']
 
 GRIDDISPLAY = "GridDisplay"
+GRIDSELECT = "GridSelect"
 
 
 class DarkCTK(ctk.CTk):

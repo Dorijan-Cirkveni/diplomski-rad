@@ -3,7 +3,7 @@ import util.UtilManager as utilmngr
 import agents.AgentManager as agentmngr
 from ctkScrollableFrames import *
 from ctkDisplayBase import *
-import environments.GridEnvironment as GridEnv
+from environments.GridEnvironment import *
 from display.customtkinter.ctkDisplayFrame import DisplayFrame
 
 
@@ -65,12 +65,15 @@ class EnvCustomFrame(ctk.CTkFrame):
 
 
 class SelectionFrame(iTkFrame):
-    def __init__(self, master: SwapFrame, dimensions: tuple[int, int], **kwargs):
-        super().__init__(master, **kwargs)
-        self.master: ctk.CTk
-        self.master.geometry("{}x{}".format(*dimensions))
+    def __init__(self, master: SwapFrame, dimensions: tuple[int, int]):
+        self.w_agents = None
+        self.w_envs = None
+        self.w_data = None
+        self.env_names=None
+        super().__init__(master, GRIDSELECT, dimensions)
+
+    def create_widgets(self):
         self.pack(fill="both", expand=True)
-        self.master.title("CustomTkinter Scrollable Frames Example")
         self.env_names = jsonmngr.getNamesAndIndices()  # Format: [("file",["Env1","Env2","Env3"])]
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
@@ -92,20 +95,20 @@ class SelectionFrame(iTkFrame):
         right_frame.set_elements(self.get_agent_presets())
 
         # Save frames
-        self.envs = left_frame
-        self.agents = right_frame
-        self.data = middle_frame
+        self.w_envs = left_frame
+        self.w_agents = right_frame
+        self.w_data = middle_frame
         return
 
     def factory_env(self, file, ind, name):
         def env():
-            return self.data.set_env(file, ind, name)
+            return self.w_data.set_env(file, ind, name)
 
         return env
 
     def factory_agent(self, agentname, agentdata):
         def agent():
-            return self.data.set_agent(agentname, agentdata)
+            return self.w_data.set_agent(agentname, agentdata)
 
         return agent
 
@@ -135,36 +138,40 @@ class SelectionFrame(iTkFrame):
         print("Running environment with input:")
 
 class MainFrame(SwapFrame):
-    def __init__(self, master:, return_lambda: callable, screen_size: tuple[int, int]):
+    def __init__(self, master:DarkCTK, return_lambda: callable, screen_size: tuple[int, int]):
         super().__init__(master, "MainFrame", return_lambda, screen_size)
         master.geometry("{}x{}".format(*screen_size))
 
 def testframe():
     data = jsonmngr.ImportManagedJSON('t_base')
-    guide = {e: 1 if e in GridEnv.default_opaque else 0 for e in range(GridEnv.tile_counter.value)}
-    X = GridEnv.readPlaneEnvironment(data, 0)
+    guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
+    X = readPlaneEnvironment(data, 0)
     Y = X.__copy__()
     Y.changeActiveEntityAgents([agentmngr.ALL_AGENTS['GMI']("")])
     return Y
 
-
-def main_depr():
-    ws = (800, 600)
-    mainframe = MainFrame(tk.Tk(),print,ws)
-    grid_display_frame = DisplayFrame(mainframe, GRIDDISPLAY)
-    dispinit = SelectionFrame(mainframe,ws)
-    grid_display_frame.set_env(testframe())
-    mainframe.add_frame(dispinit)
-    mainframe.add_frame(grid_display_frame)
-    mainframe.run(dispinit.name)
-    return
-
-
 def main():
-    ctk.set_appearance_mode("dark")  # Set the theme to dark
-    ctk = DarkCTK()
-    mainframe =SelectionFrame(CTK, (1000, 600))
-    CTK.mainloop()
+    scale = (800, 600)
+    root = DarkCTK()
+    root.geometry("{}x{}".format(*scale))
+    root.minsize(*scale)
+    
+    frame=SwapFrame(root,"Test",print,scale)
+    frame.pack()
+    
+    grid_display_frame = DisplayFrame(frame,scale)
+    dispinit = SelectionFrame(frame,scale)
+    frame.add_frame(grid_display_frame)
+    frame.add_frame(dispinit)
+    frame.show_frame(GRIDDISPLAY)
+
+    raw = jsonmngr.ImportManagedJSON("t_base|0")
+    env = GridEnvironment.raw_init(raw)
+    env: GridEnvironment
+    env.changeActiveEntityAgents([agentmngr.GraphicManualInputAgent()])
+    grid_display_frame.set_env(env,True)
+    root.mainloop()
+    return
 
 
 if __name__ == "__main__":
