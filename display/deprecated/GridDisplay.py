@@ -297,7 +297,7 @@ class GridDisplay:
 
     def draw_frame(self, delay=0):
         self.draw_buttons()
-        V=self.grid.get_grids()
+        V=self.grid.get_grid_view_names()
         data: dict = self.grid.getDisplayData(self.obsAgent,V[self.gridType])
         grid: Grid2D = data.get('grid', None)
         agents: dict = data.get('agents', dict())

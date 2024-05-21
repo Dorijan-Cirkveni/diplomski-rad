@@ -251,7 +251,7 @@ class GridEnvironment(itf.iEnvironment):
         grid = self.getGrid(gridType)
         return grid.get_text_display(guide, self.taken)
 
-    def get_grids(self):
+    def get_grid_view_names(self):
         S = set(self.grids.keys())
         L = []
         for e in ("solid", "viewed"):

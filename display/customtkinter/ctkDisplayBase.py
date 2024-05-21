@@ -163,6 +163,10 @@ class InputFrameDropdown(iTkFrameDef):
         print("Calling output")
         self.return_lambda(self.name + ":" + s)
 
+    def change_values(self,L):
+        self.dropdown:ctk.CTkComboBox
+        self.dropdown.
+
 
 
 class DirectionsConsole(iTkFrameDef):

@@ -120,6 +120,10 @@ class DisplayFrame(iTkFrame):
             self.view_elements_mode = {"Grid", "Agents"}
             env.cur_iter = 0
             env.winStatus = (None, 0)
+        view_names=env.get_grid_view_names()
+        entities=["None"]+[str(i) for i in range(len(env.entities))]
+        self.w_buttons:SideMenu
+        self.w_buttons.change_dropdowns(view_names,entities)
         self.update_env()
 
     def check_entity_locations(self, seen: dict, ):

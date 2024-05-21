@@ -182,6 +182,9 @@ class RulesetManager:
 
 
 class RuleBasedAgent(itf.iAgent):
+    """
+
+    """
     def __init__(self, rulelist: list, used: set, pers_vars: set = None, defaultAction=ACTIONS[-1]):
         super().__init__()
         self.manager = RulesetManager()
