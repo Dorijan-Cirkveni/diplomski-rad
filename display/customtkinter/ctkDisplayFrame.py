@@ -259,12 +259,15 @@ DFDF.update({
 
 
 def main():
+    ctk.set_appearance_mode("dark")  # Set the theme to dark
     root = ctk.CTk()
     scale = (800, 600)
-    frame=SwapFrame()
-    app = DisplayFrame(root, scale)
+    frame=SwapFrame(root,"Test",print,scale)
+    frame.pack()
+    app = DisplayFrame(frame, scale)
     root.geometry("{}x{}".format(*scale))
     root.minsize(*scale)
+    frame.add_frame(app)
 
     raw = jsonmngr.ImportManagedJSON("t_base|0")
     env = GridEnvironment.raw_init(raw)
