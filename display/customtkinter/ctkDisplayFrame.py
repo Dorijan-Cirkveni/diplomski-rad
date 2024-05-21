@@ -238,6 +238,7 @@ class DisplayFrame(iTkFrame):
 
     def process_input(self, raw: str):
         if self.running:
+            print("Still running, please wait!")
             return
         L = raw.split(":")
         if L[0] not in DFDF:
