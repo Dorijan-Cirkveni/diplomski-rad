@@ -1,6 +1,3 @@
-import json
-import os
-import customtkinter as ctk
 from PIL import Image, ImageTk
 import pygame
 

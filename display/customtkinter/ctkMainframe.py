@@ -135,7 +135,7 @@ class SelectionFrame(iTkFrame):
         print("Running environment with input:")
 
 class MainFrame(SwapFrame):
-    def __init__(self, master:tk.Tk, return_lambda: callable, screen_size: tuple[int, int]):
+    def __init__(self, master:, return_lambda: callable, screen_size: tuple[int, int]):
         super().__init__(master, "MainFrame", return_lambda, screen_size)
         master.geometry("{}x{}".format(*screen_size))
 

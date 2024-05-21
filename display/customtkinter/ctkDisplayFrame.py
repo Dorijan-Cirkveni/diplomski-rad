@@ -1,8 +1,5 @@
-import ast
-
 from ctkDisplayBase import *
 from ctkGridFrame import *
-import customtkinter as ctk
 import interfaces as itf
 from agents.Agent import GraphicManualInputAgent
 import test_json.test_json_manager as jsonmngr
