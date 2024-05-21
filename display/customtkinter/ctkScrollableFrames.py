@@ -1,6 +1,3 @@
-import tkinter as tk
-import customtkinter as ctk
-
 from ctkDefinitions import *
 
 
@@ -153,7 +150,7 @@ class CategoricalScrollableFrame(ScrollableFrameBase):
 
 
 def main():
-    root = ctk.CTk()
+    root = DarkCTK()
     root.geometry("800x600")
 
     scroll_frame = CategoricalScrollableFrame(root)

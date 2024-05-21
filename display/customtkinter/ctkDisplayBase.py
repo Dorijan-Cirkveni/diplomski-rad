@@ -1,5 +1,4 @@
-import customtkinter as ctk
-
+from display.customtkinter.ctkDefinitions import *
 from util.UtilManager import Counter
 
 
@@ -263,7 +262,7 @@ class SideMenu(iTkFrameDef):
 
 
 def main():
-    root = ctk.CTk()
+    root = DarkCTK()
     root.geometry("200x600")
     root.title("CustomTkinter Grid Example")
     app = SideMenu(root,print,(200,600))

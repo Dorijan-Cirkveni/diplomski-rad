@@ -4,6 +4,7 @@ import customtkinter as ctk
 from PIL import Image, ImageTk
 import pygame
 
+from display.customtkinter.ctkDefinitions import *
 from environments.GridEnvironment import *
 import util.RootPathManager as RPM
 
@@ -84,7 +85,7 @@ def main():
     screen = pygame.display.set_mode(screen_size)
     pygame.display.set_caption('Grid Tile Display')
 
-    root = ctk.CTk()
+    root = DarkCTK()
     root.geometry("800x600")
     root.title("CustomTkinter Grid Example")
 

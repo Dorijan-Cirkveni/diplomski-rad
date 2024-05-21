@@ -162,8 +162,8 @@ def main_depr():
 
 def main():
     ctk.set_appearance_mode("dark")  # Set the theme to dark
-    CTK = ctk.CTk()
-    mainframe = SelectionFrame(CTK, (1000, 600))
+    ctk = DarkCTK()
+    mainframe =SelectionFrame(CTK, (1000, 600))
     CTK.mainloop()
 
 

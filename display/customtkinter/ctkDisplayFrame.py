@@ -6,6 +6,7 @@ import customtkinter as ctk
 import interfaces as itf
 from agents.Agent import GraphicManualInputAgent
 import test_json.test_json_manager as jsonmngr
+from display.customtkinter.ctkDefinitions import *
 
 from util.struct.TupleDotOperations import *
 
@@ -259,8 +260,7 @@ DFDF.update({
 
 
 def main():
-    ctk.set_appearance_mode("dark")  # Set the theme to dark
-    root = ctk.CTk()
+    root = DarkCTK()
     scale = (800, 600)
     frame=SwapFrame(root,"Test",print,scale)
     frame.pack()

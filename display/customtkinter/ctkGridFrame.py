@@ -7,6 +7,7 @@ import customtkinter as ctk
 from PIL import Image, ImageTk
 
 import definitions
+from display.customtkinter.ctkDefinitions import *
 from util.struct.TupleDotOperations import *
 import environments.EnvironmentManager as env_mngr
 from environments.GridEnvironment import *
@@ -176,7 +177,7 @@ class GridDisplayFrame(DiB.iTkFrameDef):
 
 
 def main():
-    root = ctk.CTk()
+    root = DarkCTK()
     root.title("Grid Display Test")
     root.geometry("600x600")
 

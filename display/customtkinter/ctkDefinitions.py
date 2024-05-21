@@ -4,7 +4,11 @@ import customtkinter as ctk
 SIDES=Literal['left','right','up','down']
 
 GRIDDISPLAY = "GridDisplay"
-ctk.set_appearance_mode("dark")  # Set the theme to dark
+
+def DarkCTK():
+    ctk.set_appearance_mode("dark")  # Set the theme to dark
+    x=ctk
+    return x.CTk()
 
 
 def main():
