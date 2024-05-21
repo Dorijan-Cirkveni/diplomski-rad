@@ -239,13 +239,12 @@ class DisplayFrame(iTkFrame):
         self.process_iterations(1)
         return
 
-    def process_viewtype(self, gt: str):
+    def process_gridtype(self, gt: str):
         self.view_mode = gt
         self.update_env()
 
     def process_obsagent(self, vp: str):
         self.obs_agent = None if vp == "None" else int(vp)
-        self.view_mode = vp
         self.update_env()
 
     def process_iterations(self, ite):
@@ -271,8 +270,8 @@ class DisplayFrame(iTkFrame):
 
 DFDF.update({
     "Move": DisplayFrame.process_move,
-    "Grid toype": DisplayFrame.process_viewtype,
-    "Viewpoint": DisplayFrame.process_obsagent,
+    "Grid type": DisplayFrame.process_gridtype,
+    "Observer": DisplayFrame.process_obsagent,
     "Iterations": DisplayFrame.process_iterations,
     "wasd": print
 })

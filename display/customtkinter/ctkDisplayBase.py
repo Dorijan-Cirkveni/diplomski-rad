@@ -126,6 +126,7 @@ class InputFrame(iTkFrameDef):
             return
         self.return_lambda(s)
 
+
 class InputFrameDropdown(iTkFrameDef):
     counter = Counter(0)
 
@@ -152,10 +153,10 @@ class InputFrameDropdown(iTkFrameDef):
         if self.use_button:
             self.button.grid(row=1, column=0, columnspan=2, pady=10)
         if self.use_tracker:
-            print("Dropdown bound ",self.name)
+            print("Dropdown bound ", self.name)
             self.dropdown.bind("<<ComboboxSelected>>", self.doEvent)
 
-    def doEvent(self,*args):
+    def doEvent(self, *args):
         print(args)
 
     def doOutput(self):
@@ -163,10 +164,11 @@ class InputFrameDropdown(iTkFrameDef):
         print("Calling output")
         self.return_lambda(self.name + ":" + s)
 
-    def change_values(self,L):
-        self.dropdown:ctk.CTkComboBox
-        self.dropdown.
-
+    def change_values(self, L):
+        self.dropdown.configure(values=L)
+        self.dropdown.set(L[0])
+        if self.use_tracker:
+            self.dropdown.bind("<<ComboboxSelected>>", self.doEvent)
 
 
 class DirectionsConsole(iTkFrameDef):
@@ -192,8 +194,8 @@ class DirectionsConsole(iTkFrameDef):
             self.grid_rowconfigure(i, weight=1)
             self.grid_columnconfigure(i, weight=1)
 
-        for i,E in enumerate(button_data):
-            name, (y, x)=E
+        for i, E in enumerate(button_data):
+            name, (y, x) = E
             button = ctk.CTkButton(self, text=name, command=self.make_button_fn(i))
             button.grid(row=y, column=x, padx=5, pady=5)
             self.buttons[(y, x)] = button
@@ -209,63 +211,56 @@ class SideMenu(iTkFrameDef):
                  ):
         self.running_status = None
         self.gridtype = None
-        self.viewpoint = None
+        self.observer = None
         self.console = None
         self.iterations = None
         self.exit = None
         super().__init__(master, "SideMenu", return_lambda, screen_size)
 
     def create_widgets(self):
-        curow=Counter()
+        curow = Counter()
         self.grid_rowconfigure("all", weight=1)
         self.grid_columnconfigure("all", weight=1)
-        self.running_status=ctk.CTkLabel(self,text="TEST")
+        self.running_status = ctk.CTkLabel(self, text="TEST")
         self.running_status.grid(row=curow(), column=0, sticky="nsew")
-        self.display_running(0,0)
-        self.iterations = InputFrame(self,self.prefix_input("Iterations"),(200,100),
-                                             lambda s:s.isdigit(),"1")
+        self.display_running(0, 0)
+        self.iterations = InputFrame(self, self.prefix_input("Iterations"), (200, 100),
+                                     lambda s: s.isdigit(), "1")
         self.iterations.grid(row=curow(), column=0, sticky="nsew")
 
-        self.console = DirectionsConsole(self,self.prefix_input("Move"),(200,200))
+        self.console = DirectionsConsole(self, self.prefix_input("Move"), (200, 200))
         self.console.grid(row=curow(), column=0, sticky="nsew")
 
-        self.viewpoint = InputFrameDropdown(self,"Viewpoint",
-                                           self.return_lambda,(200,200),
-                                           list('ABCD'),"Viewpoint:","Apply",True,True)
-        self.viewpoint.grid(row=curow(), column=0, sticky="nsew")
+        self.observer = InputFrameDropdown(self, "Observer",
+                                            self.return_lambda, (200, 200),
+                                            list('ABCD'), "Observer:", "Apply", True, True)
+        self.observer.grid(row=curow(), column=0, sticky="nsew")
 
-        self.gridtype = InputFrameDropdown(self,"Grid type",
-                                           self.return_lambda,(200,200),
-                                           list('ABCD'),"Grid type:","Apply",True,True)
+        self.gridtype = InputFrameDropdown(self, "Grid type",
+                                           self.return_lambda, (200, 200),
+                                           list('ABCD'), "Grid type:", "Apply", True, True)
         self.gridtype.grid(row=curow(), column=0, sticky="nsew")
 
-        self.exit = ctk.CTkButton(self,text="Return",command=lambda:self.return_lambda("Return"))
+        self.exit = ctk.CTkButton(self, text="Return", command=lambda: self.return_lambda("Return"))
         self.exit.grid(row=curow(), column=0, sticky="nsew")
-    def prefix_input(self,prefix):
+
+    def prefix_input(self, prefix):
         def fn(e):
-            self.return_lambda(prefix+":"+str(e))
+            self.return_lambda(prefix + ":" + str(e))
+
         return fn
 
-    def change_dropdowns(self, view_list: list, type_list: list):
-        # Set dropdown lists to view_list and type_list respectively.
-        self.viewpoint.options = view_list
-        self.gridtype.options = type_list
+    def change_dropdowns(self, grid_list: list, observer_list: list):
+        self.viewpoint: InputFrameDropdown
+        self.gridtype: InputFrameDropdown
+        self.observer.change_values(observer_list)
+        self.gridtype.change_values(grid_list)
 
-        # Set selected value to the first item in the list
-        if view_list:
-            self.viewpoint.dropdown.set(view_list[0])
-        if type_list:
-            self.gridtype.dropdown.set(type_list[0])
-
-        # Refresh the dropdowns to reflect the changes
-        self.viewpoint.dropdown['values'] = view_list
-        self.gridtype.dropdown['values'] = type_list
-
-    def display_running(self,i,ite):
-        if ite==0:
-            s="Ready"
+    def display_running(self, i, ite):
+        if ite == 0:
+            s = "Ready"
         else:
-            s="Running ({}/{})".format(i,ite)
+            s = "Running ({}/{})".format(i, ite)
         self.running_status.configure(text=s)
 
 
@@ -273,7 +268,7 @@ def main():
     root = DarkCTK()
     root.geometry("200x600")
     root.title("CustomTkinter Grid Example")
-    app = SideMenu(root,print,(200,600))
+    app = SideMenu(root, print, (200, 600))
     app.pack(fill="both", expand=True)
     root.mainloop()
 
