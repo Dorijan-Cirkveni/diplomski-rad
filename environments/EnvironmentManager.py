@@ -17,7 +17,7 @@ envList = {
 }
 
 
-def readEnvironment(jsonL:list, ind:int, agentDict=None):
+def readEnvironment(jsonL:list, ind:int, agentDict=None)->itf.iEnvironment:
     """
     Reads environment data from a JSON string and initializes the corresponding environment.
 

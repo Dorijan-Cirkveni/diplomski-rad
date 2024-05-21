@@ -1,3 +1,6 @@
+import json
+
+import environments.EnvironmentManager
 from ctkDisplayBase import *
 from ctkGridFrame import *
 import interfaces as itf
@@ -97,6 +100,16 @@ class DisplayFrame(iTkFrame):
     def show_iter(self):
         text = {"winstatus": self.make_iter_text()}
         self.w_data.update_text(text)
+
+    def receiveData(self, data: dict):
+        envstr=data["env"]
+        agentclass:iAgent=data["agent_class"]
+        agentdata=data["agent_data"]
+        envraw=json.loads(envstr)
+        env=environments.EnvironmentManager.readEnvironment([envraw],0)
+        agent=agentclass.raw_init(agentdata)
+        env.changeActiveEntityAgents(agent)
+        return
 
     def set_env(self, env: GridEnvironment = None, init=False):
         self.env = env
@@ -240,6 +253,9 @@ class DisplayFrame(iTkFrame):
     def process_input(self, raw: str):
         if self.running:
             print("Still running, please wait!")
+            return
+        if raw=="Return":
+            self.swapFrameFactory(GRIDSELECT)()
             return
         L = raw.split(":")
         if L[0] not in DFDF:

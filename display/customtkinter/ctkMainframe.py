@@ -60,9 +60,18 @@ class EnvCustomFrame(ctk.CTkFrame):
 
     def run_env(self):
         print("-"*160)
-        print(self.env_data_box.get("1.0", "end"))
-        print(self.agentclass)
-        print(self.agent_data_box.get("1.0", "end"))
+        envdata=self.env_data_box.get("1.0", "end")
+        agentclass=self.agentclass
+        agentdata=self.agent_data_box.get("1.0", "end")
+        print("Env:",envdata)
+        print("Agent class",self.agentclass)
+        print("Agent data",agentdata)
+        data={
+            "env":envdata,
+            "agent_class":agentclass,
+            "agent_data":agentdata
+        }
+        self.run_command(data)
 
 
 class SelectionFrame(iTkFrame):
@@ -134,8 +143,9 @@ class SelectionFrame(iTkFrame):
             cats.append(cat)
         return cats
 
-    def run_environment(self):
-        print("Running environment with input:")
+    def run_environment(self,data):
+        func=self.swapFrameFactory(GRIDDISPLAY,data)
+        func()
 
 class MainFrame(SwapFrame):
     def __init__(self, master:DarkCTK, return_lambda: callable, screen_size: tuple[int, int]):

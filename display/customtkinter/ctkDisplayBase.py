@@ -208,6 +208,7 @@ class SideMenu(iTkFrameDef):
         self.viewpoint = None
         self.console = None
         self.iterations = None
+        self.exit = None
         super().__init__(master, "SideMenu", return_lambda, screen_size)
 
     def create_widgets(self):
@@ -233,6 +234,9 @@ class SideMenu(iTkFrameDef):
                                            self.return_lambda,(200,200),
                                            list('ABCD'),"Grid type:","Apply",True,True)
         self.gridtype.grid(row=curow(), column=0, sticky="nsew")
+
+        self.exit = ctk.CTkButton(self,text="Return",command=lambda:self.return_lambda("Return"))
+        self.exit.grid(row=curow(), column=0, sticky="nsew")
     def prefix_input(self,prefix):
         def fn(e):
             self.return_lambda(prefix+":"+str(e))
