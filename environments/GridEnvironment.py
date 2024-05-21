@@ -546,13 +546,30 @@ class GridEnvironment(itf.iEnvironment):
     #   ------------------------------------------------------------------------
 
     def assign_active_agent(self,agent:iAgent, preserveMemory=True):
+        """
+        Changes active entity agents.
+
+        :param agent:
+        :param preserveMemory:
+        """
+        for i, E in enumerate(self.activeEntities):
+            ent: itf.iEntity = self.entities[E]
+            old_agent = ent.agent
+            new_agent = agent
+            if preserveMemory:
+                new_agent.memory = old_agent.memory
+            else:
+                agrid = self.grids[AGENTMEMORY]
+                new_agent.memory.absorb_data({"grid": deepcopy(agrid)})
+            ent.agent = new_agent
+        return
 
     def changeActiveEntityAgents(self, newAgentsInput: [iAgent,list[iAgent]], preserveMemory=True):
         """
         Changes active entity agents.
 
         Args:
-            newAgents (list[itf.iAgent]): List of new agents.
+            newAgentsInput (list[itf.iAgent]): List of new agents.
             :param preserveMemory:
         """
         newAgents:list[iAgent]
