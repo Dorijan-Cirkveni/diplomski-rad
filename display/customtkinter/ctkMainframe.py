@@ -48,7 +48,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         envraw = jsonmngr.ImportManagedJSON(f"{file}|{ind}")
         # Replace text box content with envraw
         self.env_data_box.delete("1.0", "end")
-        self.env_data_box.insert("1.0", json.dumps(envraw))
+        self.env_data_box.insert("1.0", json.dumps(envraw,indent=4))
 
     def set_agent(self, agentname, agentraw):
         agentclass = agentmngr.ALL_AGENTS[agentname]
