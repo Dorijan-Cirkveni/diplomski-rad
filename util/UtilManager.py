@@ -1,5 +1,7 @@
 from collections import deque
 
+from util.CommonExceptions import ImplementAsNeededException
+
 
 class Counter:
     def __init__(self, value: float = 0):
@@ -85,7 +87,7 @@ def StringLimbo(s: str, maxspace, splitter=" "):
     SL = s.split(splitter) + ["A" * (maxspace + 1)]
     for e in SL:
         k = len(e)
-        if len(cur) + k > maxspace and cur:
+        if len(cur) + k +1 > maxspace and cur:
             L.append(cur)
             cur = ""
         if cur:
@@ -132,15 +134,15 @@ def reverseIf(E, cond):
 
 def limrange(start, end, step, limit):
     if step > 0:
-        end = max(end, limit)
-    else:
         end = min(end, limit)
-    return range(start, end, limit)
+    else:
+        end = max(end, limit)
+    return range(start, end, step)
 
 
-def adjustRatio(size, ratio):
+def adjustRatio(size, ratio:list):
     s = sum(ratio)
-    adjRatio = [e * size / ratio for e in ratio]
+    adjRatio = [e * size / s for e in ratio]
     adjRatio = [(i, int(e), e - int(e)) for i, e in enumerate(adjRatio)]
     adjRatio.sort(key=lambda e: e[2])
     if adjRatio[-1][1] != 0:
@@ -175,16 +177,13 @@ def AddValueToLayeredStruct(S: [dict, list], types: list[type], indices: list, v
         S, e = stack.pop()
         S[e] = value
         value = S
-    return
+    raise ImplementAsNeededException()
 
 
 def main():
-    for E in [
-        "UnreadableClass",
-        "illegible_interface",
-        "noneuclideannerds",
-    ]:
-        print(E, "|", MakeClassNameReadable(E))
+    s="Hello World"
+    s2=StringLimbo(s,10)
+    print(s2)
     return
 
 
