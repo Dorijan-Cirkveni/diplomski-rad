@@ -10,7 +10,7 @@ class Counter:
         return self.value
 
     def __call__(self):
-        self.value+=1
+        self.value += 1
         return self.value
 
 
@@ -69,7 +69,7 @@ def MakeClassNameReadable(s: str):
         if e.isupper():
             new.append(e)
             continue
-        if e=="_":
+        if e == "_":
             new.append("")
             continue
         new[-1] += e
@@ -77,6 +77,21 @@ def MakeClassNameReadable(s: str):
         new.pop()
     print(new)
     return " ".join(new)
+
+
+def StringLimbo(s: str, maxspace, splitter=" "):
+    L = []
+    cur = ""
+    SL = s.split(splitter) + ["A" * (maxspace + 1)]
+    for e in SL:
+        k = len(e)
+        if len(cur) + k > maxspace and cur:
+            L.append(cur)
+            cur = ""
+        if cur:
+            cur += " "
+        cur += e
+    return "\n".join(L)
 
 
 def DoNothing(*_, **__):
@@ -169,7 +184,7 @@ def main():
         "illegible_interface",
         "noneuclideannerds",
     ]:
-        print(E,"|",MakeClassNameReadable(E))
+        print(E, "|", MakeClassNameReadable(E))
     return
 
 

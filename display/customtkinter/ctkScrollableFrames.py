@@ -1,3 +1,4 @@
+import util.UtilManager
 from ctkDefinitions import *
 
 
@@ -17,7 +18,9 @@ class ButtonData:
         :param master:
         :return:
         """
-        res = ctk.CTkButton(master, text=self.text, command=self.function)
+        legible_text=util.UtilManager.MakeClassNameReadable(self.text)
+        final_text=util.UtilManager.StringLimbo(legible_text,16)
+        res = ctk.CTkButton(master, text=final_text, command=self.function)
         if self.offset:
             res.pack(pady=5, padx=(20, 10), anchor="w")
         else:
@@ -111,14 +114,15 @@ class CategoryData(ButtonData):
     def MakeButton(self, master):
         arch_res = ctk.CTkFrame(master)
         self.arch = arch_res
-        cat_style={}
-        res = ctk.CTkButton(arch_res, text=self.text, command=self.function, **cat_style)
+        cat_style={"fg_color":"green"}
+        legible_text=util.UtilManager.MakeClassNameReadable(self.text)
+        final_text=util.UtilManager.StringLimbo(legible_text,16)
+        res = ctk.CTkButton(arch_res, text=final_text, command=self.function, **cat_style)
         res.pack()
         if self.offset:
             arch_res.pack(pady=5, padx=(20, 10), anchor="w")
         else:
             arch_res.pack(pady=5, padx=10)
-        print(self.text)
         return arch_res
 
 
