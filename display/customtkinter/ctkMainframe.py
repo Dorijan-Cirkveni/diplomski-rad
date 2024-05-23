@@ -2,11 +2,14 @@ import json
 
 import test_json.test_json_manager as jsonmngr
 import util.UtilManager as utilmngr
+
+from environments.GridEnvironment import *
 import agents.AgentManager as agentmngr
 from agents.Agent import GraphicManualInputAgent
-from ctkScrollableFrames import *
+
 from ctkDisplayBase import *
-from environments.GridEnvironment import *
+from ctkScrollableFrames import *
+from ctkPopups import *
 from display.customtkinter.ctkDisplayFrame import DisplayFrame
 
 
@@ -99,7 +102,7 @@ class SelectionFrame(iTkFrame):
         self.grid_rowconfigure(0, weight=1)
 
         # Left frame with scrollbar
-        left_frame = CategoricalScrollableFrame(self)
+        left_frame = ScrollableFrameBase(self)
         left_frame.grid(row=0, column=0, sticky="nsew")
         left_frame.set_elements(self.get_env_cats())
 
