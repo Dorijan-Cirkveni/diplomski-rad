@@ -1,3 +1,8 @@
+from ctkDisplayBase import *
+class ctkDataManager(ctk.CTkToplevel):
+    def __init__(self):
+
+
 def main():
     return
 

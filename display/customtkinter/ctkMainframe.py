@@ -63,7 +63,13 @@ class EnvCustomFrame(ctk.CTkFrame):
     def run_env(self):
         print("-"*160)
         envdata=self.env_data_box.get("1.0", "end")
+        if not envdata.replace("\n","").replace(" ",""):
+            PopupMessage(self,"Error","Missing environment data!")
+            return
         agentclass=self.agentclass
+        if not agentclass:
+            PopupMessage(self,"Error","Missing agent!")
+            return
         agentdata=self.agent_data_box.get("1.0", "end")
         print("Env:",envdata)
         print("Agent class",self.agentclass)
