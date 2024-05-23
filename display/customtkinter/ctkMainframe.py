@@ -77,11 +77,12 @@ class EnvCustomFrame(ctk.CTkFrame):
 
 
 class SelectionFrame(iTkFrame):
-    def __init__(self, master: SwapFrame, dimensions: tuple[int, int]):
+    def __init__(self, master: SwapFrame, dimensions: tuple[int, int], **kwargs):
         self.w_agents = None
         self.w_envs = None
         self.w_data = None
         self.env_names=None
+        self.kwargs=kwargs
         super().__init__(master, GRIDSELECT, dimensions)
 
     def create_widgets(self):
@@ -97,7 +98,12 @@ class SelectionFrame(iTkFrame):
         left_frame.set_elements(self.get_env_cats())
 
         # Middle frame with text, entry, and button
-        middle_frame = EnvCustomFrame(self, self.run_environment)
+        ECFc:type
+        ECFa:dict
+        ECFc,ECFa=self.kwargs.get("middle",(EnvCustomFrame,{}))
+        ECF=ECFc(self,self.run_environment,**ECFa)
+        assert isinstance(ECF,EnvCustomFrame)
+        middle_frame = ECF
         middle_frame.grid(row=0, column=1, sticky="nsew")
 
         # Right frame with scrollbar
