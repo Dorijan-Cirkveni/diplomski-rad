@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-from display.customtkinter.ctkDisplayBase import InputFrameDropdown
+from ctkScrollableFrames import *
 
 
 class ctkDataManager(ctk.CTkToplevel):
@@ -18,7 +18,7 @@ class ctkDataManager(ctk.CTkToplevel):
         self.return_button.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
         # Create dropdown button
-        self.dropdown = InputFrameDropdown(self,"keys",print,)
+        self.dropdown = CategoricalScrollableFrame(self,False)
         self.dropdown.grid(row=1, column=0, padx=10, pady=10, sticky="w")
 
         # Create frame that contains either a text window or a button saying "Edit..."
@@ -39,7 +39,7 @@ class ctkDataManager(ctk.CTkToplevel):
         def func():
             self.curkey=key
             print("Swapped to")
-        return
+        return func
 
     def return_action(self):
         print("Return button pressed")
@@ -54,13 +54,13 @@ class ctkDataManager(ctk.CTkToplevel):
         else:
             self.text_window.pack_forget()
             self.edit_button = ctk.CTkButton(self.edit_frame, text="Edit...", command=self.edit_action)
-            self.edit_button.pack(fill="both", expand=True)
+            self.edit_button.pack()
 
     def apply_action(self):
         print("Apply button pressed")
 
 def structTest(struct):
-    root = ctk.CTk()
+    root = DarkCTK.GetMain()
     root.geometry("600x400")
     data_manager = ctkDataManager(root, None)
     root.mainloop()
@@ -70,6 +70,7 @@ def main():
     struct=[
         1,2,3,4,5
     ]
+    structTest(struct)
 
 
 if __name__ == "__main__":
