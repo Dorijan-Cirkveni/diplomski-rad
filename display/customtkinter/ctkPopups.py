@@ -1,7 +1,16 @@
 from ctkDefinitions import *
 from util.struct.TupleDotOperations import *
 
-def getLoc(cur:ctk.CTkToplevel, master):
+def getLoc(master, size):
+    rootloc=(master.winfo_x(),master.winfo_y())
+    rootsize=(master.winfo_width(),master.winfo_height())
+    loc=Tadd(rootloc,Tdiv(rootsize,(2,)*2,True))
+    sizeloc=Tsub(loc,Tdiv(size,(2,)*2, True))
+    print(rootsize)
+
+    a,b,c,d=size+sizeloc
+    s="%dx%d+%d+%d" % (a,b,c,d)
+    return s
 
 
 class PopupMessage(ctk.CTkToplevel):
@@ -9,7 +18,8 @@ class PopupMessage(ctk.CTkToplevel):
         super().__init__(master)
 
         self.title(title)
-        self.geometry("300x150")
+        size=(300,150)
+        self.geometry(getLoc(master,size))
 
         self.message_label = ctk.CTkLabel(self, text=message, wraplength=250)
         self.message_label.pack(pady=20)
@@ -28,16 +38,9 @@ class InputMessage(ctk.CTkToplevel):
         super().__init__(master)
 
         self.func = func
-
-        rootloc=(master.winfo_x(),master.winfo_y())
-        rootsize=(master.winfo_width(),master.winfo_height())
-        loc=Tadd(rootloc,Tdiv(rootsize,(2,)*2,True))
+        self.title(title)
         size=(300,150)
-        sizeloc=Tsub(loc,Tdiv(size,(2,)*2, True))
-        print(rootsize)
-
-        a,b,c,d=size+sizeloc
-        self.geometry("%dx%d+%d+%d" % (a,b,c,d))
+        self.geometry(getLoc(master,size))
 
         self.message_label = ctk.CTkLabel(self, text=message, wraplength=250)
         self.message_label.pack(pady=10)
