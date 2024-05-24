@@ -29,12 +29,7 @@ class ctkDataManager(ctk.CTkToplevel):
         self.edit_archframe.grid(row=1, column=1, padx=0, pady=0, sticky="w")
         self.edit_frames:dict[type,BaseInputFrame] = dict()
         self.apply_methods:dict[type,callable]=dict()
-
-        # Add a frame saying "No entry selected" as nullframe, with archframe as parent
-        nullframe = NullFrame(self.edit_archframe, "No entry selected")  # Make the label fill the entire nullframe
-        self.nullframe = nullframe
-        self.cur_edit_frame = nullframe
-        self.cur_edit_frame.pack(fill="both", expand=True)
+        self.cur_edit_frame = None
 
         # Create apply button
         self.apply_button = ctk.CTkButton(self, text="Apply", command=self.apply_action)
@@ -93,14 +88,12 @@ class ctkDataManager(ctk.CTkToplevel):
             frame.pack(fill="both", expand=True)
             self.cur_edit_frame = frame
         else:
-            self.nullframe.pack(fill="both", expand=True)
-            self.cur_edit_frame = self.nullframe
+            print("Value not used!")
 
     def hide_cur_value_interface(self):
         if self.cur_edit_frame is not None:
             self.cur_edit_frame.pack_forget()
-        self.cur_edit_frame = self.nullframe
-        self.nullframe.pack(fill="both", expand=True)
+        self.cur_edit_frame = None
 
     def factory_choose_key(self, key):
         def func():
