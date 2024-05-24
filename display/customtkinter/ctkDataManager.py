@@ -33,6 +33,7 @@ class ctkDataManager(ctk.CTkToplevel):
         nullframe = ctk.CTkFrame(self.edit_archframe, corner_radius=0)  # Set corner_radius to 0 for no corners
         null_label = ctk.CTkLabel(nullframe, text="No entry selected")
         null_label.pack(fill="both", expand=True)  # Make the label fill the entire nullframe
+        self.nullframe = nullframe
         self.edit_frames[None] = nullframe
         self.cur_edit_frame = nullframe
         self.cur_edit_frame.pack(fill="both", expand=True)
@@ -49,14 +50,26 @@ class ctkDataManager(ctk.CTkToplevel):
 
     def make_edit_frames(self):
         raw_edit = InputFrame(self, print, (0, 0), lambda s: True)
-        self.edit_frames[str]=raw_edit
+        self.edit_frames[str] = raw_edit
         num_edit = InputFrame(self, print, (0, 0), str.isdigit)
+        self.edit_frames[int] = num_edit
 
     def show_cur_value_interface(self, value):
-        raise NotImplementedError  # Show interface from edit_frames with type(value) as key and set its value to value.
+        self.hide_cur_value_interface()  # Hide current interface
+        value_type = type(value)
+        if value_type in self.edit_frames:
+            frame = self.edit_frames[value_type]
+            frame.set_value(value)  # Assuming InputFrame has a set_value method
+        else:
+            frame=self.nullframe
+        frame.pack(fill="both", expand=True)
+        self.cur_edit_frame = frame
 
     def hide_cur_value_interface(self):
-        raise NotImplementedError  # Hide interface for current value.
+        if self.cur_edit_frame is not None:
+            self.cur_edit_frame.pack_forget()
+        self.cur_edit_frame = self.nullframe
+        self.nullframe.pack(fill="both", expand=True)
 
     def factory_choose_key(self, key):
         def func():
