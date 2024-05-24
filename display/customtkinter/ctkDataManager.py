@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from ctkScrollableFrames import *
+from display.customtkinter.ctkDisplayBase import InputFrame
 
 
 class ctkDataManager(ctk.CTkToplevel):
@@ -21,12 +22,11 @@ class ctkDataManager(ctk.CTkToplevel):
         self.dropdown = CategoricalScrollableFrame(self,False)
         self.dropdown.grid(row=1, column=0, padx=10, pady=10, sticky="w")
 
-        # Create frame that contains either a text window or a button saying "Edit..."
-        self.edit_frame = ctk.CTkFrame(self)
-        self.edit_frame.grid(row=1, column=1, padx=10, pady=10, sticky="w")
-
-        self.edit_button = ctk.CTkButton(self.edit_frame, text="Edit...", command=self.edit_action)
-        self.edit_button.pack(fill="both", expand=True)
+        self.edit_archframe = ctk.CTkFrame(self)
+        self.edit_archframe.grid(row=1, column=1, sticky="w")
+        self.edit_frames=dict()
+        nullframe=None
+        self.cur_edit_frame=nullframe
 
         # Create apply button
         self.apply_button = ctk.CTkButton(self, text="Apply", command=self.apply_action)
@@ -35,10 +35,16 @@ class ctkDataManager(ctk.CTkToplevel):
         self.grid_columnconfigure('all', weight=1)
         self.grid_rowconfigure('all', weight=1)
 
+    def make_edit_frames(self):
+        raw_edit=InputFrame(self,print,(0,0),lambda s:True)
+
+    def remove_cur_value_interface(self):
+        raise NotImplementedError # Hide interface for current value.
+
     def factory_choose_key(self,key):
         def func():
             self.curkey=key
-            print("Swapped to")
+            print("Swapped to", key)
         return func
 
     def return_action(self):
