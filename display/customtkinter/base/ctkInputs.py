@@ -1,7 +1,26 @@
-from ctkDisplayBase import *
+from display.customtkinter.base.ctkDisplayBase import *
 
 
-class InputFrame(iTkFrameDef):
+class BaseInputFrame(iTkFrameDef):
+    def set(self, value):
+        raise NotImplementedError
+
+
+class NullFrame(BaseInputFrame):
+    def __init__(self, master, text="No entry selected"):
+        self.text = text
+        super().__init__(master, "Null Frame", lambda x: None, (200, 100))  # Dummy return_lambda and screen_size
+
+    def create_widgets(self):
+        null_label = ctk.CTkLabel(self, text=self.text)
+        null_label.pack(fill="both", expand=True)  # Make the label fill the entire frame
+
+    def set(self, value):
+        return  # Do nothing
+
+
+
+class InputFrame(BaseInputFrame):
     counter = Counter(0)
 
     def __init__(self, master, return_lambda: callable, screen_size: tuple, rule: callable, defaultValue="",

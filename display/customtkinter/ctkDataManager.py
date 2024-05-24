@@ -1,3 +1,5 @@
+import customtkinter as ctk
+
 from ctkScrollableFrames import *
 from display.customtkinter.base.ctkInputs import *
 
@@ -20,17 +22,15 @@ class ctkDataManager(ctk.CTkToplevel):
         self.return_button.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
         # Create dropdown button
-        self.dropdown = CategoricalScrollableFrame(self, False)
-        self.dropdown.grid(row=1, column=0, padx=10, pady=10, sticky="w")
+        self.selectkey = ScrollableFrameBase(self, False)
+        self.selectkey.grid(row=1, column=0, padx=10, pady=10, sticky="w")
 
         self.edit_archframe = ctk.CTkFrame(self, corner_radius=0)  # Set corner_radius to 0 for no corners
         self.edit_archframe.grid(row=1, column=1, padx=0, pady=0, sticky="w")
         self.edit_frames = dict()
 
         # Add a frame saying "No entry selected" as nullframe, with archframe as parent
-        nullframe = ctk.CTkFrame(self.edit_archframe, corner_radius=0)  # Set corner_radius to 0 for no corners
-        null_label = ctk.CTkLabel(nullframe, text="No entry selected")
-        null_label.pack(fill="both", expand=True)  # Make the label fill the entire nullframe
+        nullframe = NullFrame(self.edit_archframe, "No entry selected")  # Make the label fill the entire nullframe
         self.nullframe = nullframe
         self.edit_frames[None] = nullframe
         self.cur_edit_frame = nullframe
@@ -57,11 +57,12 @@ class ctkDataManager(ctk.CTkToplevel):
         value_type = type(value)
         if value_type in self.edit_frames:
             frame = self.edit_frames[value_type]
-            frame.set_value(value)  # Assuming InputFrame has a set_value method
+            frame.set(value)  # Assuming InputFrame has a set method
+            frame.pack(fill="both", expand=True)
+            self.cur_edit_frame = frame
         else:
-            frame=self.nullframe
-        frame.pack(fill="both", expand=True)
-        self.cur_edit_frame = frame
+            self.nullframe.pack(fill="both", expand=True)
+            self.cur_edit_frame = self.nullframe
 
     def hide_cur_value_interface(self):
         if self.cur_edit_frame is not None:
@@ -78,20 +79,11 @@ class ctkDataManager(ctk.CTkToplevel):
     def return_action(self):
         print("Return button pressed")
 
-    def edit_action(self):
-        # This is where you can switch between the text window and the button
-        if self.edit_button.cget("text") == "Edit...":
-            self.edit_button.pack_forget()
-            self.text_window = ctk.CTkTextbox(self.edit_frame, height=100, width=150)
-            self.text_window.pack(fill="both", expand=True)
-            self.text_window.insert("1.0", "This is a text window.")
-        else:
-            self.text_window.pack_forget()
-            self.edit_button = ctk.CTkButton(self.edit_frame, text="Edit...", command=self.edit_action)
-            self.edit_button.pack()
-
     def apply_action(self):
         print("Apply button pressed")
+
+    def apply_current(self):
+
 
 
 def structTest(struct):
