@@ -1,5 +1,8 @@
+import json
+
 import customtkinter as ctk
 
+import util.UtilManager
 from ctkScrollableFrames import *
 from display.customtkinter.base.ctkInputs import *
 
@@ -42,13 +45,13 @@ class ctkDataManager(ctk.CTkToplevel):
         self.make_edit_frames()
         self.show_cur_keys()
 
+    def apply(self,value):
+        self.cur[self.curkey]=json.loads(value)
+
     def make_edit_frames(self):
-        raw_edit = InputFrame(self.edit_archframe, print, (0, 0), lambda s: True,
-                              text="Value:",butext="Apply")
-        self.edit_frames[str] = raw_edit
-        num_edit = InputFrame(self.edit_archframe, print, (0, 0), str.isdigit,
-                              text="Integer value:",butext="Apply")
-        self.edit_frames[int] = num_edit
+        self.edit_frames[object] = JSONInputFrame(self.edit_archframe, self.apply,
+                                              (0, 0), util.UtilManager.IsValidJSON,
+                                              text="Raw JSON value:",butext="Apply",errmsg="Invalid JSON!")
 
     def generate_list(self,L):
         X=[]
@@ -82,13 +85,10 @@ class ctkDataManager(ctk.CTkToplevel):
     def show_cur_value_interface(self, value):
         self.hide_cur_value_interface()  # Hide current interface
         value_type = type(value)
-        if value_type in self.edit_frames:
-            frame = self.edit_frames[value_type]
-            frame.set(value)  # Assuming InputFrame has a set method
-            frame.pack(fill="both", expand=True)
-            self.cur_edit_frame = frame
-        else:
-            print("Value not used!")
+        frame = self.edit_frames.get(value_type,self.edit_frames[object])
+        frame.set(value)  # Assuming InputFrame has a set method
+        frame.pack(fill="both", expand=True)
+        self.cur_edit_frame = frame
 
     def hide_cur_value_interface(self):
         if self.cur_edit_frame is not None:

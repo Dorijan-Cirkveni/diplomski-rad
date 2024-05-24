@@ -1,3 +1,4 @@
+import json
 from collections import deque
 
 from util.CommonExceptions import ImplementAsNeededException
@@ -60,6 +61,13 @@ class SetQueue:
         self.S.remove(E)
         self.clear()
         return
+
+def IsValidJSON(s):
+    try:
+        json.loads(s)
+        return True
+    except json.decoder.JSONDecodeError:
+        return False
 
 
 def MakeClassNameReadable(s: str):

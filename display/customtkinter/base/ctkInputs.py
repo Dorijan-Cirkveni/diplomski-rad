@@ -1,3 +1,5 @@
+import json
+
 from display.customtkinter.base.ctkDisplayBase import *
 
 
@@ -25,7 +27,7 @@ class InputFrame(BaseInputFrame):
         self.label = ctk.CTkLabel(self, text=self.text)
         defaultValue = self.input
         self.input = ctk.CTkEntry(self)
-        self.button = ctk.CTkButton(self, text="Run", command=self.doOutput)
+        self.button = ctk.CTkButton(self, text=self.butext, command=self.doOutput)
         self.label.grid(row=0, column=0)
         self.input.grid(row=0, column=1)
         self.button.grid(row=1, column=0, columnspan=2, pady=10)
@@ -45,6 +47,10 @@ class InputFrame(BaseInputFrame):
             print("{} not valid!".format(s))
             return
         self.return_lambda(s)
+
+class JSONInputFrame(InputFrame):
+    def set(self, s):
+        super().set(json.dumps(s))
 
 
 class InputFrameDropdown(iTkFrameDef):
