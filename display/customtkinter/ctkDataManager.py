@@ -32,6 +32,8 @@ class ctkDataManager(ctk.CTkToplevel):
         self.grid_columnconfigure('all', weight=1)
         self.grid_rowconfigure('all', weight=1)
 
+    def choose_key(self):
+
     def return_action(self):
         print("Return button pressed")
 
