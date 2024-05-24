@@ -72,6 +72,15 @@ class ScrollableFrameBase(ctk.CTkScrollableFrame):
             self.listed_elements.append(B)
         return
 
+    def set_elements_by_value(self, elements:list, functory:callable):
+        buttons=[]
+        for raw in elements:
+            func=functory(raw)
+            button=ButtonData(raw,func,0)
+            buttons.append(button)
+        self.set_elements(buttons)
+        return
+
     def create_widgets(self, elements=None):
         if elements is None:
             elements = []
