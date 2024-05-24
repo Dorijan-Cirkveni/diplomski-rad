@@ -14,7 +14,7 @@ class InputFrame(BaseInputFrame):
     counter = Counter(0)
 
     def __init__(self, master, return_lambda: callable, screen_size: tuple, rule: callable, defaultValue="",
-                 text="Iterations:", butext="Run", errmsg="Input Error"):
+                 text="Iterations:", butext="Run", errmsg="Input Error!"):
         self.label = None
         self.rule = rule
         self.input = defaultValue
@@ -54,6 +54,7 @@ class InputFrame(BaseInputFrame):
 class JSONInputFrame(InputFrame):
     def set(self, s):
         super().set(json.dumps(s))
+
 
 
 class InputFrameDropdown(iTkFrameDef):

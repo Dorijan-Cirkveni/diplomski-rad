@@ -6,6 +6,17 @@ import util.UtilManager
 from ctkScrollableFrames import *
 from display.customtkinter.base.ctkInputs import *
 
+class AdvancedInputFrame(InputFrame):
+    def __init__(self, master, return_lambda: callable, inception_lambda: callable, screen_size: tuple, rule: callable):
+        self.inception_button = None
+        self.inception_lambda=inception_lambda
+        super().__init__(master, return_lambda, screen_size, rule)
+    def create_widgets(self):
+        super().create_widgets()
+        self.button.grid(row=1, column=0, columnspan=2, pady=10)
+        self.inception_button = ctk.CTkButton(self, text="Edit elements", command=self.inception_lambda)
+        self.inception_button.grid(row=1, column=0, columnspan=2, pady=10)
+
 
 class ctkDataManager(ctk.CTkToplevel):
     def __init__(self, root, root_struct, *args, **kwargs):
@@ -121,10 +132,11 @@ def structTest(struct):
     root.geometry("600x400")
     data_manager = ctkDataManager(root, struct)
     root.mainloop()
+    print(struct)
 
 
 def main():
-    struct = [1, 2, 3, 4, 5]
+    struct = [[1,2,3], 2, 3, 4, 5]
     structTest(struct)
 
 
