@@ -9,12 +9,12 @@ class ctkDataManager(ctk.CTkToplevel):
         super().__init__(root, *args, **kwargs)
 
         self.root_struct = root_struct
-        self.cur=root_struct
-        self.curkey=None
-        self.stack=[]
+        self.cur = root_struct
+        self.curkey = None
+        self.stack = []
         self.title("Data Manager")
-        size=(600,400)
-        loc=getLoc(root,size)
+        size = (600, 400)
+        loc = getLoc(root, size)
         print(loc)
         self.geometry(loc)
 
@@ -22,34 +22,45 @@ class ctkDataManager(ctk.CTkToplevel):
         self.return_button.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
         # Create dropdown button
-        self.dropdown = CategoricalScrollableFrame(self,False)
+        self.dropdown = CategoricalScrollableFrame(self, False)
         self.dropdown.grid(row=1, column=0, padx=10, pady=10, sticky="w")
 
-        self.edit_archframe = ctk.CTkFrame(self)
-        self.edit_archframe.grid(row=1, column=1, sticky="w")
-        self.edit_frames=dict()
-        nullframe=None # Add a frame saying "No entry selected" as nullframe, with archframe as parent
-        self.cur_edit_frame=nullframe
+        self.edit_archframe = ctk.CTkFrame(self, corner_radius=0)  # Set corner_radius to 0 for no corners
+        self.edit_archframe.grid(row=1, column=1, padx=0, pady=0, sticky="w")
+        self.edit_frames = dict()
+
+        # Add a frame saying "No entry selected" as nullframe, with archframe as parent
+        nullframe = ctk.CTkFrame(self.edit_archframe, corner_radius=0)  # Set corner_radius to 0 for no corners
+        null_label = ctk.CTkLabel(nullframe, text="No entry selected")
+        null_label.pack(fill="both", expand=True)  # Make the label fill the entire nullframe
+        self.edit_frames[None] = nullframe
+        self.cur_edit_frame = nullframe
+        self.cur_edit_frame.pack(fill="both", expand=True)
 
         # Create apply button
         self.apply_button = ctk.CTkButton(self, text="Apply", command=self.apply_action)
         self.apply_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
 
-        self.grid_columnconfigure('all', weight=1)
-        self.grid_rowconfigure('all', weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight=1)
 
     def make_edit_frames(self):
-        raw_edit=InputFrame(self,print,(0,0),lambda s:True)
+        raw_edit = InputFrame(self, print, (0, 0), lambda s: True)
+        self.edit_frames[str]=raw_edit
+        num_edit = InputFrame(self, print, (0, 0), str.isdigit)
 
-    def show_cur_value_interface(self,value):
-        raise NotImplementedError # Show inteface from edit_frames with type(value) as key and set its value to value.
+    def show_cur_value_interface(self, value):
+        raise NotImplementedError  # Show interface from edit_frames with type(value) as key and set its value to value.
 
     def hide_cur_value_interface(self):
-        raise NotImplementedError # Hide interface for current value.
+        raise NotImplementedError  # Hide interface for current value.
 
-    def factory_choose_key(self,key):
+    def factory_choose_key(self, key):
         def func():
-            self.curkey=key
+            self.curkey = key
             print("Swapped to", key)
         return func
 
@@ -71,6 +82,7 @@ class ctkDataManager(ctk.CTkToplevel):
     def apply_action(self):
         print("Apply button pressed")
 
+
 def structTest(struct):
     root = DarkCTK.GetMain()
     root.geometry("600x400")
@@ -79,9 +91,7 @@ def structTest(struct):
 
 
 def main():
-    struct=[
-        1,2,3,4,5
-    ]
+    struct = [1, 2, 3, 4, 5]
     structTest(struct)
 
 
