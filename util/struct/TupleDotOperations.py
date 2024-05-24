@@ -1,7 +1,11 @@
 import random
 
 
-def Toper(T1, T2, oper, forceInteger):
+def Tnum(n,size=2):
+    return (n,)*size
+
+
+def Toper(T1:tuple, T2:tuple, oper, forceInteger):
     if len(T1) != len(T2):
         raise Exception("Bad length:{}!={}".format(T1, T2))
     X = []
@@ -47,8 +51,8 @@ def Tdiv(T1, T2, forceInteger=False):
     return Toper(T1, T2, lambda A, B: A / B, forceInteger)
 
 
-def Tmod(T1, T2):
-    return Toper(T1, T2, lambda A, B: A % B, True)
+def Tmod(T1, T2, forceInteger=False):
+    return Toper(T1, T2, lambda A, B: A % B, forceInteger)
 
 
 def Tmanhat(T):

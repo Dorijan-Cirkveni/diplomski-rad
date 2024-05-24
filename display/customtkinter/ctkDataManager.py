@@ -13,7 +13,10 @@ class ctkDataManager(ctk.CTkToplevel):
         self.curkey=None
         self.stack=[]
         self.title("Data Manager")
-        self.geometry("400x300")
+        size=(600,400)
+        loc=getLoc(root,size)
+        print(loc)
+        self.geometry(loc)
 
         self.return_button = ctk.CTkButton(self, text="Return", command=self.return_action)
         self.return_button.grid(row=0, column=0, padx=10, pady=10, sticky="w")
@@ -25,7 +28,7 @@ class ctkDataManager(ctk.CTkToplevel):
         self.edit_archframe = ctk.CTkFrame(self)
         self.edit_archframe.grid(row=1, column=1, sticky="w")
         self.edit_frames=dict()
-        nullframe=None
+        nullframe=None # Add a frame saying "No entry selected" as nullframe, with archframe as parent
         self.cur_edit_frame=nullframe
 
         # Create apply button
@@ -38,7 +41,10 @@ class ctkDataManager(ctk.CTkToplevel):
     def make_edit_frames(self):
         raw_edit=InputFrame(self,print,(0,0),lambda s:True)
 
-    def remove_cur_value_interface(self):
+    def show_cur_value_interface(self,value):
+        raise NotImplementedError # Show inteface from edit_frames with type(value) as key and set its value to value.
+
+    def hide_cur_value_interface(self):
         raise NotImplementedError # Hide interface for current value.
 
     def factory_choose_key(self,key):

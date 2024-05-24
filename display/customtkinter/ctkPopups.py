@@ -1,16 +1,4 @@
 from ctkDefinitions import *
-from util.struct.TupleDotOperations import *
-
-def getLoc(master, size):
-    rootloc=(master.winfo_x(),master.winfo_y())
-    rootsize=(master.winfo_width(),master.winfo_height())
-    loc=Tadd(rootloc,Tdiv(rootsize,(2,)*2,True))
-    sizeloc=Tsub(loc,Tdiv(size,(2,)*2, True))
-    print(rootsize)
-
-    a,b,c,d=size+sizeloc
-    s="%dx%d+%d+%d" % (a,b,c,d)
-    return s
 
 
 class PopupMessage(ctk.CTkToplevel):
