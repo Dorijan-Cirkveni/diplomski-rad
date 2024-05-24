@@ -18,9 +18,7 @@ class ButtonData:
         :param master:
         :return:
         """
-        legible_text=util.UtilManager.MakeClassNameReadable(self.text)
-        final_text=util.UtilManager.StringLimbo(legible_text,16)
-        res = ctk.CTkButton(master, text=final_text, command=self.function)
+        res = ctk.CTkButton(master, text=self.text, command=self.function)
         if self.offset:
             res.pack(pady=5, padx=(20, 10), anchor="w")
         else:

@@ -87,13 +87,17 @@ def StringLimbo(s: str, maxspace, splitter=" "):
     SL = s.split(splitter) + ["A" * (maxspace + 1)]
     for e in SL:
         k = len(e)
-        if len(cur) + k +1 > maxspace and cur:
+        if len(cur) + k + 1 > maxspace and cur:
             L.append(cur)
             cur = ""
         if cur:
             cur += " "
         cur += e
     return "\n".join(L)
+
+
+def ProcessClassName(s: str, maxspace=16, splitter=" "):
+    return StringLimbo(MakeClassNameReadable(s), maxspace, splitter)
 
 
 def DoNothing(*_, **__):
@@ -140,7 +144,7 @@ def limrange(start, end, step, limit):
     return range(start, end, step)
 
 
-def adjustRatio(size, ratio:list):
+def adjustRatio(size, ratio: list):
     s = sum(ratio)
     adjRatio = [e * size / s for e in ratio]
     adjRatio = [(i, int(e), e - int(e)) for i, e in enumerate(adjRatio)]
@@ -181,8 +185,8 @@ def AddValueToLayeredStruct(S: [dict, list], types: list[type], indices: list, v
 
 
 def main():
-    s="Hello World"
-    s2=StringLimbo(s,10)
+    s = "Hello World"
+    s2 = StringLimbo(s, 10)
     print(s2)
     return
 

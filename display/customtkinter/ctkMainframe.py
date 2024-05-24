@@ -1,4 +1,5 @@
 import test_json.test_json_manager as jsonmngr
+import util.UtilManager
 import util.UtilManager as utilmngr
 
 from environments.GridEnvironment import *
@@ -141,7 +142,8 @@ class SelectionFrame(iTkFrame):
         for filename, envs in self.env_names:
             elements = []
             for ind, name in enumerate(envs):
-                elements.append(ButtonData(name, self.factory_env(filename, ind, name), 1))
+                legible_text = util.UtilManager.ProcessClassName(name)
+                elements.append(ButtonData(legible_text, self.factory_env(filename, ind, name), 1))
             cat = CategoryData(filename, elements, 0)
             cats.append(cat)
         return cats
@@ -153,7 +155,8 @@ class SelectionFrame(iTkFrame):
             classname = utilmngr.MakeClassNameReadable(agclass.__name__)
             elements = []
             for name, data in agclass.get_preset_list():
-                elements.append(ButtonData(name, self.factory_agent(agname, data), 1))
+                legible_text = util.UtilManager.ProcessClassName(name)
+                elements.append(ButtonData(legible_text, self.factory_agent(agname, data), 1))
             cat = CategoryData(classname, elements, 0)
             cats.append(cat)
         return cats
