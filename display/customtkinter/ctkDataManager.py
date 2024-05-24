@@ -48,9 +48,11 @@ class ctkDataManager(ctk.CTkToplevel):
         self.show_cur_keys()
 
     def make_edit_frames(self):
-        raw_edit = InputFrame(self.edit_archframe, print, (0, 0), lambda s: True)
+        raw_edit = InputFrame(self.edit_archframe, print, (0, 0), lambda s: True,
+                              text="Value:",butext="Apply")
         self.edit_frames[str] = raw_edit
-        num_edit = InputFrame(self.edit_archframe, print, (0, 0), str.isdigit)
+        num_edit = InputFrame(self.edit_archframe, print, (0, 0), str.isdigit,
+                              text="Integer value:",butext="Apply")
         self.edit_frames[int] = num_edit
 
     def generate_list(self,L):
