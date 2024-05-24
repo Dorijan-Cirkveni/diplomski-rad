@@ -1,4 +1,7 @@
 from ctkDefinitions import *
+from util.struct.TupleDotOperations import *
+
+def getLoc(cur:ctk.CTkToplevel, master):
 
 
 class PopupMessage(ctk.CTkToplevel):
@@ -26,12 +29,15 @@ class InputMessage(ctk.CTkToplevel):
 
         self.func = func
 
-        root:ctk=DarkCTK.GetMain()
-        rootloc=(root.winfo_x,root.winfo_y)
-        print("wasd",rootloc)
+        rootloc=(master.winfo_x(),master.winfo_y())
+        rootsize=(master.winfo_width(),master.winfo_height())
+        loc=Tadd(rootloc,Tdiv(rootsize,(2,)*2,True))
+        size=(300,150)
+        sizeloc=Tsub(loc,Tdiv(size,(2,)*2, True))
+        print(rootsize)
 
-        self.title(title)
-        self.geometry("300x150")
+        a,b,c,d=size+sizeloc
+        self.geometry("%dx%d+%d+%d" % (a,b,c,d))
 
         self.message_label = ctk.CTkLabel(self, text=message, wraplength=250)
         self.message_label.pack(pady=10)
@@ -52,7 +58,7 @@ class InputMessage(ctk.CTkToplevel):
 
 
 def main():
-    root = ctk.CTk()
+    root = DarkCTK()
     root.geometry("400x200")
 
     def show_input_message():

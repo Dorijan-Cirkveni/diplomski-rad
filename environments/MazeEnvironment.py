@@ -62,7 +62,7 @@ class EvenMazeCreatorDFS(iMazeCreator):
     """
     def __init__(self, scale: tuple, rand: random.Random):
         super().__init__(scale, rand)
-        self.halfscale = Tfdiv(Tadd(self.scale, (1, 1)), (2, 2))
+        self.halfscale = Tdiv(Tadd(self.scale, (1, 1)), (2, 2), True)
 
     def copy(self):
         """

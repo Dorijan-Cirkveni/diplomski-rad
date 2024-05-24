@@ -154,7 +154,7 @@ class GridDisplay:
 
         self.screenV = screenV
         self.gridscreenV = gridscreenV
-        tileV1 = min(tdo.Tfdiv(gridscreenV, gridV))
+        tileV1 = min(tdo.Tdiv(gridscreenV, gridV, True))
         self.tileV = (tileV1, tileV1)
 
         self.name = grid.name

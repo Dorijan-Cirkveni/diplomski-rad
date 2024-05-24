@@ -43,12 +43,8 @@ def Tmul(T1, T2, forceInteger=False):
     return Toper(T1, T2, lambda A, B: A * B, forceInteger)
 
 
-def Tdiv(T1, T2):
-    return Toper(T1, T2, lambda A, B: A / B, False)
-
-
-def Tfdiv(T1, T2):
-    return Toper(T1, T2, lambda A, B: int(A // B), True)
+def Tdiv(T1, T2, forceInteger=False):
+    return Toper(T1, T2, lambda A, B: A / B, forceInteger)
 
 
 def Tmod(T1, T2):

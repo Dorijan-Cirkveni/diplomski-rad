@@ -53,7 +53,7 @@ class GridFrame(DIB.iTkFrameDef):
         self.canvas.create_rectangle(*((0, 0) + self.screen_size), fill="cyan")
         if type(self.grid_object) != Grid2D:
             s = str(self.grid_object)
-            self.canvas.create_text(Tfdiv(self.screen_size, (2, 2)), text=s, font=("Consolas", 21))
+            self.canvas.create_text(Tdiv(self.screen_size, (2, 2), True), text=s, font=("Consolas", 21))
             return
         grid: Grid2D = self.grid_object
         cell_scale = Tdiv(self.screen_size, grid.scale)
