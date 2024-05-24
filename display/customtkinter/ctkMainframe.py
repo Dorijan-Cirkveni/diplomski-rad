@@ -179,7 +179,7 @@ def testframe():
 
 def main():
     scale = (800, 600)
-    root = DarkCTK()
+    root = DarkCTK.GetMain()
     root.geometry("{}x{}".format(*scale))
     root.minsize(*scale)
     

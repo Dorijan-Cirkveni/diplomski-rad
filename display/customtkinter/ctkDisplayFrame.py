@@ -278,7 +278,7 @@ DFDF.update({
 
 
 def main():
-    root = DarkCTK()
+    root = DarkCTK.GetMain()
     scale = (800, 600)
     frame=SwapFrame(root,"Test",print,scale)
     frame.pack()

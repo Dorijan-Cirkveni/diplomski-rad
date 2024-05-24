@@ -265,7 +265,7 @@ class SideMenu(iTkFrameDef):
 
 
 def main():
-    root = DarkCTK()
+    root = DarkCTK.GetMain()
     root.geometry("200x600")
     root.title("CustomTkinter Grid Example")
     app = SideMenu(root, print, (200, 600))

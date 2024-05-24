@@ -82,7 +82,7 @@ def main():
     screen = pygame.display.set_mode(screen_size)
     pygame.display.set_caption('Grid Tile Display')
 
-    root = DarkCTK()
+    root = DarkCTK.GetMain()
     root.geometry("800x600")
     root.title("CustomTkinter Grid Example")
 

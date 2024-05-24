@@ -154,7 +154,7 @@ class CategoricalScrollableFrame(ScrollableFrameBase):
 
 
 def main():
-    root = DarkCTK()
+    root = DarkCTK.GetMain()
     root.geometry("800x600")
 
     scroll_frame = CategoricalScrollableFrame(root)

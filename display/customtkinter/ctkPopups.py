@@ -26,6 +26,10 @@ class InputMessage(ctk.CTkToplevel):
 
         self.func = func
 
+        root:ctk=DarkCTK.GetMain()
+        rootloc=(root.winfo_x,root.winfo_y)
+        print("wasd",rootloc)
+
         self.title(title)
         self.geometry("300x150")
 

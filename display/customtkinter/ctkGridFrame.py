@@ -177,7 +177,7 @@ class GridDisplayFrame(DiB.iTkFrameDef):
 
 
 def main():
-    root = DarkCTK()
+    root = DarkCTK.GetMain()
     root.title("Grid Display Test")
     root.geometry("600x600")
 

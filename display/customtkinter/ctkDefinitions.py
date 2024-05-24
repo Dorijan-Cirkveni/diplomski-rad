@@ -13,9 +13,17 @@ class DarkCTK(ctk.CTk):
     I was born in it. Moulded by it.
     By the time I saw light mode, it was nothing but blinding.
     """
+    main = None
+
     def __init__(self, **kwargs):
         ctk.set_appearance_mode("dark")
         super().__init__(**kwargs)
+
+    @classmethod
+    def GetMain(cls):
+        if not cls.main:
+            cls.main = DarkCTK.GetMain()
+        return cls.main
 
 
 def main():
