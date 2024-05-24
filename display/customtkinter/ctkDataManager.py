@@ -8,6 +8,9 @@ class ctkDataManager(ctk.CTkToplevel):
         super().__init__(root, *args, **kwargs)
 
         self.root_struct = root_struct
+        self.cur=root_struct
+        self.curkey=None
+        self.stack=[]
         self.title("Data Manager")
         self.geometry("400x300")
 
@@ -32,7 +35,11 @@ class ctkDataManager(ctk.CTkToplevel):
         self.grid_columnconfigure('all', weight=1)
         self.grid_rowconfigure('all', weight=1)
 
-    def choose_key(self):
+    def factory_choose_key(self,key):
+        def func():
+            self.curkey=key
+            print("Swapped to")
+        return
 
     def return_action(self):
         print("Return button pressed")
@@ -52,12 +59,17 @@ class ctkDataManager(ctk.CTkToplevel):
     def apply_action(self):
         print("Apply button pressed")
 
-
-def main():
+def structTest(struct):
     root = ctk.CTk()
     root.geometry("600x400")
     data_manager = ctkDataManager(root, None)
     root.mainloop()
+
+
+def main():
+    struct=[
+        1,2,3,4,5
+    ]
 
 
 if __name__ == "__main__":
