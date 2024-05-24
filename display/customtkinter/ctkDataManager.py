@@ -1,7 +1,5 @@
-import customtkinter as ctk
-
 from ctkScrollableFrames import *
-from display.customtkinter.ctkDisplayBase import InputFrame
+from display.customtkinter.base.ctkInputs import *
 
 
 class ctkDataManager(ctk.CTkToplevel):

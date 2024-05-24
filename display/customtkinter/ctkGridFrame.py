@@ -1,20 +1,13 @@
-import json
 import math
 import os
-from typing import Literal
 
-import customtkinter as ctk
 from PIL import Image, ImageTk
 
 import definitions
-from display.customtkinter.ctkDefinitions import *
-from util.struct.TupleDotOperations import *
-import environments.EnvironmentManager as env_mngr
+from display.customtkinter.base.ctkDefinitions import *
 from environments.GridEnvironment import *
-from agents.Agent import GraphicManualInputAgent
 from util.RootPathManager import RootPathManager
-from util.UtilManager import Counter
-import ctkDisplayBase as DiB
+from display.customtkinter.base import ctkDisplayBase as DiB
 
 rpm = RootPathManager()
 

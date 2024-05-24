@@ -1,5 +1,5 @@
 import util.UtilManager
-from ctkDefinitions import *
+from display.customtkinter.base.ctkDefinitions import *
 
 
 class ButtonData:

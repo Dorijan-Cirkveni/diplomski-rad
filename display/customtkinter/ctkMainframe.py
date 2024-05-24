@@ -1,5 +1,3 @@
-import json
-
 import test_json.test_json_manager as jsonmngr
 import util.UtilManager as utilmngr
 
@@ -7,7 +5,7 @@ from environments.GridEnvironment import *
 import agents.AgentManager as agentmngr
 from agents.Agent import GraphicManualInputAgent
 
-from ctkDisplayBase import *
+from display.customtkinter.base.ctkInputs import *
 from ctkScrollableFrames import *
 from ctkPopups import *
 from display.customtkinter.ctkDisplayFrame import DisplayFrame

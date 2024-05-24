@@ -1,4 +1,4 @@
-from ctkDefinitions import *
+from display.customtkinter.base.ctkDefinitions import *
 
 
 class PopupMessage(ctk.CTkToplevel):

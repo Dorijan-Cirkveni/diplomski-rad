@@ -1,12 +1,10 @@
-import json
-
 import environments.EnvironmentManager
-from ctkDisplayBase import *
+from display.customtkinter.base.ctkInputs import *
 from ctkGridFrame import *
 import interfaces as itf
 from agents.Agent import GraphicManualInputAgent
 import test_json.test_json_manager as jsonmngr
-from display.customtkinter.ctkDefinitions import *
+from display.customtkinter.base.ctkDefinitions import *
 
 from util.struct.TupleDotOperations import *
 

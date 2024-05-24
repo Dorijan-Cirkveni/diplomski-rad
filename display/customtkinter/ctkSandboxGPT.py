@@ -1,7 +1,7 @@
 from PIL import Image, ImageTk
 import pygame
 
-from display.customtkinter.ctkDefinitions import *
+from display.customtkinter.base.ctkDefinitions import *
 from environments.GridEnvironment import *
 import util.RootPathManager as RPM
 
