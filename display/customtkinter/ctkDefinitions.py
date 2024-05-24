@@ -22,7 +22,7 @@ class DarkCTK(ctk.CTk):
     @classmethod
     def GetMain(cls):
         if not cls.main:
-            cls.main = DarkCTK.GetMain()
+            cls.main = DarkCTK()
         return cls.main
 
 
