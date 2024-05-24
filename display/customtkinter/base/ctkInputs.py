@@ -1,6 +1,7 @@
 import json
 
 from display.customtkinter.base.ctkDisplayBase import *
+from display.customtkinter.ctkPopups import *
 
 
 class BaseInputFrame(iTkFrameDef):
@@ -13,7 +14,7 @@ class InputFrame(BaseInputFrame):
     counter = Counter(0)
 
     def __init__(self, master, return_lambda: callable, screen_size: tuple, rule: callable, defaultValue="",
-                 text="Iterations:", butext="Run"):
+                 text="Iterations:", butext="Run", errmsg="Input Error"):
         self.label = None
         self.rule = rule
         self.input = defaultValue
@@ -21,6 +22,7 @@ class InputFrame(BaseInputFrame):
         self.id = self.counter.use()
         self.text = text
         self.butext = butext
+        self.errmsg = errmsg
         super().__init__(master, "Input Frame", return_lambda, screen_size)
 
     def create_widgets(self):
@@ -45,6 +47,7 @@ class InputFrame(BaseInputFrame):
         s = self.input.get()
         if not self.rule(s):
             print("{} not valid!".format(s))
+            PopupMessage(self,"Input Error",self.errmsg)
             return
         self.return_lambda(s)
 
