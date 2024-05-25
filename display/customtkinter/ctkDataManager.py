@@ -1,5 +1,3 @@
-import json
-import customtkinter as ctk
 import util.UtilManager
 from ctkScrollableFrames import *
 from display.customtkinter.base.ctkInputs import *
@@ -81,7 +79,7 @@ class ctkDataManager(ctk.CTkToplevel):
         X = []
         for e in D:
             X.append(ButtonData(str(e), self.factory_choose_key(e), 0))
-        X.sort(key=lambda e: e[0])
+        X.sort(key=lambda el: el.text)
         return X
 
     def make_scroll_generators(self):
@@ -94,7 +92,8 @@ class ctkDataManager(ctk.CTkToplevel):
         }
 
     def ApplyCurMethod(self, value):
-        return self.apply_methods[type(value)](value)
+        method = self.apply_methods[type(value)]
+        return method(value)
 
     def show_cur_keys(self):
         keys = self.ApplyCurMethod(self.cur)

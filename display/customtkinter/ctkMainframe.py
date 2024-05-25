@@ -23,23 +23,25 @@ class EnvCustomFrame(ctk.CTkFrame):
 
         self.envname = None
         self.agentclass = None
+        self.env_data = None
+        self.agent_data = None
+
         self.s_env = ctk.StringVar()
         self.s_env.set("No environment loaded")
         self.s_ag = ctk.StringVar()
         self.s_ag.set("No agent loaded")
         self.env_label = ctk.CTkLabel(self, textvariable=self.s_env, font=("Helvetica", 18))
         self.env_label.grid(row=count(), column=0, pady=20)
-        tmep = ctk.CTkLabel(self, text="Environment raw data:", font=("Helvetica", 18))
+        tmep = ctk.CTkLabel(self, text="Environment:", font=("Helvetica", 18))
         tmep.grid(row=count(), column=0, padx=20, pady=10, sticky="nsew")
-        self.env_data_box = ctk.CTkTextbox(self, width=200, height=100)
-        self.env_data_box.grid(row=count(), column=0, padx=20, pady=10, sticky="nsew")
 
         self.agent_label = ctk.CTkLabel(self, textvariable=self.s_ag, font=("Helvetica", 18))
         self.agent_label.grid(row=count(), column=0, pady=20)
-        tmep = ctk.CTkLabel(self, text="Agent raw data:", font=("Helvetica", 18))
+        tmep = ctk.CTkLabel(self, text="Agent:", font=("Helvetica", 18))
         tmep.grid(row=count(), column=0, padx=20, pady=10, sticky="nsew")
-        self.agent_data_box = ctk.CTkTextbox(self, width=200, height=100)
-        self.agent_data_box.grid(row=count(), column=0, padx=20, pady=10, sticky="nsew")
+
+        self.edit_button = ctk.CTkButton(self, text="Edit parameters...", command=self.edit_parameters)
+        self.edit_button.grid(row=count(), column=0, padx=20, pady=10, sticky="nsew")
 
         self.run_button = ctk.CTkButton(self, text="Run environment", command=self.run_env)
         self.run_button.grid(row=count(), column=0, pady=10)
@@ -47,40 +49,37 @@ class EnvCustomFrame(ctk.CTkFrame):
     def set_env(self, file, ind, name):
         envname = utilmngr.MakeClassNameReadable(file) + ": " + name
         self.s_env.set(envname)
-
-        envraw = jsonmngr.ImportManagedJSON(f"{file}|{ind}")
-        # Replace text box content with envraw
-        self.env_data_box.delete("1.0", "end")
-        self.env_data_box.insert("1.0", json.dumps(envraw, indent=4))
+        self.env_data = jsonmngr.ImportManagedJSON(f"{file}|{ind}")
 
     def set_agent(self, agentname, agentraw):
         agentclass = agentmngr.ALL_AGENTS[agentname]
         classname = utilmngr.MakeClassNameReadable(agentclass.__name__)
         self.s_ag.set("Agent: " + classname)
-
         self.agentclass = agentclass
-        # Replace text box content with envraw
-        self.agent_data_box.delete("1.0", "end")
-        self.agent_data_box.insert("1.0", agentraw)
+        self.agent_data = agentraw
+
+    def edit_parameters(self):
+        if self.env_data is None or self.agent_data is None:
+            PopupMessage(self, "Error", "Missing environment or agent data!")
+            return
+
+        ctkDataManager(self, {"env": self.env_data, "agentdata": self.agent_data}, print)
 
     def run_env(self):
         print("-" * 160)
-        envdata = self.env_data_box.get("1.0", "end")
-        if not envdata.replace("\n", "").replace(" ", ""):
+        if self.env_data is None:
             PopupMessage(self, "Error", "Missing environment data!")
             return
-        agentclass = self.agentclass
-        if not agentclass:
+        if self.agentclass is None:
             PopupMessage(self, "Error", "Missing agent!")
             return
-        agentdata = self.agent_data_box.get("1.0", "end")
-        print("Env:", envdata)
+        print("Env:", json.dumps(self.env_data, indent=4))
         print("Agent class", self.agentclass)
-        print("Agent data", agentdata)
+        print("Agent data", self.agent_data)
         data = {
-            "env": envdata,
-            "agent_class": agentclass,
-            "agent_data": agentdata
+            "env": json.dumps(self.env_data, indent=4),
+            "agent_class": self.agentclass,
+            "agent_data": self.agent_data
         }
         self.run_command(data)
 
@@ -95,7 +94,7 @@ class SelectionFrame(iTkFrame):
         super().__init__(master, GRIDSELECT, dimensions)
 
     def create_widgets(self):
-        self.env_names = jsonmngr.getNamesAndIndices()  # Format: [("file",["Env1","Env2","Env3"])]
+        self.env_names = jsonmngr.getNamesAndIndices()  # Format: [("file", ["Env1", "Env2", "Env3"])]
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=1)
