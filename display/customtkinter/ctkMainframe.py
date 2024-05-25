@@ -16,7 +16,7 @@ from display.customtkinter.ctkDisplayFrame import DisplayFrame
 class EnvCustomFrame(ctk.CTkFrame):
     def __init__(self, master, run_command, **kwargs):
         super().__init__(master, **kwargs)
-        self.run_command=run_command
+        self.run_command = run_command
         count = utilmngr.Counter(0)
         self.grid_columnconfigure(count(), weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -45,18 +45,18 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.run_button.grid(row=count(), column=0, pady=10)
 
     def set_env(self, file, ind, name):
-        envname=utilmngr.MakeClassNameReadable(file) + ": " + name
+        envname = utilmngr.MakeClassNameReadable(file) + ": " + name
         self.s_env.set(envname)
 
         envraw = jsonmngr.ImportManagedJSON(f"{file}|{ind}")
         # Replace text box content with envraw
         self.env_data_box.delete("1.0", "end")
-        self.env_data_box.insert("1.0", json.dumps(envraw,indent=4))
+        self.env_data_box.insert("1.0", json.dumps(envraw, indent=4))
 
     def set_agent(self, agentname, agentraw):
         agentclass = agentmngr.ALL_AGENTS[agentname]
         classname = utilmngr.MakeClassNameReadable(agentclass.__name__)
-        self.s_ag.set("Agent: "+classname)
+        self.s_ag.set("Agent: " + classname)
 
         self.agentclass = agentclass
         # Replace text box content with envraw
@@ -64,23 +64,23 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agent_data_box.insert("1.0", agentraw)
 
     def run_env(self):
-        print("-"*160)
-        envdata=self.env_data_box.get("1.0", "end")
-        if not envdata.replace("\n","").replace(" ",""):
-            PopupMessage(self,"Error","Missing environment data!")
+        print("-" * 160)
+        envdata = self.env_data_box.get("1.0", "end")
+        if not envdata.replace("\n", "").replace(" ", ""):
+            PopupMessage(self, "Error", "Missing environment data!")
             return
-        agentclass=self.agentclass
+        agentclass = self.agentclass
         if not agentclass:
-            PopupMessage(self,"Error","Missing agent!")
+            PopupMessage(self, "Error", "Missing agent!")
             return
-        agentdata=self.agent_data_box.get("1.0", "end")
-        print("Env:",envdata)
-        print("Agent class",self.agentclass)
-        print("Agent data",agentdata)
-        data={
-            "env":envdata,
-            "agent_class":agentclass,
-            "agent_data":agentdata
+        agentdata = self.agent_data_box.get("1.0", "end")
+        print("Env:", envdata)
+        print("Agent class", self.agentclass)
+        print("Agent data", agentdata)
+        data = {
+            "env": envdata,
+            "agent_class": agentclass,
+            "agent_data": agentdata
         }
         self.run_command(data)
 
@@ -90,8 +90,8 @@ class SelectionFrame(iTkFrame):
         self.w_agents = None
         self.w_envs = None
         self.w_data = None
-        self.env_names=None
-        self.kwargs=kwargs
+        self.env_names = None
+        self.kwargs = kwargs
         super().__init__(master, GRIDSELECT, dimensions)
 
     def create_widgets(self):
@@ -107,11 +107,11 @@ class SelectionFrame(iTkFrame):
         left_frame.set_elements(self.get_env_cats())
 
         # Middle frame with text, entry, and button
-        ECFc:type
-        ECFa:dict
-        ECFc,ECFa=self.kwargs.get("middle",(EnvCustomFrame,{}))
-        ECF=ECFc(self,self.run_environment,**ECFa)
-        assert isinstance(ECF,EnvCustomFrame)
+        ECFc: type
+        ECFa: dict
+        ECFc, ECFa = self.kwargs.get("middle", (EnvCustomFrame, {}))
+        ECF = ECFc(self, self.run_environment, **ECFa)
+        assert isinstance(ECF, EnvCustomFrame)
         middle_frame = ECF
         middle_frame.grid(row=0, column=1, sticky="nsew")
 
@@ -162,14 +162,16 @@ class SelectionFrame(iTkFrame):
             cats.append(cat)
         return cats
 
-    def run_environment(self,data):
-        func=self.swapFrameFactory(GRIDDISPLAY,data)
+    def run_environment(self, data):
+        func = self.swapFrameFactory(GRIDDISPLAY, data)
         func()
 
+
 class MainFrame(SwapFrame):
-    def __init__(self, master:DarkCTK, return_lambda: callable, screen_size: tuple[int, int]):
+    def __init__(self, master: DarkCTK, return_lambda: callable, screen_size: tuple[int, int]):
         super().__init__(master, "MainFrame", return_lambda, screen_size)
         master.geometry("{}x{}".format(*screen_size))
+
 
 def testframe():
     data = jsonmngr.ImportManagedJSON('t_base')
@@ -179,17 +181,18 @@ def testframe():
     Y.assign_active_agent(agentmngr.ALL_AGENTS['GMI'](""))
     return Y
 
+
 def main():
     scale = (800, 600)
     root = DarkCTK.GetMain()
     root.geometry("{}x{}".format(*scale))
     root.minsize(*scale)
-    
-    frame=SwapFrame(root,"Test",print,scale)
+
+    frame = SwapFrame(root, "Test", print, scale)
     frame.pack()
-    
-    grid_display_frame = DisplayFrame(frame,scale)
-    dispinit = SelectionFrame(frame,scale)
+
+    grid_display_frame = DisplayFrame(frame, scale)
+    dispinit = SelectionFrame(frame, scale)
     frame.add_frame(dispinit)
     frame.add_frame(grid_display_frame)
     frame.show_frame(GRIDSELECT)
@@ -198,7 +201,7 @@ def main():
     env = GridEnvironment.raw_init(raw)
     env: GridEnvironment
     env.assign_active_agent(GraphicManualInputAgent())
-    grid_display_frame.set_env(env,True)
+    grid_display_frame.set_env(env, True)
     root.mainloop()
     return
 
