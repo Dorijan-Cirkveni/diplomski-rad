@@ -1,6 +1,7 @@
 import test_json.test_json_manager as jsonmngr
 import util.UtilManager
 import util.UtilManager as utilmngr
+from display.customtkinter.ctkDataManager import ctkDataManager
 
 from environments.GridEnvironment import *
 import agents.AgentManager as agentmngr
