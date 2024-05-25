@@ -6,24 +6,25 @@ import util.UtilManager
 from ctkScrollableFrames import *
 from display.customtkinter.base.ctkInputs import *
 
-class AdvancedInputFrame(InputFrame):
-    def __init__(self, master, return_lambda: callable, inception_lambda: callable, screen_size: tuple, rule: callable):
+class AdvancedInputFrame(JSONInputFrame):
+    def __init__(self, master, return_lambda: callable, inception_lambda: callable, *args, **kwargs):
         self.inception_button = None
         self.inception_lambda=inception_lambda
-        super().__init__(master, return_lambda, screen_size, rule)
+        super().__init__(master, return_lambda, *args, **kwargs)
     def create_widgets(self):
         super().create_widgets()
-        self.button.grid(row=1, column=0, columnspan=2, pady=10)
         self.inception_button = ctk.CTkButton(self, text="Edit elements", command=self.inception_lambda)
-        self.inception_button.grid(row=1, column=0, columnspan=2, pady=10)
+        self.inception_button.grid(row=2, column=0, columnspan=2, pady=10)
 
 
 class ctkDataManager(ctk.CTkToplevel):
-    def __init__(self, root, root_struct, *args, **kwargs):
+    def __init__(self, root, root_struct, return_command:callable, *args, **kwargs):
         super().__init__(root, *args, **kwargs)
 
         self.root_struct = root_struct
         self.cur = root_struct
+        self.return_command = return_command
+
         self.curkey = None
         self.stack = []
         self.title("Data Manager")
@@ -60,6 +61,11 @@ class ctkDataManager(ctk.CTkToplevel):
         self.cur[self.curkey]=json.loads(value)
 
     def make_edit_frames(self):
+        advanced=AdvancedInputFrame(self.edit_archframe, self.apply, self.stack_action,
+                                              (0, 0), util.UtilManager.IsValidJSON,
+                                              text="Raw JSON value:",butext="Apply",errmsg="Invalid JSON!")
+        self.edit_frames[list]=advanced
+        self.edit_frames[dict]=advanced
         self.edit_frames[object] = JSONInputFrame(self.edit_archframe, self.apply,
                                               (0, 0), util.UtilManager.IsValidJSON,
                                               text="Raw JSON value:",butext="Apply",errmsg="Invalid JSON!")
@@ -114,25 +120,33 @@ class ctkDataManager(ctk.CTkToplevel):
         return func
 
     def return_action(self):
-        print("Return button pressed")
+        if not self.stack:
+            raise Exception("Quit: not enabled. Sword Art: Online.")
+        last,lastkey=self.stack.pop()
+        last[lastkey]=self.cur
+        self.cur=last
+        self.curkey=lastkey
+        self.show_cur_keys()
+        self.show_cur_value_interface(last[lastkey])
 
     def apply_action(self):
-        print("Apply button pressed")
+        self.return_command()
 
-    def apply_current(self):
-        if type(self.cur)==dict:
-            L=self.cur.keys()
-            L.sort()
-            keys=[]
+    def stack_action(self):
+        last,lastkey=self.cur,self.curkey
+        self.stack.append((last,lastkey))
+        self.cur=last[lastkey]
+        self.curkey=None
+        self.show_cur_keys()
+        self.hide_cur_value_interface()
 
 
 
 def structTest(struct):
     root = DarkCTK.GetMain()
     root.geometry("600x400")
-    data_manager = ctkDataManager(root, struct)
+    data_manager = ctkDataManager(root, struct, print)
     root.mainloop()
-    print(struct)
 
 
 def main():
