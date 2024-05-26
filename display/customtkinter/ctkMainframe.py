@@ -27,15 +27,18 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.s_env.set("No environment loaded")
         self.s_ag = ctk.StringVar()
         self.s_ag.set("No agent loaded")
+
         self.env_label = ctk.CTkLabel(self, textvariable=self.s_env, font=("Helvetica", 18))
-        self.env_label.pack()
+        self.env_label.pack(padx=10, pady=5)
+
         self.agent_label = ctk.CTkLabel(self, textvariable=self.s_ag, font=("Helvetica", 18))
-        self.agent_label.pack()
+        self.agent_label.pack(padx=10, pady=5)
+
         self.edit_button = ctk.CTkButton(self, text="Edit parameters...", command=self.edit_parameters)
-        self.edit_button.pack()
+        self.edit_button.pack(padx=10, pady=10)
 
         self.run_button = ctk.CTkButton(self, text="Run environment", command=self.run_env)
-        self.run_button.pack()
+        self.run_button.pack(padx=10, pady=10)
 
     def set_env(self, file, ind, name):
         envname = utilmngr.MakeClassNameReadable(file) + ": " + name
@@ -50,15 +53,15 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agent_data = agentraw
 
     def edit_parameters(self):
-        data={
-            "Environment name":self.s_env.get(),
-            "Environment data":self.env_data,
+        data = {
+            "Environment name": self.s_env.get(),
+            "Environment data": self.env_data,
             "Agent data": self.agent_data
         }
         ctkDataManager(self, data, print)
-        self.env_label=data["Environment name"]
-        self.env_data=data["Environment data"]
-        self.agent_data=data["Agent data"]
+        self.env_label.config(text=data["Environment name"])
+        self.env_data = data["Environment data"]
+        self.agent_data = data["Agent data"]
 
     def run_env(self):
         print("-" * 160)
@@ -77,6 +80,7 @@ class EnvCustomFrame(ctk.CTkFrame):
             "agent_data": self.agent_data
         }
         self.run_command(data)
+
 
 
 class SelectionFrame(iTkFrame):
