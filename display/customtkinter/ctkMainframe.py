@@ -20,19 +20,27 @@ class EnvCustomFrame(ctk.CTkFrame):
 
         self.envname = None
         self.agentclass = None
+        self.eval = GridEvalMethod
+
         self.env_data = None
         self.agent_data = None
+        self.evalparams={}
 
         self.s_env = ctk.StringVar()
         self.s_env.set("No environment loaded")
         self.s_ag = ctk.StringVar()
         self.s_ag.set("No agent loaded")
+        self.s_method=ctk.StringVar()
+        self.s_method.set("Method: "+self.eval.__name__)
 
         self.env_label = ctk.CTkLabel(self, textvariable=self.s_env, font=("Helvetica", 18))
         self.env_label.pack(padx=10, pady=5)
 
         self.agent_label = ctk.CTkLabel(self, textvariable=self.s_ag, font=("Helvetica", 18))
         self.agent_label.pack(padx=10, pady=5)
+
+        self.method_label = ctk.CTkLabel(self, textvariable=self.s_method, font=("Helvetica", 18))
+        self.method_label.pack(padx=10, pady=5)
 
         self.edit_button = ctk.CTkButton(self, text="Edit parameters...", command=self.edit_parameters)
         self.edit_button.pack(padx=10, pady=10)
