@@ -8,6 +8,7 @@ class PopupMessage(ctk.CTkToplevel):
         self.title(title)
         size=(300,150)
         self.geometry(getLoc(master,size))
+        self.wm_attributes("-topmost", 1)
 
         self.message_label = ctk.CTkLabel(self, text=message, wraplength=250)
         self.message_label.pack(pady=20)
@@ -29,6 +30,7 @@ class InputMessage(ctk.CTkToplevel):
         self.title(title)
         size=(300,150)
         self.geometry(getLoc(master,size))
+        self.wm_attributes("-topmost", 1)
 
         self.message_label = ctk.CTkLabel(self, text=message, wraplength=250)
         self.message_label.pack(pady=10)

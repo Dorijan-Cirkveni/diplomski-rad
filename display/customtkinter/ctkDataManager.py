@@ -31,6 +31,7 @@ class ctkDataManager(ctk.CTkToplevel):
         loc = getLoc(root, size)
         print(loc)
         self.geometry(loc)
+        self.wm_attributes("-topmost", 1)
 
         self.return_button = ctk.CTkButton(self, text="Return", command=self.return_action)
         self.return_button.grid(row=0, column=0, padx=10, pady=10, sticky="w")
