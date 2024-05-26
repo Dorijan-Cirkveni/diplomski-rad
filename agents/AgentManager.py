@@ -23,11 +23,11 @@ def test_all_agent_inits():
     X = [(e, v) for e, v in ALL_AGENTS.items() if v is not None]
     for e, v in X:
         v: base.itf.iAgent
-        if v.DEFAULT_INPUT is None:
+        if v.DEFAULT_STR_INPUT is None:
             raise Exception("Default input for {} (key {}) not defined!".format(v, e))
         res: None = None
         try:
-            res = v.from_string(v.DEFAULT_INPUT)
+            res = v.from_string(v.DEFAULT_STR_INPUT)
         except NotImplementedError:
             raise Exception("String initialisation for {} not implemented!".format(v))
         if res is None or type(res) != v:
@@ -44,7 +44,7 @@ def test_all_agent_inits():
         if name in agentshorts:
             raise Exception("{} and {} have the same name!")
         agentshorts[name]=e
-        res = v.from_string(v.DEFAULT_INPUT)
+        res = v.from_string(v.DEFAULT_STR_INPUT)
         res: iAgent
         actionID = res.performAction(ACTIONS)
         if type(actionID) != int:
@@ -62,6 +62,10 @@ def main():
     for e,v in ALL_AGENTS.items():
         if v is None:
             continue
+        if v.DEFAULT_STR_INPUT is None:
+            raise Exception("Missing DEFAULT_STR_INPUT for {}".format(e))
+        if v.DEFAULT_RAW_INPUT is None:
+            raise Exception("Missing DEFAULT_RAW_INPUT for {}".format(e))
         print(e,v.get_preset_list())
     return
 

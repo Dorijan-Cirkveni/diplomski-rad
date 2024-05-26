@@ -10,7 +10,8 @@ class BoxAgent(itf.iAgent):
     Represents an agent that does nothing.
     """
 
-    DEFAULT_INPUT = ""
+    DEFAULT_STR_INPUT = ""
+    DEFAULT_RAW_INPUT = {}
 
     @staticmethod
     def from_string(s):
@@ -56,7 +57,8 @@ class MirrorAgent(itf.iAgent):
     Represents an agent that mirrors another agent's actions with possible action mapping.
     """
 
-    DEFAULT_INPUT = "0 O"
+    DEFAULT_STR_INPUT = "0 O"
+    DEFAULT_RAW_INPUT = [0,None]
 
     def __init__(self, mirroredAgent, actionMirrors: list = None):
         """
@@ -114,7 +116,7 @@ class MirrorAgent(itf.iAgent):
         :param actions: Available actions.
         :return: object: Action to be performed.
         """
-        if self.agent_action<len(self.actionMirrors):
+        if self.actionMirrors and self.agent_action<len(self.actionMirrors):
             return self.actionMirrors[self.agent_action]
         return self.agent_action
 
@@ -123,7 +125,8 @@ class RecordedActionsAgent(itf.iAgent):
     Represents an agent that plays predefined actions in a loop.
     """
 
-    DEFAULT_INPUT = "0011223344"
+    DEFAULT_STR_INPUT = "0011223344"
+    DEFAULT_RAW_INPUT = DEFAULT_STR_INPUT
 
     def __init__(self, actions):
         """
@@ -175,13 +178,14 @@ class ManualInputAgent(itf.iAgent):
     Represents an agent that takes manual input from the user.
     """
 
-    DEFAULT_INPUT = """
+    DEFAULT_STR_INPUT = """
 {
   "mindim": [-4,-4],
   "maxdim": [4,4],
   "isrelative": true
 }
     """
+    DEFAULT_RAW_INPUT = json.loads(DEFAULT_STR_INPUT)
 
     def __init__(self, watchedDimensions, actions, guide):
         """
@@ -203,7 +207,7 @@ class ManualInputAgent(itf.iAgent):
         :param s: The string.
         :return: The agent.
         """
-        data: dict = json.loads(ManualInputAgent.DEFAULT_INPUT)
+        data: dict = json.loads(ManualInputAgent.DEFAULT_STR_INPUT)
         newdata: dict = json.loads(s)
         data.update(newdata)
         watchedDimensions = [tuple(data["mindim"]), tuple(data["maxdim"])]
@@ -268,7 +272,8 @@ class GraphicManualInputAgent(itf.iAgent):
     Represents an agent that takes manual input from the user using a graphical interface.
     """
 
-    DEFAULT_INPUT = "{}"
+    DEFAULT_STR_INPUT = "{}"
+    DEFAULT_RAW_INPUT = json.loads(DEFAULT_STR_INPUT)
 
     def __init__(self, actions=None):
         """
