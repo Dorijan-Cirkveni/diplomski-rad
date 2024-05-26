@@ -23,12 +23,16 @@ class GridEvalMethod(itf.iEvalMethod):
         self.gamma=gamma
         self.crit=crit
 
-    def evaluate_one(self, data: dict) -> float:
-        ite=data.get()
-        pass
-
-    def evaluate_all(self, data: dict) -> float:
-        pass
+    def evaluate(self, data: dict) -> float:
+        ite=data.get("iter",0)
+        winstatus,winiter=data.get("winstatus",(None,-1))
+        base=0
+        if winstatus is not None:
+            ite=winiter
+            base=1 if winstatus else -1
+        else:
+            return 0
+        return base**ite
 
 
 class GridEnvironment(itf.iEnvironment):

@@ -154,10 +154,7 @@ class iEntity(iRawDictInit):
 
 
 class iEvalMethod:
-    def evaluate_one(self, data: dict) -> float:
-        raise NotImplementedError
-
-    def evaluate_all(self, data: dict) -> float:
+    def evaluate(self, data: dict) -> float:
         raise NotImplementedError
 
 
