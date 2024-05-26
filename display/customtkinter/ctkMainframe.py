@@ -59,11 +59,15 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agent_data = agentraw
 
     def edit_parameters(self):
-        if self.env_data is None or self.agent_data is None:
-            PopupMessage(self, "Error", "Missing environment or agent data!")
-            return
-
-        ctkDataManager(self, {"env": self.env_data, "agentdata": self.agent_data}, print)
+        data={
+            "Environment name":self.env_label,
+            "Environment data":self.env_data,
+            "Agent data": self.agent_data
+        }
+        ctkDataManager(self, data, print)
+        self.env_label=data["Environment name"]
+        self.env_data=data["Environment data"]
+        self.agent_data=data["Agent data"]
 
     def run_env(self):
         print("-" * 160)
@@ -95,6 +99,7 @@ class SelectionFrame(iTkFrame):
 
     def create_widgets(self):
         self.env_names = jsonmngr.getNamesAndIndices()  # Format: [("file", ["Env1", "Env2", "Env3"])]
+        print("ENV:\n"+json.dumps(self.env_names))
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=1)
