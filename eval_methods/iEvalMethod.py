@@ -1,8 +1,11 @@
 class iEvalMethod:
     def __init__(self):
 
-    def evaluate(self, data:dict, entID):
-        grid:Grid2D=
+    def evaluate_one(self, data:dict)->float:
+        raise NotImplementedError
+
+    def evaluate_all(self,data:dict)->float:
+        raise NotImplementedError
 
 
 def main():
