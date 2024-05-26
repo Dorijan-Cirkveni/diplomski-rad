@@ -60,7 +60,7 @@ class EnvCustomFrame(ctk.CTkFrame):
 
     def edit_parameters(self):
         data={
-            "Environment name":self.env_label,
+            "Environment name":self.s_env.get(),
             "Environment data":self.env_data,
             "Agent data": self.agent_data
         }

@@ -126,7 +126,7 @@ class RecordedActionsAgent(itf.iAgent):
     """
 
     DEFAULT_STR_INPUT = "0011223344"
-    DEFAULT_RAW_INPUT = DEFAULT_STR_INPUT
+    DEFAULT_RAW_INPUT = [DEFAULT_STR_INPUT]
 
     def __init__(self, actions):
         """

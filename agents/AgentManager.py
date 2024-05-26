@@ -69,6 +69,7 @@ def main():
         vdrt=type(v.DEFAULT_RAW_INPUT)
         if vdrt not in {dict,list}:
             raise Exception("Invalid DEFAULT_RAW_INPUT type for {}:{}".format(e,vdrt))
+        agex=v.raw_init(v.DEFAULT_RAW_INPUT)
         print(e,v.get_preset_list())
     return
 
