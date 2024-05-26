@@ -64,7 +64,9 @@ class EnvCustomFrame(ctk.CTkFrame):
         data = {
             "Environment name": self.s_env.get(),
             "Environment data": self.env_data,
-            "Agent data": self.agent_data
+            "Agent data": self.agent_data,
+            "Evaluation method": self.eval,
+            "Evaluation parameters": self.evalparams
         }
         ctkDataManager(self, data, print)
         self.env_label.config(text=data["Environment name"])
