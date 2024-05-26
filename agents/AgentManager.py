@@ -66,6 +66,9 @@ def main():
             raise Exception("Missing DEFAULT_STR_INPUT for {}".format(e))
         if v.DEFAULT_RAW_INPUT is None:
             raise Exception("Missing DEFAULT_RAW_INPUT for {}".format(e))
+        vdrt=type(v.DEFAULT_RAW_INPUT)
+        if vdrt not in {dict,list}:
+            raise Exception("Invalid DEFAULT_RAW_INPUT type for {}:{}".format(e,vdrt))
         print(e,v.get_preset_list())
     return
 

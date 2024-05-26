@@ -33,7 +33,7 @@ class iAgent(baseClasses.iRawInit):
     @classmethod
     def get_preset_list(cls):
         X = sorted(list(cls.INPUT_PRESETS.items()))
-        X.append(("Default",cls.DEFAULT_STR_INPUT))
+        X.append(("Default",cls.DEFAULT_RAW_INPUT))
         return X
 
     def receiveEnvironmentData(self, data):
