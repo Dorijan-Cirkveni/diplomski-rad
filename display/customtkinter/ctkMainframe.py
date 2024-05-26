@@ -17,9 +17,6 @@ class EnvCustomFrame(ctk.CTkFrame):
     def __init__(self, master, run_command, **kwargs):
         super().__init__(master, **kwargs)
         self.run_command = run_command
-        count = utilmngr.Counter(0)
-        self.grid_columnconfigure(count(), weight=1)
-        self.grid_rowconfigure(1, weight=1)
 
         self.envname = None
         self.agentclass = None
@@ -31,20 +28,14 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.s_ag = ctk.StringVar()
         self.s_ag.set("No agent loaded")
         self.env_label = ctk.CTkLabel(self, textvariable=self.s_env, font=("Helvetica", 18))
-        self.env_label.grid(row=count(), column=0, pady=20)
-        tmep = ctk.CTkLabel(self, text="Environment:", font=("Helvetica", 18))
-        tmep.grid(row=count(), column=0, padx=20, pady=10, sticky="nsew")
-
+        self.env_label.pack()
         self.agent_label = ctk.CTkLabel(self, textvariable=self.s_ag, font=("Helvetica", 18))
-        self.agent_label.grid(row=count(), column=0, pady=20)
-        tmep = ctk.CTkLabel(self, text="Agent:", font=("Helvetica", 18))
-        tmep.grid(row=count(), column=0, padx=20, pady=10, sticky="nsew")
-
+        self.agent_label.pack()
         self.edit_button = ctk.CTkButton(self, text="Edit parameters...", command=self.edit_parameters)
-        self.edit_button.grid(row=count(), column=0, padx=20, pady=10, sticky="nsew")
+        self.edit_button.pack()
 
         self.run_button = ctk.CTkButton(self, text="Run environment", command=self.run_env)
-        self.run_button.grid(row=count(), column=0, pady=10)
+        self.run_button.pack()
 
     def set_env(self, file, ind, name):
         envname = utilmngr.MakeClassNameReadable(file) + ": " + name
