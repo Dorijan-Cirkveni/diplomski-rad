@@ -154,8 +154,6 @@ class iEntity(iRawDictInit):
 
 
 class iEvalMethod:
-    def __init__(self):
-
     def evaluate_one(self, data: dict) -> float:
         raise NotImplementedError
 
@@ -385,8 +383,6 @@ class iEnvironment(iRawDictInit):
         for i, groupSize in enumerate(ratio):
             X.append(self.GenerateGroup(groupSize, learning_aspects, requests))
         return
-
-    def GenerateAgentTest(self, ):
 
 
     def GenerateGroupTest(self, groupsize, learning_aspects, requests: dict):

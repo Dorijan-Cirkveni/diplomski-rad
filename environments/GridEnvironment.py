@@ -18,6 +18,19 @@ BASETILECOUNT = 8
 defaultTileTypes = [Grid2DTile(i) for i in range(BASETILECOUNT)]
 
 
+class GridEvalMethod(itf.iEvalMethod):
+    def __init__(self, gamma=0.95, crit="all"):
+        self.gamma=gamma
+        self.crit=crit
+
+    def evaluate_one(self, data: dict) -> float:
+        ite=data.get()
+        pass
+
+    def evaluate_all(self, data: dict) -> float:
+        pass
+
+
 class GridEnvironment(itf.iEnvironment):
     """
     A class representing a return_grid environment.
