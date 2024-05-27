@@ -61,7 +61,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agentclass = agentclass
         self.agent_data = agentraw
 
-    def edit_parameters(self):
+    def get_parameters(self):
         data = {
             "Environment name": self.s_env.get(),
             "Environment data": self.env_data,
@@ -69,6 +69,10 @@ class EnvCustomFrame(ctk.CTkFrame):
             "Evaluation method": self.eval.__name__,
             "Evaluation parameters": self.evalparams
         }
+        return data
+
+    def edit_parameters(self):
+        data=self.get_parameters()
         ctkDataManager(self, data, self.close_edit_parameters)
 
     def close_edit_parameters(self,data):
@@ -83,20 +87,23 @@ class EnvCustomFrame(ctk.CTkFrame):
 
     def run_env(self):
         print("-" * 160)
-        if self.env_data is None:
+        data=self.get_parameters()
+        env_name=data.get("Environment name",None)
+        env_data=data.get("Environment data",None)
+        if env_name is None:
+            PopupMessage(self, "Error", "Missing environment name!")
+            return
+        if env_data is None:
             PopupMessage(self, "Error", "Missing environment data!")
             return
         if self.agentclass is None:
             PopupMessage(self, "Error", "Missing agent!")
             return
-        print("Env:", json.dumps(self.env_data, indent=4))
+        data["Agent class"]=self.agentclass
+        print(env_name is None,)
+        print("Env:", json.dumps(env_data, indent=4))
         print("Agent class", self.agentclass)
         print("Agent data", self.agent_data)
-        data = {
-            "env": json.dumps(self.env_data, indent=4),
-            "agent_class": self.agentclass,
-            "agent_data": self.agent_data
-        }
         self.run_command(data)
 
 

@@ -100,14 +100,13 @@ class DisplayFrame(iTkFrame):
         self.w_data.update_text(text)
 
     def receiveData(self, data: dict):
-        envstr=data["env"]
-        agentclass:iAgent=data["agent_class"]
-        agentdata=data["agent_data"]
-        envraw=json.loads(envstr)
-        env:GridEnvironment=environments.EnvironmentManager.readEnvironment([envraw],0)
-        agent=agentclass.raw_init(agentdata)
+        envraw = data["Environment data"]
+        agentclass: iAgent = data["Agent class"]
+        agentdata = data["Agent data"]
+        env: GridEnvironment = environments.EnvironmentManager.readEnvironment([envraw], 0)
+        agent = agentclass.raw_init(agentdata)
         env.assign_active_agent(agent)
-        self.set_env(env,True)
+        self.set_env(env, True)
         return
 
     def set_env(self, env: GridEnvironment = None, init=False):
@@ -118,10 +117,10 @@ class DisplayFrame(iTkFrame):
             self.view_elements_mode = {"Grid", "Agents"}
             env.cur_iter = 0
             env.winStatus = (None, 0)
-        view_names=env.get_grid_view_names()
-        entities=["None"]+[str(i) for i in range(len(env.entities))]
-        self.w_buttons:SideMenu
-        self.w_buttons.change_dropdowns(view_names,entities)
+        view_names = env.get_grid_view_names()
+        entities = ["None"] + [str(i) for i in range(len(env.entities))]
+        self.w_buttons: SideMenu
+        self.w_buttons.change_dropdowns(view_names, entities)
         self.update_env()
 
     def check_entity_locations(self, seen: dict, ):
@@ -256,7 +255,7 @@ class DisplayFrame(iTkFrame):
         if self.running:
             print("Still running, please wait!")
             return
-        if raw=="Return":
+        if raw == "Return":
             self.swapFrameFactory(GRIDSELECT)()
             return
         L = raw.split(":")
@@ -278,7 +277,7 @@ DFDF.update({
 def main():
     root = DarkCTK.GetMain()
     scale = (800, 600)
-    frame=SwapFrame(root,"Test",print,scale)
+    frame = SwapFrame(root, "Test", print, scale)
     frame.pack()
     app = DisplayFrame(frame, scale)
     root.geometry("{}x{}".format(*scale))
