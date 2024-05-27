@@ -1,4 +1,5 @@
 import environments.EnvironmentManager
+import environments.GridEvalMethodManager as GEMM
 from display.customtkinter.base.ctkInputs import *
 from ctkGridFrame import *
 import interfaces as itf
@@ -48,6 +49,7 @@ DFDF = {}
 
 class DisplayFrame(iTkFrame):
     def __init__(self, master, screen_size: tuple[int, int]):
+        self.evalmethod = None
         self.running = False
         self.w_display = None
         self.w_data = None
@@ -106,7 +108,10 @@ class DisplayFrame(iTkFrame):
         env: GridEnvironment = environments.EnvironmentManager.readEnvironment([envraw], 0)
         agent = agentclass.raw_init(agentdata)
         env.assign_active_agent(agent)
-        evalmethod=
+        if "Evaluation method" in data and "Evaluation parameters" in data:
+            em_name=data["Evaluation method"]
+            em_params=data["Evaluation parameters"]
+            self.evalmethod=GEMM.init_eval_method(em_name,em_params)
         self.set_env(env, True)
         return
 
