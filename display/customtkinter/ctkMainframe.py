@@ -4,6 +4,7 @@ import util.UtilManager as utilmngr
 from display.customtkinter.ctkDataManager import ctkDataManager
 
 from environments.GridEnvironment import *
+from environments.GridEvalMethodManager import EVALMETHODS
 import agents.AgentManager as agentmngr
 from agents.Agent import GraphicManualInputAgent
 
@@ -65,13 +66,20 @@ class EnvCustomFrame(ctk.CTkFrame):
             "Environment name": self.s_env.get(),
             "Environment data": self.env_data,
             "Agent data": self.agent_data,
-            "Evaluation method": self.eval,
+            "Evaluation method": self.eval.__name__,
             "Evaluation parameters": self.evalparams
         }
-        ctkDataManager(self, data, print)
-        self.env_label.config(text=data["Environment name"])
+        ctkDataManager(self, data, self.close_edit_parameters)
+
+    def close_edit_parameters(self,data):
+        self.s_env.set(data["Environment name"])
         self.env_data = data["Environment data"]
         self.agent_data = data["Agent data"]
+        method=data["Evaluation method"]
+        self.s_method.set("Method: "+method)
+        self.eval=EVALMETHODS[method]
+        self.evalparams=data["Evaluation parameters"]
+        print("Close successful.")
 
     def run_env(self):
         print("-" * 160)

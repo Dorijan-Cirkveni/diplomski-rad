@@ -74,13 +74,27 @@ class ctkDataManager(ctk.CTkToplevel):
         X = []
         for i in range(len(L)):
             X.append(ButtonData(str(i), self.factory_choose_key(i), 0))
+        def func():
+            self.cur.append(None)
+            self.show_cur_keys()
+        X.append(ButtonData("Append element",func,0))
         return X
 
     def generate_dict(self, D):
         X = []
         for e in D:
             X.append(ButtonData(str(e), self.factory_choose_key(e), 0))
+        def func(key):
+            self.cur[key]=None
+            self.show_cur_keys()
+        def func2():
+            sk="Key {}"
+            i=1
+            while sk.format(i) in D:
+                i+=1
+            InputMessage(self,"New dictionary entry","Insert key",sk.format(i),func=func)
         X.sort(key=lambda el: el.text)
+        X.append(ButtonData("Add key...",func2,0))
         return X
 
     def make_scroll_generators(self):
@@ -123,7 +137,8 @@ class ctkDataManager(ctk.CTkToplevel):
 
     def return_action(self):
         if not self.stack:
-            raise Exception("Quit: not enabled. Sword Art: Online.")
+            self.apply_action()
+            return
         last, lastkey = self.stack.pop()
         last[lastkey] = self.cur
         self.cur = last
@@ -132,7 +147,7 @@ class ctkDataManager(ctk.CTkToplevel):
         self.show_cur_value_interface(last[lastkey])
 
     def apply_action(self):
-        self.return_command(self.root)
+        self.return_command(self.root_struct)
         self.destroy()
 
     def stack_action(self):
