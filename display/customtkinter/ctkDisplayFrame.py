@@ -106,6 +106,7 @@ class DisplayFrame(iTkFrame):
         env: GridEnvironment = environments.EnvironmentManager.readEnvironment([envraw], 0)
         agent = agentclass.raw_init(agentdata)
         env.assign_active_agent(agent)
+        evalmethod=
         self.set_env(env, True)
         return
 
