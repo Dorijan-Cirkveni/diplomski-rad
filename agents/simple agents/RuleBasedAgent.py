@@ -3,6 +3,8 @@ from collections import defaultdict
 from definitions import *
 import interfaces as itf
 import util.UtilManager as util_mngr
+from util.struct.Grid2D import Grid2D
+from util.struct.TupleDotOperations import *
 
 
 class iRule(itf.iRawListInit):
@@ -185,7 +187,12 @@ class RuleBasedAgent(itf.iAgent):
     """
 
     """
-    def __init__(self, rulelist: list, used: set, pers_vars: set = None, defaultAction=ACTIONS[-1]):
+
+    fullname = "Rule Based Agent"
+    DEFAULT_STR_INPUT = None
+    DEFAULT_RAW_INPUT = [[],{'rel':Grid2D((3,3),[[0,1,0],[1,1,1],[0,1,0]])},]
+    INPUT_PRESETS = {}
+    def __init__(self, rulelist: list, used: dict, pers_vars: set = None, defaultAction=ACTIONS[-1]):
         super().__init__()
         self.manager = RulesetManager()
         for rule in rulelist:
@@ -193,6 +200,24 @@ class RuleBasedAgent(itf.iAgent):
         self.used = used
         self.pers_vars: set = {} if pers_vars is None else pers_vars
         self.defaultAction = defaultAction
+
+    def read_rel_grid(self, agloc:tuple, abs_grid:Grid2D):
+        ret=dict()
+        if 'rel' not in self:
+            return ret
+        used:Grid2D=self.used['rel']
+        offset=Tdiv(used.scale,(2,)*2,True)
+        asca=abs_grid.scale
+        rel_i=-offset[0]
+        abs_i=rel_i+agloc[0]
+        for i,e in enumerate(used):
+            rel_j=-offset[1]
+            abs_j=rel_j+agloc[1]
+            for j,f in enumerate(e):
+                absloc=(abs_i,abs_j)
+                ret[(rel_i,rel_j)]= -1 if not Tinrange(absloc,asca) else abs_grid[absloc]
+
+
 
     def receiveEnvironmentData(self, data: dict):
         self.memory.step_iteration({"grid","agents","persistent"},False)
