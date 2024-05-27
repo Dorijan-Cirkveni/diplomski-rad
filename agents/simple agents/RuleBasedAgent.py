@@ -5,6 +5,7 @@ import interfaces as itf
 import util.UtilManager as util_mngr
 from util.struct.Grid2D import Grid2D
 from util.struct.TupleDotOperations import *
+import agents.GridAgentUtils as GAU
 
 
 class iRule(itf.iRawListInit):
@@ -211,7 +212,10 @@ class RuleBasedAgent(itf.iAgent):
             cat = L.pop()
             new_data = curManager.apply_data_point(cat, data[cat], data)
             L.extend(new_data)
-        persistent={}
+        ret={}
+        old_persistent=self.memory.get_data('persistent')
+        new_persistent={}
+        GAU.ReadRelGrid(data['loc'],self.manager[],)
 
 
 
