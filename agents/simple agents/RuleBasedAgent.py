@@ -201,22 +201,6 @@ class RuleBasedAgent(itf.iAgent):
         self.pers_vars: set = {} if pers_vars is None else pers_vars
         self.defaultAction = defaultAction
 
-    def read_rel_grid(self, agloc:tuple, abs_grid:Grid2D):
-        ret=dict()
-        if 'rel' not in self:
-            return ret
-        used:Grid2D=self.used['rel']
-        offset=Tdiv(used.scale,(2,)*2,True)
-        asca=abs_grid.scale
-        rel_i=-offset[0]
-        abs_i=rel_i+agloc[0]
-        for i,e in enumerate(used):
-            rel_j=-offset[1]
-            abs_j=rel_j+agloc[1]
-            for j,f in enumerate(e):
-                absloc=(abs_i,abs_j)
-                ret[(rel_i,rel_j)]= -1 if not Tinrange(absloc,asca) else abs_grid[absloc]
-
 
 
     def receiveEnvironmentData(self, data: dict):
