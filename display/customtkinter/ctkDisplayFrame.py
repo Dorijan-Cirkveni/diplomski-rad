@@ -29,7 +29,8 @@ class DataDisplayFrame(iTkFrameDef):
         RES = []
         S = set(self.data)
         for e in self.order:
-            RES.append(str(self.data.get(e, "No " + e)))
+            if e in self.data:
+                RES.append(str(self.data.get(e, "No " + e)))
         S -= set(self.order)
         L = list(S)
         L.sort()
@@ -101,7 +102,8 @@ class DisplayFrame(iTkFrame):
         score="No evaluation method"
         if self.evalmethod is not None:
             self.evalmethod:GridEvalMethod
-            score=str(env.evaluateActiveEntities(self.evalmethod.evaluate))
+            numscore=env.evaluateActiveEntities(self.evalmethod.evaluate)
+            score=f"Score: {numscore}"
         text = {
             "winstatus": self.make_iter_text(),
             "score":score
@@ -120,6 +122,7 @@ class DisplayFrame(iTkFrame):
             em_params=data["Evaluation parameters"]
             self.evalmethod=GEMM.init_eval_method(em_name,em_params)
         self.set_env(env, True)
+        self.show_iter()
         return
 
     def set_env(self, env: GridEnvironment = None, init=False):
