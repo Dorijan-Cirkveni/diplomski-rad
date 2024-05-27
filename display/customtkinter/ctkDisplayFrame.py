@@ -14,10 +14,9 @@ class DataDisplayFrame(iTkFrameDef):
 
     def __init__(self, master, return_lambda: callable, screen_size: tuple[int, int]):
         self.data = {
-            "winstatus": "None",
-            "error": None
+            "winstatus": "None"
         }
-        self.order = ["winstatus", "error"]
+        self.order = ["winstatus", "score", "error"]
         self.data_label = None
         super().__init__(master, "DataDisplay", return_lambda, screen_size)
 
@@ -98,7 +97,11 @@ class DisplayFrame(iTkFrame):
         return s
 
     def show_iter(self):
-        text = {"winstatus": self.make_iter_text()}
+        env:GridEnvironment=self.env
+        text = {
+            "winstatus": self.make_iter_text(),
+            "score": env.evaluateActiveEntities()
+        }
         self.w_data.update_text(text)
 
     def receiveData(self, data: dict):

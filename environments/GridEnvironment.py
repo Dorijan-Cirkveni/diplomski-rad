@@ -755,9 +755,6 @@ class GridEnvironment(itf.iEnvironment):
                 return False
         return False
 
-    def evaluate(self, results: list):
-        return sum(results)
-
     def step(self, moves: dict):
         """
         Performs a step in the environment based on specified moves.

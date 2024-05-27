@@ -311,9 +311,6 @@ class iEnvironment(iRawDictInit):
     def isLoss(self):
         raise NotImplementedError
 
-    def evaluate(self, results: list):
-        raise NotImplementedError
-
     def run(self, agent: iAgent, timeLimit: int, timeoutWin: bool = True):
         self.assign_active_agent(agent)
         for i in range(timeLimit):
@@ -382,7 +379,7 @@ class iEnvironment(iRawDictInit):
         return
 
 
-    def GenerateGroupTest(self, groupsize, learning_aspects, requests: dict):
+    def GenerateGroupTest(self, groupsize, learning_aspects, requests: dict, eval_summary:callable=sum):
         group = self.GenerateGroup(groupsize, learning_aspects, requests)
         timelimit, timeoutWin = requests.get("timeMode", (100, True))
 
@@ -391,7 +388,7 @@ class iEnvironment(iRawDictInit):
             for test in group:
                 test: iEnvironment
                 results.append(test.run(agent, timelimit, timeoutWin))
-            final_results = self.evaluate(results)
+            final_results = eval_summary(results)
             return final_results
 
         return agentTest
