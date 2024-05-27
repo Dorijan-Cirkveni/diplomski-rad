@@ -24,9 +24,8 @@ class GridEvalMethod(itf.iEvalMethod):
         self.crit=crit
 
     def evaluate(self, data: dict) -> float:
-        ite=data.get("iter",0)
+        # ite=data.get("iter",0)
         winstatus,winiter=data.get("winstatus",(None,-1))
-        base=0
         if winstatus is not None:
             ite=winiter
             base=1 if winstatus else -1
@@ -715,13 +714,19 @@ class GridEnvironment(itf.iEnvironment):
         self.viewedGrid = self.grids[VIEWED]
         return
 
-    def evaluateActiveEntities(self, evalMethod: callable, indEvalMethod: callable):
-        X = []
+    def evaluateActiveEntities(self, evalMethod: callable):
+        data={
+            'iter':self.cur_iter,
+            'winstatus':self.winStatus
+        }
+        data['locs']=locs={}
+        data['entities']=entities={}
         for ID in self.activeEntities:
             ent: GridEntity = self.entities[ID]
-            val = indEvalMethod(ent)
-            X.append(val)
-        res = evalMethod(X)
+            entities[ID]=ent
+            loc=ent.get(ent.LOCATION)
+            locs[ID]=loc
+        res = evalMethod(data)
         return res
 
     def isWin(self):

@@ -321,7 +321,7 @@ class iEnvironment(iRawDictInit):
                 return i, True
         return timeLimit + 1, timeoutWin
 
-    def evaluateActiveEntities(self, evalMethod: callable, indEvalMethod: callable):
+    def evaluateActiveEntities(self, evalMethod: callable)->float:
         raise NotImplementedError
 
     def GenerateGroup(self, size, learning_aspects, requests: dict):

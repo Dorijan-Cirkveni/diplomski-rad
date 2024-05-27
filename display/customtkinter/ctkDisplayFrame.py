@@ -98,9 +98,13 @@ class DisplayFrame(iTkFrame):
 
     def show_iter(self):
         env:GridEnvironment=self.env
+        score="No evaluation method"
+        if self.evalmethod is not None:
+            self.evalmethod:GridEvalMethod
+            score=str(env.evaluateActiveEntities(self.evalmethod.evaluate))
         text = {
             "winstatus": self.make_iter_text(),
-            "score": env.evaluateActiveEntities()
+            "score":score
         }
         self.w_data.update_text(text)
 
