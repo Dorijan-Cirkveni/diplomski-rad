@@ -28,7 +28,7 @@ class iAgent(baseClasses.iRawInit):
 
     @staticmethod
     def from_string(s):
-        pass
+        raise NotImplementedError
 
     @classmethod
     def get_preset_list(cls):

@@ -24,14 +24,14 @@ class GridEvalMethod(itf.iEvalMethod):
         self.crit=crit
 
     def evaluate(self, data: dict) -> float:
-        # ite=data.get("iter",0)
+        ite=data.get("iter",0)
         winstatus,winiter=data.get("winstatus",(None,-1))
         if winstatus is not None:
             ite=winiter
-            base=1 if winstatus else -1
+            base=1 if winstatus else 0
         else:
-            return 0
-        return base**ite
+            base=0.5
+        return base*self.gamma**ite
 
 
 class GridEnvironment(itf.iEnvironment):
