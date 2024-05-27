@@ -248,11 +248,12 @@ class Grid2D(iCombinable):
         self.apply(lambda e: [S.add(e), e][1])
         return S
 
-    def __getitem__(self, item):
+    def __getitem__(self, item, default=None):
         """
         Get an item from the grid.
 
         :param item: Integer or tuple index.
+        :param default: Integer, list, or None. Throws exception if None.
 
         :return: object: The value at the specified index:
         -a column if type(item) is an integer
@@ -263,12 +264,20 @@ class Grid2D(iCombinable):
         :raises Exception: If tuple index scale are not 2.
         """
         if type(item) == int:
+            if item not in range(self.scale[0]):
+                if default is None:
+                    raise Exception("Index {} not in grid {}".format(item, self.scale))
+                if type(default)==list:
+                    return default
+                return [default]*self.scale[1]
             return self.M[item]
         if type(item) == tuple:
             if len(item) != 2:
                 raise Exception("Index tuple scale must be 2, not {}".format(len(item)))
             if not Tinrange(item, self.scale):
-                raise Exception("Index {} not in grid {}".format(item, self.scale))
+                if default is None:
+                    raise Exception("Index {} not in grid {}".format(item, self.scale))
+                return default
             return self.M[item[0]][item[1]]
         raise Exception("Index must be int or tuple, not {}".format(type(item)))
 
