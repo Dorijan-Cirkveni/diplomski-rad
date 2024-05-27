@@ -1,4 +1,3 @@
-from agents.iAgent import *
 from util.struct.Grid2D import *
 
 
@@ -19,6 +18,8 @@ def ReadRelGrid(agloc:tuple, abs_grid:Grid2D, used:Grid2D):
             abs_j+=1
         rel_i+=1
         abs_i+=1
+
+example_grid_2D=Grid2D((3,3),[[0,1,0],[1,1,1,],[0,1,0]])
 
 
 def main():
