@@ -94,10 +94,10 @@ class iFirstOrderCondition:
 
 
 class FirstOrderRule(iRule):
-    def __init__(self, conditions: list[iFirstOrderCondition], result:callable):
+    def __init__(self, conditions: list[iFirstOrderCondition], result:callable, defaultValue=None):
         self.conditions = conditions
         self.result = result
-        super().__init__(len(self.conditions))
+        super().__init__(len(self.conditions),defaultValue)
 
     def get_keys(self):
         """
@@ -118,15 +118,15 @@ class AscendingTestVariableCondition(iFirstOrderCondition):
     def __init__(self, maxval):
         self.maxval = maxval
 
-    def check(self, value:int, data):
-        L=[]
+    def check(self, value:tuple, data):
+        if len(value)==0:
+            return [(1,(e,)) for e in data]
+        test=[]
         if len(data)<self.maxval+1:
-            L=[e for e in data if e>value]
-            return sorted(L) if L else None
-        for i in range(value+1,self.maxval+1):
-            if i in data:
-                L.append((1,i))
-        return L if L else None
+            test=[e for e in data if value[-1]<e]
+        else:
+            test=[i for i in range(value[-1]+1,self.maxval+1) if i in data]
+        return [(1,e) for e in test]
 
 class RulesetManager:
     def __init__(self, rules=None, byElement=None, freeIndices=None):
@@ -216,12 +216,10 @@ def ruleTest():
         3: None
     }
     LX = [('A1', True), ('A2', True), ('A3', True)]
-    R1 = FirstOrderRule([rule],('A',True))
-    print(R1.step(0,"Test",example))
-    print(R1.process(example))
-    example['A3']=True
-    print(R1.process(example))
-    actions = ACTIONS
+    R1 = FirstOrderRule([rule],('A',True),tuple([]))
+    print(">",R1.step(0,(-1,),example))
+    print(">",R1.step(0,(11,),example))
+    print(">",R1.process(example))
 
 
 def main():
