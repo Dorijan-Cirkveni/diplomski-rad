@@ -79,10 +79,10 @@ class Rule(iRule):
     def step(self, ind, values, data) -> list[tuple[int, object]]:
         k,V=self.conditions[ind]
         if k not in data:
-            ind+=1
-        elif data[k] not in V:
-            ind=-1
-        return [(ind, values)]
+            return[(ind, values)]
+        if data[k] not in V:
+            return [(-1, values)]
+        return [(ind+1, values)]
 
 
 
@@ -188,6 +188,7 @@ def ruleTest():
     }
     LX = [('A1', True), ('A2', True), ('A3', True)]
     R1 = Rule(rule,('A',True))
+    print(R1.step(0,"Test",example))
     print(R1.process(example))
     example['A3']=True
     print(R1.process(example))
