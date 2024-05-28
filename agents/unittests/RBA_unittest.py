@@ -11,14 +11,14 @@ class TestRule(unittest.TestCase):
             'A4': None
         }
         R1 = Rule(rule, ('A', True))
-        self.assertEqual(R1.step(0, "Test", example), [(1, "Test")])
+        self.assertEqual(R1.step(0, "Test", example), [(1, "Test", True)])
 
         result = R1.process(example)
         self.assertEqual(result, set())
 
         example['A3'] = True
         result = R1.process(example)
-        self.assertEqual(result, {('A', True)})
+        self.assertEqual(result, {(('A', True),True)})
 
 
 class TestFirstOrderRule(unittest.TestCase):
@@ -28,13 +28,13 @@ class TestFirstOrderRule(unittest.TestCase):
         R1 = FirstOrderRule([rule], None, tuple([]))
 
         step_result_1 = R1.step(0, (-1,), example)
-        self.assertEqual(step_result_1, [(1, e) for e in example])
+        self.assertEqual(step_result_1, [(1, e, True) for e in example])
 
         step_result_2 = R1.step(0, (11,), example)
-        expected_result = [(1, i) for i in [13,15,17]]
+        expected_result = [(1, i, True) for i in [13,15,17]]
         self.assertEqual(step_result_2, expected_result)
 
-        process_result = R1.process(example)
+        process_result = R1.process(example,set(example))
         self.assertIsInstance(process_result, set)
 
 class TestRulesetManager(unittest.TestCase):
@@ -86,9 +86,9 @@ class TestRulesetManager(unittest.TestCase):
             1: True,
             2: True
         }
-        data1=self.rule1.process(data)
+        data1=self.rule1.process(data,set(data))
         self.assertEqual(data1,{('A',True)})
-        results = self.manager.process_current(data)
+        results = self.manager.process_current(data,set(data))
         expected_results = {('A', True), ('B', True)}
 
         self.assertEqual(results, expected_results)
@@ -102,10 +102,10 @@ class TestRulesetManager(unittest.TestCase):
             'A2': True
         }
 
-        self.assertEqual(self.rule1.process(data), set())
+        self.assertEqual(self.rule1.process(data, set(data)), set())
 
         data['A3'] = True
-        result = self.rule1.process(data)
+        result = self.rule1.process(data, set(data))
         self.assertEqual(result, {('A', True)})
 
     def test_process_rule2(self):

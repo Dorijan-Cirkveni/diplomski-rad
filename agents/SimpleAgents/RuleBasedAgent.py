@@ -17,8 +17,8 @@ class iRule(itf.iRawListInit):
 
     def __init__(self, size, startVal=tuple([])):
         self.size = size
-        self.curvals: list[set] = [set() for i in range(size + 1)]
-        self.curvals[0].add(startVal)
+        self.curvals: list[set[tuple[object, bool]]] = [set() for _ in range(size + 1)]
+        self.curvals[0].add((startVal, False))
 
     def make_instance(self):
         raise NotImplementedError
@@ -37,20 +37,23 @@ class iRule(itf.iRawListInit):
         """
         raise NotImplementedError
 
-    def step(self, ind, values, data) -> list[tuple[int, tuple]]:
+    def step(self, ind, values, data, is_new_data: set) -> list[tuple[int, tuple, int]]:
         raise NotImplementedError
 
-    def process(self, data):
+    def process(self, data: dict, is_new_data: set = None):
+        if is_new_data is None:
+            is_new_data = set(data)
         for i in range(self.size):
             E: set = self.curvals[i]
             self.curvals[i] = set()
-            for values in E:
-                new_values: list = self.step(i, values, data)
+            for values, is_new in E:
+                new_values: list
+                new_values = self.step(i, values, data, is_new_data)
                 while new_values:
-                    newI, newV = new_values.pop()
-                    if newI == NONEXISTENT:
+                    newI, newV, is_now_new = new_values.pop()
+                    if newI == NONEXISTENT or not (is_new or is_now_new):
                         continue
-                    self.curvals[newI].add(newV)
+                    self.curvals[newI].add((newV, is_now_new))
         return deepcopy(self.curvals[FINAL])
 
 
@@ -83,17 +86,19 @@ class Rule(iRule):
         """
         return set([e[0] for e in self.conditions])
 
-    def step(self, ind, values, data) -> list[tuple[int, object]]:
+    def step(self, ind, values, data, is_new_data: set = None) -> list[tuple[int, object, bool]]:
+        if is_new_data is None:
+            is_new_data = set(data)
         k, V = self.conditions[ind]
         if k not in data:
-            return [(ind, values)]
+            return [(ind, values, False)]
         if data[k] not in V:
-            return [(NONEXISTENT, values)]
-        return [(ind + 1, values)]
+            return [(NONEXISTENT, values, False)]
+        return [(ind + 1, values, k in is_new_data)]
 
 
 class iFirstOrderCondition:
-    def check(self, values, data) -> [None, list[tuple[int, object]]]:
+    def check(self, values, data, is_new_data: set) -> [None, list[tuple[int, object, bool]]]:
         raise NotImplementedError
 
 
@@ -108,11 +113,11 @@ class FirstOrderRule(iRule):
                 return value
         self.conditions = conditions
         self.resultfn = resultfn
-        self.default=defaultValue
+        self.default = defaultValue
         super().__init__(len(self.conditions), self.default)
 
     def make_instance(self):
-        return FirstOrderRule(self.conditions,self.curvals[0])
+        return FirstOrderRule(self.conditions, self.curvals[0])
 
     def get_keys(self):
         """
@@ -121,27 +126,30 @@ class FirstOrderRule(iRule):
         """
         return {"FO"}
 
-    def step(self, ind, values, data) -> list[tuple[int, object]]:
+    def step(self, ind, values, data, is_new_data: set = None) -> list[tuple[int, object, bool]]:
+        if is_new_data is None:
+            is_new_data = set(data)
         foc: iFirstOrderCondition = self.conditions[ind]
-        new_values = foc.check(values, data)
+        new_values = foc.check(values, data, is_new_data)
         if new_values is None:
-            return [(NONEXISTENT, "NULL")]
-        return [(ind + delta, self.resultfn(v)) for delta, v in new_values]
+            return [(NONEXISTENT, "NULL", False)]
+        return [(ind + delta, self.resultfn(v), is_new) for delta, v, is_new in new_values]
 
 
 class AscendingTestVariableCondition(iFirstOrderCondition):
     def __init__(self, maxval):
         self.maxval = maxval
 
-    def check(self, value: tuple, data):
+    def check(self, value: tuple, data, is_new_data: set = None) -> [None, list[tuple[int, object, bool]]]:
+        if is_new_data is None:
+            is_new_data = set(data)
         if len(value) == 0:
-            return [(1, (e,)) for e in data]
-        test = []
+            return [(1, (e,), e in is_new_data) for e in data]
         if len(data) < self.maxval + 1:
             test = [e for e in data if value[-1] < e]
         else:
             test = [i for i in range(value[-1] + 1, self.maxval + 1) if i in data]
-        return [(1, e) for e in test]
+        return [(1, e, e in is_new_data) for e in test]
 
 
 class RulesetManager:
@@ -166,13 +174,23 @@ class RulesetManager:
         rules = [rule.make_instance() for rule in self.rules]
         return RulesetManager(rules, deepcopy(self.byElement))
 
-    def process_current(self, data: dict):
+    def process_current(self, data: dict, is_new_data: set = None):
+        if is_new_data is None:
+            is_new_data = set(data)
         new_data = set()
         for rule in self.rules:
-            results = rule.process(data)
+            results = rule.process(data, is_new_data)
             print(results)
             new_data |= results
         return new_data
+
+    def process(self, data: dict, new_data: dict = None):
+        if new_data is None:
+            new_data = self.process_current(data)
+        while True:
+            is_new_data = set(new_data)
+            data.update(new_data)
+            new_data = self.process_current(data, is_new_data)
 
 
 class RuleBasedAgent(itf.iAgent):
