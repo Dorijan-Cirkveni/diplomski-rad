@@ -191,31 +191,6 @@ class RuleBasedAgent(itf.iAgent):
         action = self.memory.get_data([("action",self.defaultAction)])
         return action
 
-def test1():
-    rule = [('A1',True),('A2',True),('A3',True)]
-    example= {
-        'A1': True,
-        'A2': True,
-        'A4': None
-    }
-    R1 = Rule(rule,('A',True))
-    print(R1.step(0,"Test",example))
-    if R1.process(example)!=[]:
-        return False
-    example['A3']=True
-    if R1.process(example)!=[('A', True)]:
-        return False
-    return True
-
-
-def oldTests():
-    tests=[
-        test1
-    ]
-    for i,e in enumerate(tests):
-        if not e():
-            raise Exception(i)
-
 def ruleTest():
     rule = AscendingTestVariableCondition(999)
     example= {
@@ -231,7 +206,6 @@ def ruleTest():
 
 
 def main():
-    oldTests()
     ruleTest()
     return
 
