@@ -7,6 +7,8 @@ from util.struct.Grid2D import Grid2D
 import agents.GridAgentUtils as GAU
 
 
+FINAL=-1
+NONEXISTENT=-2
 class iRule(itf.iRawListInit):
     """
     A rule interface.
@@ -42,10 +44,10 @@ class iRule(itf.iRawListInit):
                 new_values:list=self.step(i,values,data)
                 while new_values:
                     newI,newV=new_values.pop()
-                    if newI==-1:
+                    if newI==NONEXISTENT:
                         continue
                     self.curvals[newI].add(newV)
-        return list(self.curvals[-1])
+        return list(self.curvals[FINAL])
 
 
 class Rule(iRule):
@@ -81,7 +83,7 @@ class Rule(iRule):
         if k not in data:
             return[(ind, values)]
         if data[k] not in V:
-            return [(-1, values)]
+            return [(NONEXISTENT, values)]
         return [(ind+1, values)]
 
 
@@ -108,7 +110,7 @@ class FirstOrderRule(iRule):
         foc:iFirstOrderCondition=self.conditions[ind]
         new_values=foc.check(values,data)
         if new_values is None:
-            return [(-1,"NULL")]
+            return [(NONEXISTENT,"NULL")]
         return [(ind+delta,v) for delta,v in new_values]
 
 
@@ -118,7 +120,10 @@ class AscendingTestVariableCondition(iFirstOrderCondition):
 
     def check(self, value:int, data):
         L=[]
-        for i in range(value,self.maxval+1):
+        if len(data)<self.maxval+1:
+            L=[e for e in data if e>value]
+            return sorted(L) if L else None
+        for i in range(value+1,self.maxval+1):
             if i in data:
                 L.append((1,i))
         return L if L else None
@@ -178,16 +183,40 @@ class RuleBasedAgent(itf.iAgent):
         action = self.memory.get_data([("action",self.defaultAction)])
         return action
 
-
-def ruleTest():
+def test1():
     rule = [('A1',True),('A2',True),('A3',True)]
     example= {
         'A1': True,
         'A2': True,
         'A4': None
     }
-    LX = [('A1', True), ('A2', True), ('A3', True)]
     R1 = Rule(rule,('A',True))
+    print(R1.step(0,"Test",example))
+    if R1.process(example)!=[]:
+        return False
+    example['A3']=True
+    if R1.process(example)!=[('A', True)]:
+        return False
+    return True
+
+
+def oldTests():
+    tests=[
+        test1
+    ]
+    for i,e in enumerate(tests):
+        if not e():
+            raise Exception(i)
+
+def ruleTest():
+    rule = AscendingTestVariableCondition(999)
+    example= {
+        1: True,
+        2: True,
+        3: None
+    }
+    LX = [('A1', True), ('A2', True), ('A3', True)]
+    R1 = FirstOrderRule([rule],('A',True))
     print(R1.step(0,"Test",example))
     print(R1.process(example))
     example['A3']=True
@@ -196,6 +225,7 @@ def ruleTest():
 
 
 def main():
+    oldTests()
     ruleTest()
     return
 
