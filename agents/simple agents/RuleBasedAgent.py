@@ -47,7 +47,7 @@ class iRule(itf.iRawListInit):
                     if newI==NONEXISTENT:
                         continue
                     self.curvals[newI].add(newV)
-        return list(self.curvals[FINAL])
+        return deepcopy(self.curvals[FINAL])
 
 
 class Rule(iRule):
@@ -129,9 +129,14 @@ class AscendingTestVariableCondition(iFirstOrderCondition):
         return [(1,e) for e in test]
 
 class RulesetManager:
-    def __init__(self, rules=None, byElement=None, freeIndices=None):
+    def __init__(self, rules:list, byElement=None):
         self.rules = []
-        self.byElement = defaultdict(set)
+        self.byElement=defaultdict(set)
+        if byElement is not None:
+            self.rules=rules
+            self.byElement=byElement
+        for rule in self.rules:
+            self.add(rule)
 
     def add(self, rule: iRule):
         ruleID = len(self.rules)
@@ -140,15 +145,18 @@ class RulesetManager:
         for cat in X:
             self.byElement[cat].add(ruleID)
 
+
     def make_instance(self):
         rules = [rule.make_instance() for rule in self.rules]
         return RulesetManager(rules,deepcopy(self.byElement))
 
     def process_current(self, data: dict):
-        new_data=dict()
+        new_data=set()
         for rule in self.rules:
             results=rule.process(data)
             print(results)
+            new_data|=results
+        return
 
 
 class RuleBasedAgent(itf.iAgent):
