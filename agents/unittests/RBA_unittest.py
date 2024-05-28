@@ -24,19 +24,14 @@ class TestRule(unittest.TestCase):
 class TestFirstOrderRule(unittest.TestCase):
     def test_first_order_rule_processing(self):
         rule = AscendingTestVariableCondition(999)
-        example = {
-            1: True,
-            2: True,
-            3: None
-        }
-        LX = [('A1', True), ('A2', True), ('A3', True)]
+        example = {i: True for i in [2,3,7,9,11,13,15,17]}
         R1 = FirstOrderRule([rule], ('A', True), tuple([]))
 
         step_result_1 = R1.step(0, (-1,), example)
         self.assertEqual(step_result_1, [(1, e) for e in example])
 
         step_result_2 = R1.step(0, (11,), example)
-        expected_result = [(1, i) for i in range(12, 1000)]
+        expected_result = [(1, i) for i in [13,15,17]]
         self.assertEqual(step_result_2, expected_result)
 
         process_result = R1.process(example)
