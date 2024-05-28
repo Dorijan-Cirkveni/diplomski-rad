@@ -1,10 +1,9 @@
 from collections import defaultdict
+from copy import deepcopy
 
 from definitions import *
 import interfaces as itf
-import util.UtilManager as util_mngr
 from util.struct.Grid2D import Grid2D
-from util.struct.TupleDotOperations import *
 import agents.GridAgentUtils as GAU
 
 
@@ -12,6 +11,12 @@ class iRule(itf.iRawListInit):
     """
     A rule interface.
     """
+
+    def __init__(self, size, startVal=tuple([])):
+        self.size=size
+        self.curvals:list[set] = [set() for i in range(size+1)]
+        self.curvals[0].add(startVal)
+
     @staticmethod
     def from_string(s):
         """
@@ -26,62 +31,71 @@ class iRule(itf.iRawListInit):
         """
         raise NotImplementedError
 
-    def check(self,data):
-        """
-        Check if data satisfies the rule.
-        :param data:
-        """
+    def step(self, ind, values, data)->list[tuple[int,tuple]]:
         raise NotImplementedError
+
+    def process(self,data):
+        for i in range(self.size):
+            E:set=self.curvals[i]
+            self.curvals[i]=set()
+            for values in E:
+                new_values:list=self.step(i,values,data)
+                while new_values:
+                    newI,newV=new_values.pop()
+                    if newI==-1:
+                        continue
+                    self.curvals[newI].add(newV)
+        return list(self.curvals[-1])
 
 
 class Rule(iRule):
     """
     A basic rule.
     """
-    def __init__(self, conditions: dict, result):
-        self.conditions: dict = conditions
-        for e,v in conditions.items():
+    def __init__(self, conditions: list[tuple], result):
+        self.conditions=[]
+        for e,v in conditions:
             if type(v)==set:
                 continue
             if type(v)==list:
                 v=set(v)
             else:
                 v={v}
-            self.conditions[e]=v
+            self.conditions.append((e,v))
         self.result = result
+        super().__init__(len(self.conditions),self.result)
+
+    def make_instance(self,do_deepcopy=False):
+        conds=deepcopy(self.conditions) if do_deepcopy else self.conditions
+        return Rule(conds,self.result)
 
     def get_keys(self):
         """
         You know by now.
         :return:
         """
-        return set(self.conditions.keys())
+        return set([e[0] for e in self.conditions])
 
-    def check(self, data: dict):
-        """
-        Check
-        :param data:
-        :return:
-        """
-        for el, val in self.conditions.items():
-            val:set
-            if el not in data:
-                return None
-            if data[el] not in val:
-                return None
-        return self.result
+    def step(self, ind, values, data) -> list[tuple[int, object]]:
+        k,V=self.conditions[ind]
+        if k not in data:
+            ind+=1
+        elif data[k] not in V:
+            ind=-1
+        return [(ind, values)]
+
 
 
 class iFirstOrderCondition:
-    def check(self, value, metadata):
+    def check(self, values, data)->[None,list[tuple[int, object]]]:
         raise NotImplementedError
 
 
 class FirstOrderRule(iRule):
-    def __init__(self, conditions: list, result):
+    def __init__(self, conditions: list[iFirstOrderCondition], result:callable):
         self.conditions = conditions
         self.result = result
-        self.metadata = dict()
+        super().__init__(len(self.conditions))
 
     def get_keys(self):
         """
@@ -90,98 +104,46 @@ class FirstOrderRule(iRule):
         """
         return {"FO"}
 
-    def check(self, data):
-        for condition in self.conditions:
-            condition:iFirstOrderCondition
-            raise NotImplementedError() # First order logic is too much for now
-        pass
-
-    def getResult(self):
-        if self.conditions:
-            return None
-        (categoryCalculator, valueCalculator) = self.result
-        category=categoryCalculator(self.metadata) if callable(categoryCalculator) else categoryCalculator
-        value=valueCalculator(self.metadata) if callable(valueCalculator) else valueCalculator
-        return (category,value)
+    def step(self, ind, values, data) -> list[tuple[int, object]]:
+        foc:iFirstOrderCondition=self.conditions[ind]
+        new_values=foc.check(values,data)
+        if new_values is None:
+            return [(-1,"NULL")]
+        return [(ind+delta,v) for delta,v in new_values]
 
 
 class AscendingTestVariableCondition(iFirstOrderCondition):
-    def __init__(self, minval, maxval):
-        self.minval = minval
+    def __init__(self, maxval):
         self.maxval = maxval
 
-    def check(self, value:int, metadata):
-        if type(value)!=int:
-            return False
-        if value not in range(self.minval, self.maxval + 1):
-            return False
-        cur = metadata.get('cur', None)
-        if cur and value <= cur:
-            return False
-        metadata[cur] = value
-        return True
-
+    def check(self, value:int, data):
+        L=[]
+        for i in range(value,self.maxval+1):
+            if i in data:
+                L.append((1,i))
+        return L if L else None
 
 class RulesetManager:
     def __init__(self, rules=None, byElement=None, freeIndices=None):
         self.rules = []
         self.byElement = defaultdict(set)
-        self.freeIndices = set()
-
-    def allocateIndex(self, rule):
-        if self.freeIndices:
-            ID = self.freeIndices.pop()
-            self.rules[ID] = rule
-            return ID
-        self.rules.append(rule)
-        return len(self.rules) - 1
-
-    def freeIndex(self, ID):
-        self.freeIndices.add(ID)
-        last = len(self.rules) - 1
-        while last in self.freeIndices:
-            self.freeIndices.remove(last)
-            self.rules.pop()
-            last -= 1
 
     def add(self, rule: iRule):
-        ruleID = self.allocateIndex(rule)
+        ruleID = len(self.rules)
+        self.rules.append(rule)
         X = rule.get_keys()
         for cat in X:
             self.byElement[cat].add(ruleID)
 
-    def __copy__(self):
-        new = RulesetManager()
-        new.rules = [rule.__copy__() for rule in self.rules]
-        for e, v in self.byElement:
-            v: set
-            new.byElement[e] = v.copy()
-        new.freeIndices = self.freeIndices.copy()
-        return new
+    def make_instance(self):
+        rules = [rule.make_instance() for rule in self.rules]
+        return RulesetManager(rules,deepcopy(self.byElement))
 
-    def apply_data_point(self, variable, value, data: dict):
-        new_data = set()
-        for ruleID in self.byElement.get(variable, set) | self.byElement.get("FO", set):
-            rule = self.rules[ruleID]
-            rule: iRule
-            newrule, done, removedCats = rule.reduce(variable, value)
-            newrule: iRule
-            if done:
-                (resvar, resval) = newrule.getResult()
-                data[resvar] = resval
-                new_data.add(resvar)
-            if newrule is not rule:
-                if not done:
-                    self.add(newrule)
-            else:
-                if done:
-                    self.freeIndex(ruleID)
-                for cat in removedCats:
-                    S = self.byElement[cat]
-                    S.remove(ruleID)
-                    if not S:
-                        self.byElement.pop(cat)
-        return new_data
+    def process_current(self, data: dict):
+        new_data=dict()
+        for rule in self.rules:
+            results=rule.process(data)
+            print(results)
 
 
 class RuleBasedAgent(itf.iAgent):
@@ -196,6 +158,7 @@ class RuleBasedAgent(itf.iAgent):
     def __init__(self, rulelist: list, used: dict, pers_vars: set = None, defaultAction=ACTIONS[-1]):
         super().__init__()
         self.manager = RulesetManager()
+        self.states=[]
         for rule in rulelist:
             self.manager.add(rule)
         self.used = used
@@ -206,16 +169,8 @@ class RuleBasedAgent(itf.iAgent):
 
     def receiveEnvironmentData(self, data: dict):
         self.memory.step_iteration({"grid","agents","persistent"},False)
-        curManager: RulesetManager = self.manager.__copy__()
-        L = [e for e in self.used if e in data]
-        while L:
-            cat = L.pop()
-            new_data = curManager.apply_data_point(cat, data[cat], data)
-            L.extend(new_data)
+        curManager: RulesetManager = self.manager.make_instance()
         ret={}
-        old_persistent=self.memory.get_data('persistent')
-        new_persistent={}
-        GAU.ReadRelGrid(data['loc'],self.manager[],)
 
 
 
@@ -225,11 +180,7 @@ class RuleBasedAgent(itf.iAgent):
 
 
 def ruleTest():
-    rule = {
-        'A1': True,
-        'A2': True,
-        'A3': True
-    }
+    rule = [('A1',True),('A2',True),('A3',True)]
     example= {
         'A1': True,
         'A2': True,
@@ -237,11 +188,10 @@ def ruleTest():
     }
     LX = [('A1', True), ('A2', True), ('A3', True)]
     R1 = Rule(rule,('A',True))
-    print(R1.check(example))
+    print(R1.process(example))
     example['A3']=True
-    print(R1.check(example))
+    print(R1.process(example))
     actions = ACTIONS
-    RBA = RuleBasedAgent([R1], set(actions), defaultAction=ACTIONS[-1])
 
 
 def main():
