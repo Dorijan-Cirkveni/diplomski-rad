@@ -19,8 +19,8 @@ class iRule(itf.iRawListInit):
 
     def __init__(self, size, startVal=tuple([])):
         self.size = size
-        self.curvals: list[set[tuple[object, bool]]] = [set() for _ in range(size + 1)]
-        self.curvals[0].add((startVal, False))
+        self.curvals: list[dict[object, bool]] = [dict() for _ in range(size + 1)]
+        self.curvals[0][startVal]=False
 
     def make_instance(self):
         raise NotImplementedError
@@ -46,8 +46,8 @@ class iRule(itf.iRawListInit):
         if is_new_data is None:
             is_new_data = set(data)
         for i in range(self.size):
-            E: set = self.curvals[i]
-            self.curvals[i] = set()
+            E: dict = self.curvals[i]
+            self.curvals[i] = dict()
             for values, is_new in E:
                 new_values: list
                 new_values = self.step(i, values, data, is_new_data)
@@ -55,7 +55,7 @@ class iRule(itf.iRawListInit):
                     newI, newV, is_now_new = new_values.pop()
                     if newI == NONEXISTENT or not (is_new or is_now_new):
                         continue
-                    self.curvals[newI].add((newV, is_now_new))
+                    self.curvals[newI][newV]=is_now_new
         return deepcopy(self.curvals[FINAL])
 
 
@@ -179,11 +179,12 @@ class RulesetManager:
     def process_current(self, data: dict, is_new_data: set = None):
         if is_new_data is None:
             is_new_data = set(data)
-        new_data = set()
+        new_data = dict()
         for rule in self.rules:
             results = rule.process(data, is_new_data)
-            print(results)
-            new_data |= results
+            print(rule,results)
+            for (k,v),_ in results:
+                new_data[k]=v
         return new_data
 
     def process(self, data: dict, new_data: dict = None):
@@ -219,8 +220,7 @@ class RuleBasedAgent(AgI.iActiveAgent):
 
     def receiveEnvironmentData(self, data: dict):
         self.memory.step_iteration({"grid", "agents", "persistent"}, False)
-        curManager: RulesetManager = self.manager.make_instance()
-        ret = {}
+        self.manager.process(data)
 
     def performAction(self, actions):
         action = self.memory.get_data([("action", self.defaultAction)])
