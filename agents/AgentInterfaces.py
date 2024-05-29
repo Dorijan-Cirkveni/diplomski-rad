@@ -14,10 +14,6 @@ class iAgent(baseClasses.iRawInit):
     def __init__(self):
         self.memory = InformationCompiler()
 
-    """
-    A template for an agent that controls one or more entities.
-    """
-
     fullname = "Untitled Agent Type"
     DEFAULT_STR_INPUT = None
     DEFAULT_RAW_INPUT = None
@@ -34,7 +30,7 @@ class iAgent(baseClasses.iRawInit):
     @classmethod
     def get_preset_list(cls):
         X = sorted(list(cls.INPUT_PRESETS.items()))
-        X.append(("Default",cls.DEFAULT_RAW_INPUT))
+        X.append(("Default", cls.DEFAULT_RAW_INPUT))
         return X
 
     def receiveEnvironmentData(self, data):
@@ -69,10 +65,31 @@ class iAgent(baseClasses.iRawInit):
             modes = {}
         self.memory.absorb_data(data, modes)
 
-class ActiveAgent(iAgent):
-    def __init__(self, preprocessor:ADP.AgentDataPreprocessor):
+
+class iActiveAgent(iAgent):
+    """
+    Active agent template.
+    """
+    fullname = "Untitled Agent Type"
+    DEFAULT_STR_INPUT = None
+    DEFAULT_RAW_INPUT = None
+    INPUT_PRESETS = {}
+
+    def __init__(self, preprocessor: ADP.AgentDataPreprocessor):
         super().__init__()
         self.preprocessor = preprocessor
+
+    @classmethod
+    def get_full_name(cls):
+        return util.UtilManager.MakeClassNameReadable(cls.__name__)
+
+    def receiveEnvironmentData(self, data:dict):
+        """
+
+        :param data:
+        """
+        processed_data:dict = self.preprocessor.processAgentData(data)
+        super().receiveEnvironmentData(processed_data)
 
 
 def main():
