@@ -233,14 +233,8 @@ def ruleTest():
     for cur in V2DIRS:
         cycle[last]=cur
         last=cur
-    all_rules=[]
-    for cur in V2DIRS:
-        cur_last=('last',cur)
-        rule=Rule([cur_last],('move',cycle[cur]))
-        all_rules.append(rule)
-        rule=Rule([('rel',cur,)],('dec',True))
-        all_rules.append(rule)
-        rule=Rule([])
+    # Write a set of rules that will result in a rule-based agent that will do the following in each step:
+    # - check for agents 
 
 
 def main():
