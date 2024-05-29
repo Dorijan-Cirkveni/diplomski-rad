@@ -219,6 +219,8 @@ class Grid2DTile(itf.iRawListInit):
 
 default_opaque = {Grid2DTile.wall, Grid2DTile.curtain, Grid2DTile.lethalwall, Grid2DTile.curtain}
 default_movable = {Grid2DTile.goal, Grid2DTile.curtain, Grid2DTile.lethal, Grid2DTile.accessible, Grid2DTile.effect}
+default_lethal = {Grid2DTile.lethal,Grid2DTile.lethalwall}
+default_all = {i for i in range(tile_counter.value)}
 keys = {
     "wall": Grid2DTile.wall,
     "curt": Grid2DTile.curtain,

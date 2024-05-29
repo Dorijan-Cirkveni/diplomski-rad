@@ -7,6 +7,7 @@ from util.struct.Grid2D import Grid2D
 import agents.GridAgentUtils as GAU
 import agents.AgentUtils.AgentDataPreprocessor as ADP
 import agents.AgentInterfaces as AgI
+import environments.GridEnvElements as GEE
 
 FINAL = -1
 NONEXISTENT = -2
@@ -97,7 +98,8 @@ class iRule(itf.iRawListInit):
             is_new_data = set(data)
         for i in range(self.size):
             self.process_step(i, data, is_new_data)
-            print("\t","\t",i,self.curvals)
+        if self.curvals[FINAL]:
+            print(self,self.curvals)
         return deepcopy(self.curvals[FINAL])
 
 
@@ -215,12 +217,15 @@ class RulesetManager:
         return RulesetManager(rules, deepcopy(self.byElement))
 
     def process_current(self, data: dict, is_new_data: set = None):
+        print("Processing...")
+        print(self)
+        print(data['last'])
+        print(is_new_data)
         if is_new_data is None:
             is_new_data = set(data)
         new_data = dict()
         for rule in self.rules:
             results = rule.process(data, is_new_data)
-            print("\t",rule, results)
             for E in results:
                 if type(E)==Literal:
                     E:Literal
@@ -231,15 +236,16 @@ class RulesetManager:
         return new_data
 
     def process(self, data: dict, new_data: dict = None):
-        print(data)
         if new_data is None:
-            new_data = self.process_current(data)
-        print(data)
-        while True:
+            new_data = data
+        while new_data:
             is_new_data = set(new_data)
             data.update(new_data)
             new_data = self.process_current(data, is_new_data)
-            input(new_data)
+            data.update(new_data)
+            print(new_data)
+            input()
+        return
 
 
 class RuleBasedAgent(AgI.iActiveAgent):
@@ -252,24 +258,31 @@ class RuleBasedAgent(AgI.iActiveAgent):
     DEFAULT_RAW_INPUT = [[], {'rel': Grid2D((3, 3), [[0, 1, 0], [1, 1, 1], [0, 1, 0]])}, ]
     INPUT_PRESETS = {}
 
-    def __init__(self, rulelist: list, pers_vars: set = None, defaultAction=ACTIONS[-1]):
+    def __init__(self, rulelist: list, pers_vars: dict = None, defaultAction=ACTIONS[-1]):
         super().__init__(ADP.AgentDataPreprocessor([ADP.ReLocADP()]))
         self.manager = RulesetManager(rulelist)
         self.states = []
-        self.pers_vars: set = {} if pers_vars is None else pers_vars
+        self.pers_vars: dict = {} if pers_vars is None else pers_vars
+        self.pers_vars|={
+            "grid":None,
+            "agents":None,
+            "persistent":None
+        }
+        self.memory.absorb_data(self.pers_vars)
         self.defaultAction = defaultAction
-        self.receiveEnvironmentData({'last': (0, 1)})
 
     @staticmethod
     def from_string(s):
         pass
 
-    def receiveEnvironmentData(self, data: dict):
-        data = super().receiveEnvironmentData(data)
-        self.memory.step_iteration({"grid", "agents", "persistent"}, False)
-        self.manager.process(data)
+    def receiveEnvironmentData(self, raw_data: dict):
+        data:dict = self.preprocessor.processAgentData(raw_data,False)
+        self.memory.step_iteration(self.pers_vars, False)
+        self.memory.absorb_data(data)
 
     def performAction(self, actions):
+        data=self.memory.get_data()
+        self.manager.process(data)
         action = self.memory.get_data([("action", self.defaultAction)])
         return action
 
@@ -284,25 +297,20 @@ def ruleTest():
     all_rules = []
 
     # Rule to update move direction based on the current 'last' direction
+    go=GEE.default_movable-GEE.default_lethal
+    nogo=GEE.default_all-go
     for cur in V2DIRS:
         cur_last = ('last', cur)
-        rule = Rule([cur_last], ('move', cycle[cur]))
+        X=[cur_last]
+        cycur=cur
+        for i in range(4):
+            cycur=cycle[cycur]
+            rule=Rule(X+[Literal(('rel',cycur),go)], ('move',cycur))
+            all_rules.append(rule)
+            X.append(Literal(('rel',cycur),nogo))
+        rule=Rule(X, ('move',(0,0)))
         all_rules.append(rule)
 
-    # Rule to check if the neighbor in the direction is walkable and decide the movement
-    for cur in V2DIRS:
-        rc = ('rel', cur)
-        rule = Rule([(rc, {0, 1})], ('dec', True))
-        all_rules.append(rule)
-
-    # Rule to update the 'last' direction to the opposite of the move direction
-    for cur in V2DIRS:
-        rule = Rule([('move', cur), ('dec', True)], ('last', (-cur[0], -cur[1])))
-        all_rules.append(rule)
-
-    # Default rule to set move direction to (0, 0) if no directions are walkable
-    rule = Rule([], ('move', (0, 0)))
-    all_rules.append(rule)
 
     return all_rules
 
@@ -310,9 +318,11 @@ def ruleTest():
 def main():
     # Define initial state and rules
     rules = ruleTest()
+    for rule in rules:
+        print(rule)
 
     # Create the agent
-    agent = RuleBasedAgent(rules)
+    agent = RuleBasedAgent(rules,{'last':(1,0)})
 
     # Sample environment data
     environment_data = {

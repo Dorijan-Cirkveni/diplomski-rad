@@ -12,6 +12,7 @@ class InformationCompiler:
         if modes is None:
             modes = {"<MAIN>": {None: 3}, None: {None: 3}}
         self.current_data = Combine(self.current_data, new_data, modes)
+        assert isinstance(self.current_data,dict)
 
     def get_data(self,subkeys:list[tuple]=None)->dict:
         if subkeys is None:

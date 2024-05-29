@@ -23,17 +23,9 @@ class AgentDataPreprocessor:
 class ReLocADP(iADPComponent):
     def processAgentData(self, data: dict, make_new=False) -> dict:
         new_data={} if make_new else data
-        if "loc" not in data:
-            new_data["error"]="no location"
-            return new_data
         loc=data["loc"]
-        if "grid" not in data:
-            new_data["error"]="no grid"
-            return new_data
         grid:Grid2D=data['grid']
-        if not isinstance(grid,Grid2D):
-            new_data["error"]="invalid grid"
-            return new_data
+        assert isinstance(grid,Grid2D)
         grid.get_relpos(loc,keymaker=lambda x:('rel',x),retdict=new_data)
         return new_data
 

@@ -90,7 +90,7 @@ class iActiveAgent(iAgent):
         :param data:
         """
         processed_data:dict = self.preprocessor.processAgentData(data,False)
-        super().receiveEnvironmentData(processed_data)
+        self.memory.absorb_data(data)
         return processed_data
 
 
