@@ -2,8 +2,8 @@ from agents.SimpleAgents.RuleBasedAgent import *
 import unittest
 
 
-class TestRule(unittest.TestCase):
-    def test_rule_processing(self):
+class TestAllRule(unittest.TestCase):
+    def test_basic_rule_processing(self):
         rule = [('A1', True), ('A2', True), ('A3', True)]
         example = {
             'A1': True,
@@ -19,9 +19,6 @@ class TestRule(unittest.TestCase):
         example['A3'] = True
         result = R1.process(example)
         self.assertEqual(result, {(('A', True), True)})
-
-
-class TestFirstOrderRule(unittest.TestCase):
     def test_first_order_rule_processing(self):
         rule = AscendingTestVariableCondition(999)
         example = {i: True for i in [2, 3, 7, 9, 11, 13, 15, 17]}
