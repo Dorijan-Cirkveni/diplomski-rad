@@ -4,6 +4,7 @@ import util.UtilManager
 import util.struct.baseClasses as baseClasses
 from util.InformationCompiler import InformationCompiler
 import agents.AgentUtils.AgentDataPreprocessor as ADP
+from util.struct.Grid2D import Grid2D
 
 
 class iAgent(baseClasses.iRawInit):
@@ -88,12 +89,19 @@ class iActiveAgent(iAgent):
 
         :param data:
         """
-        processed_data:dict = self.preprocessor.processAgentData(data)
+        processed_data:dict = self.preprocessor.processAgentData(data,False)
         super().receiveEnvironmentData(processed_data)
 
 
 def main():
-    test=iActiveAgent()
+    grid=Grid2D((5,5),default=-1)
+    for i in range(5):
+        grid[i][(i+3)%5]=0
+    data ={'loc':(2,2),'grid':grid}
+    preprocessor=ADP.AgentDataPreprocessor([ADP.ReLocADP()])
+    test=iActiveAgent(preprocessor)
+    test.receiveEnvironmentData(data)
+    print(test.memory.get_data().keys())
     return
 
 

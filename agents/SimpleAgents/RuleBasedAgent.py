@@ -5,6 +5,8 @@ from definitions import *
 import interfaces as itf
 from util.struct.Grid2D import Grid2D
 import agents.GridAgentUtils as GAU
+import agents.AgentUtils.AgentDataPreprocessor as ADP
+import agents.AgentInterfaces as AgI
 
 FINAL = -1
 NONEXISTENT = -2
@@ -193,7 +195,7 @@ class RulesetManager:
             new_data = self.process_current(data, is_new_data)
 
 
-class RuleBasedAgent(itf.iAgent):
+class RuleBasedAgent(AgI.iActiveAgent):
     """
 
     """
@@ -204,11 +206,9 @@ class RuleBasedAgent(itf.iAgent):
     INPUT_PRESETS = {}
 
     def __init__(self, rulelist: list, used: dict, pers_vars: set = None, defaultAction=ACTIONS[-1]):
-        super().__init__()
-        self.manager = RulesetManager()
+        super().__init__(ADP.AgentDataPreprocessor([ADP.ReLocADP()]))
+        self.manager = RulesetManager(rulelist)
         self.states = []
-        for rule in rulelist:
-            self.manager.add(rule)
         self.used = used
         self.pers_vars: set = {} if pers_vars is None else pers_vars
         self.defaultAction = defaultAction
@@ -228,16 +228,19 @@ class RuleBasedAgent(itf.iAgent):
 
 
 def ruleTest():
-    rule = AscendingTestVariableCondition(999)
-    example = {
-        1: True,
-        2: True,
-        3: None
-    }
-    R1 = FirstOrderRule([rule], ('A', True), tuple([]))
-    print(">", R1.step(0, (-1,), example))
-    print(">", R1.step(0, (11,), example))
-    print(">", R1.process(example))
+    last=V2DIRS[-1]
+    cycle={}
+    for cur in V2DIRS:
+        cycle[last]=cur
+        last=cur
+    all_rules=[]
+    for cur in V2DIRS:
+        cur_last=('last',cur)
+        rule=Rule([cur_last],('move',cycle[cur]))
+        all_rules.append(rule)
+        rule=Rule([('rel',cur,)],('dec',True))
+        all_rules.append(rule)
+        rule=Rule([])
 
 
 def main():
