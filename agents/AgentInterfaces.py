@@ -3,6 +3,7 @@ from copy import deepcopy
 import util.UtilManager
 import util.struct.baseClasses as baseClasses
 from util.InformationCompiler import InformationCompiler
+import agents.AgentUtils.AgentDataPreprocessor as ADP
 
 
 class iAgent(baseClasses.iRawInit):
@@ -67,6 +68,11 @@ class iAgent(baseClasses.iRawInit):
         if modes is None:
             modes = {}
         self.memory.absorb_data(data, modes)
+
+class ActiveAgent(iAgent):
+    def __init__(self, preprocessor:ADP.AgentDataPreprocessor):
+        super().__init__()
+        self.preprocessor = preprocessor
 
 
 def main():

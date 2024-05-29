@@ -12,7 +12,7 @@ from util.struct.PriorityList import PriorityList
 import util.UtilManager as util_mngr
 from util.struct.baseClasses import *
 
-from agents.iAgent import iAgent
+from agents.AgentInterfaces import iAgent
 
 
 class Effect(iRawListInit):

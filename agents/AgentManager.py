@@ -2,7 +2,7 @@ import json
 
 import agents.Agent as base
 import util.UtilManager
-from agents.iAgent import iAgent
+from agents.AgentInterfaces import iAgent
 from definitions import ACTIONS
 
 # import agents.NeuralNetworkAgent as NNA

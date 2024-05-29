@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from agents.iAgent import iAgent
+from agents.AgentInterfaces import iAgent
 from agents import AgentManager
 from util.struct.GridRoutine import GridRoutine
 from util.VisionOctant import VisionOctant

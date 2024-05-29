@@ -5,7 +5,7 @@ from DisplayBaseElements import *
 import test_json.test_json_manager as jsonmngr
 import environments.EnvironmentManager as envmngr
 from agents import AgentManager
-from agents.iAgent import iAgent
+from agents.AgentInterfaces import iAgent
 from environments.GridEnvironment import GridEnvironment
 
 
