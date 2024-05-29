@@ -228,33 +228,58 @@ class RuleBasedAgent(AgI.iActiveAgent):
 
 
 def ruleTest():
+    cycle = {}
     last=V2DIRS[-1]
-    cycle={}
     for cur in V2DIRS:
-        cycle[last]=cur
+        cycle[last] = cur
         last=cur
-    all_rules=[]
-    """
-    Write a set of rules that will result in a rule-based agent that will do the following in each step:
-    - starting with cycle(data["last"]) and cycling through, check which neighbour ((rel,<relative coords>))
-    is walkable.
-    Set move direction to move to the first walkable direction.
-    Set move direction to move (0,0) if none are available.
-    Set value of "last" to opposite of move direction.
-    """
+
+    all_rules = []
+
+    # Rule to update move direction based on the current 'last' direction
     for cur in V2DIRS:
-        cur_last=('last',cur)
-        rule=Rule([cur_last],('move',cycle[cur]))
+        cur_last = ('last', cur)
+        rule = Rule([cur_last], ('move', cycle[cur]))
         all_rules.append(rule)
-        rule=Rule([('rel',cur,)],('dec',True))
+
+    # Rule to check if the neighbor in the direction is walkable and decide the movement
+    for cur in V2DIRS:
+        rc=('rel', cur)
+        rule = Rule([(rc,{0,1})], ('dec', True))
         all_rules.append(rule)
-        rule=Rule([])
+
+    # Rule to update the 'last' direction to the opposite of the move direction
+    for cur in V2DIRS:
+        rule = Rule([('move', cur),('dec', True)], ('last', (-cur[0],-cur[1])))
+        all_rules.append(rule)
+
+    # Default rule to set move direction to (0, 0) if no directions are walkable
+    rule = Rule([], ('move', (0, 0)))
+    all_rules.append(rule)
+
+    return all_rules
 
 
 def main():
-    ruleTest()
-    return
+    # Define initial state and rules
+    rules = ruleTest()
+    initial_state = {'last': 'N'}
 
+    # Create the agent
+    agent = RuleBasedAgent(rules, initial_state)
+
+    # Sample environment data
+    environment_data = {
+        'rel': Grid2D((3, 3), [[0, 1, 0], [1, 1, 1], [0, 1, 0]]),
+        'agents': []
+    }
+
+    # Agent processes the environment
+    agent.receiveEnvironmentData(environment_data)
+
+    # Perform actions based on rules
+    actions = agent.performAction(ACTIONS)
+    print(actions)
 
 if __name__ == "__main__":
     main()

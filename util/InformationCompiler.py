@@ -35,6 +35,8 @@ class InformationCompiler:
         self.cur_iter = cur_iteration
         self.current_data = {}
         for key in transfer_data:
+            if key not in old_data:
+                continue
             self.current_data[key] = deepcopy(old_data[key])
         return
 
