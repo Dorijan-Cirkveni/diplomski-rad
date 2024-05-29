@@ -238,14 +238,19 @@ class RulesetManager:
     def process(self, data: dict, new_data: dict = None):
         if new_data is None:
             new_data = data
-        while new_data:
+        cont=True
+        while cont:
             is_new_data = set(new_data)
             data.update(new_data)
             new_data = self.process_current(data, is_new_data)
             data.update(new_data)
+            cont=False
+            for e,v in new_data.items():
+                if e not in data or data[e]!=v:
+                    data[e]=v
+                    cont=True
             print(new_data)
-            input()
-        return
+        return data
 
 
 class RuleBasedAgent(AgI.iActiveAgent):
@@ -282,7 +287,8 @@ class RuleBasedAgent(AgI.iActiveAgent):
 
     def performAction(self, actions):
         data=self.memory.get_data()
-        self.manager.process(data)
+        proc_data=self.manager.process(data)
+        self.memory.absorb_data(proc_data)
         action = self.memory.get_data([("action", self.defaultAction)])
         return action
 
@@ -305,10 +311,10 @@ def ruleTest():
         cycur=cur
         for i in range(4):
             cycur=cycle[cycur]
-            rule=Rule(X+[Literal(('rel',cycur),go)], ('move',cycur))
+            rule=Rule(X+[Literal(('rel',cycur),go)], ('action',cycur))
             all_rules.append(rule)
             X.append(Literal(('rel',cycur),nogo))
-        rule=Rule(X, ('move',(0,0)))
+        rule=Rule(X, ('action',(0,0)))
         all_rules.append(rule)
 
 
