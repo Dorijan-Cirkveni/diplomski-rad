@@ -233,8 +233,22 @@ def ruleTest():
     for cur in V2DIRS:
         cycle[last]=cur
         last=cur
-    # Write a set of rules that will result in a rule-based agent that will do the following in each step:
-    # - check for agents 
+    all_rules=[]
+    """
+    Write a set of rules that will result in a rule-based agent that will do the following in each step:
+    - starting with cycle(data["last"]) and cycling through, check which neighbour ((rel,<relative coords>))
+    is walkable.
+    Set move direction to move to the first walkable direction.
+    Set move direction to move (0,0) if none are available.
+    Set value of "last" to opposite of move direction.
+    """
+    for cur in V2DIRS:
+        cur_last=('last',cur)
+        rule=Rule([cur_last],('move',cycle[cur]))
+        all_rules.append(rule)
+        rule=Rule([('rel',cur,)],('dec',True))
+        all_rules.append(rule)
+        rule=Rule([])
 
 
 def main():
