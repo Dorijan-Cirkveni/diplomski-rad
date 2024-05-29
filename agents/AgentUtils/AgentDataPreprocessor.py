@@ -1,3 +1,6 @@
+from util.struct.Grid2D import Grid2D
+
+
 class iADPComponent:
     def processAgentData(self, data: dict) -> dict:
         raise NotImplementedError
@@ -15,6 +18,16 @@ class AgentDataPreprocessor:
 
 class ReLocADP(iADPComponent):
     def processAgentData(self, data: dict) -> dict:
+        if "loc" not in data:
+            data["error"]="no location"
+            return data
+        if "grid" not in data:
+            data["error"]="no grid"
+            return data
+        grid:Grid2D=data['grid']
+        if not isinstance(grid,Grid2D):
+            data["error"]="invalid grid"
+            return data
 
 
 
