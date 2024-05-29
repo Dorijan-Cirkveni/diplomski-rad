@@ -294,8 +294,9 @@ class Grid2D(iCombinable):
                 if F in ignore:
                     continue
                 relpos=Tsub((i,j),pos)
-                key=keymaker(relpos,F)
+                key=keymaker(relpos)
                 retdict[key]=F
+        return retdict
 
 
     def get_neighbours(self, key: tuple, wrapAround=WRAP_NONE, checkUsable: set = None):
