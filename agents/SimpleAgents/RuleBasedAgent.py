@@ -23,10 +23,10 @@ class Literal(itf.iRawListInit):
 
     @staticmethod
     def toLiteral(other):
-        if type(other)==tuple:
+        if type(other) == tuple:
             print(other)
             return Literal(*other)
-        if type(other)==Literal:
+        if type(other) == Literal:
             return other
         raise Exception("??? ({})".format(type(other)))
 
@@ -78,29 +78,27 @@ class iRule(itf.iRawListInit):
     def step(self, ind, values, data, is_new_data: set) -> dict:
         raise NotImplementedError
 
-    @staticmethod
-    def is_valid(values):
-        raise NotImplementedError
-
-    def process_values(self, is_new, E):
+    def process_values(self, E, is_new):
         ind, values, is_now_new = E
-        if (is_now_new or is_new) and self.is_valid(values):
+        if is_now_new or is_new:
             self.curvals[ind][values] = is_now_new
 
     def process_step(self, i, data, is_new_data):
         E: dict = self.curvals[i]
-        self.curvals[i] = dict()
+        new=dict()
+        self.curvals[i] = new
         for values, is_new in E.items():
             new_values: dict
             new_values = self.step(i, values, data, is_new_data)
             for E in new_values:
-                self.process_values(is_new,E)
+                self.process_values(E, is_new)
 
-    def process(self, data: dict, is_new_data: set = None)->dict:
+    def process(self, data: dict, is_new_data: set = None) -> dict:
         if is_new_data is None:
             is_new_data = set(data)
         for i in range(self.size):
             self.process_step(i, data, is_new_data)
+            print(i,self.curvals)
         return deepcopy(self.curvals[FINAL])
 
 
@@ -109,15 +107,10 @@ class Rule(iRule):
     A basic rule.
     """
 
-    def __init__(self, conditions: list[[Literal,tuple]], result:[Literal,tuple]):
+    def __init__(self, conditions: list[[Literal, tuple]], result: [Literal, tuple]):
         self.conditions = [Literal.toLiteral(e) for e in conditions]
         self.result = result
         super().__init__(len(self.conditions), Literal.toLiteral(self.result))
-
-    @staticmethod
-    def is_valid(values):
-        values:Literal
-        return values.key!=NONEXISTENT
 
     def make_instance(self, do_deepcopy=False):
         conds = deepcopy(self.conditions) if do_deepcopy else self.conditions
@@ -130,20 +123,20 @@ class Rule(iRule):
         """
         return [e.key for e in self.conditions]
 
-    def step(self, ind:int, values, data, is_new_data: set = None) -> list[tuple[int, object, bool]]:
+    def step(self, ind: int, values, data, is_new_data: set = None) -> list[tuple[int, object, bool]]:
         if is_new_data is None:
             is_new_data = set(data)
         curlit = self.conditions[ind]
         if curlit.key not in data:
             return [(ind, values, False)]
-        V=data[curlit.key]
+        V = data[curlit.key]
         if V not in curlit:
-            return [(NONEXISTENT, values, False)]
+            return []
         return [(ind + 1, values, curlit.key in is_new_data)]
 
 
 class iFirstOrderCondition:
-    def check(self, values, data:dict, is_new_data: set) -> [None, dict]:
+    def check(self, values, data: dict, is_new_data: set) -> [None, dict]:
         raise NotImplementedError
 
 
@@ -226,8 +219,13 @@ class RulesetManager:
         for rule in self.rules:
             results = rule.process(data, is_new_data)
             print(rule, results)
-            for (k, v) in results:
-                new_data[k] = v
+            for E in results:
+                if type(E)==Literal:
+                    E:Literal
+                    new_data[E.key]=E.value
+                else:
+                    k, v = E
+                    new_data[k] = v
         return new_data
 
     def process(self, data: dict, new_data: dict = None):
@@ -262,6 +260,7 @@ class RuleBasedAgent(AgI.iActiveAgent):
         pass
 
     def receiveEnvironmentData(self, data: dict):
+        data = super().receiveEnvironmentData(data)
         self.memory.step_iteration({"grid", "agents", "persistent"}, False)
         self.manager.process(data)
 
@@ -313,7 +312,8 @@ def main():
 
     # Sample environment data
     environment_data = {
-        'rel': Grid2D((3, 3), [[0, 1, 0], [1, 1, 1], [0, 1, 0]]),
+        'grid': Grid2D((3, 3), [[0, 1, 0], [1, 1, 1], [0, 1, 0]]),
+        "loc": (1,1),
         'agents': []
     }
 

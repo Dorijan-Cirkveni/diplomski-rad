@@ -91,6 +91,7 @@ class iActiveAgent(iAgent):
         """
         processed_data:dict = self.preprocessor.processAgentData(data,False)
         super().receiveEnvironmentData(processed_data)
+        return processed_data
 
 
 def main():

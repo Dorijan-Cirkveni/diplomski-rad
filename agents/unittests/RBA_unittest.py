@@ -32,7 +32,7 @@ class TestAllRule(unittest.TestCase):
         self.assertEqual(step_result_2, expected_result)
 
         process_result = R1.process(example, set(example))
-        self.assertIsInstance(process_result, set)
+        self.assertIsInstance(process_result, dict)
 
 
 class TestRulesetManager(unittest.TestCase):
@@ -73,9 +73,9 @@ class TestRulesetManager(unittest.TestCase):
             2: True
         }
         data1 = self.rule1.process(data, set(data))
-        self.assertEqual(data1, {('A', True)})
+        self.assertEqual(data1, {Literal('A', True):True})
         results = self.manager.process_current(data, set(data))
-        expected_results = {('A', True), ('B', True)}
+        expected_results = {'A': True, 'B': True}
 
         self.assertEqual(results, expected_results)
 
@@ -85,11 +85,11 @@ class TestRulesetManager(unittest.TestCase):
             'A2': True
         }
 
-        self.assertEqual(self.rule1.process(data, set(data)), set())
+        self.assertEqual(self.rule1.process(data, set(data)), dict())
 
         data['A3'] = True
         result = self.rule1.process(data, set(data))
-        self.assertEqual(result, {('A', True)})
+        self.assertEqual(result, {Literal('A', True):True})
 
     def test_process_rule2(self):
         data = {
@@ -99,7 +99,7 @@ class TestRulesetManager(unittest.TestCase):
         }
 
         result = self.rule2.process(data)
-        self.assertIsInstance(result, set)
+        self.assertIsInstance(result, dict)
 
 
 if __name__ == '__main__':

@@ -139,7 +139,7 @@ class GridDisplayFrame(DiB.iTkFrameDef):
         cell_size = Tdiv(self.screen_size, grid.scale)
         tile_k = len(self.grid_elements)
         agent_k = len(self.agent_elements)
-        byRow: list[list[tuple]] = [[] for _ in grid]
+        byRow: list[list[tuple]] = [[] for i in range(grid.scale[0])]
         for loc, agent_index in agents.items():
             L = byRow[math.ceil(loc[0] - definitions.EPSILONLITE)]
             L.append((loc[0], loc[1], agent_index))
@@ -147,7 +147,7 @@ class GridDisplayFrame(DiB.iTkFrameDef):
         self.canvas.create_rectangle((580,) * 2 + (620,) * 2)
         self.canvas: ctk.CTkCanvas
         magic_offset=(2,2)
-        for row_int, E in enumerate(grid):
+        for row_int, E in enumerate(grid.M):
             if display_mode & self.DISPLAY_GRID:
                 for x, tile in enumerate(E):
                     mode=0
