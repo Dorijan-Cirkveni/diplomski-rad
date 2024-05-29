@@ -12,15 +12,51 @@ FINAL = -1
 NONEXISTENT = -2
 
 
+class Literal(itf.iRawListInit):
+    @staticmethod
+    def from_string(s):
+        pass
+
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+
+    @staticmethod
+    def toLiteral(other):
+        if type(other)==tuple:
+            print(other)
+            return Literal(*other)
+        if type(other)==Literal:
+            return other
+        raise Exception("??? ({})".format(type(other)))
+
+    def __eq__(self, other):
+        return self.key == other.key
+
+    def __hash__(self):
+        return hash((self.key, self.value))
+
+    def __contains__(self, item):
+        if type(item) == Literal:
+            item: Literal
+            item = item.value
+        if type(self.value) in {set, list, dict}:
+            return item in self.value
+        return item == self.value
+
+    def __repr__(self):
+        return f"lit({self.key},{self.value})"
+
+
 class iRule(itf.iRawListInit):
     """
     A rule interface.
     """
 
-    def __init__(self, size, startVal=tuple([])):
+    def __init__(self, size, startVal: Literal):
         self.size = size
-        self.curvals: list[dict[object, bool]] = [dict() for _ in range(size + 1)]
-        self.curvals[0][startVal]=False
+        self.curvals: list[dict] = [dict() for _ in range(size + 1)]
+        self.curvals[0][startVal] = False
 
     def make_instance(self):
         raise NotImplementedError
@@ -39,23 +75,32 @@ class iRule(itf.iRawListInit):
         """
         raise NotImplementedError
 
-    def step(self, ind, values, data, is_new_data: set) -> list[tuple[int, tuple, int]]:
+    def step(self, ind, values, data, is_new_data: set) -> dict:
         raise NotImplementedError
 
-    def process(self, data: dict, is_new_data: set = None):
+    @staticmethod
+    def is_valid(values):
+        raise NotImplementedError
+
+    def process_values(self, is_new, E):
+        ind, values, is_now_new = E
+        if (is_now_new or is_new) and self.is_valid(values):
+            self.curvals[ind][values] = is_now_new
+
+    def process_step(self, i, data, is_new_data):
+        E: dict = self.curvals[i]
+        self.curvals[i] = dict()
+        for values, is_new in E.items():
+            new_values: dict
+            new_values = self.step(i, values, data, is_new_data)
+            for E in new_values:
+                self.process_values(is_new,E)
+
+    def process(self, data: dict, is_new_data: set = None)->dict:
         if is_new_data is None:
             is_new_data = set(data)
         for i in range(self.size):
-            E: dict = self.curvals[i]
-            self.curvals[i] = dict()
-            for values, is_new in E:
-                new_values: list
-                new_values = self.step(i, values, data, is_new_data)
-                while new_values:
-                    newI, newV, is_now_new = new_values.pop()
-                    if newI == NONEXISTENT or not (is_new or is_now_new):
-                        continue
-                    self.curvals[newI][newV]=is_now_new
+            self.process_step(i, data, is_new_data)
         return deepcopy(self.curvals[FINAL])
 
 
@@ -64,18 +109,15 @@ class Rule(iRule):
     A basic rule.
     """
 
-    def __init__(self, conditions: list[tuple], result):
-        self.conditions = []
-        for e, v in conditions:
-            if type(v) == set:
-                continue
-            if type(v) == list:
-                v = set(v)
-            else:
-                v = {v}
-            self.conditions.append((e, v))
+    def __init__(self, conditions: list[[Literal,tuple]], result:[Literal,tuple]):
+        self.conditions = [Literal.toLiteral(e) for e in conditions]
         self.result = result
-        super().__init__(len(self.conditions), self.result)
+        super().__init__(len(self.conditions), Literal.toLiteral(self.result))
+
+    @staticmethod
+    def is_valid(values):
+        values:Literal
+        return values.key!=NONEXISTENT
 
     def make_instance(self, do_deepcopy=False):
         conds = deepcopy(self.conditions) if do_deepcopy else self.conditions
@@ -86,21 +128,22 @@ class Rule(iRule):
         You know by now.
         :return:
         """
-        return set([e[0] for e in self.conditions])
+        return [e.key for e in self.conditions]
 
-    def step(self, ind, values, data, is_new_data: set = None) -> list[tuple[int, object, bool]]:
+    def step(self, ind:int, values, data, is_new_data: set = None) -> list[tuple[int, object, bool]]:
         if is_new_data is None:
             is_new_data = set(data)
-        k, V = self.conditions[ind]
-        if k not in data:
+        curlit = self.conditions[ind]
+        if curlit.key not in data:
             return [(ind, values, False)]
-        if data[k] not in V:
+        V=data[curlit.key]
+        if V not in curlit:
             return [(NONEXISTENT, values, False)]
-        return [(ind + 1, values, k in is_new_data)]
+        return [(ind + 1, values, curlit.key in is_new_data)]
 
 
 class iFirstOrderCondition:
-    def check(self, values, data, is_new_data: set) -> [None, list[tuple[int, object, bool]]]:
+    def check(self, values, data:dict, is_new_data: set) -> [None, dict]:
         raise NotImplementedError
 
 
@@ -182,9 +225,9 @@ class RulesetManager:
         new_data = dict()
         for rule in self.rules:
             results = rule.process(data, is_new_data)
-            print(rule,results)
-            for (k,v),_ in results:
-                new_data[k]=v
+            print(rule, results)
+            for (k, v) in results:
+                new_data[k] = v
         return new_data
 
     def process(self, data: dict, new_data: dict = None):
@@ -229,10 +272,10 @@ class RuleBasedAgent(AgI.iActiveAgent):
 
 def ruleTest():
     cycle = {}
-    last=V2DIRS[-1]
+    last = V2DIRS[-1]
     for cur in V2DIRS:
         cycle[last] = cur
-        last=cur
+        last = cur
 
     all_rules = []
 
@@ -244,13 +287,13 @@ def ruleTest():
 
     # Rule to check if the neighbor in the direction is walkable and decide the movement
     for cur in V2DIRS:
-        rc=('rel', cur)
-        rule = Rule([(rc,{0,1})], ('dec', True))
+        rc = ('rel', cur)
+        rule = Rule([(rc, {0, 1})], ('dec', True))
         all_rules.append(rule)
 
     # Rule to update the 'last' direction to the opposite of the move direction
     for cur in V2DIRS:
-        rule = Rule([('move', cur),('dec', True)], ('last', (-cur[0],-cur[1])))
+        rule = Rule([('move', cur), ('dec', True)], ('last', (-cur[0], -cur[1])))
         all_rules.append(rule)
 
     # Default rule to set move direction to (0, 0) if no directions are walkable
@@ -280,6 +323,7 @@ def main():
     # Perform actions based on rules
     actions = agent.performAction(ACTIONS)
     print(actions)
+
 
 if __name__ == "__main__":
     main()

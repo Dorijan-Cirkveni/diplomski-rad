@@ -14,11 +14,11 @@ class TestAllRule(unittest.TestCase):
         self.assertEqual(R1.step(0, "Test", example), [(1, "Test", True)])
 
         result = R1.process(example)
-        self.assertEqual(result, set())
+        self.assertEqual(result, dict())
 
         example['A3'] = True
         result = R1.process(example)
-        self.assertEqual(result, {(('A', True), True)})
+        self.assertEqual(result, {Literal('A', True):True})
     def test_first_order_rule_processing(self):
         rule = AscendingTestVariableCondition(999)
         example = {i: True for i in [2, 3, 7, 9, 11, 13, 15, 17]}
