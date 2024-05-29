@@ -24,7 +24,6 @@ class Literal(itf.iRawListInit):
     @staticmethod
     def toLiteral(other):
         if type(other) == tuple:
-            print(other)
             return Literal(*other)
         if type(other) == Literal:
             return other
@@ -98,7 +97,7 @@ class iRule(itf.iRawListInit):
             is_new_data = set(data)
         for i in range(self.size):
             self.process_step(i, data, is_new_data)
-            print(i,self.curvals)
+            print("\t","\t",i,self.curvals)
         return deepcopy(self.curvals[FINAL])
 
 
@@ -111,6 +110,9 @@ class Rule(iRule):
         self.conditions = [Literal.toLiteral(e) for e in conditions]
         self.result = result
         super().__init__(len(self.conditions), Literal.toLiteral(self.result))
+
+    def __repr__(self):
+        return f"{self.conditions}->{self.result}"
 
     def make_instance(self, do_deepcopy=False):
         conds = deepcopy(self.conditions) if do_deepcopy else self.conditions
@@ -218,7 +220,7 @@ class RulesetManager:
         new_data = dict()
         for rule in self.rules:
             results = rule.process(data, is_new_data)
-            print(rule, results)
+            print("\t",rule, results)
             for E in results:
                 if type(E)==Literal:
                     E:Literal
@@ -229,12 +231,15 @@ class RulesetManager:
         return new_data
 
     def process(self, data: dict, new_data: dict = None):
+        print(data)
         if new_data is None:
             new_data = self.process_current(data)
+        print(data)
         while True:
             is_new_data = set(new_data)
             data.update(new_data)
             new_data = self.process_current(data, is_new_data)
+            input(new_data)
 
 
 class RuleBasedAgent(AgI.iActiveAgent):
@@ -247,13 +252,13 @@ class RuleBasedAgent(AgI.iActiveAgent):
     DEFAULT_RAW_INPUT = [[], {'rel': Grid2D((3, 3), [[0, 1, 0], [1, 1, 1], [0, 1, 0]])}, ]
     INPUT_PRESETS = {}
 
-    def __init__(self, rulelist: list, used: dict, pers_vars: set = None, defaultAction=ACTIONS[-1]):
+    def __init__(self, rulelist: list, pers_vars: set = None, defaultAction=ACTIONS[-1]):
         super().__init__(ADP.AgentDataPreprocessor([ADP.ReLocADP()]))
         self.manager = RulesetManager(rulelist)
         self.states = []
-        self.used = used
         self.pers_vars: set = {} if pers_vars is None else pers_vars
         self.defaultAction = defaultAction
+        self.receiveEnvironmentData({'last': (0, 1)})
 
     @staticmethod
     def from_string(s):
@@ -305,16 +310,15 @@ def ruleTest():
 def main():
     # Define initial state and rules
     rules = ruleTest()
-    initial_state = {'last': 'N'}
 
     # Create the agent
-    agent = RuleBasedAgent(rules, initial_state)
+    agent = RuleBasedAgent(rules)
 
     # Sample environment data
     environment_data = {
         'grid': Grid2D((3, 3), [[0, 1, 0], [1, 1, 1], [0, 1, 0]]),
         "loc": (1,1),
-        'agents': []
+        'agents': [],
     }
 
     # Agent processes the environment
