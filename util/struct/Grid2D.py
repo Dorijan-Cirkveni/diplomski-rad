@@ -15,7 +15,7 @@ class iGridDrawElement:
     An element used to draw in the grid with.
     """
 
-    def apply(self,params:dict) -> list[tuple[tuple[int, int], int]]:
+    def apply(self, params: dict) -> list[tuple[tuple[int, int], int]]:
         """
         Apply the element
         """
@@ -37,7 +37,7 @@ class Rect(iGridDrawElement):
         self.last = (c, d)
         self.value = v
 
-    def apply(self,params:dict=None) -> list[tuple[tuple[int, int], int]]:
+    def apply(self, params: dict = None) -> list[tuple[tuple[int, int], int]]:
         """
         Be there or be square.
         :return:
@@ -54,46 +54,45 @@ class Rect(iGridDrawElement):
             RES.append(((x2, dy), v))
         return RES
 
-def getCentrish(scale:tuple):
-    a,b=divmod(scale[0],2)
+
+def getCentrish(scale: tuple):
+    a, b = divmod(scale[0], 2)
     return a + 1 - b, scale[1] // 2
 
-class Ring(iGridDrawElement):
-    def __init__(self, L, diameter:int, offset:int, locoffset:tuple, default:int=0):
-        direction=(0,1)
-        radius, isEven=divmod(diameter,2)
-        self.values=[]
-        if radius==0 and not isEven:
-            self.values.append((locoffset,L[0]))
-            return
-        size=4*(radius*2+isEven)
-        V=[default for i in range(size)]
-        L=L[:size]
-        for i,e in enumerate(L):
-            V[i-offset]=e
-        start=Tadd(locoffset,(-radius,0))
-        X={
-            (-radius,radius):(1,0),
-            (radius+isEven,radius):(0,-1),
-            (radius+isEven,-radius-isEven):(-1,0),
-            (-radius,-radius-isEven):(0,1)
-        }
-        Y={Tadd(locoffset,E):V for E,V in X.items()}
-        cur=start
-        for E in V:
-            self.values.append((cur,E))
-            direction=Y.get(cur,direction)
-            cur=Tadd(direction,cur,True)
 
-    def apply(self,params:dict=None) -> list[tuple[tuple[int, int], int]]:
+class Ring(iGridDrawElement):
+    def __init__(self, L, diameter: int, offset: int, locoffset: tuple, default: int = 0):
+        direction = (0, 1)
+        radius, isEven = divmod(diameter, 2)
+        self.values = []
+        if radius == 0 and not isEven:
+            self.values.append((locoffset, L[0]))
+            return
+        size = 4 * (radius * 2 + isEven)
+        V = [default for i in range(size)]
+        L = L[:size]
+        for i, e in enumerate(L):
+            V[i - offset] = e
+        start = Tadd(locoffset, (-radius, 0))
+        X = {
+            (-radius, radius): (1, 0),
+            (radius + isEven, radius): (0, -1),
+            (radius + isEven, -radius - isEven): (-1, 0),
+            (-radius, -radius - isEven): (0, 1)
+        }
+        Y = {Tadd(locoffset, E): V for E, V in X.items()}
+        cur = start
+        for E in V:
+            self.values.append((cur, E))
+            direction = Y.get(cur, direction)
+            cur = Tadd(direction, cur, True)
+
+    def apply(self, params: dict = None) -> list[tuple[tuple[int, int], int]]:
         if not params:
             return self.values
         if "offset" in params:
-            values=[]
+            values = []
         return self.values
-
-
-
 
 
 class Grid2D(iCombinable):
@@ -113,7 +112,7 @@ class Grid2D(iCombinable):
         "rect": Rect
     }
 
-    def __init__(self, scale: [tuple,None,list], M: list[list] = None, default=0,
+    def __init__(self, scale: [tuple, None, list], M: list[list] = None, default=0,
                  shapes: dict = None, add: list = None):
         """
         Initialize a 2D grid with given dimensions.
@@ -127,10 +126,10 @@ class Grid2D(iCombinable):
         shapes = shapes if shapes else {}
         add = add if add else []
         if scale is None and M and M[0]:
-            scale=(len(M),len(M[0]))
-        if type(scale)==list:
-            scale=tuple(scale)
-        if type(scale)!=tuple:
+            scale = (len(M), len(M[0]))
+        if type(scale) == list:
+            scale = tuple(scale)
+        if type(scale) != tuple:
             raise Exception("Dimensions tuple scale must be a tuple, not {}".format(type(scale)))
         if len(scale) != 2:
             raise Exception("Dimensions tuple scale must be 2, not {}".format(len(scale)))
@@ -267,9 +266,9 @@ class Grid2D(iCombinable):
             if item not in range(self.scale[0]):
                 if default is None:
                     raise Exception("Index {} not in grid {}".format(item, self.scale))
-                if type(default)==list:
+                if type(default) == list:
                     return default
-                return [default]*self.scale[1]
+                return [default] * self.scale[1]
             return self.M[item]
         if type(item) == tuple:
             if len(item) != 2:
@@ -280,6 +279,24 @@ class Grid2D(iCombinable):
                 return default
             return self.M[item[0]][item[1]]
         raise Exception("Index must be int or tuple, not {}".format(type(item)))
+
+    def get_relpos(self, pos: tuple, keymaker:callable=None, ignore: set = None, retdict:dict=None):
+
+        if retdict is None:
+            retdict = {}
+        if keymaker is None:
+            keymaker = lambda E: ('rel',E)
+        if ignore is None:
+            ignore = {-1}
+
+        for i,E in self.M:
+            for j,F in E:
+                if F in ignore:
+                    continue
+                relpos=Tsub((i,j),pos)
+                key=keymaker(relpos,F)
+                retdict[key]=F
+
 
     def get_neighbours(self, key: tuple, wrapAround=WRAP_NONE, checkUsable: set = None):
         """
@@ -521,50 +538,48 @@ class Grid2D(iCombinable):
                 self.M[i][j] = e
         return
 
-    def dual_strict(self, other, func:callable, default_self=-1,default_other=-1):
-        other:Grid2D
+    def dual_strict(self, other, func: callable, default_self=-1, default_other=-1):
+        other: Grid2D
         A = self.scale
         B = other.scale
-        if A!=B:
-            raise Exception("Scales do not match: {}!={}".format(A,B))
-        M=[]
-        for i,E in enumerate(self.M):
-            E2=other.M[i]
-            L=[]
-            for j,e in enumerate(E):
-                e2=E2[j]
-                res=func(e,e2)
+        if A != B:
+            raise Exception("Scales do not match: {}!={}".format(A, B))
+        M = []
+        for i, E in enumerate(self.M):
+            E2 = other.M[i]
+            L = []
+            for j, e in enumerate(E):
+                e2 = E2[j]
+                res = func(e, e2)
                 L.append(res)
             M.append(L)
-        return Grid2D(A,M)
+        return Grid2D(A, M)
 
-    def diff(self,other):
-        other:Grid2D
-        return self.dual_strict(other,lambda a,b: -int(a==b))
+    def diff(self, other):
+        other: Grid2D
+        return self.dual_strict(other, lambda a, b: -int(a == b))
 
     def anim_shade(self):
-        slider=[-1]*self.scale[1]
-        last=[0]*self.scale[1]
+        slider = [-1] * self.scale[1]
+        last = [0] * self.scale[1]
         for E in self.M:
-            for j,e in enumerate(E):
-                f=slider[j]
-                slider[j]=e
-                if (f,e) == (0,-1):
-                    E[j]=1
-                if (f,e) == (-1,0):
-                    last[j]=2
-            last=E
+            for j, e in enumerate(E):
+                f = slider[j]
+                slider[j] = e
+                if (f, e) == (0, -1):
+                    E[j] = 1
+                if (f, e) == (-1, 0):
+                    last[j] = 2
+            last = E
         return
 
-
-    def anim_change(self, other, specials:set[tuple]):
-        other:Grid2D
-        diff_map=self.diff(other)
+    def anim_change(self, other, specials: set[tuple]):
+        other: Grid2D
+        diff_map = self.diff(other)
         for T in specials:
-            diff_map[T]=0
+            diff_map[T] = 0
         diff_map.anim_shade()
         return diff_map
-
 
     def collage_v(self, other, default: int = -1, gap: int = 0, gapdefault: int = 2):
         other: Grid2D
@@ -612,24 +627,24 @@ class Grid2D(iCombinable):
             return
 
         # Determine the coordinates of the layer
-        y2,x2 = (self.scale[0] - layer - 1, self.scale[1] - layer - 1)
+        y2, x2 = (self.scale[0] - layer - 1, self.scale[1] - layer - 1)
 
         # Extract the frame of the layer
-        frameLocations=[(layer,i) for i in range(layer,x2)]
-        frameLocations+=[(i,x2) for i in range(layer,y2)]
-        frameLocations+=[(y2,i) for i in range(x2,layer,-1)]
-        frameLocations+=[(i,layer) for i in range(y2,layer,-1)]
+        frameLocations = [(layer, i) for i in range(layer, x2)]
+        frameLocations += [(i, x2) for i in range(layer, y2)]
+        frameLocations += [(y2, i) for i in range(x2, layer, -1)]
+        frameLocations += [(i, layer) for i in range(y2, layer, -1)]
         frame = [self[E] for E in frameLocations]
-        steps%=len(frame)
-        movedFrame=frame[-steps:]+frame[:-steps]
+        steps %= len(frame)
+        movedFrame = frame[-steps:] + frame[:-steps]
 
         # Place the rotated frame back into the grid
         for i in range(len(frame)):
-            self[frameLocations[i]]=movedFrame[i]
+            self[frameLocations[i]] = movedFrame[i]
         return
 
 
-def init_framed_grid(size: tuple[int,int], frameType: int, fillType: int):
+def init_framed_grid(size: tuple[int, int], frameType: int, fillType: int):
     frame = Rect((0, 0) + Tsub(size, (1, 1)) + (frameType,))
     grid = Grid2D(size, default=fillType)
     grid.use_draw_element(frame)
@@ -674,13 +689,13 @@ def test_1():
     A = Grid2D((5, 5), X)
     displayMethod: callable = lambda x: " ABCX"[x]  # make_choose_disp({(-1, 0): "X", (20, 1000): "N"})
     B: Grid2D = A.mirror(0, 1)
-    C=init_framed_grid((25,25),2,0)
+    C = init_framed_grid((25, 25), 2, 0)
     print(C.get_text_display(displayMethod))
 
 
 def demonstrate_rotate_layer():
     # Create a 5x5 grid filled with zeros
-    grid = Grid2D((3,3),[
+    grid = Grid2D((3, 3), [
         [8, 1, 2],
         [7, 0, 3],
         [6, 5, 4]
@@ -750,4 +765,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
