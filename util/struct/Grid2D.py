@@ -289,8 +289,8 @@ class Grid2D(iCombinable):
         if ignore is None:
             ignore = {-1}
 
-        for i,E in self.M:
-            for j,F in E:
+        for i,E in enumerate(self.M):
+            for j,F in enumerate(E):
                 if F in ignore:
                     continue
                 relpos=Tsub((i,j),pos)

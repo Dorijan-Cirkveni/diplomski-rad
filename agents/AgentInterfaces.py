@@ -93,6 +93,7 @@ class iActiveAgent(iAgent):
 
 
 def main():
+    test=iActiveAgent()
     return
 
 
