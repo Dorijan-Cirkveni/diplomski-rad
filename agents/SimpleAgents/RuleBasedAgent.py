@@ -213,6 +213,10 @@ class RuleBasedAgent(itf.iAgent):
         self.pers_vars: set = {} if pers_vars is None else pers_vars
         self.defaultAction = defaultAction
 
+    @staticmethod
+    def from_string(s):
+        pass
+
     def receiveEnvironmentData(self, data: dict):
         self.memory.step_iteration({"grid", "agents", "persistent"}, False)
         curManager: RulesetManager = self.manager.make_instance()
