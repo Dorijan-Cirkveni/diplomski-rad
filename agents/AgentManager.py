@@ -27,7 +27,9 @@ def test_all_agent_inits():
     for e, v in X:
         v: base.itf.iAgent
         if v.DEFAULT_STR_INPUT is None:
-            raise Exception("Default input for {} (key {}) not defined!".format(v, e))
+            raise Exception("Default string input for {} (key {}) not defined!".format(v, e))
+        if v.DEFAULT_RAW_INPUT is None:
+            raise Exception("Default raw input for {} (key {}) not defined!".format(v, e))
         res: None = None
         try:
             res = v.from_string(v.DEFAULT_STR_INPUT)
