@@ -23,8 +23,8 @@ class CycleGridRoutine(GridRoutine):
         super().__init__(grid)
         self.speeds = speeds
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         """
         Create a CycleGridRoutine from a string representation.
 

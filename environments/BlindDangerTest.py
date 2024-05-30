@@ -7,8 +7,8 @@ from util.FragmentedJsonProcessor import *
 
 
 class BlindDangerBasicTest(GridEnvironment):
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         """
 
         :param s:
@@ -107,8 +107,8 @@ class BlindDangerBasicTest(GridEnvironment):
 
 
 class BlindDangerMazeTest(GridEnvironment):
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         """
 
         :param s:

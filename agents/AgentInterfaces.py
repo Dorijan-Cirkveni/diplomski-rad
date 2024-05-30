@@ -24,8 +24,8 @@ class iAgent(baseClasses.iRawInit):
     def get_full_name(cls):
         return util.UtilManager.MakeClassNameReadable(cls.__name__)
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         raise NotImplementedError
 
     @classmethod

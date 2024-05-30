@@ -14,10 +14,6 @@ NONEXISTENT = -2
 
 
 class Literal(itf.iRawListInit):
-    @staticmethod
-    def from_string(s):
-        pass
-
     def __init__(self, key, value):
         self.key = key
         self.value = value
@@ -61,8 +57,8 @@ class iRule(itf.iRawListInit):
     def make_instance(self):
         raise NotImplementedError
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         """
         ...
         :param s:
@@ -276,8 +272,8 @@ class RuleBasedAgent(AgI.iActiveAgent):
         self.memory.absorb_data(self.pers_vars)
         self.defaultAction = defaultAction
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         pass
 
     def receiveEnvironmentData(self, raw_data: dict):
@@ -346,6 +342,8 @@ def RuleTest():
 
 
 def main():
+    lit=Literal.from_string("[1,true]")
+    print(lit)
 
 
 if __name__ == "__main__":

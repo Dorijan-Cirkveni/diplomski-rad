@@ -100,8 +100,8 @@ class Grid2D(iCombinable):
     Class representing a 2D grid.
     """
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         """
         Do we need this?
         :param s:

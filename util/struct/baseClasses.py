@@ -1,4 +1,5 @@
 import inspect
+import json
 from copy import deepcopy
 
 
@@ -7,13 +8,14 @@ class iRawInit:
     Base interface for classes that can be initialised from a JSON string.
     """
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         """
 
         :param s:
         """
-        raise NotImplementedError
+        raw=json.loads(s)
+        return iRawInit.raw_init(raw)
 
     @classmethod
     def raw_init(cls, raw: [dict, list]):

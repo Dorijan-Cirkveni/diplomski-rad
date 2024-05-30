@@ -8,8 +8,8 @@ class iCombinable(iRawInit):
     A combinable class.
     """
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         """
 
         :param s:
