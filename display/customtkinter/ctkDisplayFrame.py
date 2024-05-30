@@ -267,6 +267,10 @@ class DisplayFrame(iTkFrame):
         self.running = False
         self.w_buttons.display_running(0, 0)
 
+    def process_VEM(self, view):
+        self.view_elements_mode^={view}
+        self.update_env()
+
     def process_input(self, raw: str):
         if self.running:
             print("Still running, please wait!")
@@ -286,6 +290,7 @@ DFDF.update({
     "Grid type": DisplayFrame.process_gridtype,
     "Observer": DisplayFrame.process_obsagent,
     "Iterations": DisplayFrame.process_iterations,
+    "mode": DisplayFrame.process_VEM,
     "wasd": print
 })
 

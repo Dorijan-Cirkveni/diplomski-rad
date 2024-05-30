@@ -144,7 +144,6 @@ class SideMenu(iTkFrameDef):
         self.observer = None
         self.console = None
         self.iterations = None
-        self.mode = 3
         self.d_grid = None
         self.d_agents = None
         self.exit = None
@@ -173,20 +172,19 @@ class SideMenu(iTkFrameDef):
                                            self.return_lambda, (200, 200),
                                            list('ABCD'), "Grid type:", "Apply", True, True)
         self.gridtype.grid(row=curow(), column=0, sticky="nsew")
-        self.d_grid = ctk.CTkButton(self, text="Toggle grid display", command=lambda: self.return_lambda("Return"))
+        prem=self.prefix_input("mode")
+        self.d_grid = ctk.CTkButton(self, text="Toggle grid display", command=lambda:prem("Grid"))
         self.d_grid.grid(row=curow(), column=0, sticky="nsew")
-        self.d_agents = ctk.CTkButton(self, text="Toggle agent display", command=lambda: self.return_lambda("Return"))
+        self.d_agents = ctk.CTkButton(self, text="Toggle agent display", command=lambda:prem('Agents'))
         self.d_agents.grid(row=curow(), column=0, sticky="nsew")
 
         self.exit = ctk.CTkButton(self, text="Return", command=lambda: self.return_lambda("Return"))
         self.exit.grid(row=curow(), column=0, sticky="nsew")
 
-    def do_toggle_display(self):
-
     def prefix_input(self, prefix):
         def fn(e):
+            print(prefix,e)
             self.return_lambda(prefix + ":" + str(e))
-
         return fn
 
     def change_dropdowns(self, grid_list: list, observer_list: list):
