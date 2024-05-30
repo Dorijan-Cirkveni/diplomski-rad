@@ -386,11 +386,12 @@ def RuleTest():
 
 def main():
     lit=Literal.from_string("1,true")
-    rule=Rule.raw_init([[[1,True],[2,True]],[3,True]])đ
+    raw=[[[1, True], [2, True]], [3, True]]
+    rule=Rule.raw_init(raw)
     print(rule)
-    print(rule.to_JSON())
+    print(rule.to_JSON()==raw)
     rule_str="[1,True],"
 
 
 if __name__ == "__main__":
-    main()
+    RuleTest()
