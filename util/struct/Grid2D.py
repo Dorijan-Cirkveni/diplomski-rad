@@ -112,7 +112,7 @@ class Grid2D(iCombinable):
         "rect": Rect
     }
 
-    def __init__(self, scale: [tuple, None, list], M: list[list] = None, default=0,
+    def __init__(self, scale: [tuple, None, list]=None, M: list[list] = None, default=0,
                  shapes: dict = None, add: list = None):
         """
         Initialize a 2D grid with given dimensions.

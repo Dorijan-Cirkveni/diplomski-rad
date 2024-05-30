@@ -13,7 +13,7 @@
   "tiles": [
 
   ],
-  "solid": [[],[],[],[],[0,1,2,3,4,5]],
+  "solid": {"scale": [25,12], "<EXTEND.>":"<EXT>g_base|0"},
   "agent": [
     ["RAA","42132143212132141241212"],
     ["MIRROR",{"source": 0,"actions": "Y"}]

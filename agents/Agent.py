@@ -80,7 +80,7 @@ class MirrorAgent(itf.iAgent):
         :return: The agent.
         """
         if not type(s) == str:
-            raise Exception("Must be string!")
+            raise Exception(f"Must be string, not {type(s)}({s})!")
         L = s.split()
         if not str.isdigit(L[0]):
             raise Exception("First part must be integer!")

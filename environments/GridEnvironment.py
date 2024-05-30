@@ -144,6 +144,8 @@ class GridEnvironment(itf.iEnvironment):
     @classmethod
     def getGridRoutinesFromDict(cls, raw: dict):
         gridRaw = raw[SOLID]
+        if type(gridRaw)==list:
+            gridRaw={"name":"Raw Grid","grid":gridRaw}
         grid = cls.routineType.raw_init(gridRaw)
         if VIEWED in raw:
             gridRaw = raw[VIEWED]
@@ -176,7 +178,13 @@ class GridEnvironment(itf.iEnvironment):
         active = set()
         for (a_type, a_str) in raw.get("agent", []):
             agentType: itf.iAgent = agentDict[a_type]
-            agent = agentType.from_string(a_str)
+            as_type=type(a_str)
+            if as_type==str:
+                agent = agentType.from_string(a_str)
+            elif as_type in (list,dict):
+                agent = agentType.raw_init(a_str)
+            else:
+                raise Exception(f"Bad agent data type: {as_type}")
             agents.append(agent)
         for entity_data in raw.get("entities", []):
             ID = entity_data.get("id", None)
