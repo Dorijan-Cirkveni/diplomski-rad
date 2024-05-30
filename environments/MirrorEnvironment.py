@@ -1,10 +1,10 @@
 import definitions
-from GridEnvironment import *
+from environments.GridEnvironment import *
 from agents.Agent import MirrorAgent
 
 
 class MirrorEnvironment(GridEnvironment):
-    def __init__(self, subenv: GridEnvironment, dimension=0, wallsize=1, walltype=2):
+    def __init__(self, subenv: GridEnvironment, dimension=0, wallsize=1, walltype=2, **args):
         dimension &= 1
         a, b = subenv.scale
         shownOnes = {e for e in subenv.gridRoutines if e in {SOLID}}
@@ -32,6 +32,13 @@ class MirrorEnvironment(GridEnvironment):
         effects = subenv.effects
         extraData = deepcopy(subenv.data)
         super().__init__(newroutines, entities, activeEntities, tileTypes, effectTypes, effects, extraData)
+
+    @staticmethod
+    def raw_process_dict(raw: dict, params: list):
+        if not isinstance(raw.get('subenv'),dict):
+            raise Exception("Mirror environment must have sub-environment in dict form under 'subenv' key!")
+        raw["subenv"]=
+        return itf.iRawDictInit.raw_process_dict(raw,params)
 
 
 def main():

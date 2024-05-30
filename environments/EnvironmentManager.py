@@ -5,11 +5,14 @@ import interfaces as itf
 import environments.GridEnvironment as grid_env
 import environments.MazeEnvironment as maze_env
 import environments.BlindDangerTest as blind_danger_env
+
+import environments.MirrorEnvironment as mirror_env
 import agents.AgentManager as agent_mngr
 from test_json.test_json_manager import ImportManagedJSON
 
 # Dictionary mapping environment names to their respective environment classes
 envList = {
+    "mirror": mirror_env.MirrorEnvironment,
     "mazeBasic": maze_env.MazeEnvironment,
     "grid": grid_env.GridEnvironment,
     "blind_danger_basic": blind_danger_env.BlindDangerBasicTest,
