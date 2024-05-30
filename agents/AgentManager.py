@@ -10,7 +10,7 @@ import agents.SimpleAgents.RuleBasedAgent as RBA
 # from definitions import ACTIONS
 
 TEST_AGENTS:dict = {
-    "RBA": RBA.RuleBasedAgent,
+    # "RBA": RBA.RuleBasedAgent,
     "MI": base.ManualInputAgent,
     "GMI": base.GraphicManualInputAgent
 }
