@@ -51,6 +51,8 @@ DFDF = {}
 
 class DisplayFrame(iTkFrame):
     def __init__(self, master, screen_size: tuple[int, int]):
+        self.anite = 1
+        self.anist = 10
         self.evalmethod = None
         self.running = False
         self.w_display = None
@@ -228,7 +230,7 @@ class DisplayFrame(iTkFrame):
         if env.isWin():
             env.winStatus = (True, self.env.cur_iter)
         if doUpdate:
-            self.update_env()
+            self.update_env(anim_steps)
             self.update()
         self.show_iter()
         print("After:", self.agent_locations)
@@ -262,11 +264,20 @@ class DisplayFrame(iTkFrame):
         self.obs_agent = None if vp == "None" else int(vp)
         self.update_env()
 
-    def process_iterations(self, ite):
-        iteL=[int(e) for e in json.loads(ite)]
-        self.w_buttons.display_running(0, iteL[0])
+    def process_jsoniter(self,jite):
+        iteL=[int(e) for e in json.loads(jite)]
+        self.process_iterations(*tuple(iteL))
+
+    def process_iterations(self, ite, anite=None, anist=None):
+        ite=int(ite)
         self.running = True
-        self.run_iteration(*tuple(iteL))
+        if anist is not None:
+            self.anist=anist
+        if anite is not None:
+            self.anite=anite
+        self.w_buttons.display_running(0, ite)
+        print("ITERS:",[ite,self.anist,self.anite])
+        self.run_iteration(ite,self.anist,self.anite)
         self.running = False
         self.w_buttons.display_running(0, 0)
 
@@ -293,7 +304,7 @@ DFDF.update({
     "Move": DisplayFrame.process_move,
     "Grid type": DisplayFrame.process_gridtype,
     "Observer": DisplayFrame.process_obsagent,
-    "Iterations": DisplayFrame.process_iterations,
+    "Iterations": DisplayFrame.process_jsoniter,
     "mode": DisplayFrame.process_VEM,
     "wasd": print
 })

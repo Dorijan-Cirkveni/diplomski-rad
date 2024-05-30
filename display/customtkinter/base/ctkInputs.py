@@ -76,7 +76,7 @@ class MIF_Element:
         s = self.entry.get()
         if not self.rule(s):
             print("{} not valid!".format(s))
-            PopupMessage(self,f"Input Error {self.errmsg} on index {ind}")
+            PopupMessage(self,f"Input Error {errmsg} on index {ind}")
             return None
         return s
 
@@ -112,14 +112,16 @@ class MultipleInputFrame(BaseInputFrame):
             if s is None:
                 return
             OL.append(s)
-        self.return_lambda(OL)
+        self.return_lambda(json.dumps(OL))
 
 class RunFrame(MultipleInputFrame):
     def __init__(self, master, return_lambda: callable, screen_size: tuple):
+        isPosDigit=lambda s: str.isdigit(s) and int(s)>0
+        isPZDigit=lambda s: str.isdigit(s) and int(s)>=0
         inputs=[
-            (str.isdigit,'0','Iterations:'),
-            (str.isdigit,'0','Animated iterations:'),
-            (str.isdigit,'0','Animation steps:')
+            (isPZDigit,'1','Iterations:'),
+            (isPosDigit,'1','Animated iterations:'),
+            (isPosDigit,'1','Animation steps:')
         ]
         super().__init__(master, return_lambda, screen_size, inputs)
 
