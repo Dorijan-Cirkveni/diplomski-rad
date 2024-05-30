@@ -328,11 +328,11 @@ def main():
         print(rule)
 
     # Create the agent
-    agent = RuleBasedAgent(rules,{'last':(1,0)})
+    agent = RuleBasedAgent(rules,{'last':(0,-1)})
 
     # Sample environment data
     environment_data = {
-        'grid': Grid2D((3, 3), [[0, 1, 0], [1, 1, 1], [0, 1, 0]]),
+        'grid': Grid2D((3, 3), [[0, 2, 0], [2, 0, 2], [0, 0, 0]]),
         "loc": (1,1),
         'agents': [],
     }
