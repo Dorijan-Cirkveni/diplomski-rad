@@ -15,7 +15,7 @@ class iRawInit:
         :param s:
         """
         raw=json.loads(s)
-        return iRawInit.raw_init(raw)
+        return cls.raw_init(raw)
 
     @classmethod
     def raw_init(cls, raw: [dict, list]):
