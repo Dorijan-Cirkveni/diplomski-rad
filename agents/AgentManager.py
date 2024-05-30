@@ -6,18 +6,21 @@ from agents.AgentInterfaces import iAgent
 from definitions import ACTIONS
 
 # import agents.NeuralNetworkAgent as NNA
-# import agents.RuleBasedAgent as RBA
+import agents.SimpleAgents.RuleBasedAgent as RBA
 # from definitions import ACTIONS
 
-ALL_AGENTS = {
-    "RAA": base.RecordedActionsAgent,
-    "BOX": base.BoxAgent,
-    "MIRROR": base.MirrorAgent,
-
+TEST_AGENTS:dict = {
+    "RBA": RBA.RuleBasedAgent,
     "MI": base.ManualInputAgent,
     "GMI": base.GraphicManualInputAgent
 }
 
+ALL_AGENTS:dict = {
+    "RAA": base.RecordedActionsAgent,
+    "MIRROR": base.MirrorAgent,
+    "BOX": base.BoxAgent
+}
+ALL_AGENTS.update(TEST_AGENTS)
 
 def test_all_agent_inits():
     X = [(e, v) for e, v in ALL_AGENTS.items() if v is not None]
