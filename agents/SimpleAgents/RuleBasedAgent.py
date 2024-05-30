@@ -321,7 +321,7 @@ def ruleTest():
     return all_rules
 
 
-def main():
+def RuleTest():
     # Define initial state and rules
     rules = ruleTest()
     for rule in rules:
@@ -343,6 +343,9 @@ def main():
     # Perform actions based on rules
     actions = agent.performAction(ACTIONS)
     print(actions)
+
+
+def main():
 
 
 if __name__ == "__main__":
