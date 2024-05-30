@@ -85,7 +85,6 @@ def MakeClassNameReadable(s: str):
         new[-1] += e
     while not new[-1]:
         new.pop()
-    print(new)
     return " ".join(new)
 
 
