@@ -1,3 +1,4 @@
+import json
 from collections import defaultdict
 from copy import deepcopy
 
@@ -16,6 +17,8 @@ NONEXISTENT = -2
 class Literal(itf.iRawListInit):
     def __init__(self, key, value):
         self.key = key
+        if type(value)==list:
+            value=set(value)
         self.value = value
     
     @classmethod
@@ -40,7 +43,7 @@ class Literal(itf.iRawListInit):
         return self.key == other.key
 
     def __hash__(self):
-        return hash((self.key, self.value))
+        return hash(self.key)
 
     def __contains__(self, item):
         if type(item) == Literal:
@@ -54,7 +57,9 @@ class Literal(itf.iRawListInit):
         return f"lit({self.key},{self.value})"
 
     def to_JSON(self):
-        return [self.key,self.value]
+        L=list(self.value)
+        L.sort()
+        return [self.key,L]
 
 
 class iRule(itf.iRawListInit):
@@ -233,7 +238,7 @@ class AscendingTestVariableCondition(iFirstOrderCondition):
         return [(1, e, e in is_new_data) for e in test]
 
 
-class RulesetManager:
+class RulesetManager(itf.iRawListInit):
     def __init__(self, rules: list, byElement=None):
         self.rules = []
         self.byElement = defaultdict(set)
@@ -243,6 +248,21 @@ class RulesetManager:
             return
         for rule in rules:
             self.add(rule)
+
+    @staticmethod
+    def raw_process_list(raw: list, params:list) -> list:
+        RL=[]
+        for E in raw[0]:
+            if type(E)==list:
+                RL.append(Rule.raw_init(E))
+                continue
+            raise NotImplementedError
+        itf.iRawListInit.raw_process_list(params)
+
+
+    def to_JSON(self):
+        json_rulelist=[e.to_JSON() for e in self.rules]
+        return json_rulelist
 
     def add(self, rule: iRule):
         ruleID = len(self.rules)
@@ -363,11 +383,11 @@ def ruleTest():
 def RuleTest():
     # Define initial state and rules
     rules = ruleTest()
-    for rule in rules:
-        print(rule)
 
     # Create the agent
     agent = RuleBasedAgent(rules,{'last':(0,-1)})
+    tojs = agent.manager.to_JSON()
+    print(json.dumps(tojs,indent="|   "))
 
     # Sample environment data
     environment_data = {
