@@ -58,34 +58,41 @@ class MIF_Element:
         self.text = text
         self.entry = entry
         return
+    def create_widgets(self, master:BaseInputFrame,ind:int):
+        label=ctk.CTkLabel(master,text=self.text)
+        self.entry=ctk.CTkEntry(self)
+        self.entry.delete(0, ctk.END)
+        self.entry.insert(0, self.dfv)
+        label.grid(row=ind, column=0)
+        self.entry.grid(row=ind, column=1)
+
+    def set(self, L:list):
+        self.input: ctk.CTkEntry
+        self.input.delete(0, ctk.END)
+        self.input.insert(0, s)
+
+
 
 class MultipleInputFrame(BaseInputFrame):
     counter = Counter(0)
 
-    def __init__(self, master, return_lambda: callable, screen_size: tuple, rule: callable, defaultValue="",
-                 text="Iterations:", butext="Run", errmsg="Input Error!"):
+    def __init__(self, master, return_lambda: callable, screen_size: tuple, inputs:list, butext="Run", errmsg="Input Error!"):
         self.label = None
-        self.rule = rule
-        self.input = defaultValue
         self.button = None
         self.id = self.counter.use()
-        self.text = text
         self.butext = butext
         self.errmsg = errmsg
+        self.inputs=[MIF_Element(*E) for E in inputs]
         super().__init__(master, "Input Frame", return_lambda, screen_size)
 
     def create_widgets(self):
-        self.label = ctk.CTkLabel(self, text=self.text)
-        defaultValue = self.input
-        self.input = ctk.CTkEntry(self)
+        for i,inp in enumerate(self.inputs):
+            inp.create_widgets(self,i)
         self.button = ctk.CTkButton(self, text=self.butext, command=self.doOutput)
-        self.label.grid(row=0, column=0)
-        self.input.grid(row=0, column=1)
-        self.button.grid(row=1, column=0, columnspan=2, pady=10)
-        self.input.delete(0, ctk.END)
-        self.input.insert(0, defaultValue)
+        self.button.grid(row=len(self.inputs), column=0, columnspan=2, pady=10)
 
-    def set(self, s):
+    def set(self, L:list):
+        n=min(len(L))
         self.input: ctk.CTkEntry
         self.input.delete(0, ctk.END)
         self.input.insert(0, s)
