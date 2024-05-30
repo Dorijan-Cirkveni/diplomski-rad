@@ -43,6 +43,7 @@ class iRawInit:
         result.raw_post_init()
         return result
 
+
     def raw_post_init(self):
         return
 

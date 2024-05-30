@@ -17,9 +17,19 @@ class Literal(itf.iRawListInit):
     def __init__(self, key, value):
         self.key = key
         self.value = value
+    
+    @classmethod
+    def from_string(cls,s):
+        if s[0]=="(":
+            s=s[1:][:-1]
+        if s[0]!="[":
+            s=f"[{s}]"
+        return super().from_string(s)
 
     @staticmethod
     def toLiteral(other):
+        if type(other) == list:
+            other=tuple(other)
         if type(other) == tuple:
             return Literal(*other)
         if type(other) == Literal:
@@ -42,6 +52,9 @@ class Literal(itf.iRawListInit):
 
     def __repr__(self):
         return f"lit({self.key},{self.value})"
+
+    def to_JSON(self):
+        return [self.key,self.value]
 
 
 class iRule(itf.iRawListInit):
@@ -98,6 +111,9 @@ class iRule(itf.iRawListInit):
             print(self,self.curvals)
         return deepcopy(self.curvals[FINAL])
 
+    def to_JSON(self):
+        raise NotImplementedError
+
 
 class Rule(iRule):
     """
@@ -108,6 +124,33 @@ class Rule(iRule):
         self.conditions = [Literal.toLiteral(e) for e in conditions]
         self.result = result
         super().__init__(len(self.conditions), Literal.toLiteral(self.result))
+
+    @staticmethod
+    def raw_process_list(raw: list, params:list) -> list:
+        assert isinstance(raw,list)
+        assert len(raw)==2
+        conditions,result=raw
+        newconditions=[Literal.toLiteral(e) for e in conditions]
+        if type(result)==list:
+            result=tuple(result)
+        return itf.iRawInit.raw_process_list([newconditions,result],params)
+
+    def to_JSON(self):
+        lits=[]
+        for lit in self.conditions:
+            L=lit.to_JSON()
+            lits.append(L)
+        if type(self.result)==Literal:
+            self.result:Literal
+            res=self.result.to_JSON()
+        else:
+            res=list(self.result)
+        return [lits,res]
+
+    @classmethod
+    def from_string(cls,s):
+        raise NotImplementedError
+
 
     def __repr__(self):
         return f"{self.conditions}->{self.result}"
@@ -342,8 +385,11 @@ def RuleTest():
 
 
 def main():
-    lit=Literal.from_string("[1,true]")
-    print(lit)
+    lit=Literal.from_string("1,true")
+    rule=Rule.raw_init([[[1,True],[2,True]],[3,True]])đ
+    print(rule)
+    print(rule.to_JSON())
+    rule_str="[1,True],"
 
 
 if __name__ == "__main__":
