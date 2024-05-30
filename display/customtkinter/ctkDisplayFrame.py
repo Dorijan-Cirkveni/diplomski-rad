@@ -1,3 +1,5 @@
+import json
+
 import environments.EnvironmentManager
 import environments.GridEvalMethodManager as GEMM
 from display.customtkinter.base.ctkInputs import *
@@ -261,9 +263,10 @@ class DisplayFrame(iTkFrame):
         self.update_env()
 
     def process_iterations(self, ite):
-        self.w_buttons.display_running(0, int(ite))
+        iteL=[int(e) for e in json.loads(ite)]
+        self.w_buttons.display_running(0, iteL[0])
         self.running = True
-        self.run_iteration(int(ite))
+        self.run_iteration(*tuple(iteL))
         self.running = False
         self.w_buttons.display_running(0, 0)
 
@@ -282,6 +285,7 @@ class DisplayFrame(iTkFrame):
         if L[0] not in DFDF:
             print("{} not found, {} not handled".format(L[0], raw))
             return
+        print(L)
         DFDF[L[0]](self, L[-1])
 
 

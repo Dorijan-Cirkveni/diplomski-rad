@@ -60,16 +60,25 @@ class MIF_Element:
         return
     def create_widgets(self, master:BaseInputFrame,ind:int):
         label=ctk.CTkLabel(master,text=self.text)
-        self.entry=ctk.CTkEntry(self)
+        self.entry=ctk.CTkEntry(master)
         self.entry.delete(0, ctk.END)
         self.entry.insert(0, self.dfv)
         label.grid(row=ind, column=0)
         self.entry.grid(row=ind, column=1)
 
-    def set(self, L:list):
-        self.input: ctk.CTkEntry
-        self.input.delete(0, ctk.END)
-        self.input.insert(0, s)
+    def set(self, s):
+        self.entry: ctk.CTkEntry
+        self.entry.delete(0, ctk.END)
+        self.entry.insert(0, s)
+
+    def get(self,errmsg, ind):
+        self.entry: ctk.CTkEntry
+        s = self.entry.get()
+        if not self.rule(s):
+            print("{} not valid!".format(s))
+            PopupMessage(self,f"Input Error {self.errmsg} on index {ind}")
+            return None
+        return s
 
 
 
@@ -92,20 +101,27 @@ class MultipleInputFrame(BaseInputFrame):
         self.button.grid(row=len(self.inputs), column=0, columnspan=2, pady=10)
 
     def set(self, L:list):
-        n=min(len(L))
-        self.input: ctk.CTkEntry
-        self.input.delete(0, ctk.END)
-        self.input.insert(0, s)
+        n=min(len(L),len(self.inputs))
+        for i in range(n):
+            self.inputs[i].set(L[i])
 
     def doOutput(self):
-        assert type(self.input) == ctk.CTkEntry
-        self.input: ctk.CTkEntry
-        s = self.input.get()
-        if not self.rule(s):
-            print("{} not valid!".format(s))
-            PopupMessage(self,"Input Error",self.errmsg)
-            return
-        self.return_lambda(s)
+        OL=[]
+        for i,inp in enumerate(self.inputs):
+            s=inp.get(self.errmsg,i)
+            if s is None:
+                return
+            OL.append(s)
+        self.return_lambda(OL)
+
+class RunFrame(MultipleInputFrame):
+    def __init__(self, master, return_lambda: callable, screen_size: tuple):
+        inputs=[
+            (str.isdigit,'0','Iterations:'),
+            (str.isdigit,'0','Animated iterations:'),
+            (str.isdigit,'0','Animation steps:')
+        ]
+        super().__init__(master, return_lambda, screen_size, inputs)
 
 class JSONInputFrame(InputFrame):
     def set(self, s):
@@ -212,8 +228,7 @@ class SideMenu(iTkFrameDef):
         self.running_status = ctk.CTkLabel(self, text="TEST")
         self.running_status.grid(row=curow(), column=0, sticky="nsew")
         self.display_running(0, 0)
-        self.iterations = InputFrame(self, self.prefix_input("Iterations"), (200, 100),
-                                     lambda s: s.isdigit(), "1")
+        self.iterations = RunFrame(self, self.prefix_input("Iterations"), (200, 100))
         self.iterations.grid(row=curow(), column=0, sticky="nsew")
 
         self.console = DirectionsConsole(self, self.prefix_input("Move"), (200, 200))
