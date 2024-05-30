@@ -14,7 +14,7 @@ FINAL = -1
 NONEXISTENT = -2
 
 
-class Literal(itf.iRawListInit):
+class RLiteral(itf.iRawListInit):
     def __init__(self, key, value):
         self.key = key
         if type(value)==list:
@@ -34,8 +34,8 @@ class Literal(itf.iRawListInit):
         if type(other) == list:
             other=tuple(other)
         if type(other) == tuple:
-            return Literal(*other)
-        if type(other) == Literal:
+            return RLiteral(*other)
+        if type(other) == RLiteral:
             return other
         raise Exception("??? ({})".format(type(other)))
 
@@ -46,8 +46,8 @@ class Literal(itf.iRawListInit):
         return hash(self.key)
 
     def __contains__(self, item):
-        if type(item) == Literal:
-            item: Literal
+        if type(item) == RLiteral:
+            item: RLiteral
             item = item.value
         if type(self.value) in {set, list, dict}:
             return item in self.value
@@ -67,7 +67,7 @@ class iRule(itf.iRawListInit):
     A rule interface.
     """
 
-    def __init__(self, size, startVal: Literal):
+    def __init__(self, size, startVal: RLiteral):
         self.size = size
         self.curvals: list[dict] = [dict() for _ in range(size + 1)]
         self.curvals[0][startVal] = False
@@ -125,17 +125,17 @@ class Rule(iRule):
     A basic rule.
     """
 
-    def __init__(self, conditions: list[[Literal, tuple]], result: [Literal, tuple]):
-        self.conditions = [Literal.toLiteral(e) for e in conditions]
+    def __init__(self, conditions: list[[RLiteral, tuple]], result: [RLiteral, tuple]):
+        self.conditions = [RLiteral.toLiteral(e) for e in conditions]
         self.result = result
-        super().__init__(len(self.conditions), Literal.toLiteral(self.result))
+        super().__init__(len(self.conditions), RLiteral.toLiteral(self.result))
 
     @staticmethod
     def raw_process_list(raw: list, params:list) -> list:
         assert isinstance(raw,list)
         assert len(raw)==2
         conditions,result=raw
-        newconditions=[Literal.toLiteral(e) for e in conditions]
+        newconditions=[RLiteral.toLiteral(e) for e in conditions]
         if type(result)==list:
             result=tuple(result)
         return itf.iRawInit.raw_process_list([newconditions,result],params)
@@ -145,8 +145,8 @@ class Rule(iRule):
         for lit in self.conditions:
             L=lit.to_JSON()
             lits.append(L)
-        if type(self.result)==Literal:
-            self.result:Literal
+        if type(self.result)==RLiteral:
+            self.result:RLiteral
             res=self.result.to_JSON()
         else:
             res=list(self.result)
@@ -286,8 +286,8 @@ class RulesetManager(itf.iRawListInit):
         for rule in self.rules:
             results = rule.process(data, is_new_data)
             for E in results:
-                if type(E)==Literal:
-                    E:Literal
+                if type(E)==RLiteral:
+                    E:RLiteral
                     new_data[E.key]=E.value
                 else:
                     k, v = E
@@ -370,9 +370,9 @@ def ruleTest():
         cycur=cur
         for i in range(4):
             cycur=cycle[cycur]
-            rule=Rule(X+[Literal(('rel',cycur),go)], ('action',cycur))
+            rule=Rule(X + [RLiteral(('rel', cycur), go)], ('action', cycur))
             all_rules.append(rule)
-            X.append(Literal(('rel',cycur),nogo))
+            X.append(RLiteral(('rel', cycur), nogo))
         rule=Rule(X, ('action',(0,0)))
         all_rules.append(rule)
 
@@ -405,7 +405,7 @@ def RuleTest():
 
 
 def main():
-    lit=Literal.from_string("1,true")
+    lit=RLiteral.from_string("1,true")
     raw=[[[1, True], [2, True]], [3, True]]
     rule=Rule.raw_init(raw)
     print(rule)

@@ -18,7 +18,7 @@ class TestAllRule(unittest.TestCase):
 
         example['A3'] = True
         result = R1.process(example)
-        self.assertEqual(result, {Literal('A', True):True})
+        self.assertEqual(result, {RLiteral('A', True):True})
     def test_first_order_rule_processing(self):
         rule = AscendingTestVariableCondition(999)
         example = {i: True for i in [2, 3, 7, 9, 11, 13, 15, 17]}
@@ -73,7 +73,7 @@ class TestRulesetManager(unittest.TestCase):
             2: True
         }
         data1 = self.rule1.process(data, set(data))
-        self.assertEqual(data1, {Literal('A', True):True})
+        self.assertEqual(data1, {RLiteral('A', True):True})
         results = self.manager.process_current(data, set(data))
         expected_results = {'A': True, 'B': True}
 
@@ -89,7 +89,7 @@ class TestRulesetManager(unittest.TestCase):
 
         data['A3'] = True
         result = self.rule1.process(data, set(data))
-        self.assertEqual(result, {Literal('A', True):True})
+        self.assertEqual(result, {RLiteral('A', True):True})
 
     def test_process_rule2(self):
         data = {
