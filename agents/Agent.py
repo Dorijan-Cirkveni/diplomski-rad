@@ -13,8 +13,8 @@ class BoxAgent(itf.iAgent):
     DEFAULT_STR_INPUT = ""
     DEFAULT_RAW_INPUT = {}
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         """
 
         :param s:
@@ -72,8 +72,8 @@ class MirrorAgent(itf.iAgent):
         self.actionMirrors = [] if actionMirrors is None else actionMirrors
         self.agent_action = 0
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         """
         Creates agent from string.
         :param s: The string, in "<int> <character/list of integers>
@@ -138,8 +138,8 @@ class RecordedActionsAgent(itf.iAgent):
         self.i = 0
         self.actions = actions
 
-    @staticmethod
-    def from_string(s: str):
+    @classmethod
+    def from_string(cls,s):
         """
         Creates agent from string.
         :param s: The string.
@@ -200,8 +200,8 @@ class ManualInputAgent(itf.iAgent):
         self.actions = actions
         self.guide = guide
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         """
         Creates agent from string.
         :param s: The string.
@@ -286,8 +286,8 @@ class GraphicManualInputAgent(itf.iAgent):
         self.actions = actions if actions not in (None, "", "None") else definitions.ACTIONS
         self.cur = -1
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         """
         Creates agent from string.
         :param s: The string.

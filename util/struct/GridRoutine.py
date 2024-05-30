@@ -20,8 +20,8 @@ class GridRoutine(iRawDictInit):
         self.seq:list[int] = seq if seq else [i for i in range(len(grids))]
         self.loop = loop
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         raise util.CommonExceptions.ImplementAsNeededException()
 
     @staticmethod

@@ -109,8 +109,8 @@ class Condition(itf.iRawListInit):
         self.clauses = clauses
         self.result = result
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         pass
 
     @staticmethod
@@ -139,8 +139,8 @@ class Grid2DTile(itf.iRawListInit):
     (whether it allows entities to enter its space unharmed, destroys them, prevents them from moving in...)
     """
 
-    @staticmethod
-    def from_string(s):
+    @classmethod
+    def from_string(cls,s):
         """
 
         :param s:
