@@ -211,6 +211,7 @@ def main():
     root = DarkCTK.GetMain()
     root.geometry("{}x{}".format(*scale))
     root.minsize(*scale)
+    root.title("AI Agent Grid Test Intergace")
 
     frame = SwapFrame(root, "Test", print, scale)
     frame.pack()

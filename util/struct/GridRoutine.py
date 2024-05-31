@@ -10,7 +10,9 @@ class GridRoutine(iRawDictInit):
 
     def __init__(self, grids: [list[Grid2D],Grid2D], seq: list[int] = None, loop: bool = True):
         if type(grids) == Grid2D:
+            grids:Grid2D
             self.grids:list[Grid2D] = [grids]
+            self.scale=grids.scale
             self.seq:list[int] = []
             self.loop = True
             return

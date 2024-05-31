@@ -298,7 +298,7 @@ class iEnvironment(iRawDictInit):
             entity.receiveEnvironmentData(self.runData)
             # move = self.getMoves(entityID)
             chosenActionID = entity.performAction(definitions.ACTIONS)
-            chosenAction=definitions.ACTIONS[chosenActionID]
+            chosenAction=chosenActionID if isinstance(chosenActionID,tuple) else definitions.ACTIONS[chosenActionID]
             cur_D[entityID] = chosenAction
         D.update(cur_D)
         res = self.step(D)

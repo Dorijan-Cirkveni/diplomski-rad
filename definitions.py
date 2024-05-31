@@ -10,7 +10,7 @@ EPSILONLITE = 0.01
 
 
 def getMirrorActions(dimension: int):
-    if dimension & 1 == 0:
+    if dimension & 1 != 0:
         return {V2RIGHT: V2LEFT, V2LEFT: V2RIGHT}
     return {V2UP: V2DOWN, V2DOWN: V2UP}
 

@@ -2,6 +2,10 @@
   {
     "envType": "mirror",
     "name": "Mirror Test 0",
-    "subenv": "<EXT>t_base|0"
+    "subenv": {
+      "<EXTEND.A>": "<EXT>t_base|0",
+      "name": "Mirror Test 0",
+      "solid": {"grids": ["<EXT>g_base_mirror|0","<EXT>g_base_mirror|1"],"loop": true}
+    }
   }
 ]

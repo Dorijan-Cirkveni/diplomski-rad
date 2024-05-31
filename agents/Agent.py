@@ -106,6 +106,8 @@ class MirrorAgent(itf.iAgent):
         """
         curdata = data.get("agent_current_action", dict())
         MAdata = curdata.get(self.mirroredAgent, None)
+        if MAdata is None:
+            raise Exception(json.dumps(curdata,indent=4))
         self.agent_action = MAdata
         return
 
@@ -116,6 +118,9 @@ class MirrorAgent(itf.iAgent):
         :param actions: Available actions.
         :return: object: Action to be performed.
         """
+        print(self.agent_action,self.actionMirrors)
+        if type(self.actionMirrors)==dict:
+            return self.actionMirrors.get(self.agent_action,self.agent_action)
         if self.actionMirrors and self.agent_action<len(self.actionMirrors):
             return self.actionMirrors[self.agent_action]
         return self.agent_action

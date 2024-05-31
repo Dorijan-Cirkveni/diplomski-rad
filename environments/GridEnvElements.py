@@ -40,6 +40,7 @@ class GridEntity(itf.iEntity):
 
     def copy(self):
         newAgent = self.agent.copy()
+        raise util.CommonExceptions.ImplementAsNeededException()
 
     @staticmethod
     def raw_process_dict(raw: dict, params: list):

@@ -413,8 +413,12 @@ class GridEnvironment(itf.iEnvironment):
                 vis_inc = VO_inc.step([e[1] in opaque for e in L], distance)
                 # (temp, "".join([str(el[1]) for el in L]), vis_inc)
                 for i in range(len(vis_inc)):
-                    if vis_inc[i]:
-                        return_grid[L[i][0]] = L[i][1]
+                    if not vis_inc[i]:
+                        continue
+                    E,V=L[i]
+                    if not Tinrange(E,return_grid.scale):
+                        continue
+                    return_grid[E] = V
             if VO_dec.lines:
                 used_any = True
                 L = [(start, scheck)]

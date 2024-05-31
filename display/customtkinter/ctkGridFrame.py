@@ -60,8 +60,6 @@ class GridElementDisplay:
         int_real_size = Tsub(int_true_end, int_true_location, True)
         ratio = Tdiv(int_real_size, og)
         curatio = ratio[0] / ratio[1]
-        if not (0.8 <= curatio <= 1.25):
-            raise Exception("Distortion!")
         key = int_real_size + (cropMode,)
         int_location = Tadd(location, (0.5,) * 2, True)
         reslocation = int_true_location
