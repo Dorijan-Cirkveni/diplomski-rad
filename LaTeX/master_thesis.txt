@@ -1,0 +1,191 @@
+UNIVERSITY OF ZAGREB
+FACULTY OF ELECTRICAL ENGINEERING AND COMPUTING
+MASTER THESIS No. 1234
+MODELLING AND OVERSIGHT OF NATURAL INTELLIGENCE: KEY ASPECTS
+Dorijan Cirkveni
+Zagreb, December, 2023.
+SVEUCILIŠTE U ZAGREBU
+FAKULTET ELEKTROTEHNIKE I RACUNARSTVA
+DIPLOMSKI RAD br. 1234
+KLJUCNI ASPEKTI MODELIRANJA I NADZORA
+PRIRODNE INTELIGENCIJE
+Dorijan Cirkveni
+Zagreb, prosinac, 2023.
+SVEUCILIŠTE U ZAGREBU
+FAKULTET ELEKTROTEHNIKE I RACUNARSTVA
+Zagreb, 2. listopada 2023.
+DIPLOMSKI ZADATAK br. 3168
+Pristupnik:Dorijan Cirkveni (0036501554)Studij:RacunarstvoProfil:Racunarska znanostMentor:prof. dr. sc. Vedran MornarZadatak:Kljucni aspekti modeliranja i nadzora prirodne inteligencijeOpis zadatka:
+Istražiti mogucnost razvoja simulacije ljudske inteligencije i svijesti korištenjem trenutacno postojecih mogucnosti umjetne inteligencije. Prikupiti literaturu povezanu s konceptima umjetne inteligencije, prirodne inteligencije, svijesti i drugih podrucja, tehnickih i teoretskih, blisko povezanih s podrucjem istraživanja. Usporediti postojece implementacije ljudske inteligencije i svijesti. Vrednovati prostornu i vremensku složenost postojecih implementacija, ali i njihovu transparentnost. Razviti simulirane svjesne agente i virtualnu okolinu za ispitivanje i nadzor tih agenata. Oblikovati virtualnu okolinu tako da simulirala niz stvarnih situacija u kojima se svjesni agenti mogu naci. Ovisno o vrsti modela agenata, koristiti njihovo okruženje u procesu ucenja.
+Diskutirati rezultate istraživanja.
+Rok za predaju rada: 9. veljace 2024.
+
+
+
+Contents
+1 Introduction	3
+1.1 Artificial intelligence	3
+1.2 The five schools of artificial intelligence	3
+1.2.1 Connectionism	4
+1.3 Recent advances	4
+1.3.1 Related advances in contemporary research	4
+1.3.2 Related advances in public use	4
+1.4 But does it think?	5
+1.4.1 The Chinese Room Argument	6
+1.5 Artificial consciousness	6
+1.5.1 Popular media depictions of AI as artificial consciousness	6
+1.6 Defining intelligence	8
+1.6.1 Necessary assumptions	8
+1.6.2 Existing theories	8
+1.7 Defining consciousness	8
+1.7.1 Necessary assumptions	8
+1.7.2 Existing theories	9
+1.8 Testing for intelligence	9
+1.9 Testing for consciousness	9
+1.9.1 Turing test	9
+1.10 Simulating intelligence	10
+1.10.1 Existing attempts	10
+1.11 Simulating consciousness	10
+1.11.1 Existing attempts	10
+2 Materials and Methods	11
+3 Results and Discussion	13
+4 Conclusion	15
+References	16
+Abstract	17
+Sažetak	18
+A: The Code	19
+
+
+1	Introduction
+The purpose of this paper is to research the possibility of simulating human intelligence and consciousness using currently available hardware, software, and known methods of developing artificial intelligence.
+   In order to do so, we first need to establish a working definition of both intelligence and consciousness. This is a difficult task in its own right, as both of these definitions are open questions.
+   Next, we need to define a metric with which we are going to measure whether an artificial entity possesses those two aforementioned qualities.
+   After that, this paper will propose a few promising avenues of research and provide implementation examples and their preliminary results.
+1.1	Artificial intelligence
+The
+1.2	The five schools of artificial intelligence
+There are five distinct schools of artificial intelligence, which this work will reference repeatedly.
+   Each of these five distinct schools of artificial intelligence is focused on a different approach on how to achievethe same goal. These approaches are not mutuallyexclusive, however - it is possible, and likely necessary, to combine multiple approaches in pursuit of the
+1.2.1	Connectionism
+The connectionist school of artificial intelligence focuses on replicating the human brain through artificial structures known as neural networks.
+1.3	Recent advances
+1.3.1	Related advances in contemporary research
+1.3.2	Related advances in public use
+Machine learning is currently going through a renaissance in the public eye, as several different forms of its applications have been not only released, but reached widespread use.
+Large language models The capabilities of large language models such as ChatGPT, Bing Copilot, and Bard, for example, are best described and demonstrated through the use of the latter:
+Large language models (LLMs) like Bard, ChatGPT, and Bing Copilot have demonstrated remarkable capabilities in generating human-quality text with minimalpromptsandsuggestionsfromthehumanauthorofthisthesis. These models, powered by sophisticated neural networks and trained on massive amounts of data, can process and understand language in ways that were once thought to be the exclusive domain of humans. Bard, for instance, seamlessly blended the prompts and suggestions from the human author of this thesis into this paragraph, highlighting its ability to grasp the nuances of human language and produce text that is both meaningful and engaging. Similarly, ChatGPT has impressed users with its ability to generate creative text formats, while Bing Copilot has proven adept at assisting with coding tasks. The ability of LLMs to learn and adapt further enhances their potential, as they can continuously refine their skills and expand their knowledge base. As LLMs continue to evolve, we can expect even more innovative and groundbreaking applications to emerge, revolutionizing the way we interact with technology and transforming various fields, from education to healthcare to communication.
+[1]
+Bing Copilot is a language model that can generate text based on keywords, rules, and preferences. The author of this paragraph gave Bing Copilot minimal instruction on what to write, and Bing Copilot produced this paragraph as an example of its capabilities. Bing Copilot can write in different formats, lengths, and tones, depending on the user's needs. Bing Copilot is always learning and improving from feedback and data.
+[?]
+Image generation AI Image , on the other hand, managed to reach widespread use thanks to its capability of generating images based on natural language prompts, utilising and expanding upon the aforementioned ability to recognise natural language input.
+
+Figure 1.1: An image generated using Bing Image Creator. Prompt: "an artificial intelligence contemplating its existence"
+1.4	But does it think?
+However, 
+It should be noted that while the widespread utility of the aforementioned tools cannot be understated, their purported intelligence - let alone consciousness - can and should be held under scrutiny.
+1.4.1	Domain size
+These aforementioned accomplishments all demonstrate mastery over narrowly specified domains (such as language processing or image generation) and do not necessarily - if at all - indicate the ability to reason over an extensive
+1.4.2	The Chinese Room Argument
+Not only do artificial intelligences existing so far only exhibit mastery over narrow domains, they may not even possess true understanding of those domains either.
+The Chinese Room Argument was conceived by John Searle, and it argues as follows:
+Imagine a native English speaker who knows no Chinese locked in a room full of boxes of Chinese symbols (a data base) together with a book of instructions for manipulating the symbols (the program). Imagine that people outside the room send in other Chinese symbols which, unknown to the person in the room, are questions in Chinese (the input). And imagine that by following the instructions in the program the man in the room is able to pass out Chinese symbols which are correct answers to the questions (the output). The program enables the person in the room to pass the Turing Test for understanding Chinese but he does not understand a word of Chinese.
+[?]
+   This argument implies that merely being capable of performing an action does not prove understanding of an action. (Another example easily gives itself available from the educational world - passing exams does not necessarily imply understanding of the subject matter at hand, as in some cases one could use previous exam examples to learn how to pass the exams rather than understand the subject one is studying.)
+1.5	Artificial consciousness
+1.5.1	Popular media depictions of AI as artificial consciousness
+It is common to see AI characters depicted in media in form of conscious AGI (Artificial General Intelligence) characters with thought processes and actions similar to their human counterparts.
+   This is likely due to relative ease of writing characters with relatively human-like intentions and behaviours.
+Some examples include:
+• Lt. Commander Data, a character that first appeared in the classic sci-fi series Star
+Trek: The Next Generation.
+Lt. CommanderDataisanexperimentalandroid. Hepossessessignificantphysical and mental capabilities, but is lacking the capacity to process emotion.
+
+
+
+Figure 1.2: Lt. Commander Data
+• A holographic depiction (that is, a simulation) of James Moriarty, a fictional antagonist appearing in two stories written by Sir Arthur Conan Doyle, appearing in two separate episodes of the aforementioned sci-fi series.
+Due to an improper request from the simulation operator who requested an antagonist capable of defeating the aforementioned experimental android, this holographic depiction gained sentience indistinguishable from that of a human being.
+• The version of the Emergency Medical Holographic program present on USS Voyager known as "The Doctor" (not to be confused with the protagonist of another popular sci-fi series), a notable character in Star Trek: Voyager.
+Unlike the former two entries on this list, The EMH did not gain sentience due to intentional development or unintentional human input, but developed it
+
+Figure 1.3: A simulation of James Moriarty
+
+Figure 1.4: "The Doctor"
+1.6	Defining intelligence
+1.6.1	Necessary assumptions
+Measurability In order for this paper to produce meaningful results, a metric is required to exist that can, to some extent, measure the presence of intelligence.
+Materialism
+1.6.2	Existing theories
+1.7	Defining consciousness
+Unlike intelligence, consciousness is not
+1.7.1	Necessary assumptions
+Measurability Again, in order for this paper to produce meaningful results, a metric is required to exist that can, to some extent, measure the presence of intelligence.
+Materialism
+1.7.2	Existing theories
+
+1.8	Testing for intelligence
+While defining intelligence is no easy task, one of its definitions (the ability to apply knowledge to manipulate one's environment or to think abstractly as measured by objective criteria (such as tests)) lends itself
+1.9	Testing for consciousness
+1.9.1	Turing test
+I PROPOSE to consider the question, 'Can machines think?' This should begin with definitions of the meaning of the terms 'machine' and 'think'. The definitions might be framed so as to reflect so far as possible the normal use of the words, but this attitude is dangerous. If the meaning of the words 'machine' and 'think' are to be found by examining how they are commonly used it is difficult to escape the conclusion that the meaning and the answer to the question, 'Can machines think?' is to be sought in a statistical survey such as a Gallup poll. But this is absurd. Instead of attempting such a definition I shall replace the question by another, which is closely related to it and is expressed in relatively unambiguous words. [?]
+[H]ow many different automata or moving machines could be made by the industry of man ... For we can easily understand a machine's being constituted so that it can utter words, and even emit some responses to action on it of a corporeal kind, which brings about a change in its organs; for instance, if touched in a particular part it may ask what we wish to say to it; if in another part it may exclaim that it is being hurt, and so on. But it never happens that it arranges its speech in various ways, in order to reply appropriately to everything that may be said in its presence, as even the lowest type of man can do. [?]
+1.10	Simulating intelligence
+1.10.1	Existing attempts
+•
+1.11	Simulating consciousness
+1.11.1	Existing attempts
+2	Materials and Methods
+Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+   This is the second paragraph. Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+   And after the second paragraph follows the third paragraph. Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+   After this fourth paragraph, we start a new paragraph sequence. Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+   Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+3	Results and Discussion
+This is the second paragraph. Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+   And after the second paragraph follows the third paragraph. Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+   After this fourth paragraph, we start a new paragraph sequence. Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+   Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+   This is the second paragraph. Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+4	Conclusion
+Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+
+References
+[1] Bard, "Bard, a large language model from google ai," 2023. [Online]. Available: https://ai.googleblog.com/2023/01/lamda-language-model-for-dialogue.html
+[2] A. M. TURING, "I.-COMPUTING MACHINERY AND INTELLIGENCE," Mind, vol. LIX, no. 236, pp. 433-460, 10 1950. https://doi.org/10.1093/mind/LIX.236.433
+
+Abstract
+Modelling and Oversight of Natural Intelligence: Key Aspects
+Dorijan Cirkveni
+Enter the abstract in English.
+   Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+Keywords:	the first keyword; the second keyword; the third keyword
+Sažetak
+Kljucni aspekti modeliranja i nadzora prirodne inteligencije
+Dorijan Cirkveni
+Unesite sažetak na hrvatskom.
+   Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+Kljucne rijeci:	prva kljucna rijec; druga kljucna rijec; treca kljucna rijec
+Appendix A:	The Code
+And after the second paragraph follows the third paragraph. Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+   After this fourth paragraph, we start a new paragraph sequence. Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+   Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+   This is the second paragraph. Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+   And after the second paragraph follows the third paragraph. Hello, here is some text without a meaning. This text should show what a printed text will look like at this place. If you read this text, you will get no information. Really? Is there no information? Is there a difference between this text and some nonsense like "Huardest gefburn"? Kjift - not at all! A blind text like this gives you information about the selected font, how the letters are written and an impression of the look. This text should contain all letters of the alphabet and it should be written in of the original language. There is no need for special content, but the length of words should match the language.
+
+
+
+
+
+
+
+
+
+
+
+
+1
+
+1
+
+1
+
