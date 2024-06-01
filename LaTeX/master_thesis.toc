@@ -27,32 +27,33 @@
 \contentsline {subsection}{\numberline {1.4.2}Anthropomorphism and AI}{15}{subsection.1.4.2}%
 \contentsline {subsection}{\numberline {1.4.3}The Chinese Room Argument}{16}{subsection.1.4.3}%
 \contentsline {subsection}{\numberline {1.4.4}Popular media depictions of AI as artificial consciousness}{17}{subsection.1.4.4}%
-\contentsline {section}{\numberline {1.5}Defining intelligence}{18}{section.1.5}%
-\contentsline {section}{\numberline {1.6}Types of intelligence}{19}{section.1.6}%
-\contentsline {subsection}{\numberline {1.6.1}Existing theories}{19}{subsection.1.6.1}%
-\contentsline {subsection}{\numberline {1.6.2}A suggestion }{19}{subsection.1.6.2}%
-\contentsline {subsubsection}{Knowledge by source}{19}{section*.17}%
-\contentsline {paragraph}{Explicitly coded knowledge}{19}{section*.18}%
+\contentsline {section}{\numberline {1.5}Why should we care about artificial consciousness?}{18}{section.1.5}%
+\contentsline {section}{\numberline {1.6}Defining intelligence}{19}{section.1.6}%
+\contentsline {section}{\numberline {1.7}Types of intelligence}{19}{section.1.7}%
+\contentsline {subsection}{\numberline {1.7.1}Existing theories}{19}{subsection.1.7.1}%
+\contentsline {subsection}{\numberline {1.7.2}A suggestion }{19}{subsection.1.7.2}%
+\contentsline {subsubsection}{Knowledge by source}{20}{section*.17}%
+\contentsline {paragraph}{Explicitly coded knowledge}{20}{section*.18}%
 \contentsline {paragraph}{Learning phase knowledge}{20}{section*.19}%
 \contentsline {paragraph}{Live learning knowledge}{20}{section*.20}%
 \contentsline {subsubsection}{Knowledge by level}{20}{section*.21}%
-\contentsline {section}{\numberline {1.7}Defining consciousness}{20}{section.1.7}%
-\contentsline {subsection}{\numberline {1.7.1}Existing theories}{21}{subsection.1.7.1}%
+\contentsline {section}{\numberline {1.8}Defining consciousness}{21}{section.1.8}%
+\contentsline {subsection}{\numberline {1.8.1}Existing theories}{21}{subsection.1.8.1}%
 \contentsline {subsubsection}{Integrated Information Theory}{21}{section*.22}%
 \contentsline {subsubsection}{Global Workspace Theory}{21}{section*.23}%
 \contentsline {subsubsection}{Artificial General Intelligence}{21}{section*.24}%
-\contentsline {section}{\numberline {1.8}Testing for intelligence}{22}{section.1.8}%
-\contentsline {section}{\numberline {1.9}Testing for consciousness}{22}{section.1.9}%
-\contentsline {subsection}{\numberline {1.9.1}The Turing Test}{22}{subsection.1.9.1}%
-\contentsline {subsection}{\numberline {1.9.2}Self-awareness tests}{23}{subsection.1.9.2}%
+\contentsline {section}{\numberline {1.9}Testing for intelligence}{22}{section.1.9}%
+\contentsline {section}{\numberline {1.10}Testing for consciousness}{22}{section.1.10}%
+\contentsline {subsection}{\numberline {1.10.1}The Turing Test}{22}{subsection.1.10.1}%
+\contentsline {subsection}{\numberline {1.10.2}Self-awareness tests}{23}{subsection.1.10.2}%
 \contentsline {paragraph}{Mirror test analogy}{23}{section*.25}%
 \contentsline {subparagraph}{Advantages}{24}{section*.26}%
 \contentsline {subparagraph}{Drawbacks}{24}{section*.27}%
 \contentsline {paragraph}{Sensorimotor Contingency Test}{24}{section*.28}%
-\contentsline {section}{\numberline {1.10}Simulating intelligence}{24}{section.1.10}%
-\contentsline {subsection}{\numberline {1.10.1}Existing attempts}{24}{subsection.1.10.1}%
-\contentsline {section}{\numberline {1.11}Simulating consciousness}{24}{section.1.11}%
+\contentsline {section}{\numberline {1.11}Simulating intelligence}{24}{section.1.11}%
 \contentsline {subsection}{\numberline {1.11.1}Existing attempts}{24}{subsection.1.11.1}%
+\contentsline {section}{\numberline {1.12}Simulating consciousness}{24}{section.1.12}%
+\contentsline {subsection}{\numberline {1.12.1}Existing attempts}{24}{subsection.1.12.1}%
 \contentsline {chapter}{\numberline {2}Materials and Methods}{25}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Virtual testing environment}{25}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Grid elements}{25}{section.2.2}%
