@@ -5,8 +5,8 @@
 \babel@toc {english}{}\relax 
 \contentsline {chapter}{\numberline {1}Introduction}{4}{chapter.1}%
 \contentsline {subsection}{\numberline {1.0.1}Recent advances in artificial intelligence}{4}{subsection.1.0.1}%
-\contentsline {subsection}{\numberline {1.0.2}Public adoption}{5}{subsection.1.0.2}%
-\contentsline {subsubsection}{Large language models}{6}{section*.3}%
+\contentsline {subsection}{\numberline {1.0.2}Public Adoption}{5}{subsection.1.0.2}%
+\contentsline {subsubsection}{Large Language Models}{6}{section*.3}%
 \contentsline {subsubsection}{Image generation AI}{6}{section*.4}%
 \contentsline {subsection}{\numberline {1.0.3}Backlash to "AI art" and the question of consciousness}{7}{subsection.1.0.3}%
 \contentsline {section}{\numberline {1.1}Objective}{7}{section.1.1}%

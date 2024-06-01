@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  31 MAY 2024 18:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  31 MAY 2024 22:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -944,11 +944,11 @@ l.97     \item \textbf
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <12> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 106.
+e 105.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 12.0pt on input line 106.
+(Font)              scaled to size 12.0pt on input line 105.
 
-Overfull \hbox (5.6914pt too wide) in paragraph at lines 110--111
+Overfull \hbox (5.6914pt too wide) in paragraph at lines 109--110
 \T1/stix2/m/n/12 min-i-mal prompts and sug-ges-tions from the hu-man au-thor of
  this the-sis. These
  []
@@ -957,61 +957,61 @@ Overfull \hbox (5.6914pt too wide) in paragraph at lines 110--111
 File: Figures/bing image creator prompt 1a.jpeg Graphic file (type jpg)
 <use Figures/bing image creator prompt 1a.jpeg>
 Package pdftex.def Info: Figures/bing image creator prompt 1a.jpeg  used on inp
-ut line 118.
+ut line 117.
 (pdftex.def)             Requested size: 167.58888pt x 167.58849pt.
 [6]
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <16> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 130.
+e 129.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 130.
+(Font)              scaled to size 16.0pt on input line 129.
  [7 <./Figures/bing image creator prompt 1a.jpeg>] [8] [9]
-Overfull \hbox (10.00052pt too wide) in paragraph at lines 217--219
+Overfull \hbox (10.00052pt too wide) in paragraph at lines 216--218
 []\T1/stix2/m/n/12 Generality This ap-proach is more gen-eral than the pre-vi-o
 usly listed "laws-of-thought"
  []
 
 [10] [11] [12]
 
-LaTeX Warning: Citation `descartes1' on page 13 undefined on input line 253.
+LaTeX Warning: Citation `descartes1' on page 13 undefined on input line 252.
 
 [13] [14]
 
 LaTeX Warning: Citation `lemoine2022lamda' on page 15 undefined on input line 2
-94.
+93.
 
 <Figures/LaMDA tweet 1.png, id=458, 444.4605pt x 151.767pt>
 File: Figures/LaMDA tweet 1.png Graphic file (type png)
 <use Figures/LaMDA tweet 1.png>
-Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 303.
+Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 302.
 (pdftex.def)             Requested size: 441.01773pt x 150.59714pt.
 <Figures/LaMDA tweet 2.png, id=460, 437.83575pt x 258.9675pt>
 File: Figures/LaMDA tweet 2.png Graphic file (type png)
 <use Figures/LaMDA tweet 2.png>
-Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 309.
+Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 308.
 (pdftex.def)             Requested size: 441.01773pt x 260.85962pt.
 
-Overfull \hbox (2.17796pt too wide) in paragraph at lines 315--316
+Overfull \hbox (2.17796pt too wide) in paragraph at lines 314--315
 \T1/stix2/m/n/12 Anthropomorphism is a com-mon hu-man ten-dency to as-cribe hu-
 man traits to non-human
  []
 
 [15 <./Figures/LaMDA tweet 1.png>]
 
-LaTeX Warning: Citation `turing1' on page 16 undefined on input line 331.
+LaTeX Warning: Citation `turing1' on page 16 undefined on input line 330.
 
 [16 <./Figures/LaMDA tweet 2.png>]
 <Figures/DataTNG.jpeg, id=474, 301.125pt x 168.63pt>
 File: Figures/DataTNG.jpeg Graphic file (type jpg)
 <use Figures/DataTNG.jpeg>
-Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 342.
+Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 341.
 (pdftex.def)             Requested size: 227.62204pt x 127.4731pt.
 <Figures/James_Moriarty_hologram.png, id=475, 1058.95625pt x 1058.95625pt>
 File: Figures/James_Moriarty_hologram.png Graphic file (type png)
 <use Figures/James_Moriarty_hologram.png>
 Package pdftex.def Info: Figures/James_Moriarty_hologram.png  used on input lin
-e 352.
+e 351.
 (pdftex.def)             Requested size: 227.62204pt x 227.60652pt.
 
 
@@ -1021,45 +1021,45 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 <Figures/VoyagerEMH.png, id=481, 468.75125pt x 531.9875pt>
 File: Figures/VoyagerEMH.png Graphic file (type png)
 <use Figures/VoyagerEMH.png>
-Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 361.
+Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 360.
 (pdftex.def)             Requested size: 227.62204pt x 258.3221pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [18 <./Figures/James_Moriarty_hologram.png>] [19 <./Figures/VoyagerEMH.png>]
-Overfull \hbox (3.06107pt too wide) in paragraph at lines 389--390
+Overfull \hbox (3.06107pt too wide) in paragraph at lines 388--389
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-mi-sa-tion meth-
  []
 
 [20]
 
-LaTeX Warning: Citation `theoryAGI' on page 21 undefined on input line 422.
+LaTeX Warning: Citation `theoryAGI' on page 21 undefined on input line 421.
 
 [21]
 
-LaTeX Warning: Citation `turing1' on page 22 undefined on input line 429.
+LaTeX Warning: Citation `turing1' on page 22 undefined on input line 428.
 
 [22]
 
-LaTeX Warning: Citation `ELIZA' on page 23 undefined on input line 440.
+LaTeX Warning: Citation `ELIZA' on page 23 undefined on input line 439.
 
 [23] [24]
 Chapter 2.
 <Figures/grid/alltiles.png, id=525, 272.07529pt x 544.15059pt>
 File: Figures/grid/alltiles.png Graphic file (type png)
 <use Figures/grid/alltiles.png>
-Package pdftex.def Info: Figures/grid/alltiles.png  used on input line 484.
+Package pdftex.def Info: Figures/grid/alltiles.png  used on input line 483.
 (pdftex.def)             Requested size: 220.50887pt x 441.03357pt.
 [25
 
 ] [26 <./Figures/grid/alltiles.png>] [27] [28]
 
-LaTeX Warning: Citation `Chomsky2023' on page 29 undefined on input line 566.
+LaTeX Warning: Citation `Chomsky2023' on page 29 undefined on input line 565.
 
 [29]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 594--595
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 593--594
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
@@ -1067,7 +1067,7 @@ e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
 [30] [31]
 Chapter 3.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 621.
+ut line 620.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1076,9 +1076,9 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 621.
+ne 620.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 621.
+(Font)              scaled to size 16.0pt on input line 620.
  [32
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
@@ -1101,7 +1101,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.683 \chapter{The Code}
+l.682 \chapter{The Code}
                         
 Appendix A.
 [38
@@ -1241,14 +1241,17 @@ master_thesis.bbl
 LaTeX Warning: There were undefined references.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+Package rerunfilecheck Warning: File `master_thesis.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
 
-Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 3B69771A22243A335BBE273554844E37;12000.
+Package rerunfilecheck Info: Checksums for `master_thesis.out':
+(rerunfilecheck)             Before: 3B69771A22243A335BBE273554844E37;12000
+(rerunfilecheck)             After:  AC9F27FCE2C931F78FBC2BCB5A04E788;12000.
  ) 
 Here is how much of TeX's memory you used:
  18275 strings out of 474586
- 289214 string characters out of 5745681
+ 289376 string characters out of 5745681
  1937558 words of memory out of 5000000
  39977 multiletter control sequences out of 15000+600000
  639722 words of font info for 142 fonts, out of 8000000 for 9000
@@ -1261,7 +1264,7 @@ X/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/User
 s/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-
 Regular.pfb>
-Output written on master_thesis.pdf (43 pages, 1564675 bytes).
+Output written on master_thesis.pdf (43 pages, 1564684 bytes).
 PDF statistics:
  694 PDF objects out of 1000 (max. 8388607)
  174 named destinations out of 1000 (max. 500000)
