@@ -67,37 +67,197 @@ PRIRODNE INTELIGENCIJE}
 %--- INTRODUCTION / UVOD -------------------------------------------------------
 \chapter{Introduction}
 \label{chp:introduction}
-	The purpose of this paper is to research the possibility of simulating
-	human intelligence and consciousness using currently available hardware,
-	software, and known methods of developing artificial intelligence.
-	
-	This is an objective that modern computer science has pursued in some shape or form since its inception in the 1940s, 
-	
-	In this paper, we will attempt to determine possible routes to achieving said objective and as close we are to achieving it.
-	
-	In order to do so, we first need to establish a working definition of both
-	intelligence and consciousness. This is a difficult task in its own right,
-	as both of these definitions are open questions.
-	
-	Next, we need to define a metric with which we are going to measure
-	whether an artificial entity possesses
-	those two aforementioned qualities.
-	
-	After that, this paper will propose a few promising avenues
-	of research and provide implementation examples
-	and their preliminary results.
-	
-	However, in order to do all this, we must first determine the nature of the task at hand and estimate its scope as well as the progress that has already been made towards completing it, with the emphasis on recent and state-of-the-art accomplishments.
-	
-	We should first separate this task into two tasks:
+\begin{quote}
+We call ourselves \textit{Homo sapiens}
+- man the wise - because our intelligence is so important
+to us. For thousands of years. we have tried to understand how we think; that is, how a mere handful of matter can perceive, understand, predict, and manipulate a world far larger and
+more complicated than itself. The field of artifcial intelligence, or AI, goes further still: it
+attempts not just to understand but also to build intelligent entities.
+\cite{TOCITE} TODO
+\end{quote}
+\subsection{Recent advances in artificial intelligence}
+
+Ten years ago (2013), artificial intelligence capabilities were far behind where they are today, with handwriting recognition abilities barely lagging behind human performance, speech and image recognition lagging far behind, and reading comprehension and language understanding being untested and/or non-existent.
+
+By today, artificial intelligence systems have outperformed humans in every one of these five listed fields and more.
+\cite{owid-brief-history-of-ai}
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=1\linewidth]{Figures/AI performance history.png} 
+  \caption{Advances of AI during the last few decades}
+  \label{slk:AI_advances}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Image Recognition} Deep learning has enabled artificial intelligence systems to achieve superhuman accuracy in image recognition tasks, recognizing objects, scenes, and faces with remarkable precision.
+
+    \item \textbf{Video Understanding} Artificial intelligence systems can now analyze videos to understand the content, actions, and relationships between objects, paving the way for applications like action recognition and video summarization.
+
+    \item \textbf{Object Detection and Tracking} Artificial intelligence systems can now detect and track multiple objects in real time, enabling applications like self-driving cars and surveillance systems.
+    \item \textbf{AlphaGo's Defeat of Lee Sedol} In 2016, AlphaGo, an AI developed by Google DeepMind, defeated world champion Go player Lee Sedol, marking a significant breakthrough in the ability of reinforcement-learning-based algorithms to master complex games.
+    \item \textbf{Robotic Control} Reinforcement learning has enabled artificial intelligence systems to control robots with unprecedented dexterity and agility, enabling them to perform tasks like picking up objects, grasping tools, and navigating complex and dynamic environments.
+    \item \textbf{Financial Trading} Reinforcement learning algorithms are being used to make trading decisions and optimize investment portfolios, demonstrating the potential of reinforcement learning in various real-world applications.
+\end{itemize}
+\subsection{Public Adoption}
+Machine learning is currently going through a renaissance not only from a research standpoint but in the public eye as well, which is mainly because several different forms of its applications have been successfully released and reached widespread use in an unprecedentedly short amount of time.
+
+One such application, a conversation-based large language model platform known as ChatGPT, surpassed 100 million monthly active users merely two months after its release.
+
+\subsubsection{Large Language Models}
+The capabilities of large language models such as ChatGPT, Bing Copilot, and Bard, for example, are best described and demonstrated through the use of the latter:
+
+\begin{quote}
+Large language models (LLMs) like Bard, ChatGPT, and Bing Copilot have demonstrated remarkable capabilities in generating human-quality text with minimal prompts and suggestions from the human author of this thesis. These models, powered by sophisticated neural networks and trained on massive amounts of data, can process and understand language in ways that were once thought to be the exclusive domain of humans. Bard, for instance, seamlessly blended the prompts and suggestions from the human author of this thesis into this paragraph, highlighting its ability to grasp the nuances of human language and produce text that is both meaningful and engaging. Similarly, ChatGPT has impressed users with its ability to generate creative text formats, while Bing Copilot has proven adept at assisting with coding tasks. The ability of LLMs to learn and adapt further enhances their potential, as they can continuously refine their skills and expand their knowledge base. As LLMs continue to evolve, we can expect even more innovative and groundbreaking applications to emerge, revolutionizing the way we interact with technology and transforming various fields, from education to healthcare to communication.
+
+\cite{bard2023}
+\end{quote}
+\subsubsection{Image generation AI}
+Image generation AI, similarly, managed to reach widespread use thanks to its capability of generating images based on natural language prompts, utilizing and expanding upon the aforementioned ability to recognize natural language input.
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.38\linewidth]{Figures/bing image creator prompt 1a.jpeg} 
+  \caption{An image generated using Bing Image Creator. Prompt: "an artificial intelligence contemplating its existence"}
+  \label{slk:bing_image}
+\end{figure}
+\subsection{Backlash to "AI art" and the question of consciousness}
+Use of generative artificial intelligence to create images has been met with severe backlash for several reasons, including uncompensated use of existing art to train generative artificial intelligence models and its threat to the livelihoods of human artists.
+
+However, there is one reason people oppose use of generative artificial intelligence to create so-called "AI art" that is closely related to the topic of this thesis, and that is that art is the result of conscious creation by a conscious artist. And since image generation programs based on artificial intelligence are not conscious, and their operation usually does not require conscious input beyond making a specific request - the act which has more similarity with commissioning art from an artist than with creating art by oneself - this means that images generated using artificial intelligence cannot be considered art.
+
+However, the question of whether consciousness is a prerequisite for art, or whether can artificial intelligence create art that can be considered art, is at best tangentially relevant to the second main question of this thesis, which is:
+
+Can artificial intelligence be conscious?
+\section{Objective}
+The purpose of this paper is to research the possibility of simulating human intelligence and consciousness using currently available hardware, software, and known methods of developing artificial intelligence.
+
+This is an objective that modern computer science has pursued in some shape or form since its inception in the 1940s, although the field of artificial intelligence research had yet to be founded with The Dartmouth Summer Research Project in 1956.
+
+In this paper, we will attempt to determine possible routes to achieving said objective and how close we are to achieving it.
+
+To do so, we first need to establish a working definition of both intelligence and consciousness. This is a difficult task in its own right, as both of these definitions are open questions.
+
+Next, we need to define a metric with which we are going to measure whether an artificial entity possesses those two aforementioned qualities.
+
+After that, this paper will propose a few promising avenues of research and provide implementation examples and their preliminary results within our ability.
+
+However, to accomplish the following goals, we must first determine the nature of the task at hand and estimate its scope as well as the progress that has already been made toward completing it, with an emphasis on recent and state-of-the-art accomplishments.
+
+We should first separate this task into two tasks:
+
 \begin{enumerate}
-\item Simulating human-level intelligence
-\item Simulating human consciousness
+\item Simulating human/human-level intelligence
+\item Simulating human/human-level consciousness
 \end{enumerate}
 
-This is due to the fact that while these tasks may be prerequisites for one another, they likely require different considerations and diferrent tests are likely to be used to determine their presence in an artificial agent.
+This is due to the fact that while these tasks may be prerequisites for one another, they likely require different considerations and different tests are likely to be used to determine their presence in an artificial agent.
+\section{Choosing an approach}
+There are four approaches to the interpretation of the issue at hand we can take, which can be divided into quadrants according to two criteria:
+
+\begin{enumerate}
+\item{The goal of the process}
+\begin{itemize}
+\item{Rationality (Artificial intelligence)}
+\item{Humanity (Simulated human reasoning)}
+\end{itemize}
+Regarding the nature of reasoning being pursued, we need to decide whether we want the artificial intelligence to operate rationally or think humanly. Those two goals are not necessarily contradictory, however, they are also not identical. They are orthogonal, which means that while they can be pursued simultaneously, one can also be pursued at the expense - or, at the very least, the opportunity cost - of the other.
+\item{The focus of measurement}
+\begin{itemize}
+\item{Thinking (Internal states/Strong AI)}
+\item{Acting (Observed actions/Weak AI)}
+\end{itemize}
+Regarding whether we are measuring the internal states of the agent in question or if, instead, we are measuring the external actions of the agent.
+While directly observing the internal states of an artificial intelligence agent would certainly be more desirable from an academic perspective, observing the agent's actions is often easier - and sometimes the only option available - as well as more desirable from a practical standpoint.
+These two approaches correspond to the two hypotheses - the strong AI hypothesis and the weak AI hypothesis, respectively:
+\end{enumerate}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+& Intelligence & Consciousness \\
+\hline
+\hline
+Internal state & Thinking rationally & Thinking humanly \\
+\hline
+Observed state & Acting rationally & Acting humanly \\
+\hline
+\end{tabular}
+\caption{Comparison of Intelligence and Consciousness}
+\end{table}
+
+\subsection{Thinking rationally (Artificial intelligence)}
+In this approach we wish to develop an artificial intelligence that thinks rationally, that is, one that is capable of logical reasoning.
+This approach to developing artificial intelligence is called the logicist approach and consists of describing problems in logical notation before solving them using known syllogisms.
+
+There are, however, two main obstacles to this approach:
+
+\begin{itemize}
+\item{Informal knowledge and uncertainty}
+
+It is difficult to convert informal knowledge into formal statements required by logical notation, especially when said knowledge involves a degree of uncertainty (for example, "It's probably going to rain today") that needs to be accounted for while solving the problem.
+
+While progress has been made with fields such as fuzzy logic or Bayesian methods, this still leaves us with the second issue, which is computational complexity.
+
+\item{Computational complexity}
+
+In theory, any problem that can be stated in logical notation and for which a solution exists can be solved given enough time and/or computational resources.
+However, given that this problem is NP-complete, the amount of time and resources needed to do so rise exponentially with the number of facts that need to be considered unless proper guidance is provided to help the program decide which reasoning steps to try first.
+\end{itemize}
+
+\subsection{Acting rationally (Apparent artificial intelligence)}
+In mild contrast to the logicist approach, in this approach we ignore the inner world of an artificial intelligence entity and focus on creating and/or identifying rational artificial agents that act rationally.
+A rational agent is one who attempts to perform the best possible action in any given situation, that is, the action that will result in the best possible outcome as determined by the agent's goals and/or utility function.
+Thinking rationally can be - and usually is - a critical component of acting rationally. After all, knowing is half the battle.
+However, it is possible for an agent to act rationally without thinking rationally, or even where undue contemplation leads to worse outcomes (for example, reflexively grabbing a falling bottle leads to a better outcome than thinking about what to do).
+The advantages of the agent-driven approach are:
+\begin{itemize}
+\item{Generality}
+This approach is more general than the previously listed "laws-of-thought" approach, as thinking rationally is just one of the ways of achieving rational actions (alongside other ways such as learned instinct or following instructions).
+\item{Ease of use in research}
+As the standard used to determine whether agents are rational is well-defined and general, it is more amenable to scientific development than the two approaches listed below.
+\end{itemize}
+However, similar to the approach above, finding the most rational action in an environment is not always feasible, especially in complex environments, due to the sheer scale of computational resources required.
+Also, the advantage of generality turns into a disadvantage when we wish to distinguish whether an action is a result of intelligence.
+\subsection{Thinking "humanly" (consciousness?)}
+In the early days of artificial intelligence, it was common for researchers to conflate "thinking rationally" with "thinking humanly". For example, an author would argue one of the following:
+\begin{enumerate}
+\item{An algorithm that performs well on a task is a good model of human performance.}
+\item{In order for an algorithm to perform well on a task, it needs to be a good model of human performance.}
+\end{enumerate}
+However, while the assumption that human beings are rational actors for all intents and purposes may work well enough for some fields such as economics - despite the fact that its falsity is obvious to anyone with sufficient experience of interaction with human beings - research focusing on the nature of intelligence and consciousness itself cannot make such approximations.
+Still, despite this flaw, the cognitive approach to artificial intelligence has its advantages (such as readily-available reference models) and has resulted in significant breakthroughs such as neural networks, natural language processing, and explainable AI.
+
+Out of the four approaches listed here, this one is closest to what we could consider "consciousness".
+
+The main potential benefits of this approach are:
+\begin{itemize}
+\item{Readily available exemplar knowledge}
+The ability to draw upon existing psychological and, in case of especially emulative approaches such as neural networks, neurological knowledge bases may make it easier to develop such modes.
+\item{Explainability and trust}
+The artificial models created with this approach are likely to be more explainable, and therefore more transparent and reliable for high-trust and high-risk tasks.
+\item{User-friendliness}
+Additionally, these approaches are inherently human-centric, which provides an advantage when it comes to user-facing AI applications.
+\item{Alignment potential}
+Most importantly, the human-centric design may be more likely to result in an AI that is easier to align with human values.
+\end{itemize}
+
+Of course, no approach is without its drawbacks, which in this case are:
+
+\begin{itemize}
+\item{Potentially inaccurate models of human cognition}
+Human cognition is complex and not fully understood. Models based on incomplete or incorrect understandings of human thought processes can lead to flawed AI systems that behave unpredictably or inappropriately.
+\item{Resource intensity}
+Developing AI systems that closely mimic human thought is complex in terms of research, requires multidisciplinary knowledge, and can be computationally and resource-intensive when compared to developing and running AI systems to solve a specific task.
+\item{Suboptimal results}
+Just like attempting to emulate birds did not result in optimal aircraft design, attempting to emulate human consciousness is unlikely to result in optimal results for a given task - except, of course, in situations where emulating human consciousness is the task or a part of it.
+
+Otherwise, this approach is likely to yield suboptimal results compared to the ones above, which rely on first-principles thinking instead.
+\end{itemize}
+
+\subsection{Acting "humanly" (apparent consciousness)}
+The final approach, testing or designing machines to act like a human would, is also likely the oldest approach of the four, being established by Alan Turing in 1950 with the now iconic Turing Test proposal, on which this paper will elaborate further later.
+While the capabilities required to pass the Turing Test convincingly include most fields of artificial intelligence (such as natural language processing, knowledge representation, automated reasoning, machine learning) and overlapping/closely related fields (such as computer vision and robotics), AI researchers have devoted little effort to passing it, believing that duplicating human actions is not as important as actually studying the underlying principles of intelligence.
 \section{Artificial intelligence}
-The first of our tasks, simulating human-level intelligence, entails a major goal in artificial intelligence research - creating a program capable of accomplishing any mental task a human is capable of accomplishing.
+
 \subsection{The five schools of artificial intelligence}
 There are five distinct schools of artificial intelligence, which this work will reference repeatedly.
    Each of these five distinct schools of artificial intelligence is focused on a different approach on how to achieve the same goal. These approaches are not mutually exclusive, however - it is possible, and likely necessary, to combine multiple approaches in order to be able to develop an artificial general intelligence capable of tackling a vast array of problems, including that of simulating a human consciousness.
@@ -111,52 +271,6 @@ The evolutionist approach to artificial intelligence seeks to leverage the proce
 The Bayesian approach to artificial intelligence uses probability theory to model uncertainty. The models created with this approach - Bayesian models - assign probabilities to different possible states of the environment.
 \subsubsection{Analogizing}
 This approach is the easiest to understand, as well as easiest to implement. The analogizing approach takes an input and it compares it to other inputs with known results to generate a similar result.
-\subsection{Recent advances}
-
-Ten years ago (2013), artificial intelligence capabilities were far behind where they are today, with handwriting recognition abilities barely lagging behind human performance, speech and image recognition lagging far behind, and reading comprehension and language understanding being untested and/or non-existent.
-
-And by today, artificial intelligence systems have outperformed humans in every one of these five listed fields, and more.\cite{owid-brief-history-of-ai}
-\begin{figure}[htb]
-  \centering
-  \includegraphics[width=1\linewidth]{Figures/AI performance history.png} 
-  \caption{Advances of AI during the last few decades}
-  \label{slk:AI_advances}
-\end{figure}
-\begin{itemize}
-    \item \textbf{Image Recognition} Deep learning has enabled artificial intelligence systems to achieve superhuman accuracy in image recognition tasks, recognizing objects, scenes, and faces with remarkable precision.
-
-    \item \textbf{Video Understanding} Artificial intelligence systems can now analyze videos to understand the content, actions, and relationships between objects, paving the way for applications like action recognition and video summarization.
-
-    \item \textbf{Object Detection and Tracking} Artificial intelligence systems can now detect and track multiple objects in real-time, enabling applications like self-driving cars and surveillance systems.
-    \item \textbf{AlphaGo's Defeat of Lee Sedol} In 2016, AlphaGo, an AI developed by Google DeepMind, defeated world champion Go player Lee Sedol, marking a significant breakthrough in the ability of reinforcement learning based algorithms to master complex games.
-    \item \textbf{Robotic Control} Reinforcement learning has enabled artificial intelligence systems to control robots with unprecedented dexterity and agility, enabling them to perform tasks like picking up objects, grasping tools, and navigating through environments.
-    \item \textbf{Financial Trading} Reinforcement learning algorithms are being used to make trading decisions and optimize investment portfolios, demonstrating the potential of reinforcement learning in various real-world applications.
-\end{itemize}
-\subsection{Public adoption}
-As well as from a research standpoint, machine learning is currently going through a renaissance in the public eye. This is due to the fact that several different forms of its applications have been not only released, but reached widespread use.
-Large language models The capabilities of large language models such as ChatGPT, Bing Copilot, and Bard, for example, are best described and demonstrated through the use of the latter:
-
-<blockquote>\begin{quote}
-Large language models (LLMs) like Bard, ChatGPT, and Bing Copilot have demonstrated remarkable capabilities in generating human-quality text with minimal prompts and suggestions from the human author of this thesis. These models, powered by sophisticated neural networks and trained on massive amounts of data, can process and understand language in ways that were once thought to be the exclusive domain of humans. Bard, for instance, seamlessly blended the prompts and suggestions from the human author of this thesis into this paragraph, highlighting its ability to grasp the nuances of human language and produce text that is both meaningful and engaging. Similarly, ChatGPT has impressed users with its ability to generate creative text formats, while Bing Copilot has proven adept at assisting with coding tasks. The ability of LLMs to learn and adapt further enhances their potential, as they can continuously refine their skills and expand their knowledge base. As LLMs continue to evolve, we can expect even more innovative and groundbreaking applications to emerge, revolutionizing the way we interact with technology and transforming various fields, from education to healthcare to communication.
-
-\cite{bard2023}
-\end{quote}</blockquote>
-Image generation AI, similarly, managed to reach widespread use thanks to its capability of generating images based on natural language prompts, utilising and expanding upon the aforementioned ability to recognise natural language input.
-\begin{figure}[htb]
-  \centering
-  \includegraphics[width=0.38\linewidth]{Figures/bing image creator prompt 1a.jpeg} 
-  \caption{Figure 1.1: An image generated using Bing Image Creator. Prompt: "an artificial intelligence contemplating its existence"}
-  \label{slk:bing_image}
-\end{figure}
-\subsection{Backlash to AI art and the question of consciousness}
-Use of generative artificial intelligence to create images has been met with severe backlash for several reasons, including uncompensated use of existing art to train generative artificial intelligence models and its threat to the livelihoods of human artists.
-
-However, there is one reason people oppose use of generative artificial intelligence to create so-called "AI art" that is closely related to the topic of this thesis, and that is that art is the result of conscious creation by a conscious artist. And since image generation programs based on artificial intelligence are not conscious, and their operation usually does not require conscious input beyond making a specific request - the act which has more similarity with commissioning art from an artist than with creating art by oneself - this means that images generated using artificial intelligence cannot be considered art.
-
-However, the question of whether consciousness is a prerequisite for art, or whether can artificial intelligence create art that can be considered art, is at best tangentially relevant to the second main question of this thesis, which is:
-\begin{Huge}
-Can artificial intelligence be conscious?
-\end{Huge} 
 
 \section{Artificial consciousness}
 \begin{quote}
@@ -275,9 +389,8 @@ A holographic depiction (that is, a simulation) of James Moriarty, a fictional a
 \end{figure}
 The version of the Emergency Medical Holographic program present on USS Voyager known as "The Doctor," a notable character in Star Trek: Voyager, unlike the former two entries on this list, did not gain sentience due to intentional development or unintentional human input. Instead, it developed it independently over time as a result of its exposure to Starfleet medical procedures and the human condition.
 \end{itemize}
-
-
-
+\section{Why should we care about artificial consciousness?}
+On the surface, it seems like TODO
 
 \section{Defining intelligence}
 We have begun this endeavour with the arguably simpler of two tasks, as - unlike consciousness - intelligence proves to be the easier of the two to define due to its objective and observable nature. 
@@ -287,6 +400,32 @@ However, measuring intelligence is still a daunting task because it encompasses 
 This is especially the case with artificial intelligence, due to the ability of machines to easily solve tasks that require use of intelligence when solved by a human solver.
 \section{Types of intelligence}
 \subsection{Existing theories}
+\subsection{A suggestion }
+I propose we 
+
+\subsubsection{Knowledge by source}
+We can differentiate three types of knowledge sources:
+\paragraph{Explicitly coded knowledge}
+This type of knowledge is what most classical computer programs rely on. For example, a computer program doesn't need to understand mathematics in order to perform mathematical operations - they are as natural to it as cell division is to us.
+
+A computer program that solely relies on explicitly coded knowledge - such as a calculator - cannot be considered intelligent.
+\paragraph{Learning phase knowledge}
+This type of knowledge is the foundation of machine learning, and includes all information that the agent acquires during learning phase (scraped data, neural network configurations learned through various optimisation methods, probability data...)
+
+It is highly unlikely this form of knowledge can be considered a sign of intelligence, either, much like rote memorisation cannot be considered as such.
+\paragraph{Live learning knowledge}
+And finally, live learning knowledge is the surest sign of intelligence of the three as it pertains to knowledge acquired and inferred by agents in action.
+\subsubsection{Knowledge by level}
+\begin{enumerate}
+\item[Immediate action knowledge]
+Immediate action knowledge entails knowing what action needs to be taken in a given moment. This is the lowest level of know
+\item[End goal knowledge]
+End goal knowledge, however, 
+\item[Immediate environment knowledge]
+\item[Immediate context knowledge]
+\item[General context knowledge]
+\end{enumerate}
+
 \section{Defining consciousness}
 On the other hand, consciousness, as hinted earlier,  involves subjective experiences, self-awareness, and the ability to reflect on one's mental states. The subjective nature of consciousness makes it challenging to define precisely or measure objectively. 
 Unlike intelligence, consciousness is not easily defined and is a subject
@@ -438,6 +577,21 @@ The simplest type of entity, the box, is meant to be nothing more than a test el
 \paragraph{Actions loop}
 This entity runs a pre-recorded set of action and is primarily used to verify test environment functionality, although it can also be used as a test element.
 \paragraph{Mirror}
+\section{Agent aspect considerations}
+In order to determine whether an agent could be intelligent and/or conscious, we need to determine certain characteristics of the agent, as well as its learning/training process:
+\subsection{Processing time}
+Given enough time, even a brute-force algorithm is capable of providing the optimal answer 
+\subsection{Processing space}
+Similarly, 
+\subsection{Learning data size}
+\subsection{Learning data size}
+It would also be far-fetched to call a simple search function intelligent, and we should take care not to declare machine learning models with more data than inference intelligent, let alone conscious:
+\begin{quote}
+The human mind is not, like ChatGPT and its ilk, a lumbering statistical engine for pattern matching, gorging on hundreds of terabytes of data and extrapolating the most likely conversational response or most probable answer to a scientific question. On the contrary, the human mind is a surprisingly efficient and even elegant system that operates with small amounts of information; it seeks not to infer brute correlations among data points but to create explanations.  \cite{Chomsky2023}
+\end{quote}
+\subsection{Learning data level}
+However, we also need to consider the type of knowledge available to the agent, as well as its source.
+
 \section{Primary approach choice}
 \section{Implementation choice}
 \subsection{Programming language choice}
@@ -486,19 +640,23 @@ One of them is that the nature and underlying mechanism of our intelligence and 
 %-------------------------------------------------------------------------------
 \chapter{Results and Discussion}
 \label{sec:results_and_discussion}
-\section{Use of reference agents}
+\section{Instructions for usage of test environment interface}
+TODO add 5-10 pages of instructions
 \section{•}
-\paragraph{Results on local device}
-\paragraph{Results on TODO what to call it}
 
 
 %-------------------------------------------------------------------------------
-\chapter{Further research suggestions and concerns}
+\chapter{Further research suggestions}
 
-\label{sec:further_research_suggestions_and_concerns}
-\section{Further research suggestion}
+\label{sec:further_research_suggestions}
+\section{Environment improvements}
+\section{Technical debt management}
+\section{Optimisation}
 \paragraph{More complex environments}
-\section{Concerns}
+\section{Future research concerns}
+\subsection{Gain-of-function AI development risks}
+\subsection{Safety versus speed}
+
 %--- CONCLUSION / ZAKLJUČAK ----------------------------------------------------
 \chapter{Conclusion}
 \label{chp:conclusion}
@@ -518,9 +676,9 @@ One of them is that the nature and underlying mechanism of our intelligence and 
 
 % Abstract in English
 \begin{abstract}
-  Enter the abstract in English.
+  This thesis explores the possibility of advancement of artificial intelligence to the point where it can accomplish one of the following - rival humans in terms of intelligence, or achieve consciousness. 
   
-  \blindtext 
+  TODO
 \end{abstract}
 
 \begin{keywords}
@@ -532,7 +690,7 @@ One of them is that the nature and underlying mechanism of our intelligence and 
 \begin{sazetak}
   Unesite sažetak na hrvatskom.
 
-  \blindtext
+  TODO
 \end{sazetak}
 
 \begin{kljucnerijeci}
