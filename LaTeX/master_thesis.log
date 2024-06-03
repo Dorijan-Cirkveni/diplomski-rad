@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  2 JUN 2024 17:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  2 JUN 2024 21:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -879,7 +879,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.46 ...sting for consciousness}{25}{section.1.10}
+l.46 ...sting for consciousness}{26}{section.1.10}
                                                   % [1
 
 
@@ -888,7 +888,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.108 ...n}{\numberline {3.2}•}{35}{section.3.2}
+l.108 ...n}{\numberline {3.2}•}{36}{section.3.2}
                                                   % [2]
 LaTeX Font Info:    Trying to load font information for TS1+stix2 on input line
  108.
@@ -1026,47 +1026,58 @@ Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 421.
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [20 <./Figures/DataTNG.jpeg>] [21 <./Figures/James_Moriarty_hologram.png> <./Fi
-gures/VoyagerEMH.png>] [22] [23]
-Overfull \hbox (3.06107pt too wide) in paragraph at lines 468--469
+gures/VoyagerEMH.png>] [22]
+! Missing } inserted.
+<inserted text> 
+                }
+l.465 \end{itemize}
+                   
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+[23] [24]
+
+LaTeX Warning: Citation `theoryAGI' on page 25 undefined on input line 484.
+
+
+LaTeX Warning: Citation `turing1' on page 25 undefined on input line 491.
+
+[25]
+
+LaTeX Warning: Citation `ELIZA' on page 26 undefined on input line 502.
+
+[26] [27]
+Chapter 2.
+<Figures/grid/alltiles.png, id=538, 272.07529pt x 544.15059pt>
+File: Figures/grid/alltiles.png Graphic file (type png)
+<use Figures/grid/alltiles.png>
+Package pdftex.def Info: Figures/grid/alltiles.png  used on input line 546.
+(pdftex.def)             Requested size: 220.50887pt x 441.03357pt.
+[28
+
+] [29 <./Figures/grid/alltiles.png>] [30] [31]
+Overfull \hbox (3.06107pt too wide) in paragraph at lines 629--630
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-mi-sa-tion meth-
  []
 
-[24]
+[32]
 
-LaTeX Warning: Citation `theoryAGI' on page 25 undefined on input line 501.
-
-[25]
-
-LaTeX Warning: Citation `turing1' on page 26 undefined on input line 508.
-
-[26]
-
-LaTeX Warning: Citation `ELIZA' on page 27 undefined on input line 519.
-
-[27] [28]
-Chapter 2.
-<Figures/grid/alltiles.png, id=547, 272.07529pt x 544.15059pt>
-File: Figures/grid/alltiles.png Graphic file (type png)
-<use Figures/grid/alltiles.png>
-Package pdftex.def Info: Figures/grid/alltiles.png  used on input line 563.
-(pdftex.def)             Requested size: 220.50887pt x 441.03357pt.
-[29
-
-] [30 <./Figures/grid/alltiles.png>] [31] [32]
-
-LaTeX Warning: Citation `Chomsky2023' on page 33 undefined on input line 645.
+LaTeX Warning: Citation `Chomsky2023' on page 33 undefined on input line 656.
 
 [33]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 673--674
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 684--685
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
 
-[34] [35]
+[34] [35] [36]
 Chapter 3.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 700.
+ut line 711.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1075,38 +1086,38 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 700.
+ne 711.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 700.
- [36
+(Font)              scaled to size 16.0pt on input line 711.
+ [37
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
 .enc}]
 Chapter 4.
-[37
+[38
 
 ]
 Chapter 5.
-(master_thesis.bbl [38
+(master_thesis.bbl [39
 
-]) [39
-
-] [40
+]) [40
 
 ] [41
+
+] [42
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.762 \chapter{The Code}
+l.773 \chapter{The Code}
                         
 Appendix A.
-[42
+[43
 
 
-] [43] (master_thesis.aux)
+] [44] (master_thesis.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
@@ -1242,27 +1253,65 @@ LaTeX Warning: There were undefined references.
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: FA343AC1A406E1C621DA228495E508F4;12333.
+
+Package rerunfilecheck Warning: File `master_thesis.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `master_thesis.out':
+(rerunfilecheck)             Before: FA343AC1A406E1C621DA228495E508F4;12333
+(rerunfilecheck)             After:  DB0CD7C32902599F1D5D4359EF103AE7;12454.
  ) 
 Here is how much of TeX's memory you used:
- 18281 strings out of 474586
- 289434 string characters out of 5745681
+ 18289 strings out of 474586
+ 289550 string characters out of 5745681
  1937558 words of memory out of 5000000
  39978 multiletter control sequences out of 15000+600000
  639722 words of font info for 142 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,1248b,664s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/opensans/O
-penSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/asce
-nder/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs/MiKTe
-X/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Loc
-al/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/User
-s/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-
-Regular.pfb>
-Output written on master_thesis.pdf (47 pages, 1573437 bytes).
+
+pdfTeX warning (dest): name{subsection.2.8.1} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection.2.6.5} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection.2.6.4} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection.2.6.3} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection.2.6.2} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection.2.6.1} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection.1.7.2} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection.1.7.1} has been referenced but does not 
+exist, replaced by a fixed one
+
+<C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/opensans/Ope
+nSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascend
+er/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/
+fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Local
+/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/Users/
+doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Re
+gular.pfb>
+Output written on master_thesis.pdf (48 pages, 1575182 bytes).
 PDF statistics:
- 716 PDF objects out of 1000 (max. 8388607)
- 179 named destinations out of 1000 (max. 500000)
+ 730 PDF objects out of 1000 (max. 8388607)
+ 187 named destinations out of 1000 (max. 500000)
  613 words of extra memory for PDF output out of 10000 (max. 10000000)
 

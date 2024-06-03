@@ -453,40 +453,28 @@ We have begun this endeavor with the arguably simpler of two tasks, as - unlike 
 However, measuring intelligence is still a daunting task because it encompasses a wide range of cognitive abilities, including problem-solving skills, learning capabilities, adaptability, and more.
 
 This is especially the case with artificial intelligence, due to the ability of machines to easily solve tasks that require the use of intelligence when solved by a human solver.
-\section{Types of intelligence}
-The number of distinct types of intelligence is an open question with multiple conflicting existing theories:
+\subsection{Types of intelligence}
+The number of distinct types of intelligence is an open question with multiple conflicting existing theories, such as: % maybe
 \begin{itemize}
-
+\item{Traditional single-intelligence theories}
+These theories differ in exact definition, but they all share the view of intelligence as a single-factor quantity, sometimes known as "general intelligence" or "g". One method of measuring such a quantity in humans is the famous Intelligence Quotient (IQ).
+\item{Gardner's Theory of Multiple Intelligences}
+This theory challenges the aforementioned notions and proposes the division of intelligence into eight separate categories: linguistic, logical/mathematical, spatial, bodily-kinesthetic, musical, interpersonal, intrapersonal, and naturalist
+\item{Spearman's two-factor theory of intelligence
+This theory bridges the gap between the two previous theories by combining the notion of general intelligence with that of specific abilities.
+\item{Cattell-Horn-Carroll (CHC) theory}
+This theory takes a step further, dividing intelligence into three strata: general abilities, broad abilities, and narrow abilities.
 \end{itemize}
-\subsection{A suggestion }
-Alongside existing theories, this thesis proposes a model of intell
 
-\subsubsection{Knowledge by source}
-We can differentiate three types of knowledge sources:
-\paragraph{Explicitly coded knowledge}
-This type of knowledge is what most classical computer programs rely on. For example, a computer program doesn't need to understand mathematics in order to perform mathematical operations - they are as natural to it as cell division is to us.
+\subsection{Testing for intelligence}
+While defining intelligence is no easy task, one of its definitions (the ability to apply knowledge to manipulate one's environment or to think abstractly as measured by objective criteria (such as tests)) lends itself to simple testing methods such as
 
-A computer program that solely relies on explicitly coded knowledge - such as a calculator - cannot be considered intelligent.
-\paragraph{Learning phase knowledge}
-This type of knowledge is the foundation of machine learning, and includes all information that the agent acquires during learning phase (scraped data, neural network configurations learned through various optimisation methods, probability data...)
-
-It is highly unlikely this form of knowledge can be considered a sign of intelligence, either, much like rote memorisation cannot be considered as such.
-\paragraph{Live learning knowledge}
-And finally, live learning knowledge is the surest sign of intelligence of the three as it pertains to knowledge acquired and inferred by agents in action.
-\subsubsection{Knowledge by level}
-\begin{enumerate}
-\item[Immediate action knowledge]
-Immediate action knowledge entails knowing what action needs to be taken in a given moment. This is the lowest level of know
-\item[End goal knowledge]
-End goal knowledge, however, 
-\item[Immediate environment knowledge]
-\item[Immediate context knowledge]
-\item[General context knowledge]
-\end{enumerate}
+\section{Simulating intelligence}
+\subsection{Existing attempts}
 
 \section{Defining consciousness}
 On the other hand, consciousness, as hinted earlier,  involves subjective experiences, self-awareness, and the ability to reflect on one's mental states. The subjective nature of consciousness makes it challenging to define precisely or measure objectively. 
-Unlike intelligence, consciousness is not easily defined and is a subject TODO
+Unlike intelligence, consciousness is not easily defined and is a subject of ongoing discussion.
 \subsection{Existing theories}
 There are several theoretical frameworks for artificial consciousness that have been attempted:
 \subsubsection{Integrated Information Theory}
@@ -502,8 +490,6 @@ An artificial General Intelligence is a type of artificial intelligence that pos
 
 In this theory, the general type of artificial intelligence is considered a prerequisite for 
 \cite{theoryAGI}
-\section{Testing for intelligence}
-While defining intelligence is no easy task, one of its definitions (the ability to apply knowledge to manipulate one's environment or to think abstractly as measured by objective criteria (such as tests)) lends itself
 
 \section{Testing for consciousness}
 \begin{quote}
@@ -550,8 +536,6 @@ This test has the advantage of being easily implemented into testing environment
 Furthermore, this test provides a relatively objective and measurable 
 \subparagraph{Drawbacks}
 \paragraph{Sensorimotor Contingency Test}
-\section{Simulating intelligence}
-\subsection{Existing attempts}
 \section{Simulating consciousness}
 \subsection{Existing attempts}
 
@@ -635,6 +619,34 @@ The simplest type of entity, the box, is meant to be nothing more than a test el
 \paragraph{Actions loop}
 This entity runs a pre-recorded set of action and is primarily used to verify test environment functionality, although it can also be used as a test element.
 \paragraph{Mirror}
+
+
+\section{A suggestion for a knowledge-based classification of intelligence}
+This thesis proposes a model of intelligence based on the Cattell-Horn-Carroll theory, but tailored to artificial subjects by deriving levels of information from the three stratums of intelligence, and further distinguishing information by immediate source:
+\subsubsection{Knowledge by source}
+We can differentiate three types of knowledge sources:
+\paragraph{Explicitly coded knowledge}
+This type of knowledge is what most classical computer programs rely on. For example, a computer program doesn't need to understand mathematics in order to perform mathematical operations - they are as natural to it as cell division is to us.
+
+A computer program that solely relies on explicitly coded knowledge - such as a calculator - cannot be considered intelligent.
+\paragraph{Learning phase knowledge}
+This type of knowledge is the foundation of machine learning, and includes all information that the agent acquires during learning phase (scraped data, neural network configurations learned through various optimisation methods, probability data...)
+
+It is highly unlikely this form of knowledge can be considered a sign of intelligence, either, much like rote memorisation cannot be considered as such.
+\paragraph{Live learning knowledge}
+And finally, live learning knowledge is the surest sign of intelligence of the three as it pertains to knowledge acquired and inferred by agents in action.
+\subsubsection{Knowledge by level}
+\begin{enumerate}
+\item[Immediate action knowledge]
+Immediate action knowledge entails knowing what action needs to be taken in a given moment. This is the lowest level of know
+\item[End goal knowledge]
+End goal knowledge, however, 
+\item[Immediate environment knowledge]
+\item[Immediate context knowledge]
+\item[General context knowledge]
+\end{enumerate}
+
+
 \section{Agent aspect considerations}
 In order to determine whether an agent could be intelligent and/or conscious, we need to determine certain characteristics of the agent, as well as its learning/training process:
 \subsection{Processing time}
