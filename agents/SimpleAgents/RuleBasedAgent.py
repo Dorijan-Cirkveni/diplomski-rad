@@ -92,6 +92,9 @@ class iRule(itf.iRawListInit):
     def step(self, ind, values, data, is_new_data: set) -> dict:
         raise NotImplementedError
 
+    def to_JSON(self):
+        raise NotImplementedError
+
     def process_values(self, E, is_new):
         ind, values, is_now_new = E
         if is_now_new or is_new:
@@ -116,16 +119,13 @@ class iRule(itf.iRawListInit):
             print(self,self.curvals)
         return deepcopy(self.curvals[FINAL])
 
-    def to_JSON(self):
-        raise NotImplementedError
-
 
 class Rule(iRule):
     """
     A basic rule.
     """
 
-    def __init__(self, conditions: list[[RLiteral, tuple]], result: [RLiteral, tuple]):
+    def __init__(self, conditions: list[[RLiteral, tuple]], result: [RLiteral, tuple, list[[RLiteral, tuple]]]):
         self.conditions = [RLiteral.toLiteral(e) for e in conditions]
         self.result = result
         super().__init__(len(self.conditions), RLiteral.toLiteral(self.result))
@@ -153,8 +153,7 @@ class Rule(iRule):
         return [lits,res]
 
     @classmethod
-    def from_string(cls,s):
-        raise NotImplementedError
+    def from_string(cls,s): # A:1,
 
 
     def __repr__(self):
@@ -410,7 +409,7 @@ def main():
     rule=Rule.raw_init(raw)
     print(rule)
     print(rule.to_JSON()==raw)
-    rule_str="[1,True],"
+    rule_str="1,True;2,True->3,True"
 
 
 if __name__ == "__main__":
