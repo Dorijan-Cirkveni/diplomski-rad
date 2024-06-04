@@ -69,12 +69,11 @@ class iRule(itf.iRawListInit):
     A rule interface.
     """
 
-    def __init__(self, size, startVals: list[RLiteral]):
+    def __init__(self, size, startVals: list):
         assert isinstance(startVals, list)
         self.size = size
         self.curvals: list[dict] = [dict() for _ in range(size + 1)]
         for lit in startVals:
-            assert isinstance(lit, RLiteral)
             self.curvals[0][lit] = False
 
     def make_instance(self):
@@ -138,7 +137,7 @@ class Rule(iRule):
             if isinstance(e, tuple):
                 result[i] = RLiteral(*e)
         self.result: list[RLiteral] = result
-        super().__init__(len(self.conditions), [RLiteral(True, True)])
+        super().__init__(len(self.conditions), [True])
 
     @staticmethod
     def raw_process_list(raw: list, params: list) -> list:
@@ -221,11 +220,11 @@ def ADD_FIRST_ORDER_CONDITION(name: str, cond: type):
 
 
 class FirstOrderRule(iRule):
-    def __init__(self, conditions: list[iFirstOrderCondition], defaultLits: list[RLiteral]=None):
-        if defaultLits is None:
-            defaultLits = [RLiteral(True, True)]
+    def __init__(self, conditions: list[iFirstOrderCondition], defaultValues: list=None):
+        if defaultValues is None:
+            defaultValues = [RLiteral(True, True)]
         self.conditions = conditions
-        super().__init__(len(self.conditions), defaultLits)
+        super().__init__(len(self.conditions), defaultValues)
 
     @staticmethod
     def raw_process_list(raw: list, params: list) -> list:
@@ -245,15 +244,12 @@ class FirstOrderRule(iRule):
     def from_string(cls, s: str):  # A:1,
         if "->" not in s:
             raise Exception(f"Invalid rule: {s}")
-        rawstep = s.split(";")
-        res = [RLiteral.from_string(e)]
-        for e in rawstep:
-            assert isinstance(e, tuple)
-            condname, conddata = e
-            condtype: type = FIRST_ORDER_CONDITIONS[condname]
-            condobj = condtype(*conddata)
-            res.append(condobj)
-        return cls.raw_init(res)
+        Lraw, Rraw = s.split("->")
+        Lstep = Lraw.split(";")
+        Rstep = Rraw.split(";")
+        L = [FIRST_ORDER_CONDITIONS[k](*tuple(v)) for k,v in Lstep]
+        R = [RLiteral.from_string(e) for e in Rstep]
+        return FirstOrderRule(L, R)
 
     def make_instance(self):
         return FirstOrderRule(self.conditions)
@@ -272,7 +268,14 @@ class FirstOrderRule(iRule):
         new_values = foc.check(values, data, is_new_data)
         if new_values is None:
             return [(NONEXISTENT, "NULL", False)]
-        return [(ind + delta, v, is_new) for delta, v, is_new in new_values]
+        RES=[]
+        for E in new_values:
+            if type(E)==RLiteral or len(E)!=3:
+                raise Exception("!list")
+            delta, v, is_new = E
+            newdelta=ind+delta
+            RES.append((newdelta,v,is_new))
+        return RES
 
 
 class SimpleZeroCondition(iFirstOrderCondition):
@@ -280,7 +283,7 @@ class SimpleZeroCondition(iFirstOrderCondition):
         self.retlit = retlit
 
     def check(self, values, data: dict, is_new_data: set) -> [None, dict]:
-        return [self.retlit] if values else []
+        return [(1,self.retlit,True)] if values else []
 
     def true_to_JSON(self):
         return self.retlit.to_JSON()
@@ -296,8 +299,6 @@ class AscendingTestVariableCondition(iFirstOrderCondition):
     def check(self, value: tuple, data, is_new_data: set = None) -> [None, list[tuple[int, object, bool]]]:
         if is_new_data is None:
             is_new_data = set(data)
-        if type(value)==RLiteral:
-            raise Exception(value)
         if len(value) == 0:
             return [(1, (e,), e in is_new_data) for e in data]
         if len(data) < self.maxval + 1:
@@ -328,17 +329,30 @@ class RulesetManager(itf.iRawListInit):
             self.add(rule)
 
     @staticmethod
-    def raw_process_list(raw: list, params: list) -> list:
-        RL = []
-        for E in raw[0]:
-            if type(E) == list:
-                RL.append(Rule.raw_init(E))
-                continue
-            raise NotImplementedError
-        return itf.iRawListInit.raw_process_list(raw, params)
+    def raw_process_list(raw: list, params:list) -> list:
+        rulelist=raw[0]
+        RL=[]
+        for i,e in enumerate(rulelist):
+            if type(e)!=list:
+                raise ValueError(f"Must be list, not {type(e)} ({e})")
+            if len(e)!=3:
+                raise ValueError(f"Must be long 3, not {len(e)} ({e})")
+            isFirstOrder, conditions, result=e
+            if isFirstOrder:
+                rule=FirstOrderRule.raw_init([conditions,result])
+            else:
+                rule=Rule.raw_init([conditions,result])
+            RL.append(rule)
+        return itf.iRawListInit.raw_process_list(raw,params)
+
+    def from_string(cls,s):
+        raise NotImplementedError
 
     def to_JSON(self):
-        json_rulelist = [e.to_JSON() for e in self.rules]
+        json_rulelist = []
+        for e in self.rules:
+            X=[isinstance(e,FirstOrderRule)]+e.to_JSON()
+            json_rulelist.append(X)
         return json_rulelist
 
     def add(self, rule: iRule):
@@ -391,7 +405,7 @@ class RuleBasedAgent(AgI.iActiveAgent):
     """
 
     fullname = "Rule Based Agent"
-    DEFAULT_STR_INPUT = None
+    DEFAULT_STR_INPUT = "DEPRECATED"
     DEFAULT_RAW_INPUT = [[], {'rel': Grid2D((3, 3), [[0, 1, 0], [1, 1, 1], [0, 1, 0]])}, ]
     INPUT_PRESETS = {}
 
@@ -412,6 +426,19 @@ class RuleBasedAgent(AgI.iActiveAgent):
     def from_string(cls, s):
         raise NotImplementedError
 
+    @staticmethod
+    def raw_process_list(raw: list, params:list) -> list:
+        rulelist=raw[0]
+        for i,e in enumerate(rulelist):
+            if type(e)!=list:
+                raise ValueError(f"Must be list, not {type(e)} ({e})")
+            if len(e)!=3:
+                raise ValueError(f"Must be long 3, not {len(e)} ({e})")
+            isFirstOrder, conditions, result=e
+            if isFirstOrder:
+                rule=FirstOrderRule.raw_init([conditions,result])
+        return itf.iRawListInit.raw_process_list(raw,params)
+
     def receiveEnvironmentData(self, raw_data: dict):
         data: dict = self.preprocessor.processAgentData(raw_data, False)
         self.memory.step_iteration(self.pers_vars, False)
@@ -422,10 +449,11 @@ class RuleBasedAgent(AgI.iActiveAgent):
         proc_data = self.manager.process(data)
         self.memory.absorb_data(proc_data)
         action = self.memory.get_data([("action", self.defaultAction)])
+        if type(action)==tuple:
+            return ACTIONS.index(action)
         return action
 
-
-def ruleTest():
+def SimpleLabyrinthAgentRaw():
     cycle = {}
     last = V2DIRS[-1]
     for cur in V2DIRS:
@@ -448,6 +476,17 @@ def ruleTest():
             X.append(RLiteral(('rel', cycur), nogo))
         rule = Rule(X, ('action', (0, 0)))
         all_rules.append(rule)
+    RES:list[list]=[]
+    for rule in all_rules:
+        E:list[object]=[False]
+        E.extend(rule.to_JSON())
+        RES.append(E)
+    return [RES, {'last': (0, -1)}]
+
+RuleBasedAgent.INPUT_PRESETS['Maze']=SimpleLabyrinthAgentRaw()
+
+
+def ruleTest():
 
     # Create the agent
     agent = RuleBasedAgent(all_rules, {'last': (0, -1)})

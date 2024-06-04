@@ -175,7 +175,7 @@ class SelectionFrame(iTkFrame):
 
     def get_agent_presets(self):
         cats = []
-        for agname, agclass in agentmngr.ALL_AGENTS.items():
+        for agname, agclass in agentmngr.TEST_AGENTS.items():
             agclass: agentmngr.iAgent
             classname = utilmngr.MakeClassNameReadable(agclass.__name__)
             elements = []
