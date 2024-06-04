@@ -17,22 +17,22 @@ NONEXISTENT = -2
 class RLiteral(itf.iRawListInit):
     def __init__(self, key, value):
         self.key = key
-        if type(value)==list:
-            value=set(value)
+        if type(value) == list:
+            value = set(value)
         self.value = value
-    
+
     @classmethod
-    def from_string(cls,s):
-        if s[0]=="(":
-            s=s[1:][:-1]
-        if s[0]!="[":
-            s=f"[{s}]"
+    def from_string(cls, s):
+        if s[0] == "(":
+            s = s[1:][:-1]
+        if s[0] != "[":
+            s = f"[{s}]"
         return super().from_string(s)
 
     @staticmethod
     def toLiteral(other):
         if type(other) == list:
-            other=tuple(other)
+            other = tuple(other)
         if type(other) == tuple:
             return RLiteral(*other)
         if type(other) == RLiteral:
@@ -57,9 +57,9 @@ class RLiteral(itf.iRawListInit):
         return f"lit({self.key},{self.value})"
 
     def to_JSON(self):
-        L=list(self.value)
+        L = list(self.value)
         L.sort()
-        return [self.key,L]
+        return [self.key, L]
 
 
 class iRule(itf.iRawListInit):
@@ -67,19 +67,19 @@ class iRule(itf.iRawListInit):
     A rule interface.
     """
 
-    def __init__(self, size, startVals:list[RLiteral]):
-        assert isinstance(startVals,list)
+    def __init__(self, size, startVals: list[RLiteral]):
+        assert isinstance(startVals, list)
         self.size = size
         self.curvals: list[dict] = [dict() for _ in range(size + 1)]
         for lit in startVals:
-            assert isinstance(lit,RLiteral)
+            assert isinstance(lit, RLiteral)
             self.curvals[0][lit] = False
 
     def make_instance(self):
         raise NotImplementedError
 
     @classmethod
-    def from_string(cls,s):
+    def from_string(cls, s):
         """
         ...
         :param s:
@@ -105,7 +105,7 @@ class iRule(itf.iRawListInit):
 
     def process_step(self, i, data, is_new_data):
         E: dict = self.curvals[i]
-        new=dict()
+        new = dict()
         self.curvals[i] = new
         for values, is_new in E.items():
             new_values: dict
@@ -119,7 +119,7 @@ class iRule(itf.iRawListInit):
         for i in range(self.size):
             self.process_step(i, data, is_new_data)
         if self.curvals[FINAL]:
-            print(self,self.curvals)
+            print(self, self.curvals)
         return deepcopy(self.curvals[FINAL])
 
 
@@ -130,43 +130,43 @@ class Rule(iRule):
 
     def __init__(self, conditions: list[[RLiteral, tuple]], result: [RLiteral, tuple, list[[RLiteral, tuple]]]):
         self.conditions = [RLiteral.toLiteral(e) for e in conditions]
-        if type(result)!=list:
-            result=[result]
+        if type(result) != list:
+            result = [result]
         self.result = result
-        super().__init__(len(self.conditions), [RLiteral(True,True)])
+        super().__init__(len(self.conditions), [RLiteral(True, True)])
 
     @staticmethod
-    def raw_process_list(raw: list, params:list) -> list:
-        assert isinstance(raw,list)
-        assert len(raw)==2
-        conditions,result=raw
-        newconditions=[RLiteral.toLiteral(e) for e in conditions]
-        if type(result)==list:
-            result=tuple(result)
-        return itf.iRawInit.raw_process_list([newconditions,result],params)
+    def raw_process_list(raw: list, params: list) -> list:
+        assert isinstance(raw, list)
+        assert len(raw) == 2
+        conditions, result = raw
+        newconditions = [RLiteral.toLiteral(e) for e in conditions]
+        if type(result) == list:
+            result = tuple(result)
+        return itf.iRawInit.raw_process_list([newconditions, result], params)
 
     @classmethod
-    def from_string(cls,s:str): # A:1,
+    def from_string(cls, s: str):  # A:1,
         if "->" not in s:
             raise Exception(f"Invalid rule: {s}")
-        Lraw,Rraw=s.split("->")
-        Lstep=Lraw.split(";")
-        Rstep=Rraw.split(";")
-        L=[RLiteral.from_string(e) for e in Lstep]
-        R=[RLiteral.from_string(e) for e in Rstep]
-        return Rule(L,R)
+        Lraw, Rraw = s.split("->")
+        Lstep = Lraw.split(";")
+        Rstep = Rraw.split(";")
+        L = [RLiteral.from_string(e) for e in Lstep]
+        R = [RLiteral.from_string(e) for e in Rstep]
+        return Rule(L, R)
 
     def to_JSON(self):
-        lits=[]
+        lits = []
         for lit in self.conditions:
-            L=lit.to_JSON()
+            L = lit.to_JSON()
             lits.append(L)
-        if type(self.result)==RLiteral:
-            self.result:RLiteral
-            res=self.result.to_JSON()
+        if type(self.result) == RLiteral:
+            self.result: RLiteral
+            res = self.result.to_JSON()
         else:
-            res=list(self.result)
-        return [lits,res]
+            res = list(self.result)
+        return [lits, res]
 
     def __repr__(self):
         return f"{self.conditions}->{self.result}"
@@ -194,32 +194,60 @@ class Rule(iRule):
         return [(ind + 1, values, curlit.key in is_new_data)]
 
     def process(self, data: dict, is_new_data: set = None) -> dict:
-        res=super().process(data,is_new_data)
-        if len(res)!=0:
-            return {e:True for e in res}
+        res = super().process(data, is_new_data)
+        if len(res) != 0:
+            return {e: True for e in res}
         return {}
 
-class iFirstOrderCondition:
+
+class iFirstOrderCondition(itf.iRawListInit):
     def check(self, values, data: dict, is_new_data: set) -> [None, dict]:
         raise NotImplementedError
 
+    @classmethod
+
+    def to_JSON(self):
+        raise NotImplementedError
+
+FIRST_ORDER_CONDITIONS=dict()
+
 
 class FirstOrderRule(iRule):
-    def __init__(self, conditions: list[iFirstOrderCondition], resultfn=None, defaultValue=None):
-        if resultfn is None:
-            resultfn = lambda x: x
-        elif not callable(resultfn):
-            value = resultfn
-
-            def resultfn(_):
-                return value
+    def __init__(self, conditions: list[iFirstOrderCondition]):
         self.conditions = conditions
-        self.resultfn = resultfn
-        self.default = defaultValue
-        super().__init__(len(self.conditions), self.default)
+        super().__init__(len(self.conditions), [RLiteral(True,True)])
+
+    @staticmethod
+    def raw_process_list(raw: list, params: list) -> list:
+        assert len(raw) >=1
+        conditions=raw[0]
+        assert isinstance(conditions,list)
+        newconditions = []
+        for e in conditions:
+            assert isinstance(e,tuple)
+            condname,conddata=e
+            condtype:type=FIRST_ORDER_CONDITIONS[condname]
+            condobj=condtype(*conddata)
+            newconditions.append(condobj)
+        return [newconditions]
+
+    @classmethod
+    def from_string(cls, s: str):  # A:1,
+        if "->" not in s:
+            raise Exception(f"Invalid rule: {s}")
+        rawstep=s.split(";")
+        res = [RLiteral.from_string(e) ]
+        for e in rawstep:
+            assert isinstance(e,tuple)
+            condname,conddata=e
+            condtype:type=FIRST_ORDER_CONDITIONS[condname]
+            condobj=condtype(*conddata)
+            res.append(condobj)
+        return cls.raw_init(res)
+
 
     def make_instance(self):
-        return FirstOrderRule(self.conditions, self.curvals[0])
+        return FirstOrderRule(self.conditions)
 
     def get_keys(self):
         """
@@ -235,7 +263,7 @@ class FirstOrderRule(iRule):
         new_values = foc.check(values, data, is_new_data)
         if new_values is None:
             return [(NONEXISTENT, "NULL", False)]
-        return [(ind + delta, self.resultfn(v), is_new) for delta, v, is_new in new_values]
+        return [(ind + delta, v, is_new) for delta, v, is_new in new_values]
 
 
 class AscendingTestVariableCondition(iFirstOrderCondition):
@@ -266,18 +294,17 @@ class RulesetManager(itf.iRawListInit):
             self.add(rule)
 
     @staticmethod
-    def raw_process_list(raw: list, params:list) -> list:
-        RL=[]
+    def raw_process_list(raw: list, params: list) -> list:
+        RL = []
         for E in raw[0]:
-            if type(E)==list:
+            if type(E) == list:
                 RL.append(Rule.raw_init(E))
                 continue
             raise NotImplementedError
         return itf.iRawListInit.raw_process_list(raw, params)
 
-
     def to_JSON(self):
-        json_rulelist=[e.to_JSON() for e in self.rules]
+        json_rulelist = [e.to_JSON() for e in self.rules]
         return json_rulelist
 
     def add(self, rule: iRule):
@@ -298,9 +325,9 @@ class RulesetManager(itf.iRawListInit):
         for rule in self.rules:
             results = rule.process(data, is_new_data)
             for E in results:
-                if type(E)==RLiteral:
-                    E:RLiteral
-                    new_data[E.key]=E.value
+                if type(E) == RLiteral:
+                    E: RLiteral
+                    new_data[E.key] = E.value
                 else:
                     k, v = E
                     new_data[k] = v
@@ -309,17 +336,17 @@ class RulesetManager(itf.iRawListInit):
     def process(self, data: dict, new_data: dict = None):
         if new_data is None:
             new_data = data
-        cont=True
+        cont = True
         while cont:
             is_new_data = set(new_data)
             data.update(new_data)
             new_data = self.process_current(data, is_new_data)
             data.update(new_data)
-            cont=False
-            for e,v in new_data.items():
-                if e not in data or data[e]!=v:
-                    data[e]=v
-                    cont=True
+            cont = False
+            for e, v in new_data.items():
+                if e not in data or data[e] != v:
+                    data[e] = v
+                    cont = True
             print(new_data)
         return data
 
@@ -339,26 +366,26 @@ class RuleBasedAgent(AgI.iActiveAgent):
         self.manager = RulesetManager(rulelist)
         self.states = []
         self.pers_vars: dict = {} if pers_vars is None else pers_vars
-        self.pers_vars|={
-            "grid":None,
-            "agents":None,
-            "persistent":None
+        self.pers_vars |= {
+            "grid": None,
+            "agents": None,
+            "persistent": None
         }
         self.memory.absorb_data(self.pers_vars)
         self.defaultAction = defaultAction
 
     @classmethod
-    def from_string(cls,s):
-        pass
+    def from_string(cls, s):
+        raise NotImplementedError
 
     def receiveEnvironmentData(self, raw_data: dict):
-        data:dict = self.preprocessor.processAgentData(raw_data,False)
+        data: dict = self.preprocessor.processAgentData(raw_data, False)
         self.memory.step_iteration(self.pers_vars, False)
         self.memory.absorb_data(data)
 
     def performAction(self, actions):
-        data=self.memory.get_data()
-        proc_data=self.manager.process(data)
+        data = self.memory.get_data()
+        proc_data = self.manager.process(data)
         self.memory.absorb_data(proc_data)
         action = self.memory.get_data([("action", self.defaultAction)])
         return action
@@ -374,20 +401,19 @@ def ruleTest():
     all_rules = []
 
     # Rule to update move direction based on the current 'last' direction
-    go=GEE.default_movable-GEE.default_lethal
-    nogo=GEE.default_all-go
+    go = GEE.default_movable - GEE.default_lethal
+    nogo = GEE.default_all - go
     for cur in V2DIRS:
         cur_last = ('last', cur)
-        X=[cur_last]
-        cycur=cur
+        X = [cur_last]
+        cycur = cur
         for i in range(4):
-            cycur=cycle[cycur]
-            rule=Rule(X + [RLiteral(('rel', cycur), go)], ('action', cycur))
+            cycur = cycle[cycur]
+            rule = Rule(X + [RLiteral(('rel', cycur), go)], ('action', cycur))
             all_rules.append(rule)
             X.append(RLiteral(('rel', cycur), nogo))
-        rule=Rule(X, ('action',(0,0)))
+        rule = Rule(X, ('action', (0, 0)))
         all_rules.append(rule)
-
 
     return all_rules
 
@@ -397,14 +423,14 @@ def RuleTest():
     rules = ruleTest()
 
     # Create the agent
-    agent = RuleBasedAgent(rules,{'last':(0,-1)})
+    agent = RuleBasedAgent(rules, {'last': (0, -1)})
     tojs = agent.manager.to_JSON()
-    print(json.dumps(tojs,indent="|   "))
+    print(json.dumps(tojs, indent="|   "))
 
     # Sample environment data
     environment_data = {
         'grid': Grid2D((3, 3), [[0, 2, 0], [2, 0, 2], [0, 0, 0]]),
-        "loc": (1,1),
+        "loc": (1, 1),
         'agents': [],
     }
 
@@ -417,12 +443,12 @@ def RuleTest():
 
 
 def main():
-    lit=RLiteral.from_string("1,true")
-    raw=[[[1, True], [2, True]], [3, True]]
-    rule=Rule.raw_init(raw)
+    lit = RLiteral.from_string("1,true")
+    raw = [[[1, True], [2, True]], [3, True]]
+    rule = Rule.raw_init(raw)
     print(rule)
-    print(rule.to_JSON()==raw)
-    rule_str="1,True;2,True->3,True"
+    print(rule.to_JSON() == raw)
+    rule_str = "1,True;2,True->3,True"
 
 
 if __name__ == "__main__":
