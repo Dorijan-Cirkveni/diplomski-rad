@@ -67,10 +67,13 @@ class iRule(itf.iRawListInit):
     A rule interface.
     """
 
-    def __init__(self, size, startVal: RLiteral):
+    def __init__(self, size, startVals:list[RLiteral]):
+        assert isinstance(startVals,list)
         self.size = size
         self.curvals: list[dict] = [dict() for _ in range(size + 1)]
-        self.curvals[0][startVal] = False
+        for lit in startVals:
+            assert isinstance(lit,RLiteral)
+            self.curvals[0][lit] = False
 
     def make_instance(self):
         raise NotImplementedError
@@ -127,8 +130,10 @@ class Rule(iRule):
 
     def __init__(self, conditions: list[[RLiteral, tuple]], result: [RLiteral, tuple, list[[RLiteral, tuple]]]):
         self.conditions = [RLiteral.toLiteral(e) for e in conditions]
+        if type(result)!=list:
+            result=[result]
         self.result = result
-        super().__init__(len(self.conditions), RLiteral.toLiteral(self.result))
+        super().__init__(len(self.conditions), [RLiteral(True,True)])
 
     @staticmethod
     def raw_process_list(raw: list, params:list) -> list:
@@ -139,6 +144,17 @@ class Rule(iRule):
         if type(result)==list:
             result=tuple(result)
         return itf.iRawInit.raw_process_list([newconditions,result],params)
+
+    @classmethod
+    def from_string(cls,s:str): # A:1,
+        if "->" not in s:
+            raise Exception(f"Invalid rule: {s}")
+        Lraw,Rraw=s.split("->")
+        Lstep=Lraw.split(";")
+        Rstep=Rraw.split(";")
+        L=[RLiteral.from_string(e) for e in Lstep]
+        R=[RLiteral.from_string(e) for e in Rstep]
+        return Rule(L,R)
 
     def to_JSON(self):
         lits=[]
@@ -151,10 +167,6 @@ class Rule(iRule):
         else:
             res=list(self.result)
         return [lits,res]
-
-    @classmethod
-    def from_string(cls,s): # A:1,
-        raise NotImplementedError
 
     def __repr__(self):
         return f"{self.conditions}->{self.result}"
@@ -181,6 +193,11 @@ class Rule(iRule):
             return []
         return [(ind + 1, values, curlit.key in is_new_data)]
 
+    def process(self, data: dict, is_new_data: set = None) -> dict:
+        res=super().process(data,is_new_data)
+        if len(res)!=0:
+            return {e:True for e in res}
+        return {}
 
 class iFirstOrderCondition:
     def check(self, values, data: dict, is_new_data: set) -> [None, dict]:
