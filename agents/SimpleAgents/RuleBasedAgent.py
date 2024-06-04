@@ -154,7 +154,7 @@ class Rule(iRule):
 
     @classmethod
     def from_string(cls,s): # A:1,
-
+        raise NotImplementedError
 
     def __repr__(self):
         return f"{self.conditions}->{self.result}"
@@ -256,7 +256,7 @@ class RulesetManager(itf.iRawListInit):
                 RL.append(Rule.raw_init(E))
                 continue
             raise NotImplementedError
-        itf.iRawListInit.raw_process_list(params)
+        return itf.iRawListInit.raw_process_list(raw, params)
 
 
     def to_JSON(self):
@@ -275,10 +275,6 @@ class RulesetManager(itf.iRawListInit):
         return RulesetManager(rules, deepcopy(self.byElement))
 
     def process_current(self, data: dict, is_new_data: set = None):
-        print("Processing...")
-        print(self)
-        print(data['last'])
-        print(is_new_data)
         if is_new_data is None:
             is_new_data = set(data)
         new_data = dict()
