@@ -279,6 +279,11 @@ class AscendingTestVariableCondition(iFirstOrderCondition):
             test = [i for i in range(value[-1] + 1, self.maxval + 1) if i in data]
         return [(1, e, e in is_new_data) for e in test]
 
+    def to_JSON(self):
+        return ["ATVC",self.maxval]
+
+FIRST_ORDER_CONDITIONS["ATVC"]=AscendingTestVariableCondition
+
 
 class RulesetManager(itf.iRawListInit):
     def __init__(self, rules: list, byElement=None):
@@ -413,15 +418,8 @@ def ruleTest():
         rule = Rule(X, ('action', (0, 0)))
         all_rules.append(rule)
 
-    return all_rules
-
-
-def RuleTest():
-    # Define initial state and rules
-    rules = ruleTest()
-
     # Create the agent
-    agent = RuleBasedAgent(rules, {'last': (0, -1)})
+    agent = RuleBasedAgent(all_rules, {'last': (0, -1)})
     tojs = agent.manager.to_JSON()
     print(json.dumps(tojs, indent="|   "))
 
