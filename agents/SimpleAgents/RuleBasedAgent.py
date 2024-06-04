@@ -81,7 +81,7 @@ class iRule(itf.iRawListInit):
         ...
         :param s:
         """
-        pass
+        raise NotImplementedError
 
     def get_keys(self):
         """
