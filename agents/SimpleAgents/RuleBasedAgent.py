@@ -57,9 +57,11 @@ class RLiteral(itf.iRawListInit):
         return f"lit({self.key},{self.value})"
 
     def to_JSON(self):
-        L = list(self.value)
-        L.sort()
-        return [self.key, L]
+        value=self.value
+        if type(value)==set:
+            value = list(self.value)
+            value.sort()
+        return [self.key, value]
 
 
 class iRule(itf.iRawListInit):
@@ -132,7 +134,10 @@ class Rule(iRule):
         self.conditions = [RLiteral.toLiteral(e) for e in conditions]
         if type(result) != list:
             result = [result]
-        self.result = result
+        for i,e in enumerate(result):
+            if isinstance(e,tuple):
+                result[i]=RLiteral(*e)
+        self.result:list[RLiteral] = result
         super().__init__(len(self.conditions), [RLiteral(True, True)])
 
     @staticmethod
@@ -157,15 +162,8 @@ class Rule(iRule):
         return Rule(L, R)
 
     def to_JSON(self):
-        lits = []
-        for lit in self.conditions:
-            L = lit.to_JSON()
-            lits.append(L)
-        if type(self.result) == RLiteral:
-            self.result: RLiteral
-            res = self.result.to_JSON()
-        else:
-            res = list(self.result)
+        lits = [lit.to_JSON() for lit in self.conditions]
+        res=[lit.to_JSON() for lit in self.result]
         return [lits, res]
 
     def __repr__(self):
@@ -446,10 +444,12 @@ def main():
     lit = RLiteral.from_string("1,true")
     raw = [[[1, True], [2, True]], [3, True]]
     rule = Rule.raw_init(raw)
-    print(rule)
     print(rule.to_JSON() == raw)
-    rule_str = "1,True;2,True->3,True"
+    rulestr=Rule.from_string("1,true;2,true->3,true")
+    print()
+    print(rulestr.to_JSON())
+    print(rule.to_JSON())
 
 
 if __name__ == "__main__":
-    RuleTest()
+    main()
