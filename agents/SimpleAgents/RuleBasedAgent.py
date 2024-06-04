@@ -277,6 +277,11 @@ class FirstOrderRule(iRule):
             RES.append((newdelta,v,is_new))
         return RES
 
+def RuleInitRaw(isFirstOrder,conditions,result):
+    if isFirstOrder:
+        rule = FirstOrderRule.raw_init([conditions, result])
+    else:
+        rule = Rule.raw_init([conditions, result])
 
 class SimpleZeroCondition(iFirstOrderCondition):
     def __init__(self, retlit: RLiteral):
@@ -328,6 +333,7 @@ class RulesetManager(itf.iRawListInit):
         for rule in rules:
             self.add(rule)
 
+
     @staticmethod
     def raw_process_list(raw: list, params:list) -> list:
         rulelist=raw[0]
@@ -337,11 +343,7 @@ class RulesetManager(itf.iRawListInit):
                 raise ValueError(f"Must be list, not {type(e)} ({e})")
             if len(e)!=3:
                 raise ValueError(f"Must be long 3, not {len(e)} ({e})")
-            isFirstOrder, conditions, result=e
-            if isFirstOrder:
-                rule=FirstOrderRule.raw_init([conditions,result])
-            else:
-                rule=Rule.raw_init([conditions,result])
+            rule=RuleInitRaw(*e)
             RL.append(rule)
         return itf.iRawListInit.raw_process_list(raw,params)
 
@@ -434,9 +436,8 @@ class RuleBasedAgent(AgI.iActiveAgent):
                 raise ValueError(f"Must be list, not {type(e)} ({e})")
             if len(e)!=3:
                 raise ValueError(f"Must be long 3, not {len(e)} ({e})")
-            isFirstOrder, conditions, result=e
-            if isFirstOrder:
-                rule=FirstOrderRule.raw_init([conditions,result])
+            rule=RuleInitRaw(*e)
+            rulelist[i]=rule
         return itf.iRawListInit.raw_process_list(raw,params)
 
     def receiveEnvironmentData(self, raw_data: dict):
@@ -489,7 +490,7 @@ RuleBasedAgent.INPUT_PRESETS['Maze']=SimpleLabyrinthAgentRaw()
 def ruleTest():
 
     # Create the agent
-    agent = RuleBasedAgent(all_rules, {'last': (0, -1)})
+    agent = RuleBasedAgent.raw_init(RuleBasedAgent.INPUT_PRESETS['Maze'])
     tojs = agent.manager.to_JSON()
     print(json.dumps(tojs, indent="|   "))
 

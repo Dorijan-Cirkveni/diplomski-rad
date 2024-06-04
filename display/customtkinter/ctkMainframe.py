@@ -101,7 +101,7 @@ class EnvCustomFrame(ctk.CTkFrame):
             return
         data["Agent class"]=self.agentclass
         print(env_name is None,)
-        print("Env:", json.dumps(env_data, indent=4))
+        print("Env:", env_name)
         print("Agent class", self.agentclass)
         print("Agent data", self.agent_data)
         self.run_command(data)
