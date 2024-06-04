@@ -41,6 +41,7 @@ class TestRulesetManager(unittest.TestCase):
         rule1_conditions = [('A1', True), ('A2', True), ('A3', True)]
         self.rule1 = Rule(rule1_conditions, ('A', True))
 
+        rule2_exit=
         rule2_conditions = [AscendingTestVariableCondition(999)]
         self.rule2 = FirstOrderRule(rule2_conditions, lambda x: ('B', True), tuple([]))
 

@@ -199,18 +199,24 @@ class Rule(iRule):
 
 
 class iFirstOrderCondition(itf.iRawListInit):
+    alias="interface"
     def check(self, values, data: dict, is_new_data: set) -> [None, dict]:
         raise NotImplementedError
 
-    @classmethod
-
-    def to_JSON(self):
+    def true_to_JSON(self):
         raise NotImplementedError
 
-FIRST_ORDER_CONDITIONS=dict()
+    def to_JSON(self):
+        return [self.alias,self.true_to_JSON()]
+
+FIRST_ORDER_CONDITIONS:dict[str,type]=dict()
+def ADD_FIRST_ORDER_CONDITION(name: str, cond:type):
+    FIRST_ORDER_CONDITIONS[name]=cond
+    return name
 
 
 class FirstOrderRule(iRule):
+    alias=ADD_FIRST_ORDER_CONDITION('')
     def __init__(self, conditions: list[iFirstOrderCondition]):
         self.conditions = conditions
         super().__init__(len(self.conditions), [RLiteral(True,True)])
@@ -264,6 +270,17 @@ class FirstOrderRule(iRule):
         return [(ind + delta, v, is_new) for delta, v, is_new in new_values]
 
 
+class SimpleZeroCondition(iFirstOrderCondition):
+    def __init__(self, retlit:RLiteral):
+        self.retlit = retlit
+
+    def check(self, values, data: dict, is_new_data: set) -> [None, dict]:
+        return [self.retlit] if values else
+
+    def true_to_JSON(self):
+        return self.retlit.to_JSON()
+
+
 class AscendingTestVariableCondition(iFirstOrderCondition):
     def __init__(self, maxval):
         self.maxval = maxval
@@ -279,8 +296,8 @@ class AscendingTestVariableCondition(iFirstOrderCondition):
             test = [i for i in range(value[-1] + 1, self.maxval + 1) if i in data]
         return [(1, e, e in is_new_data) for e in test]
 
-    def to_JSON(self):
-        return ["ATVC",self.maxval]
+    def true_to_JSON(self):
+        return self.maxval
 
 FIRST_ORDER_CONDITIONS["ATVC"]=AscendingTestVariableCondition
 
