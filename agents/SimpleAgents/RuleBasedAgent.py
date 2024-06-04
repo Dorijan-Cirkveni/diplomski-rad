@@ -57,8 +57,8 @@ class RLiteral(itf.iRawListInit):
         return f"lit({self.key},{self.value})"
 
     def to_JSON(self):
-        value=self.value
-        if type(value)==set:
+        value = self.value
+        if type(value) == set:
             value = list(self.value)
             value.sort()
         return [self.key, value]
@@ -134,10 +134,10 @@ class Rule(iRule):
         self.conditions = [RLiteral.toLiteral(e) for e in conditions]
         if type(result) != list:
             result = [result]
-        for i,e in enumerate(result):
-            if isinstance(e,tuple):
-                result[i]=RLiteral(*e)
-        self.result:list[RLiteral] = result
+        for i, e in enumerate(result):
+            if isinstance(e, tuple):
+                result[i] = RLiteral(*e)
+        self.result: list[RLiteral] = result
         super().__init__(len(self.conditions), [RLiteral(True, True)])
 
     @staticmethod
@@ -163,7 +163,7 @@ class Rule(iRule):
 
     def to_JSON(self):
         lits = [lit.to_JSON() for lit in self.conditions]
-        res=[lit.to_JSON() for lit in self.result]
+        res = [lit.to_JSON() for lit in self.result]
         return [lits, res]
 
     def __repr__(self):
@@ -194,12 +194,13 @@ class Rule(iRule):
     def process(self, data: dict, is_new_data: set = None) -> dict:
         res = super().process(data, is_new_data)
         if len(res) != 0:
-            return {e: True for e in res}
+            return {e: True for e in self.result}
         return {}
 
 
 class iFirstOrderCondition(itf.iRawListInit):
-    alias="interface"
+    alias = "interface"
+
     def check(self, values, data: dict, is_new_data: set) -> [None, dict]:
         raise NotImplementedError
 
@@ -207,31 +208,36 @@ class iFirstOrderCondition(itf.iRawListInit):
         raise NotImplementedError
 
     def to_JSON(self):
-        return [self.alias,self.true_to_JSON()]
+        return [self.alias, self.true_to_JSON()]
 
-FIRST_ORDER_CONDITIONS:dict[str,type]=dict()
-def ADD_FIRST_ORDER_CONDITION(name: str, cond:type):
-    FIRST_ORDER_CONDITIONS[name]=cond
+
+FIRST_ORDER_CONDITIONS: dict[str, type] = dict()
+
+
+def ADD_FIRST_ORDER_CONDITION(name: str, cond: type):
+    FIRST_ORDER_CONDITIONS[name] = cond
+    cond.alias=name
     return name
 
 
 class FirstOrderRule(iRule):
-    alias=ADD_FIRST_ORDER_CONDITION('')
-    def __init__(self, conditions: list[iFirstOrderCondition]):
+    def __init__(self, conditions: list[iFirstOrderCondition], defaultLits: list[RLiteral]=None):
+        if defaultLits is None:
+            defaultLits = [RLiteral(True, True)]
         self.conditions = conditions
-        super().__init__(len(self.conditions), [RLiteral(True,True)])
+        super().__init__(len(self.conditions), defaultLits)
 
     @staticmethod
     def raw_process_list(raw: list, params: list) -> list:
-        assert len(raw) >=1
-        conditions=raw[0]
-        assert isinstance(conditions,list)
+        assert len(raw) >= 1
+        conditions = raw[0]
+        assert isinstance(conditions, list)
         newconditions = []
         for e in conditions:
-            assert isinstance(e,tuple)
-            condname,conddata=e
-            condtype:type=FIRST_ORDER_CONDITIONS[condname]
-            condobj=condtype(*conddata)
+            assert isinstance(e, tuple)
+            condname, conddata = e
+            condtype: type = FIRST_ORDER_CONDITIONS[condname]
+            condobj = condtype(*conddata)
             newconditions.append(condobj)
         return [newconditions]
 
@@ -239,16 +245,15 @@ class FirstOrderRule(iRule):
     def from_string(cls, s: str):  # A:1,
         if "->" not in s:
             raise Exception(f"Invalid rule: {s}")
-        rawstep=s.split(";")
-        res = [RLiteral.from_string(e) ]
+        rawstep = s.split(";")
+        res = [RLiteral.from_string(e)]
         for e in rawstep:
-            assert isinstance(e,tuple)
-            condname,conddata=e
-            condtype:type=FIRST_ORDER_CONDITIONS[condname]
-            condobj=condtype(*conddata)
+            assert isinstance(e, tuple)
+            condname, conddata = e
+            condtype: type = FIRST_ORDER_CONDITIONS[condname]
+            condobj = condtype(*conddata)
             res.append(condobj)
         return cls.raw_init(res)
-
 
     def make_instance(self):
         return FirstOrderRule(self.conditions)
@@ -271,14 +276,17 @@ class FirstOrderRule(iRule):
 
 
 class SimpleZeroCondition(iFirstOrderCondition):
-    def __init__(self, retlit:RLiteral):
+    def __init__(self, retlit: RLiteral):
         self.retlit = retlit
 
     def check(self, values, data: dict, is_new_data: set) -> [None, dict]:
-        return [self.retlit] if values else
+        return [self.retlit] if values else []
 
     def true_to_JSON(self):
         return self.retlit.to_JSON()
+
+
+ADD_FIRST_ORDER_CONDITION('SZC', SimpleZeroCondition)
 
 
 class AscendingTestVariableCondition(iFirstOrderCondition):
@@ -288,6 +296,8 @@ class AscendingTestVariableCondition(iFirstOrderCondition):
     def check(self, value: tuple, data, is_new_data: set = None) -> [None, list[tuple[int, object, bool]]]:
         if is_new_data is None:
             is_new_data = set(data)
+        if type(value)==RLiteral:
+            raise Exception(value)
         if len(value) == 0:
             return [(1, (e,), e in is_new_data) for e in data]
         if len(data) < self.maxval + 1:
@@ -299,7 +309,11 @@ class AscendingTestVariableCondition(iFirstOrderCondition):
     def true_to_JSON(self):
         return self.maxval
 
-FIRST_ORDER_CONDITIONS["ATVC"]=AscendingTestVariableCondition
+
+ADD_FIRST_ORDER_CONDITION('ATVC', AscendingTestVariableCondition)
+
+
+FIRST_ORDER_CONDITIONS["ATVC"] = AscendingTestVariableCondition
 
 
 class RulesetManager(itf.iRawListInit):
@@ -460,7 +474,7 @@ def main():
     raw = [[[1, True], [2, True]], [3, True]]
     rule = Rule.raw_init(raw)
     print(rule.to_JSON() == raw)
-    rulestr=Rule.from_string("1,true;2,true->3,true")
+    rulestr = Rule.from_string("1,true;2,true->3,true")
     print()
     print(rulestr.to_JSON())
     print(rule.to_JSON())
