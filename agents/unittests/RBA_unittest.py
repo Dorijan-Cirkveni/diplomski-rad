@@ -10,7 +10,7 @@ class TestAllRule(unittest.TestCase):
             'A2': True,
             'A4': None
         }
-        R1 = Rule(rule, ('A', True))
+        R1 = PropRule(rule, ('A', True))
         self.assertEqual(R1.step(0, "Test", example), [(1, "Test", True)])
 
         result = R1.process(example)
@@ -39,7 +39,7 @@ class TestRulesetManager(unittest.TestCase):
     def setUp(self):
         # Create a few rules to be used in the tests
         rule1_conditions = [('A1', True), ('A2', True), ('A3', True)]
-        self.rule1 = Rule(rule1_conditions, ('A', True))
+        self.rule1 = PropRule(rule1_conditions, ('A', True))
 
         rule2_exit=SimpleZeroCondition(RLiteral('B', True))
         rule2_conditions = [AscendingTestVariableCondition(999), rule2_exit]
@@ -52,7 +52,7 @@ class TestRulesetManager(unittest.TestCase):
 
     def test_add_rule(self):
         rule_conditions = [('B1', True)]
-        new_rule = Rule(rule_conditions, ('B', True))
+        new_rule = PropRule(rule_conditions, ('B', True))
         self.manager.add(new_rule)
 
         self.assertIn(new_rule, self.manager.rules)

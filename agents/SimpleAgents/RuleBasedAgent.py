@@ -123,7 +123,7 @@ class iRule(itf.iRawListInit):
         return deepcopy(self.curvals[FINAL])
 
 
-class Rule(iRule):
+class PropRule(iRule):
     """
     A basic rule.
     """
@@ -157,7 +157,7 @@ class Rule(iRule):
         Rstep = Rraw.split(";")
         L = [RLiteral.from_string(e) for e in Lstep]
         R = [RLiteral.from_string(e) for e in Rstep]
-        return Rule(L, R)
+        return PropRule(L, R)
 
     def to_JSON(self):
         lits = [lit.to_JSON() for lit in self.conditions]
@@ -169,7 +169,7 @@ class Rule(iRule):
 
     def make_instance(self, do_deepcopy=False):
         conds = deepcopy(self.conditions) if do_deepcopy else self.conditions
-        return Rule(conds, self.result)
+        return PropRule(conds, self.result)
 
     def get_keys(self):
         """
@@ -214,12 +214,12 @@ FIRST_ORDER_CONDITIONS: dict[str, type] = dict()
 
 def ADD_FIRST_ORDER_CONDITION(name: str, cond: type):
     FIRST_ORDER_CONDITIONS[name] = cond
-    cond.alias=name
+    cond.alias = name
     return name
 
 
 class FirstOrderRule(iRule):
-    def __init__(self, conditions: list[iFirstOrderCondition], defaultValues: list=None):
+    def __init__(self, conditions: list[iFirstOrderCondition], defaultValues: list = None):
         if defaultValues is None:
             defaultValues = [RLiteral(True, True)]
         self.conditions = conditions
@@ -246,7 +246,7 @@ class FirstOrderRule(iRule):
         Lraw, Rraw = s.split("->")
         Lstep = Lraw.split(";")
         Rstep = Rraw.split(";")
-        L = [FIRST_ORDER_CONDITIONS[k](*tuple(v)) for k,v in Lstep]
+        L = [FIRST_ORDER_CONDITIONS[k](*tuple(v)) for k, v in Lstep]
         R = [RLiteral.from_string(e) for e in Rstep]
         return FirstOrderRule(L, R)
 
@@ -267,27 +267,28 @@ class FirstOrderRule(iRule):
         new_values = foc.check(values, data, is_new_data)
         if new_values is None:
             return []
-        RES=[]
+        RES = []
         for E in new_values:
-            if type(E)==RLiteral or len(E)!=3:
+            if type(E) == RLiteral or len(E) != 3:
                 raise Exception("!list")
             delta, v, is_new = E
-            newdelta=ind+delta
-            RES.append((newdelta,v,is_new))
+            newdelta = ind + delta
+            RES.append((newdelta, v, is_new))
         return RES
 
-def RuleInitRaw(isFirstOrder,conditions,result):
+
+def RuleInitRaw(isFirstOrder, conditions, result):
     if isFirstOrder:
-        rule = FirstOrderRule.raw_init([conditions, result])
-    else:
-        rule = Rule.raw_init([conditions, result])
+        return FirstOrderRule.raw_init([conditions, result])
+    return PropRule.raw_init([conditions, result])
+
 
 class SimpleZeroCondition(iFirstOrderCondition):
     def __init__(self, retlit: RLiteral):
         self.retlit = retlit
 
     def check(self, values, data: dict, is_new_data: set) -> [None, dict]:
-        return [(1,self.retlit,True)] if values else []
+        return [(1, self.retlit, True)] if values else []
 
     def true_to_JSON(self):
         return self.retlit.to_JSON()
@@ -317,7 +318,6 @@ class AscendingTestVariableCondition(iFirstOrderCondition):
 
 ADD_FIRST_ORDER_CONDITION('ATVC', AscendingTestVariableCondition)
 
-
 FIRST_ORDER_CONDITIONS["ATVC"] = AscendingTestVariableCondition
 
 
@@ -332,27 +332,26 @@ class RulesetManager(itf.iRawListInit):
         for rule in rules:
             self.add(rule)
 
-
     @staticmethod
-    def raw_process_list(raw: list, params:list) -> list:
-        rulelist=raw[0]
-        RL=[]
-        for i,e in enumerate(rulelist):
-            if type(e)!=list:
+    def raw_process_list(raw: list, params: list) -> list:
+        rulelist = raw[0]
+        RL = []
+        for i, e in enumerate(rulelist):
+            if type(e) != list:
                 raise ValueError(f"Must be list, not {type(e)} ({e})")
-            if len(e)!=3:
+            if len(e) != 3:
                 raise ValueError(f"Must be long 3, not {len(e)} ({e})")
-            rule=RuleInitRaw(*e)
+            rule = RuleInitRaw(*e)
             RL.append(rule)
-        return itf.iRawListInit.raw_process_list(raw,params)
+        return itf.iRawListInit.raw_process_list(raw, params)
 
-    def from_string(cls,s):
+    def from_string(cls, s):
         raise NotImplementedError
 
     def to_JSON(self):
         json_rulelist = []
         for e in self.rules:
-            X=[isinstance(e,FirstOrderRule)]+e.to_JSON()
+            X = [isinstance(e, FirstOrderRule)] + e.to_JSON()
             json_rulelist.append(X)
         return json_rulelist
 
@@ -428,16 +427,16 @@ class RuleBasedAgent(AgI.iActiveAgent):
         raise NotImplementedError
 
     @staticmethod
-    def raw_process_list(raw: list, params:list) -> list:
-        rulelist=raw[0]
-        for i,e in enumerate(rulelist):
-            if type(e)!=list:
+    def raw_process_list(raw: list, params: list) -> list:
+        rulelist = raw[0]
+        for i, e in enumerate(rulelist):
+            if type(e) != list:
                 raise ValueError(f"Must be list, not {type(e)} ({e})")
-            if len(e)!=3:
+            if len(e) != 3:
                 raise ValueError(f"Must be long 3, not {len(e)} ({e})")
-            rule=RuleInitRaw(*e)
-            rulelist[i]=rule
-        return itf.iRawListInit.raw_process_list(raw,params)
+            rule = RuleInitRaw(*e)
+            rulelist[i] = rule
+        return itf.iRawListInit.raw_process_list(raw, params)
 
     def receiveEnvironmentData(self, raw_data: dict):
         data: dict = self.preprocessor.processAgentData(raw_data, False)
@@ -449,9 +448,10 @@ class RuleBasedAgent(AgI.iActiveAgent):
         proc_data = self.manager.process(data)
         self.memory.absorb_data(proc_data)
         action = self.memory.get_data([("action", self.defaultAction)])
-        if type(action)==tuple:
+        if type(action) == tuple:
             return ACTIONS.index(action)
         return action
+
 
 def SimpleLabyrinthAgentRaw():
     cycle = {}
@@ -471,23 +471,23 @@ def SimpleLabyrinthAgentRaw():
         cycur = cur
         for i in range(4):
             cycur = cycle[cycur]
-            rule = Rule(X + [RLiteral(('rel', cycur), go)], ('action', cycur))
+            rule = PropRule(X + [RLiteral(('rel', cycur), go)], ('action', cycur))
             all_rules.append(rule)
             X.append(RLiteral(('rel', cycur), nogo))
-        rule = Rule(X, ('action', (0, 0)))
+        rule = PropRule(X, ('action', (0, 0)))
         all_rules.append(rule)
-    RES:list[list]=[]
+    RES: list[list] = []
     for rule in all_rules:
-        E:list[object]=[False]
+        E: list[object] = [False]
         E.extend(rule.to_JSON())
         RES.append(E)
     return [RES, {'last': (0, -1)}]
 
-RuleBasedAgent.INPUT_PRESETS['Maze']=SimpleLabyrinthAgentRaw()
+
+RuleBasedAgent.INPUT_PRESETS['Maze'] = SimpleLabyrinthAgentRaw()
 
 
 def ruleTest():
-
     # Create the agent
     agent = RuleBasedAgent.raw_init(RuleBasedAgent.INPUT_PRESETS['Maze'])
     tojs = agent.manager.to_JSON()
@@ -511,9 +511,9 @@ def ruleTest():
 def main():
     lit = RLiteral.from_string("1,true")
     raw = [[[1, True], [2, True]], [3, True]]
-    rule = Rule.raw_init(raw)
+    rule = PropRule.raw_init(raw)
     print(rule.to_JSON() == raw)
-    rulestr = Rule.from_string("1,true;2,true->3,true")
+    rulestr = PropRule.from_string("1,true;2,true->3,true")
     print()
     print(rulestr.to_JSON())
     print(rule.to_JSON())
