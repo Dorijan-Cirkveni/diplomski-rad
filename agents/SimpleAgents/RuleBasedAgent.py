@@ -142,11 +142,14 @@ class PropRule(iRule):
     def raw_process_list(raw: list, params: list) -> list:
         assert isinstance(raw, list)
         assert len(raw) == 2
-        conditions, result = raw
+        conditions, results = raw
+        conditions:list
+        results:list
+        if not all([isinstance(e,list) for e in results]):
+            results=[results]
         newconditions = [RLiteral.toLiteral(e) for e in conditions]
-        if type(result) == list:
-            result = tuple(result)
-        return itf.iRawInit.raw_process_list([newconditions, result], params)
+        newresults = [RLiteral.toLiteral(e) for e in results]
+        return itf.iRawInit.raw_process_list([newconditions, newresults], params)
 
     @classmethod
     def from_string(cls, s: str):  # A:1,
