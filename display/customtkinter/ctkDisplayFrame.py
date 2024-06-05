@@ -159,7 +159,6 @@ class DisplayFrame(iTkFrame):
     def process_update_env(self, data: dict):
         grid: Grid2D = data.get('grid', None)
         agents: dict = data.get('agents', dict())
-        print(agents)
         if grid is None:
             msg = data.get("msg", "Missing message")
             if len(msg) > 25:
@@ -181,10 +180,7 @@ class DisplayFrame(iTkFrame):
         else:
             data: dict = env.getDisplayData(self.obs_agent, self.view_mode)
             grid, agents, mode = self.process_update_env(data)
-            print()
             locations = self.check_entity_locations(agents)
-        print("Old locations:", self.agent_locations)
-        print("Locations:", locations)
         pers_agents = {e: (
             self.agent_locations[e], Tsub(locations[e], self.agent_locations[e], True)
         ) for e in locations if e in self.agent_locations}
@@ -225,7 +221,6 @@ class DisplayFrame(iTkFrame):
 
     def run_single_iteration(self, doUpdate=False, anim_steps=1):
         env: GridEnvironment = self.env
-        print("Before:", self.agent_locations)
         env.runIteration()
         if env.isWin():
             env.winStatus = (True, self.env.cur_iter)
@@ -233,7 +228,6 @@ class DisplayFrame(iTkFrame):
             self.update_env(anim_steps)
             self.update()
         self.show_iter()
-        print("After:", self.agent_locations)
 
     def run_iteration(self, itercount=1, update_period=1, anim_steps=5):
         if update_period != 1:
@@ -276,7 +270,6 @@ class DisplayFrame(iTkFrame):
         if anite is not None:
             self.anite=anite
         self.w_buttons.display_running(0, ite)
-        print("ITERS:",[ite,self.anist,self.anite])
         self.run_iteration(ite,self.anist,self.anite)
         self.running = False
         self.w_buttons.display_running(0, 0)

@@ -384,6 +384,7 @@ class RulesetManager(itf.iRawListInit):
         for rule in self.rules:
             results = rule.process(data, is_new_data)
             for E in results:
+                print("SUCCESS:",rule,E)
                 if type(E) == RLiteral:
                     E: RLiteral
                     new_data[E.key] = E.value
@@ -406,6 +407,7 @@ class RulesetManager(itf.iRawListInit):
                 if e not in data or data[e] != v:
                     data[e] = v
                     cont = True
+            print("RES:",new_data)
         return data
 
 
@@ -419,8 +421,10 @@ class RuleBasedAgent(AgI.iActiveAgent):
     DEFAULT_RAW_INPUT = [[], {'rel': Grid2D((3, 3), [[0, 1, 0], [1, 1, 1], [0, 1, 0]])}, ]
     INPUT_PRESETS = {}
 
-    def __init__(self, rulelist: list, pers_vars: dict = None, defaultAction=ACTIONS[-1]):
+    def __init__(self, rulelist: list, pers_vars: dict = None, trans_vars=None, defaultAction=ACTIONS[-1]):
         super().__init__(ADP.AgentDataPreprocessor([ADP.ReLocADP()]))
+        if trans_vars is None:
+            trans_vars = {'action': 'last'}
         if type(rulelist)==RulesetManager:
             self.manager=rulelist
         else:
@@ -431,6 +435,7 @@ class RuleBasedAgent(AgI.iActiveAgent):
             if e not in self.pers_vars:
                 self.pers_vars[e]=None
         self.memory.absorb_data(pers_vars)
+        self.trans_vars=trans_vars
         self.defaultAction = defaultAction
 
     @classmethod
@@ -459,10 +464,19 @@ class RuleBasedAgent(AgI.iActiveAgent):
 
     def performAction(self, actions):
         data = self.memory.get_data()
-        E=self.memory.get_data()
+        for e,v in self.pers_vars.items():
+            if v is None:
+                continue
+            data[e]=v
         proc_data = self.manager.process(data)
         self.memory.absorb_data(proc_data)
         action = self.memory.get_data([("action", self.defaultAction)])
+        D=self.memory.current_data
+        print(D.get("action",None),"--->",D.get("last",None))
+        for src,dest in self.trans_vars.items():
+            if src in D:
+                D[dest]=D[src]
+        print(D.get("action",None),"--->",D.get("last",None))
         if type(action) == tuple:
             return ACTIONS.index(action)
         return action
@@ -490,6 +504,7 @@ def SimpleLabyrinthAgentRaw():
             all_rules.append(rule)
             X.append(RLiteral(('rel', cycur), nogo))
         rule = PropRule(X, ('action', (0, 0)))
+        all_rules.append(rule)
         all_rules.append(rule)
     RES: list[list] = []
     for rule in all_rules:

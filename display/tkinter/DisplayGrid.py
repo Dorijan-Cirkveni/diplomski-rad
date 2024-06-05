@@ -251,8 +251,6 @@ class GridDisplayFrame(DIB.iTkFrame):
             grid, agents, mode = self.process_update_env(data)
             print()
             locations=self.check_entity_locations(agents)
-        print("Old locations:",self.agent_locations)
-        print("Locations:",locations)
         pers_agents={e:(
             self.agent_locations[e],Tsub(locations[e],self.agent_locations[e],True)
         ) for e in locations if e in self.agent_locations}

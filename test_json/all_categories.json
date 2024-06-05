@@ -5,7 +5,7 @@
     "name": "1. Pathfinding Test",
     "scale": [25,25],
     "agent": ["RAA","42132143212132141241212"],
-    "entity": {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [2, 5], "viewdir": 10}},
+    "entity": {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [2, 5], "viewdir": 15}},
     "null":0
   }
 ,
