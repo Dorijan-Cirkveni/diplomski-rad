@@ -126,8 +126,6 @@ class iRule(itf.iRawListInit):
             is_new_data = set(data)
         for i in range(self.size):
             self.process_step(i, data, is_new_data)
-        if self.curvals[FINAL]:
-            print(self, self.curvals)
         self.curvals[0].update({e:False for e in self.start_vals})
         return deepcopy(self.curvals[FINAL])
 
@@ -408,7 +406,6 @@ class RulesetManager(itf.iRawListInit):
                 if e not in data or data[e] != v:
                     data[e] = v
                     cont = True
-            print(new_data)
         return data
 
 
@@ -429,12 +426,12 @@ class RuleBasedAgent(AgI.iActiveAgent):
         else:
             self.manager = RulesetManager(rulelist)
         self.states = []
-        self.pers_vars: set = {} if pers_vars is None else set(pers_vars)
-        self.pers_vars |= {"grid","agents","persistent","last"}
+        self.pers_vars: dict = {} if pers_vars is None else pers_vars
+        for e in {"grid","agents","persistent","last"}:
+            if e not in self.pers_vars:
+                self.pers_vars[e]=None
         self.memory.absorb_data(pers_vars)
         self.defaultAction = defaultAction
-        data = self.memory.get_data()
-        print("Persistent:",{e:data.get(e) for e in self.pers_vars})
 
     @classmethod
     def from_string(cls, s):
@@ -453,14 +450,16 @@ class RuleBasedAgent(AgI.iActiveAgent):
         return itf.iRawListInit.raw_process_list(raw, params)
 
     def receiveEnvironmentData(self, raw_data: dict):
-        print(id(self))
         data: dict = self.preprocessor.processAgentData(raw_data, False)
-        self.memory.step_iteration(self.pers_vars, False)
+        self.memory.step_iteration(set(self.pers_vars), False)
+        for e in self.pers_vars:
+            if e in data:
+                self.pers_vars[e]=data[e]
         self.memory.absorb_data(data)
 
     def performAction(self, actions):
         data = self.memory.get_data()
-        print("Persistent:",{e:data.get(e) for e in self.pers_vars})
+        E=self.memory.get_data()
         proc_data = self.manager.process(data)
         self.memory.absorb_data(proc_data)
         action = self.memory.get_data([("action", self.defaultAction)])

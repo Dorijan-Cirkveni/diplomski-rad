@@ -11,6 +11,7 @@ class InformationCompiler:
     def absorb_data(self, new_data: dict, modes: dict = None):
         if modes is None:
             modes = {"<MAIN>": {None: 3}, None: {None: 3}}
+        old_data=set(self.current_data)
         self.current_data = Combine(self.current_data, new_data, modes)
         assert isinstance(self.current_data,dict)
 
