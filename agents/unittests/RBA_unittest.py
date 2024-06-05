@@ -170,6 +170,24 @@ class TestRulesetManagerAgain(unittest.TestCase):
         result = self.rule2.process(data)
         self.assertIsInstance(result, dict)
 
+class TestRuleBasedAgent(unittest.TestCase):
+    def test_init(self):
+        # Test with valid RulesetManager
+        manager = RulesetManager([])
+        agent = RuleBasedAgent(manager)
+        self.assertIsInstance(agent.manager, RulesetManager)
+
+    def test_step(self):
+        manager = RulesetManager([])
+        agent = RuleBasedAgent(manager)
+
+        data = {'A': True}
+        env_step = 1
+
+        res=agent.receiveEnvironmentData(data)
+
+        assert 1==2
+
 
 
 

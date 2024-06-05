@@ -23,11 +23,9 @@ class InformationCompiler:
             data=nex
         return deepcopy(data)
 
-    def step_iteration(self, transfer_data: dict = None, save_prev=False, cur_iteration=None):
+    def step_iteration(self, transfer_data: set = None, save_prev=False, cur_iteration=None):
         if transfer_data is None:
-            transfer_data = {}
-        if "grid" not in transfer_data:
-            transfer_data["grid"] = True
+            transfer_data = set()
         old_data = self.current_data
         if save_prev:
             self.prev_iterations[self.cur_iter] = old_data
@@ -39,6 +37,7 @@ class InformationCompiler:
             if key not in old_data:
                 continue
             self.current_data[key] = deepcopy(old_data[key])
+        assert self.current_data.get('last','last') is not None
         return
 
 

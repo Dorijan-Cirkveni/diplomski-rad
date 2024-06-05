@@ -76,6 +76,7 @@ class iRule(itf.iRawListInit):
     """
 
     def __init__(self, size, startVals: list):
+        self.start_vals=startVals
         assert isinstance(startVals, list)
         self.size = size
         self.curvals: list[dict] = [dict() for _ in range(size + 1)]
@@ -127,6 +128,7 @@ class iRule(itf.iRawListInit):
             self.process_step(i, data, is_new_data)
         if self.curvals[FINAL]:
             print(self, self.curvals)
+        self.curvals[0].update({e:False for e in self.start_vals})
         return deepcopy(self.curvals[FINAL])
 
 
@@ -422,16 +424,17 @@ class RuleBasedAgent(AgI.iActiveAgent):
 
     def __init__(self, rulelist: list, pers_vars: dict = None, defaultAction=ACTIONS[-1]):
         super().__init__(ADP.AgentDataPreprocessor([ADP.ReLocADP()]))
-        self.manager = RulesetManager(rulelist)
+        if type(rulelist)==RulesetManager:
+            self.manager=rulelist
+        else:
+            self.manager = RulesetManager(rulelist)
         self.states = []
-        self.pers_vars: dict = {} if pers_vars is None else pers_vars
-        self.pers_vars |= {
-            "grid": None,
-            "agents": None,
-            "persistent": None
-        }
-        self.memory.absorb_data(self.pers_vars)
+        self.pers_vars: set = {} if pers_vars is None else set(pers_vars)
+        self.pers_vars |= {"grid","agents","persistent","last"}
+        self.memory.absorb_data(pers_vars)
         self.defaultAction = defaultAction
+        data = self.memory.get_data()
+        print("Persistent:",{e:data.get(e) for e in self.pers_vars})
 
     @classmethod
     def from_string(cls, s):
@@ -450,12 +453,14 @@ class RuleBasedAgent(AgI.iActiveAgent):
         return itf.iRawListInit.raw_process_list(raw, params)
 
     def receiveEnvironmentData(self, raw_data: dict):
+        print(id(self))
         data: dict = self.preprocessor.processAgentData(raw_data, False)
         self.memory.step_iteration(self.pers_vars, False)
         self.memory.absorb_data(data)
 
     def performAction(self, actions):
         data = self.memory.get_data()
+        print("Persistent:",{e:data.get(e) for e in self.pers_vars})
         proc_data = self.manager.process(data)
         self.memory.absorb_data(proc_data)
         action = self.memory.get_data([("action", self.defaultAction)])
