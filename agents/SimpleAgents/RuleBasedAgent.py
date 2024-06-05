@@ -30,6 +30,8 @@ class RLiteral(itf.iRawListInit):
 
     @staticmethod
     def toLiteral(other):
+        if type(other) == str:
+            other=RLiteral.from_string(other)
         if type(other) == list:
             other = tuple(other)
         if type(other) == tuple:
@@ -37,6 +39,11 @@ class RLiteral(itf.iRawListInit):
         if type(other) == RLiteral:
             return other
         raise Exception("??? ({})".format(type(other)))
+
+    @staticmethod
+    def from_stringlist(SL):
+        R = [RLiteral.toLiteral(e) for e in SL]
+        return R
 
     def __eq__(self, other):
         return self.key == other.key
@@ -147,8 +154,8 @@ class PropRule(iRule):
         results:list
         if not all([isinstance(e,list) for e in results]):
             results=[results]
-        newconditions = [RLiteral.toLiteral(e) for e in conditions]
-        newresults = [RLiteral.toLiteral(e) for e in results]
+        newconditions = RLiteral.from_stringlist(conditions)
+        newresults = RLiteral.from_stringlist(results)
         return itf.iRawInit.raw_process_list([newconditions, newresults], params)
 
     @classmethod
@@ -158,8 +165,8 @@ class PropRule(iRule):
         Lraw, Rraw = s.split("->")
         Lstep = Lraw.split(";")
         Rstep = Rraw.split(";")
-        L = [RLiteral.from_string(e) for e in Lstep]
-        R = [RLiteral.from_string(e) for e in Rstep]
+        L = RLiteral.from_stringlist(Lstep)
+        R = RLiteral.from_stringlist(Rstep)
         return PropRule(L, R)
 
     def to_JSON(self):
@@ -222,16 +229,16 @@ def ADD_FIRST_ORDER_CONDITION(name: str, cond: type):
 
 
 class FirstOrderRule(iRule):
-    def __init__(self, conditions: list[iFirstOrderCondition], defaultValues: list = None):
-        if defaultValues is None:
-            defaultValues = [RLiteral(True, True)]
+    def __init__(self, conditions: list[iFirstOrderCondition], defaultValues:list[RLiteral]):
         self.conditions = conditions
+        self.defaults=deepcopy(defaultValues)
         super().__init__(len(self.conditions), defaultValues)
 
     @staticmethod
     def raw_process_list(raw: list, params: list) -> list:
         assert len(raw) >= 1
         conditions = raw[0]
+        results = raw[1]
         assert isinstance(conditions, list)
         newconditions = []
         for e in conditions:
@@ -240,7 +247,8 @@ class FirstOrderRule(iRule):
             condtype: type = FIRST_ORDER_CONDITIONS[condname]
             condobj = condtype(*conddata)
             newconditions.append(condobj)
-        return [newconditions]
+        newresults = RLiteral.from_stringlist(results)
+        return [newconditions,newresults]
 
     @classmethod
     def from_string(cls, s: str):  # A:1,
@@ -250,18 +258,18 @@ class FirstOrderRule(iRule):
         Lstep = Lraw.split(";")
         Rstep = Rraw.split(";")
         L = [FIRST_ORDER_CONDITIONS[k](*tuple(v)) for k, v in Lstep]
-        R = [RLiteral.from_string(e) for e in Rstep]
+        R = RLiteral.from_stringlist(Rstep)
         return FirstOrderRule(L, R)
 
     def make_instance(self):
-        return FirstOrderRule(self.conditions)
+        return FirstOrderRule(self.conditions,self.defaults)
 
     def get_keys(self):
         """
 
         :return:
         """
-        return {"FO"}
+        return {None}
 
     def step(self, ind, values, data, is_new_data: set = None) -> list[tuple[int, object, bool]]:
         if is_new_data is None:
