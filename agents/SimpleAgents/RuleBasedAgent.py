@@ -9,6 +9,7 @@ import agents.GridAgentUtils as GAU
 import agents.AgentUtils.AgentDataPreprocessor as ADP
 import agents.AgentInterfaces as AgI
 import environments.GridEnvElements as GEE
+from util.struct.TupleDotOperations import Tadd
 
 FINAL = -1
 
@@ -424,7 +425,7 @@ class RuleBasedAgent(AgI.iActiveAgent):
     def __init__(self, rulelist: list, pers_vars: dict = None, trans_vars=None, defaultAction=ACTIONS[-1]):
         super().__init__(ADP.AgentDataPreprocessor([ADP.ReLocADP()]))
         if trans_vars is None:
-            trans_vars = {'action': 'last'}
+            trans_vars = {'nexlast': 'last'}
         if type(rulelist)==RulesetManager:
             self.manager=rulelist
         else:
@@ -463,31 +464,42 @@ class RuleBasedAgent(AgI.iActiveAgent):
         self.memory.absorb_data(data)
 
     def performAction(self, actions):
+
         data = self.memory.get_data()
         for e,v in self.pers_vars.items():
             if v is None:
                 continue
             data[e]=v
-        proc_data = self.manager.process(data)
+        manager=self.manager.make_instance()
+        proc_data = manager.process(data)
+
         self.memory.absorb_data(proc_data)
         action = self.memory.get_data([("action", self.defaultAction)])
         D=self.memory.current_data
-        print(D.get("action",None),"--->",D.get("last",None))
+        for E in V2DIRS:
+            print(E,D.get(E))
+            print(D.get("action"))
+        print(D.get("nexlast",None),"--->",D.get("last",None))
         for src,dest in self.trans_vars.items():
             if src in D:
                 D[dest]=D[src]
-        print(D.get("action",None),"--->",D.get("last",None))
         if type(action) == tuple:
             return ACTIONS.index(action)
         return action
 
-
-def SimpleLabyrinthAgentRaw():
+def makecycle():
     cycle = {}
     last = V2DIRS[-1]
     for cur in V2DIRS:
         cycle[last] = cur
         last = cur
+    return cycle
+
+
+CYCLE=makecycle()
+
+
+def SimpleLabyrinthAgentRaw():
 
     all_rules = []
 
@@ -499,12 +511,13 @@ def SimpleLabyrinthAgentRaw():
         X = [cur_last]
         cycur = cur
         for i in range(4):
-            cycur = cycle[cycur]
+            cycur = CYCLE[cycur]
             rule = PropRule(X + [RLiteral(('rel', cycur), go)], ('action', cycur))
             all_rules.append(rule)
             X.append(RLiteral(('rel', cycur), nogo))
         rule = PropRule(X, ('action', (0, 0)))
         all_rules.append(rule)
+        rule = PropRule([('action',cur)], ('nexlast', CYCLE[CYCLE[cur]]))
         all_rules.append(rule)
     RES: list[list] = []
     for rule in all_rules:
