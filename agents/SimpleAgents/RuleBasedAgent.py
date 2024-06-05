@@ -92,7 +92,7 @@ class iRule(itf.iRawListInit):
         """
         raise NotImplementedError
 
-    def step(self, ind, values, data, is_new_data: set) -> dict:
+    def step(self, ind: int, values: list, data: dict, is_new_data: set) -> dict:
         raise NotImplementedError
 
     def to_JSON(self):
