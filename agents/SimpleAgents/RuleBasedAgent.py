@@ -11,7 +11,6 @@ import agents.AgentInterfaces as AgI
 import environments.GridEnvElements as GEE
 
 FINAL = -1
-NONEXISTENT = -2
 
 
 class RLiteral(itf.iRawListInit):
@@ -267,7 +266,7 @@ class FirstOrderRule(iRule):
         foc: iFirstOrderCondition = self.conditions[ind]
         new_values = foc.check(values, data, is_new_data)
         if new_values is None:
-            return [(NONEXISTENT, "NULL", False)]
+            return []
         RES=[]
         for E in new_values:
             if type(E)==RLiteral or len(E)!=3:
