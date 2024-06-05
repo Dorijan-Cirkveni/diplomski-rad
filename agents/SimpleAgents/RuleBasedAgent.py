@@ -128,14 +128,14 @@ class PropRule(iRule):
     A basic rule.
     """
 
-    def __init__(self, conditions: list[[RLiteral, tuple]], result: [RLiteral, tuple, list[[RLiteral, tuple]]]):
+    def __init__(self, conditions: list[[RLiteral, tuple]], rule_results: [RLiteral, tuple, list[[RLiteral, tuple]]]):
         self.conditions = [RLiteral.toLiteral(e) for e in conditions]
-        if type(result) != list:
-            result = [result]
-        for i, e in enumerate(result):
+        if type(rule_results) != list:
+            rule_results = [rule_results]
+        for i, e in enumerate(rule_results):
             if isinstance(e, tuple):
-                result[i] = RLiteral(*e)
-        self.result: list[RLiteral] = result
+                rule_results[i] = RLiteral(*e)
+        self.rule_results: list[RLiteral] = rule_results
         super().__init__(len(self.conditions), [True])
 
     @staticmethod
@@ -164,15 +164,15 @@ class PropRule(iRule):
 
     def to_JSON(self):
         lits = [lit.to_JSON() for lit in self.conditions]
-        res = [lit.to_JSON() for lit in self.result]
+        res = [lit.to_JSON() for lit in self.rule_results]
         return [lits, res]
 
     def __repr__(self):
-        return f"{self.conditions}->{self.result}"
+        return f"{self.conditions}->{self.rule_results}"
 
     def make_instance(self, do_deepcopy=False):
         conds = deepcopy(self.conditions) if do_deepcopy else self.conditions
-        return PropRule(conds, self.result)
+        return PropRule(conds, self.rule_results)
 
     def get_keys(self):
         """
@@ -195,7 +195,7 @@ class PropRule(iRule):
     def process(self, data: dict, is_new_data: set = None) -> dict:
         res = super().process(data, is_new_data)
         if len(res) != 0:
-            return {e: True for e in self.result}
+            return {e: True for e in self.rule_results}
         return {}
 
 
@@ -280,10 +280,10 @@ class FirstOrderRule(iRule):
         return RES
 
 
-def RuleInitRaw(isFirstOrder, conditions, result):
+def RuleInitRaw(isFirstOrder, conditions, rule_results):
     if isFirstOrder:
-        return FirstOrderRule.raw_init([conditions, result])
-    return PropRule.raw_init([conditions, result])
+        return FirstOrderRule.raw_init([conditions, rule_results])
+    return PropRule.raw_init([conditions, rule_results])
 
 
 class SimpleZeroCondition(iFirstOrderCondition):
