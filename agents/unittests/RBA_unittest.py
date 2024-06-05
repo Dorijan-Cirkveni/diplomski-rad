@@ -1,4 +1,4 @@
-from agents.SimpleAgents.RuleBasedAgent import *
+from agents.ComplexAgents.RuleBasedAgent import *
 import unittest
 
 

@@ -6,7 +6,7 @@ from agents.AgentInterfaces import iAgent
 from definitions import ACTIONS
 
 # import agents.NeuralNetworkAgent as NNA
-import agents.SimpleAgents.RuleBasedAgent as RBA
+import agents.ComplexAgents.RuleBasedAgent as RBA
 # from definitions import ACTIONS
 
 TEST_AGENTS:dict = {
