@@ -121,7 +121,7 @@ class CategoryData(ButtonData):
     def MakeButton(self, master):
         arch_res = ctk.CTkFrame(master)
         self.arch = arch_res
-        cat_style={"fg_color":"green"}
+        cat_style={"fg_color":"green" if self.buttons else "red"}
         legible_text=util.UtilManager.MakeClassNameReadable(self.text)
         final_text=util.UtilManager.StringLimbo(legible_text,16)
         res = ctk.CTkButton(arch_res, text=final_text, command=self.function, **cat_style)
