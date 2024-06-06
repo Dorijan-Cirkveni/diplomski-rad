@@ -115,9 +115,10 @@ class DisplayFrame(iTkFrame):
         self.w_data.update_text(text)
 
     def receiveData(self, data: dict):
-        envraw = data["Environment data"]
+        envraw = deepcopy(data["Environment data"])
         agentclass: iAgent = data["Agent class"]
-        agentdata = data["Agent data"]
+        agentdata = deepcopy(data["Agent data"])
+        print("Initialising environment...")
         env: GridEnvironment = environments.EnvironmentManager.readEnvironment([envraw], 0)
         agent = agentclass.raw_init(agentdata)
         env.assign_active_agent(agent)
