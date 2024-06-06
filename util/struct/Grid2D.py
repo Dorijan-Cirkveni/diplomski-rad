@@ -94,6 +94,29 @@ class Ring(iGridDrawElement):
             values = []
         return self.values
 
+class Checkerboard(iGridDrawElement):
+    def __init__(self, factor:int, elements:list[int], start:tuple[int,int], end:tuple[int,int]):
+        self.start = start
+        self.end = end
+        self.factor = factor
+        self.elements = elements
+
+    def apply(self, params: dict) -> list[tuple[tuple[int, int], int]]:
+        start=self.start
+        end=self.end
+        if "first" in params:
+            start=Tmax(start,params["first"])
+        if "last" in params:
+            end=Tmin(end,params["last"])
+        RES=[]
+        ref=start[0]+self.factor*start[1]
+        for i in range(start[0],end[0]):
+            for j in range(start[1],end[1]):
+                cur=i+j*self.factor-ref
+                E=((i,j),cur)
+                RES.append(E)
+        return RES
+
 
 class Grid2D(iCombinable):
     """
