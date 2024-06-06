@@ -223,6 +223,8 @@ class DisplayFrame(iTkFrame):
     def run_single_iteration(self, doUpdate=False, anim_steps=1):
         env: GridEnvironment = self.env
         env.runIteration()
+        if env.isLoss():
+            env.winStatus = (False, self.env.cur_iter)
         if env.isWin():
             env.winStatus = (True, self.env.cur_iter)
         if doUpdate:

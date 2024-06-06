@@ -784,7 +784,7 @@ class GridEnvironment(itf.iEnvironment):
         loss_condition = self.data.get("loss", {"destroyed": "all"})
         if "destroyed" in loss_condition:
             v = loss_condition["destroyed"]
-            S = self.activeEntities - {e for e, v in self.entityDeathTimes if v <= self.cur_iter}
+            S = self.activeEntities - {e for e, v in enumerate(self.entityDeathTimes) if v <= self.cur_iter}
             if v == "all" and not S:
                 return True
             if v == "one" and len(S) != len(self.activeEntities):
