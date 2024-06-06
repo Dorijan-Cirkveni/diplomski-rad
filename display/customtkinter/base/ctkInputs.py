@@ -51,6 +51,47 @@ class InputFrame(BaseInputFrame):
             return
         self.return_lambda(s)
 
+class MultiLineInputFrame(BaseInputFrame):
+    counter = Counter(0)
+
+    def __init__(self, master, return_lambda: callable, screen_size: tuple, rule: callable, defaultValue="",
+                 text="Iterations:", butext="Run", errmsg="Input Error!"):
+        self.label = None
+        self.rule = rule
+        self.input = defaultValue
+        self.button = None
+        self.id = self.counter.use()
+        self.text = text
+        self.butext = butext
+        self.errmsg = errmsg
+        super().__init__(master, "Input Frame", return_lambda, screen_size)
+
+    def create_widgets(self):
+        self.label = ctk.CTkLabel(self, text=self.text)
+        defaultValue = self.input
+        self.input = ctk.CTkTextbox(self)
+        self.button = ctk.CTkButton(self, text=self.butext, command=self.doOutput)
+        self.label.grid(row=0, column=0)
+        self.input.grid(row=0, column=1)
+        self.button.grid(row=1, column=0, columnspan=2, pady=10)
+        self.input.delete(0.0, ctk.END)
+        self.input.insert(0.0, defaultValue)
+
+    def set(self, s):
+        self.input: ctk.CTkEntry
+        self.input.delete(0.0, ctk.END)
+        self.input.insert(0.0, s)
+
+    def doOutput(self):
+        assert type(self.input) == ctk.CTkEntry
+        self.input: ctk.CTkEntry
+        s = self.input.get()
+        if not self.rule(s):
+            print("{} not valid!".format(s))
+            PopupMessage(self,"Input Error",self.errmsg)
+            return
+        self.return_lambda(s)
+
 class MIF_Element:
     def __init__(self, rule, dfv, text, entry=None):
         self.rule = rule
@@ -125,9 +166,9 @@ class RunFrame(MultipleInputFrame):
         ]
         super().__init__(master, return_lambda, screen_size, inputs)
 
-class JSONInputFrame(InputFrame):
+class JSONInputFrame(MultiLineInputFrame):
     def set(self, s):
-        super().set(json.dumps(s))
+        super().set(json.dumps(s,indent=4))
 
 
 
