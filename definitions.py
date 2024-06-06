@@ -9,6 +9,18 @@ EPSILON = 0.00001
 EPSILONLITE = 0.01
 
 
+def makecycle():
+    cycle = {}
+    last = V2DIRS[-1]
+    for cur in V2DIRS:
+        cycle[last] = cur
+        last = cur
+    return cycle
+
+
+CYCLE=makecycle()
+
+
 def getMirrorActions(dimension: int):
     if dimension & 1 != 0:
         return {V2RIGHT: V2LEFT, V2LEFT: V2RIGHT}

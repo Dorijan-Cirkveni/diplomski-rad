@@ -49,6 +49,9 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.run_button = ctk.CTkButton(self, text="Run environment", command=self.run_env)
         self.run_button.pack(padx=10, pady=10)
 
+        self.save_button = ctk.CTkButton(self, text="Save environment", command=self.run_env)
+        self.save_button.pack(padx=10, pady=10)
+
     def set_env(self, file, ind, name):
         envname = utilmngr.MakeClassNameReadable(file) + ": " + name
         self.s_env.set(envname)
@@ -113,13 +116,12 @@ class SelectionFrame(iTkFrame):
         self.w_agents = None
         self.w_envs = None
         self.w_data = None
-        self.env_names = None
+        self.env_names = jsonmngr.getNamesAndIndices()  # Format: [("file", ["Env1", "Env2", "Env3"])]
+        self.default_env_names = [(name,envs[:]) for name,envs in self.env_names]
         self.kwargs = kwargs
         super().__init__(master, GRIDSELECT, dimensions)
 
     def create_widgets(self):
-        self.env_names = jsonmngr.getNamesAndIndices()  # Format: [("file", ["Env1", "Env2", "Env3"])]
-        print("ENV:\n"+json.dumps(self.env_names))
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=1)
@@ -172,6 +174,9 @@ class SelectionFrame(iTkFrame):
             cat = CategoryData(filename, elements, 0)
             cats.append(cat)
         return cats
+
+    def set_env_cat(self, cat:CategoryData):
+        fi
 
     def get_agent_presets(self):
         cats = []

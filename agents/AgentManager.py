@@ -3,6 +3,7 @@ import json
 import agents.Agent as base
 import util.UtilManager
 from agents.AgentInterfaces import iAgent
+from agents.SimpleAgents.ZeroInstructionAgents import ZIA
 from definitions import ACTIONS
 
 # import agents.NeuralNetworkAgent as NNA
@@ -13,6 +14,8 @@ TEST_AGENTS:dict = {
     "RBA": RBA.RuleBasedAgent,
     "GMI": base.GraphicManualInputAgent
 }
+
+TEST_AGENTS.update(ZIA)
 
 ALL_AGENTS:dict = {
     "RAA": base.RecordedActionsAgent,
