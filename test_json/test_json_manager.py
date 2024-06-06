@@ -104,13 +104,14 @@ def ImportManagedJSON(address, files: dict = None, applyToMain=False, error_if_n
     res=DescendByFragment(full_main,X[1:])
     return res
 
-def ExportManagedJSON(address, new_data, files: dict = None, applyToMain=False, error_if_not_env=True)
+def ExportManagedJSON(address, new_data, files: dict = None, applyToMain=False):
     X=address.split("|")
     filepaths=search_files(current_dir)
-    if filepaths not in
     main_file=X[0]
-
+    if main_file not in filepaths:
+        raise FragmentedJSONException(f"{main_file} not in files: {filepaths}")
     files = JSON_data if files is None else files
+    raise NotImplementedError
 
 def test(full_addr):
     print(ImportManagedJSON(full_addr))
