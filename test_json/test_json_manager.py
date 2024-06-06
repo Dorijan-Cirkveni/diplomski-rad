@@ -52,6 +52,16 @@ def get_grid_files(custom_exceptions=None):
     res=filter_env_paths(D,custom_exceptions)
     return res
 
+def read_file_to_dict(name, filepath, resdict):
+    F = open(filepath, 'r')
+    raw = F.read()
+    F.close()
+    try:
+        processed = json.loads(raw)
+        resdict[name] = processed
+    except json.decoder.JSONDecodeError as err:
+        raise Exception(filepath, err)
+
 
 def read_all_files(exceptions=None):
     if exceptions is None:
@@ -61,14 +71,7 @@ def read_all_files(exceptions=None):
     paths={e:all_paths[e] for e in filt}
     resdict = dict()
     for name, filepath in paths.items():
-        F = open(filepath, 'r')
-        raw = F.read()
-        F.close()
-        try:
-            processed = json.loads(raw)
-            resdict[name] = processed
-        except json.decoder.JSONDecodeError as err:
-            raise Exception(filepath, err)
+        read_file_to_dict(name,filepath,resdict)
     return resdict
 
 
@@ -100,6 +103,14 @@ def ImportManagedJSON(address, files: dict = None, applyToMain=False, error_if_n
         files[main_file] = full_main
     res=DescendByFragment(full_main,X[1:])
     return res
+
+def ExportManagedJSON(address, new_data, files: dict = None, applyToMain=False, error_if_not_env=True)
+    X=address.split("|")
+    filepaths=search_files(current_dir)
+    if filepaths not in
+    main_file=X[0]
+
+    files = JSON_data if files is None else files
 
 def test(full_addr):
     print(ImportManagedJSON(full_addr))

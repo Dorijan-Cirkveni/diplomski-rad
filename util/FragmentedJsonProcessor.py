@@ -10,20 +10,23 @@ class FragmentedJSONException(Exception):
                                "an error message in the exception thrower."):
         super().__init__(message)
 
+
 class iFragmentedJsonJoinable:
     @staticmethod
-    def join(a,b):
+    def join(a, b):
         raise NotImplementedError
+
 
 class FJJ_list(iFragmentedJsonJoinable):
     @staticmethod
-    def join(a:list,b:list):
+    def join(a: list, b: list):
         a.extend(b)
         return a
 
+
 class FJJ_dict(iFragmentedJsonJoinable):
     @staticmethod
-    def join(a:dict,b:dict):
+    def join(a: dict, b: dict):
         a.update(b)
         return a
 
@@ -35,6 +38,7 @@ def get_area(raw: dict, key: str, default: tuple = (0, 0, 0, 0)):
     area = key + "_area"
     if area in raw:
         return raw[area]
+    return default
 
 
 def FragmentDefaultNameRule(s: str):
@@ -120,11 +124,11 @@ def ExtendAllApplicable(root):
         """
         if type(arch) != dict or ty != dict:
             return False
-        if type(position)!=str:
+        if type(position) != str:
             return False
-        if not re.match("<EXTEND.*>",position):
+        if not re.match("<EXTEND.*>", position):
             return False
-        position:str
+        position: str
         keys = set(position[7:][:-1].upper())
         arch: dict
         cur: dict
@@ -133,14 +137,14 @@ def ExtendAllApplicable(root):
             if e not in arch:
                 arch[e] = v
                 continue
-            av=arch[e]
-            tav,tv=type(av),type(v)
-            if "C" in keys and (tav,tv) in specialExtensions:
-                ext:iFragmentedJsonJoinable=specialExtensions[(tav,tv)]
-                arch[e]=ext.join(av,v)
+            av = arch[e]
+            tav, tv = type(av), type(v)
+            if "C" in keys and (tav, tv) in specialExtensions:
+                ext: iFragmentedJsonJoinable = specialExtensions[(tav, tv)]
+                arch[e] = ext.join(av, v)
                 continue
             if "A" not in keys:
-                arch[e]=v
+                arch[e] = v
         return True
 
     SearchStructureStack(root, extendAppl)
@@ -198,12 +202,11 @@ def MakeMissingFilesException(missingFiles: dict):
     raise FragmentedJSONException("Missing files: " + mexc)
 
 
-def ImportFragmentedJSON(main_file: str, files: dict):
+def ImportFragmentedJSON(main_file: str, files: dict[str], importLog: list = None):
     read_files = set()
     unread_files_list: list[tuple[str, str]] = [("ROOT", main_file)]
-    unread_files=deque(unread_files_list)
+    unread_files = deque(unread_files_list)
     all_fragments = []
-    prerequisites=dict()
     missingFiles = defaultdict(list)
     while unread_files:
         arch_file, cur_file = unread_files.popleft()
@@ -212,7 +215,7 @@ def ImportFragmentedJSON(main_file: str, files: dict):
         fragments = ProcessFragmentedJSON(json_obj)
         for arch, key, new_fragment in fragments:
             fragment_name, fragment_indices = DecipherFragment(new_fragment)
-            if fragment_name==cur_file:
+            if fragment_name == cur_file:
                 raise Exception("Must not call fragment from own file!")
             if fragment_name in read_files:
                 continue
@@ -224,10 +227,10 @@ def ImportFragmentedJSON(main_file: str, files: dict):
     if missingFiles:
         raise MakeMissingFilesException(missingFiles)
     while all_fragments:
-        (arch, key, fragment_name, fragment_indices)=all_fragments.pop()
+        (arch, key, fragment_name, fragment_indices) = all_fragments.pop()
         target_fragment = files[fragment_name]
         target_fragment = DescendByFragment(target_fragment, fragment_indices)
-        target_copy=deepcopy(target_fragment)
+        target_copy = deepcopy(target_fragment)
         arch[key] = target_copy
     ExtendAllApplicable(files[main_file])
     return files[main_file]
@@ -249,9 +252,9 @@ def main():
         if e2:
             DB[i] = e2
     DA["<EXTEND>"] = DB
-    print(DA,DB)
+    print(DA, DB)
     ExtendAllApplicable(DA)
-    print(DA,DB)
+    print(DA, DB)
     return
 
 
