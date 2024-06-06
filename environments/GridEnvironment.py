@@ -707,29 +707,42 @@ class GridEnvironment(itf.iEnvironment):
                 e = ACTIONS[e]
             if e in V2DIRS:
                 self.moveDirection(V, e, terminatedEntities)
+        self.destroy_targets(terminatedEntities, anim_deletions)
+        self.updateGrids()
+        return anim_moves, anim_deletions
+
+    def destroy_targets(self, terminatedEntities:set, anim_deletions:dict):
+        for ent_id in terminatedEntities:
+            if self.entityDeathTimes[ent_id]<=self.cur_iter:
+                continue
+            ent: GridEntity = self.entities[ent_id]
+            entpos = ent.get(GridEntity.LOCATION, None)
+            self.taken.pop(entpos)
+            anim_deletions[ent_id] = entpos
+            print(f"Entity {ent_id} destroyed")
+            self.entityDeathTimes[ent_id]=self.cur_iter
+        return
+
+    def find_targets(self, anim_deletions:dict):
+        terminatedEntities=set()
         for ent_id, ent in enumerate(self.entities):
             if self.entityDeathTimes[ent_id]<self.cur_iter:
                 continue
             loc=ent.properties[ent.LOCATION]
             if self.is_tile_lethal(loc,ent,SOLID):
                 terminatedEntities.add(ent_id)
+        self.destroy_targets(terminatedEntities, anim_deletions)
 
-        for ent_id in terminatedEntities:
-            ent: GridEntity = self.entities[ent_id]
-            entpos = ent.get(GridEntity.LOCATION, None)
-            self.taken.pop(entpos)
-            anim_deletions[ent_id] = entpos
-            self.entityDeathTimes[ent_id]=self.cur_iter
-        self.updateGrids()
-        return anim_moves, anim_deletions
-
-    def runEnvChanges(self):
+    def runEnvChanges(self, anim_deletions:dict=None):
+        if anim_deletions is None:
+            anim_deletions = dict()
         routines = self.data.get("routines", {})
         for e, v in routines.items():
             newgrid: Grid2D = v.getCurGrid(self.cur_iter)
             self.grids[e] = newgrid
         self.solidGrid = self.grids[SOLID]
         self.viewedGrid = self.grids[VIEWED]
+        self.find_targets(anim_deletions)
         return
 
     def evaluateActiveEntities(self, evalMethod: callable):
@@ -786,7 +799,7 @@ class GridEnvironment(itf.iEnvironment):
             moves (dict): Dictionary containing entity movements.
         """
         res = self.runChanges(moves)
-        self.runEnvChanges()
+        self.runEnvChanges(res[1])
         return res
 
     def GenerateGroup(self, size, learning_aspects, requests: dict) -> list['GridEnvironment']:
