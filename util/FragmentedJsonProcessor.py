@@ -3,6 +3,9 @@ import re
 from collections import defaultdict, deque
 from copy import deepcopy
 
+from util.debug.ExceptionCatchers import RaiseIf
+from util.inputtypes.CheckInputType import isinteger
+
 
 class FragmentedJSONException(Exception):
     def __init__(self, message="An error with FragmentedJSON has occured "
@@ -61,14 +64,23 @@ def DescendByFragment(target_fragment, fragment_indices):
     for e_key in fragment_indices:
         e_key: str
         if type(target_fragment) == list:
-            if not (e_key.isdigit() or e_key[0] in '+-' and e_key[1:].isdigit()):
-                raise FragmentedJSONException(json.dumps([e_key, fragment_indices, "invalid"]))
+            RaiseIf(
+                isinteger(e_key),
+                json.dumps([e_key, fragment_indices, "invalid"]),
+                FragmentedJSONException
+            )
             e_key: int = int(e_key)
-            if e_key not in range(len(target_fragment)):
-                raise FragmentedJSONException(json.dumps([e_key, fragment_indices, "out_of_range"]))
+            RaiseIf(
+                e_key not in range(len(target_fragment)),
+                json.dumps([e_key, fragment_indices, "out of range"]),
+                FragmentedJSONException
+            )
         elif type(target_fragment) == dict:
-            if e_key not in target_fragment:
-                raise FragmentedJSONException(json.dumps([e_key, fragment_indices]))
+            RaiseIf(
+                e_key not in target_fragment,
+                json.dumps([e_key, fragment_indices, "not found"]),
+                FragmentedJSONException
+            )
         else:
             raise FragmentedJSONException("Unrecognised structure (HOW?):{}".format(type(target_fragment)))
         e_key: [str, int]

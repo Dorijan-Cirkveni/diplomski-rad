@@ -21,6 +21,12 @@ def AssertInputTypes(inputs, raiseException=True):
     return exc
 
 
+def RaiseIf(condition, message, exc_type=Exception):
+    if not condition:
+        return
+    raise exc_type(message)
+
+
 def main():
     return
 
