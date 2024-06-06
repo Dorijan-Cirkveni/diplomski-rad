@@ -72,8 +72,8 @@ class MultiLineInputFrame(BaseInputFrame):
         self.input = ctk.CTkTextbox(self)
         self.button = ctk.CTkButton(self, text=self.butext, command=self.doOutput)
         self.label.grid(row=0, column=0)
-        self.input.grid(row=0, column=1)
-        self.button.grid(row=1, column=0, columnspan=2, pady=10)
+        self.input.grid(row=1, column=0)
+        self.button.grid(row=2, column=0, pady=10)
         self.input.delete(0.0, ctk.END)
         self.input.insert(0.0, defaultValue)
 

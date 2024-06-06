@@ -33,6 +33,11 @@ class ctkDataManager(ctk.CTkToplevel):
         self.geometry(loc)
         self.wm_attributes("-topmost", 1)
 
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+
+
         self.return_button = ctk.CTkButton(self, text="Return", command=self.return_action)
         self.return_button.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
@@ -41,7 +46,7 @@ class ctkDataManager(ctk.CTkToplevel):
         self.selectkey.grid(row=1, column=0, padx=10, pady=10, sticky="w")
 
         self.edit_archframe = ctk.CTkFrame(self, corner_radius=0)  # Set corner_radius to 0 for no corners
-        self.edit_archframe.grid(row=1, column=1, padx=0, pady=0, sticky="w")
+        self.edit_archframe.grid(row=1, column=1, padx=0, pady=0, sticky="nsew")
         self.edit_frames: dict[type, BaseInputFrame] = dict()
         self.apply_methods: dict[type, callable] = dict()
         self.cur_edit_frame = None
@@ -66,9 +71,10 @@ class ctkDataManager(ctk.CTkToplevel):
                                       text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
         self.edit_frames[list] = advanced
         self.edit_frames[dict] = advanced
-        self.edit_frames[object] = JSONInputFrame(self.edit_archframe, self.apply,
-                                                  (0, 0), util.UtilManager.IsValidJSON,
-                                                  text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
+        simple =JSONInputFrame(self.edit_archframe,
+                               self.apply, (0, 0), util.UtilManager.IsValidJSON,
+                               text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
+        self.edit_frames[object] = simple
 
     def generate_list(self, L):
         X = []
