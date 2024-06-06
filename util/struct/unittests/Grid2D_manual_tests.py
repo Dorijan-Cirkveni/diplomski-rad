@@ -7,7 +7,7 @@ def test_grid_initialization():
     print(grid.get_text_display(str))
 
 def test_drawing_shapes():
-    rect = Rect((1, 1, 3, 3, 9))
+    rect = Rect(1, 1, 3, 3, 9)
     grid = Grid2D((5, 5))
     grid.use_draw_element(rect)
     print("\nGrid after drawing a rectangle from (1,1) to (3,3) with value 9:")

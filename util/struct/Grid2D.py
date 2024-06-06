@@ -27,8 +27,7 @@ class Rect(iGridDrawElement):
     A rectangle element.
     """
 
-    def __init__(self, L):
-        a, b, c, d, v = L
+    def __init__(self, a, b, c, d, v):
         if c < a:
             a, c = c, a
         if d < b:
@@ -95,11 +94,11 @@ class Ring(iGridDrawElement):
         return self.values
 
 class Checkerboard(iGridDrawElement):
-    def __init__(self, factor:int, elements:list[int], start:tuple[int,int], end:tuple[int,int]):
-        self.start = start
-        self.end = end
-        self.factor = factor
+    def __init__(self, start:list[int,int], end:list[int,int], elements:list[int], factor:int=1):
+        self.start = tuple(start)
+        self.end = tuple(end)
         self.elements = elements
+        self.factor = factor
 
     def apply(self, params: dict) -> list[tuple[tuple[int, int], int]]:
         start=self.start
@@ -110,10 +109,10 @@ class Checkerboard(iGridDrawElement):
             end=Tmin(end,params["last"])
         RES=[]
         ref=start[0]+self.factor*start[1]
-        for i in range(start[0],end[0]):
-            for j in range(start[1],end[1]):
+        for i in range(start[0],end[0]+1):
+            for j in range(start[1],end[1]+1):
                 cur=i+j*self.factor-ref
-                E=((i,j),cur)
+                E=((i,j),self.elements[cur%len(self.elements)])
                 RES.append(E)
         return RES
 
@@ -132,7 +131,9 @@ class Grid2D(iCombinable):
         raise util.CommonExceptions.ImplementAsNeededException()
 
     DRAW_ELEMENTS = {
-        "rect": Rect
+        "rect": Rect,
+        "ring": Ring,
+        "chkb": Checkerboard
     }
 
     def __init__(self, scale: [tuple, None, list]=None, M: list[list] = None, default=0,
@@ -199,7 +200,7 @@ class Grid2D(iCombinable):
             for shapedata in L:
                 if not shapedata:
                     continue
-                shape = shapetype(shapedata)
+                shape = shapetype(*shapedata)
                 self.use_draw_element(shape)
         self.shapes.clear()
         for sublist in self.add:
@@ -669,7 +670,8 @@ class Grid2D(iCombinable):
 
 
 def init_framed_grid(size: tuple[int, int], frameType: int, fillType: int):
-    frame = Rect((0, 0) + Tsub(size, (1, 1)) + (frameType,))
+    FE=(0, 0) + Tsub(size, (1, 1)) + (frameType,)
+    frame = Rect(*FE)
     grid = Grid2D(size, default=fillType)
     grid.use_draw_element(frame)
     return grid
