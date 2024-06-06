@@ -65,7 +65,7 @@ def DescendByFragment(target_fragment, fragment_indices):
         e_key: str
         if type(target_fragment) == list:
             RaiseIf(
-                isinteger(e_key),
+                not isinteger(e_key),
                 json.dumps([e_key, fragment_indices, "invalid"]),
                 FragmentedJSONException
             )

@@ -36,15 +36,15 @@ notenv=[
     "sandbox.json"
 ]
 
-def filter_env_paths(filedict:dict, forbidden:set=None):
+def filter_env_paths(filedict:dict, forbidden:set=None)->dict:
     if forbidden is None:
         forbidden = set(notenv)
-    filtered=[]
+    filtered=dict()
     for name,path in filedict.items():
         S=set(path.split("\\"))
         if S&forbidden:
             continue
-        filtered.append(name)
+        filtered[name]=filedict[name]
     return filtered
 
 def get_grid_files(custom_exceptions=None):
@@ -76,7 +76,7 @@ def read_all_files(exceptions=None):
 
 
 JSON_data = read_all_files()
-GRIDFILES=get_grid_files()
+GRIDFILES = get_grid_files()
 
 
 def ImportManagedJSON(address, files: dict = None, applyToMain=False, error_if_not_env=True):
@@ -127,11 +127,28 @@ def getNamesAndIndices(files=None):
             data[file].append(name)
     return [(file,data[file]) for file in files]
 
+def getRaw(files=None):
+    if files is None:
+        files = get_grid_files()
+    data=[]
+    for file,path in files.items():
+        F=open(path)
+        s=F.read()
+        F.close()
+        L=json.loads(s)
+        data.append((file,L))
+    return data
+
 
 def main():
-    res=getNamesAndIndices()
-    for E in res:
-        print(E)
+    res=getRaw()
+    for name,L in res:
+        print(name)
+        for E in L:
+            if type(E)!=dict:
+                print("\t",E)
+                continue
+            print("\t",E.get('name','unnamed'))
     return
 
 

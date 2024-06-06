@@ -49,7 +49,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.run_button = ctk.CTkButton(self, text="Run environment", command=self.run_env)
         self.run_button.pack(padx=10, pady=10)
 
-        self.save_button = ctk.CTkButton(self, text="Save environment", command=self.run_env)
+        self.save_button = ctk.CTkButton(self, text="Save environment", command=self.save_env_start)
         self.save_button.pack(padx=10, pady=10)
 
     def set_env(self, file, ind, name):
@@ -108,6 +108,32 @@ class EnvCustomFrame(ctk.CTkFrame):
         print("Agent class", self.agentclass)
         print("Agent data", self.agent_data)
         self.run_command(data)
+
+    def save_env_start(self):
+        print("-" * 160)
+        data=self.get_parameters()
+        env_name=data.get("Environment name",None)
+        env_data=data.get("Environment data",None)
+        if env_name is None:
+            PopupMessage(self, "Error", "Missing environment name!")
+            return
+        if env_data is None:
+            PopupMessage(self, "Error", "Missing environment data!")
+            return
+        print(env_name is None,)
+        print("Env:", env_name)
+        print("Agent class", self.agentclass)
+        print("Agent data", self.agent_data)
+        InputMessage(DarkCTK.GetMain(),"Save...","Select save file location","","Save",
+                     self.save_env_end)
+
+    def save_env_end(self, filename):
+        data=self.get_parameters()
+        env_name=data.get("Environment name",None)
+        env_data=data.get("Environment data",None)
+        data=self.get_parameters()
+        data["Agent class"]=self.agentclass
+        raise NotImplementedError
 
 
 
@@ -175,8 +201,6 @@ class SelectionFrame(iTkFrame):
             cats.append(cat)
         return cats
 
-    def set_env_cat(self, cat:CategoryData):
-        fi
 
     def get_agent_presets(self):
         cats = []

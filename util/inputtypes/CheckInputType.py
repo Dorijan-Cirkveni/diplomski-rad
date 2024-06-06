@@ -8,4 +8,5 @@ def main():
 
 
 if __name__ == "__main__":
+    print(isinteger('0'))
     main()

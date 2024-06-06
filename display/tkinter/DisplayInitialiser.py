@@ -31,7 +31,7 @@ class SelectionFrame(iTkFrame):
         self.label.pack(pady=10, side="left")
         tk.Button(titleframe, text=self.other, command=self.swapFrameFactory(self.other)).pack(side="left")
         self.fileSelect = SelectFrame(self, self.load_file, (0, 0), "Select file:",
-                                      ["None"] + jsonmngr.get_grid_files()).ret_pack()
+                                      ["None"] + list(jsonmngr.get_grid_files())).ret_pack()
 
         self.envSelect = SelectFrame(self, self.load_env, (0, 0), "Select environment:", ["None"]).ret_pack()
         self.agents = agents = {}
