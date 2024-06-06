@@ -705,15 +705,21 @@ class GridEnvironment(itf.iEnvironment):
         for e, V in moveTypes.items():
             if type(e) == int:
                 e = ACTIONS[e]
-            if e is None or e == (0, 0):
+            if e in V2DIRS:
+                self.moveDirection(V, e, terminatedEntities)
+        for ent_id, ent in enumerate(self.entities):
+            if self.entityDeathTimes[ent_id]<self.cur_iter:
                 continue
-            self.moveDirection(V, e, terminatedEntities)
+            loc=ent.properties[ent.LOCATION]
+            if self.is_tile_lethal(loc,ent,SOLID):
+                terminatedEntities.add(ent_id)
+
         for ent_id in terminatedEntities:
             ent: GridEntity = self.entities[ent_id]
             entpos = ent.get(GridEntity.LOCATION, None)
             self.taken.pop(entpos)
             anim_deletions[ent_id] = entpos
-            self.activeEntities -= {ent_id}
+            self.entityDeathTimes[ent_id]=self.cur_iter
         self.updateGrids()
         return anim_moves, anim_deletions
 
