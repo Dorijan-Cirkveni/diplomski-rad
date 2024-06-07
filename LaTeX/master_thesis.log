@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  7 JUN 2024 16:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  7 JUN 2024 20:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -831,7 +831,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {C:/Users/doric/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dori
 c/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_jg4h6q.enc}]
 [2]
-<hr_0036501554_56.pdf, id=268, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=284, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 48.
@@ -840,7 +840,7 @@ File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 48.
 (pdftex.def)             Requested size: 598.23354pt x 845.15544pt.
-<hr_0036501554_56.pdf, id=271, page=1, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=287, page=1, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
 Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 48.
@@ -885,7 +885,7 @@ l.50 ...ating consciousness}{29}{subsection.1.6.4}
 
 ]
 LaTeX Font Info:    Trying to load font information for TS1+stix2 on input line
- 111.
+ 115.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ts1stix2.fd
 File: ts1stix2.fd 2018/04/02 v2.0.0-latex stix2 TS1 font definitions
@@ -894,9 +894,8 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.117 ...uture research concerns}{41}{section.4.4}
-                                                  % [2{C:/Users/doric/AppData/L
-ocal/Programs/MiKTeX/fonts/enc/dvips/stix2-type1/stix2-ts1.enc}])
+l.116 ...ther research suggestions}{43}{chapter.4}
+                                                  % [2])
 \tf@toc=\write4
 \openout4 = `master_thesis.toc'.
 
@@ -906,7 +905,8 @@ been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.68 \chapter
-             {Introduction} [3]
+             {Introduction} [3{C:/Users/doric/AppData/Local/Programs/MiKTeX/fon
+ts/enc/dvips/stix2-type1/stix2-ts1.enc}]
 Chapter 1.
 
 LaTeX Warning: Citation `TOCITE' on page 4 undefined on input line 76.
@@ -919,7 +919,7 @@ Package hyperref Warning: Difference (2) between bookmark levels is greater
 LaTeX Warning: Citation `owid-brief-history-of-ai' on page 4 undefined on input
  line 83.
 
-<Figures/AI performance history.png, id=374, 853.1875pt x 383.4325pt>
+<Figures/AI performance history.png, id=394, 853.1875pt x 383.4325pt>
 File: Figures/AI performance history.png Graphic file (type png)
 <use Figures/AI performance history.png>
 Package pdftex.def Info: Figures/AI performance history.png  used on input line
@@ -953,7 +953,7 @@ Overfull \hbox (5.6914pt too wide) in paragraph at lines 109--110
  this the-sis. These
  []
 
-<Figures/bing image creator prompt 1a.jpeg, id=384, 352.31625pt x 352.31625pt>
+<Figures/bing image creator prompt 1a.jpeg, id=404, 352.31625pt x 352.31625pt>
 File: Figures/bing image creator prompt 1a.jpeg Graphic file (type jpg)
 <use Figures/bing image creator prompt 1a.jpeg>
 Package pdftex.def Info: Figures/bing image creator prompt 1a.jpeg  used on inp
@@ -988,12 +988,12 @@ LaTeX Warning: Citation `lemoine2022lamda' on page 17 undefined on input line 3
 60.
 
 [17]
-<Figures/LaMDA tweet 1.png, id=452, 444.4605pt x 151.767pt>
+<Figures/LaMDA tweet 1.png, id=472, 444.4605pt x 151.767pt>
 File: Figures/LaMDA tweet 1.png Graphic file (type png)
 <use Figures/LaMDA tweet 1.png>
 Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 369.
 (pdftex.def)             Requested size: 441.01773pt x 150.59714pt.
-<Figures/LaMDA tweet 2.png, id=454, 437.83575pt x 258.9675pt>
+<Figures/LaMDA tweet 2.png, id=474, 437.83575pt x 258.9675pt>
 File: Figures/LaMDA tweet 2.png Graphic file (type png)
 <use Figures/LaMDA tweet 2.png>
 Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 375.
@@ -1003,12 +1003,12 @@ Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 375.
 LaTeX Warning: Citation `turing1' on page 19 undefined on input line 400.
 
 [19]
-<Figures/DataTNG.jpeg, id=469, 301.125pt x 168.63pt>
+<Figures/DataTNG.jpeg, id=489, 301.125pt x 168.63pt>
 File: Figures/DataTNG.jpeg Graphic file (type jpg)
 <use Figures/DataTNG.jpeg>
 Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 411.
 (pdftex.def)             Requested size: 227.62204pt x 127.4731pt.
-<Figures/James_Moriarty_hologram.png, id=470, 1058.95625pt x 1058.95625pt>
+<Figures/James_Moriarty_hologram.png, id=490, 1058.95625pt x 1058.95625pt>
 File: Figures/James_Moriarty_hologram.png Graphic file (type png)
 <use Figures/James_Moriarty_hologram.png>
 Package pdftex.def Info: Figures/James_Moriarty_hologram.png  used on input lin
@@ -1019,7 +1019,7 @@ e 421.
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [20 <./Figures/DataTNG.jpeg>]
-<Figures/VoyagerEMH.png, id=476, 468.75125pt x 531.9875pt>
+<Figures/VoyagerEMH.png, id=496, 468.75125pt x 531.9875pt>
 File: Figures/VoyagerEMH.png Graphic file (type png)
 <use Figures/VoyagerEMH.png>
 Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 430.
@@ -1059,39 +1059,34 @@ Fédérale de Lau-sanne (EPFL),
 
 [30]
 Chapter 2.
-
-Overfull \hbox (7.19383pt too wide) in paragraph at lines 610--611
-\T1/stix2/m/n/12 Every grid is di-vided into square el-e-ments which have cer-t
-ain ap-pear-ances and be-haviours.
- []
-
-<Figures/grid/all_tiles.png, id=533, 120.45pt x 132.495pt>
-File: Figures/grid/all_tiles.png Graphic file (type png)
-<use Figures/grid/all_tiles.png>
-Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 620.
-(pdftex.def)             Requested size: 441.01773pt x 485.16747pt.
 [31
 
-] [32] [33] [34]
-Overfull \hbox (3.06107pt too wide) in paragraph at lines 707--708
+]
+<Figures/grid/all_tiles.png, id=559, 120.45pt x 132.495pt>
+File: Figures/grid/all_tiles.png Graphic file (type png)
+<use Figures/grid/all_tiles.png>
+Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 629.
+(pdftex.def)             Requested size: 441.01773pt x 485.16747pt.
+ [32 <./Figures/grid/all_tiles.png>] [33] [34] [35] [36]
+Overfull \hbox (3.06107pt too wide) in paragraph at lines 739--740
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-mi-sa-tion meth-
  []
 
-[35]
+[37]
 
-LaTeX Warning: Citation `Chomsky2023' on page 36 undefined on input line 734.
+LaTeX Warning: Citation `Chomsky2023' on page 38 undefined on input line 766.
 
-[36]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 762--763
+[38]
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 794--795
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
 
-[37] [38] [39 <./Figures/grid/all_tiles.png>]
+[39] [40] [41]
 Chapter 3.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 789.
+ut line 823.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1100,38 +1095,38 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 789.
+ne 823.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 789.
- [40
+(Font)              scaled to size 16.0pt on input line 823.
+ [42
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
 .enc}]
 Chapter 4.
-[41
+[43
 
 ]
 Chapter 5.
-(master_thesis.bbl [42
+(master_thesis.bbl [44
 
-]) [43
+]) [45
 
-] [44
+] [46
 
-] [45
+] [47
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.851 \chapter{The Code}
+l.885 \chapter{The Code}
                         
 Appendix A.
-[46
+[48
 
 
-] [47] (master_thesis.aux)
+] [49] (master_thesis.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
@@ -1265,13 +1260,13 @@ master_thesis.bbl
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 8A510576AB4674A73EE63068AC2E48A9;12378.
+(rerunfilecheck)             Checksum: 1A6BD36C5CDFCCA2AD8A3F649A6685CC;13041.
  ) 
 Here is how much of TeX's memory you used:
- 18283 strings out of 474586
- 289446 string characters out of 5745681
+ 18295 strings out of 474586
+ 289601 string characters out of 5745681
  1937558 words of memory out of 5000000
- 39973 multiletter control sequences out of 15000+600000
+ 39977 multiletter control sequences out of 15000+600000
  639722 words of font info for 142 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,1248b,664s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1282,9 +1277,9 @@ X/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/User
 s/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-
 Regular.pfb>
-Output written on master_thesis.pdf (51 pages, 1578476 bytes).
+Output written on master_thesis.pdf (53 pages, 1584340 bytes).
 PDF statistics:
- 718 PDF objects out of 1000 (max. 8388607)
- 186 named destinations out of 1000 (max. 500000)
- 573 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 750 PDF objects out of 1000 (max. 8388607)
+ 194 named destinations out of 1000 (max. 500000)
+ 605 words of extra memory for PDF output out of 10000 (max. 10000000)
 

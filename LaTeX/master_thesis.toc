@@ -54,79 +54,83 @@
 \contentsline {chapter}{\numberline {2}Materials and Methods}{31}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Virtual testing environment}{31}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Grid elements}{31}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Basic grid elements}{31}{subsection.2.2.1}%
-\contentsline {paragraph}{Clear tile}{31}{section*.33}%
-\contentsline {paragraph}{Goal tile}{32}{section*.34}%
-\contentsline {paragraph}{Wall tile}{32}{section*.35}%
-\contentsline {paragraph}{Curtain tile}{32}{section*.36}%
-\contentsline {paragraph}{Lethal tile}{32}{section*.37}%
-\contentsline {paragraph}{Lethal Wall tile}{32}{section*.38}%
-\contentsline {paragraph}{Glass tile}{32}{section*.39}%
-\contentsline {paragraph}{Effects tile}{32}{section*.40}%
-\contentsline {paragraph}{Null tile}{33}{section*.41}%
-\contentsline {subsection}{\numberline {2.2.2}Composite grid elements}{33}{subsection.2.2.2}%
-\contentsline {section}{\numberline {2.3}Test entity design}{33}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Entity/Agent duality}{33}{subsection.2.3.1}%
-\contentsline {section}{\numberline {2.4}Test environment design}{33}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Reference test environments}{34}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Mirror test environments}{34}{subsection.2.4.2}%
-\contentsline {section}{\numberline {2.5}Agent behaviour types}{34}{section.2.5}%
-\contentsline {subsubsection}{Basic entity behaviour types}{34}{section*.42}%
-\contentsline {paragraph}{Box}{34}{section*.43}%
-\contentsline {paragraph}{Actions loop}{34}{section*.44}%
-\contentsline {paragraph}{Mirror}{34}{section*.45}%
-\contentsline {section}{\numberline {2.6}A suggestion for a knowledge-based classification of intelligence}{34}{section.2.6}%
-\contentsline {subsubsection}{Knowledge by source}{34}{section*.46}%
-\contentsline {paragraph}{Explicitly coded knowledge}{34}{section*.47}%
-\contentsline {paragraph}{Learning phase knowledge}{35}{section*.48}%
-\contentsline {paragraph}{Live learning knowledge}{35}{section*.49}%
-\contentsline {subsubsection}{Knowledge by level}{35}{section*.50}%
-\contentsline {section}{\numberline {2.7}Agent aspect considerations}{35}{section.2.7}%
-\contentsline {subsection}{\numberline {2.7.1}Processing time}{35}{subsection.2.7.1}%
-\contentsline {subsection}{\numberline {2.7.2}Processing space}{36}{subsection.2.7.2}%
-\contentsline {subsection}{\numberline {2.7.3}Learning data size}{36}{subsection.2.7.3}%
-\contentsline {subsection}{\numberline {2.7.4}Learning data size}{36}{subsection.2.7.4}%
-\contentsline {subsection}{\numberline {2.7.5}Learning data level}{36}{subsection.2.7.5}%
-\contentsline {section}{\numberline {2.8}Primary approach choice}{36}{section.2.8}%
-\contentsline {section}{\numberline {2.9}Implementation choice}{36}{section.2.9}%
-\contentsline {subsection}{\numberline {2.9.1}Programming language choice}{36}{subsection.2.9.1}%
-\contentsline {section}{\numberline {2.10}Tested agent choice}{37}{section.2.10}%
-\contentsline {subsubsection}{Template}{37}{section*.51}%
-\contentsline {paragraph}{Description}{37}{section*.52}%
-\contentsline {paragraph}{Interface}{37}{section*.53}%
-\contentsline {paragraph}{Advantages}{37}{section*.54}%
-\contentsline {paragraph}{Disadvantages}{37}{section*.55}%
-\contentsline {subsection}{\numberline {2.10.1}Reference agents}{38}{subsection.2.10.1}%
-\contentsline {subsubsection}{Human input}{38}{section*.56}%
-\contentsline {paragraph}{Description}{38}{section*.57}%
-\contentsline {paragraph}{Advantages}{38}{section*.58}%
-\contentsline {paragraph}{Disadvantages}{38}{section*.59}%
-\contentsline {subsubsection}{Pre-determined sets of actions}{38}{section*.60}%
-\contentsline {subsubsection}{Large language model}{38}{section*.61}%
-\contentsline {paragraph}{Advantages}{38}{section*.62}%
-\contentsline {subparagraph}{Generality}{38}{section*.63}%
-\contentsline {paragraph}{Disadvantages}{38}{section*.64}%
-\contentsline {chapter}{\numberline {3}Results and Discussion}{40}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Instructions for usage of test environment interface}{40}{section.3.1}%
-\contentsline {section}{\numberline {3.2}•}{40}{section.3.2}%
-\contentsline {chapter}{\numberline {4}Further research suggestions}{41}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Environment improvements}{41}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Technical debt management}{41}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Optimisation}{41}{section.4.3}%
-\contentsline {paragraph}{More complex environments}{41}{section*.65}%
-\contentsline {section}{\numberline {4.4}Future research concerns}{41}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Gain-of-function AI development risks}{41}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Safety versus speed}{41}{subsection.4.4.2}%
-\contentsline {chapter}{\numberline {5}Conclusion}{42}{chapter.5}%
-\contentsline {chapter}{References}{43}{chapter*.66}%
+\contentsline {subsection}{\numberline {2.2.1}Basic grid elements}{32}{subsection.2.2.1}%
+\contentsline {paragraph}{Clear tile}{33}{section*.33}%
+\contentsline {paragraph}{Goal tile}{33}{section*.34}%
+\contentsline {paragraph}{Wall tile}{33}{section*.35}%
+\contentsline {paragraph}{Curtain tile}{33}{section*.36}%
+\contentsline {paragraph}{Lethal tile}{33}{section*.37}%
+\contentsline {paragraph}{Lethal Wall tile}{34}{section*.38}%
+\contentsline {paragraph}{Glass tile}{34}{section*.39}%
+\contentsline {paragraph}{Effects tile}{34}{section*.40}%
+\contentsline {paragraph}{Null tile}{34}{section*.41}%
+\contentsline {subsection}{\numberline {2.2.2}Composite grid elements}{34}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Visible and solid grid modes}{34}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Grid routines}{35}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Test entity design}{35}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Entity/Agent duality}{35}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Entity properties}{35}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Test environment design}{35}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Reference test environments}{36}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Mirror test environments}{36}{subsection.2.4.2}%
+\contentsline {section}{\numberline {2.5}Agent behaviour types}{36}{section.2.5}%
+\contentsline {subsubsection}{Basic entity behaviour types}{36}{section*.42}%
+\contentsline {paragraph}{Box}{36}{section*.43}%
+\contentsline {paragraph}{Actions loop}{36}{section*.44}%
+\contentsline {paragraph}{Mirror}{36}{section*.45}%
+\contentsline {section}{\numberline {2.6}A suggestion for a knowledge-based classification of intelligence}{36}{section.2.6}%
+\contentsline {subsubsection}{Knowledge by source}{36}{section*.46}%
+\contentsline {paragraph}{Explicitly coded knowledge}{36}{section*.47}%
+\contentsline {paragraph}{Learning phase knowledge}{37}{section*.48}%
+\contentsline {paragraph}{Live learning knowledge}{37}{section*.49}%
+\contentsline {subsubsection}{Knowledge by level}{37}{section*.50}%
+\contentsline {section}{\numberline {2.7}Agent aspect considerations}{37}{section.2.7}%
+\contentsline {subsection}{\numberline {2.7.1}Processing time}{37}{subsection.2.7.1}%
+\contentsline {subsection}{\numberline {2.7.2}Processing space}{38}{subsection.2.7.2}%
+\contentsline {subsection}{\numberline {2.7.3}Learning data size}{38}{subsection.2.7.3}%
+\contentsline {subsection}{\numberline {2.7.4}Learning data size}{38}{subsection.2.7.4}%
+\contentsline {subsection}{\numberline {2.7.5}Learning data level}{38}{subsection.2.7.5}%
+\contentsline {section}{\numberline {2.8}Primary approach choice}{38}{section.2.8}%
+\contentsline {section}{\numberline {2.9}Implementation choice}{38}{section.2.9}%
+\contentsline {subsection}{\numberline {2.9.1}Programming language choice}{38}{subsection.2.9.1}%
+\contentsline {section}{\numberline {2.10}Tested agent choice}{39}{section.2.10}%
+\contentsline {subsubsection}{Template}{39}{section*.51}%
+\contentsline {paragraph}{Description}{39}{section*.52}%
+\contentsline {paragraph}{Interface}{39}{section*.53}%
+\contentsline {paragraph}{Advantages}{39}{section*.54}%
+\contentsline {paragraph}{Disadvantages}{39}{section*.55}%
+\contentsline {subsection}{\numberline {2.10.1}Reference agents}{40}{subsection.2.10.1}%
+\contentsline {subsubsection}{Human input}{40}{section*.56}%
+\contentsline {paragraph}{Description}{40}{section*.57}%
+\contentsline {paragraph}{Advantages}{40}{section*.58}%
+\contentsline {paragraph}{Disadvantages}{40}{section*.59}%
+\contentsline {subsubsection}{Pre-determined sets of actions}{40}{section*.60}%
+\contentsline {subsubsection}{Large language model}{40}{section*.61}%
+\contentsline {paragraph}{Advantages}{40}{section*.62}%
+\contentsline {subparagraph}{Generality}{40}{section*.63}%
+\contentsline {paragraph}{Disadvantages}{40}{section*.64}%
+\contentsline {section}{\numberline {2.11}Implementation details}{41}{section.2.11}%
+\contentsline {chapter}{\numberline {3}Results and Discussion}{42}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Instructions for usage of test environment interface}{42}{section.3.1}%
+\contentsline {section}{\numberline {3.2}•}{42}{section.3.2}%
+\contentsline {chapter}{\numberline {4}Further research suggestions}{43}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Environment improvements}{43}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Technical debt management}{43}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Optimisation}{43}{section.4.3}%
+\contentsline {paragraph}{More complex environments}{43}{section*.65}%
+\contentsline {section}{\numberline {4.4}Future research concerns}{43}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Gain-of-function AI development risks}{43}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Safety versus speed}{43}{subsection.4.4.2}%
+\contentsline {chapter}{\numberline {5}Conclusion}{44}{chapter.5}%
+\contentsline {chapter}{References}{45}{chapter*.66}%
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Abstract}{44}{chapter*.67}%
+\contentsline {chapter}{Abstract}{46}{chapter*.67}%
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
-\contentsline {chapter}{Sa\v {z}etak}{45}{chapter*.68}%
+\contentsline {chapter}{Sa\v {z}etak}{47}{chapter*.68}%
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{\numberline {A:}The Code}{46}{chapter.1}%
+\contentsline {chapter}{\numberline {A:}The Code}{48}{chapter.1}%

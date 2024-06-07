@@ -654,32 +654,55 @@ Unless specified otherwise, the goal of every agent is to reach a goal tile - an
 Much like with walls in the physical world, the role of this tile is to stop any entities from passing through it. Additionally, the wall tile will block the vision of entities that rely on ground-level vision.
 
 \paragraph{Curtain tile}
-Unlike walls, curtain tiles will allow entities to pass them - but they will still block an entity's line of sight.
-% TODO check if curtains block sight from themselves, maybe increase curtain size by 0.25
+Unlike walls, curtain tiles will allow entities to pass them - but they will still block an entity's line of sight unless the entity is located within the curtain tile.
 
 \paragraph{Lethal tile}
-This tile will destroy any entity that moves to its position, which will in most circumstances apply a significant negative penalty to the tested agent/agents, especially if the destroyed agent is one of the active agents. In some circumstances, this may even lead to an early stop of the simulation.
+This tile will destroy any entity that moves to its position, which may apply a significant negative penalty to the tested agent/agents, especially if the destroyed agent is one of the active agents. In one or more situations listed below, the simulation will register a loss state and stop if configured accordingly.
+\begin{itemize}
+\item One active agent being destroyed
+\item Every active agent being destroyed
+\item One or more passive agents being destroyed
+\item A combination of the above, with special conditions if applicable
+\end{itemize}
+ In most cases - but depending on reward configuration - the agent/agents will be awarded a significantly negative result.
 
 \paragraph{Lethal Wall tile}
-The lethal wall tile acts in a similar way to the lethal tile, except it also blocks the agents' line of sight.
+The lethal wall tile acts similarly to the lethal tile, except it also blocks the agents' line of sight.
 
 \paragraph{Glass tile}
-The glass tile acts in a manner inverse to that of the curtain tile, blocking entity movement but not line of sight.
+The glass tile acts inverse to that of the curtain tile, blocking entity movement but not the line of sight.
 
 \paragraph{Effects tile}
 The effect tile will inflict an effect upon every agent that crosses it.
 
+Depending on grid configuration, the type of effect may vary between different locations and times of interaction.
+
 \paragraph{Null tile}
-The null tile is not a valid tile that exists on the grid. Instead, it merely exists as a display tile, to show that a given tile is not visible to an agent.
+The null tile is not a valid tile that exists on the grid. Instead, it merely exists as a display tile to show that a given tile is invisible to an agent.
 
 \subsection{Composite grid elements}
 In addition to basic grid elements, the grid environment may also contain composite grid elements that are perceived and act differently depending on the properties of the entities interacting with them.
 
 For example, a grid element may be configured to act like a blank tile when interacting with red agents, but like a wall when interacting with any other type of agent.
 
+\subsection{Visible and solid grid modes}
+
+In order to allow environment variants with limited visibility (such as a mirror test where the active agent is unable to view its immediate environment), the environment design is to allow for separate grids for vision and physical interactions.
+
+\subsection{Grid routines}
+
+In order to allow more dynamic environment variants where the state of the grid may vary from iteration to iteration, the grid data is formatted in the form of a grid routine which may return different grids depending on the current iteration.
+
 \section{Test entity design}
+
+The most important part of a test environment are the test entities, the means through which the artificial intelligence will interact with the environment, both receiving information limited and/or altered by the properties of the entities and influencing the actions of the entities through instruction decided upon based on a combination of input data, learned information, and rational deduction.
+
 \subsection{Entity/Agent duality}
 In order to allow agents to be affected by attributes and status effects that require knowledge of self to detect and/or manage, as well as to design more complex tests, an entity object class has been created to contain the agent and contrast against the agent class.
+
+\subsection{Entity properties}
+
+
 \section{Test environment design}
 \begin{enumerate}
 
@@ -789,6 +812,8 @@ One of them is that the nature and underlying mechanism of our intelligence and 
 \paragraph{Advantages}
 \subparagraph{Generality}
 \paragraph{Disadvantages}
+
+\section{Implementation details}
 
 %-------------------------------------------------------------------------------
 \chapter{Results and Discussion}
