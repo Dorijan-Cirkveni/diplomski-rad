@@ -15,9 +15,19 @@ class RavenProgressiveMatrixTest(GridEnvironment):
 
     def __init__(self, known_tiles:list[str], sol_tile:str, wrong_tiles:list[str], tilescale:tuple=(3,3)):
         preset={
-
-        }
-        solid=Grid2D(())
+                "scale": [25,25],
+                "shapes": {
+                  "chkb": [
+                    [[8,8],[12,12],[0,4]]
+                  ],
+                  "rect": [
+                    [0, 18, 19, 19, 1],
+                    [0, 0, 19, 19, 2],
+                    [6, 2, 10, 4, 2]
+                  ]
+                }
+              }
+        solid=Grid2D.raw_init(preset)
         ktc=tilescale[0]*tilescale[1]-1
         rtc=len(wrong_tiles)+1
         assert len(known_tiles)==ktc
