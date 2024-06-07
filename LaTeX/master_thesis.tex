@@ -600,20 +600,39 @@ This project was launched in 2005 and is ongoing to this day (2024).
 \chapter{Materials and Methods}
 \label{sec:materialsandmethods}
 \section{Virtual testing environment}
-In order to test AI agents for intelligence and consciousness, this thesis proposes utilising a series of different tests and test environments.
+In order to test AI agents for intelligence and consciousness, this thesis proposes utilizing a series of different tests and test environments.
 
-The test environment will take form of a simple twodimensional grid similar to that used in the Gridworlds AI safety experiment.
+However, the prototype will only rely on a single type of test environment.
 
-This thesis is accompanied by a prototype framework for a twodimensional grid-based test environment with multiple entities, some of with designated to be controlled by the AI agent being tested.
+The test environment in question will take the form of a simple two-dimensional grid similar to that used in the Gridworlds AI safety experiment.
+
+This thesis is accompanied by a prototype framework for a grid-based test environment with multiple entities, some of which are designated to be controlled by the AI agent being tested.
 \section{Grid elements}
 
-Every grid is divided into square elements which have certain appearances and behaviours. The elements can be divided into basic and composite elements.
+The test environment takes the form of a rectangular grid, which is divided into square elements. The square elements have distinct appearances and allow for distinct interaction with the entities involved in the test.
+
+The test environment grid elements can be divided into two groups:
+
+\begin{enumerate}
+\item{Basic elements}
+\item{Composite elements}
+\end{enumerate}
 
 \subsection{Basic grid elements}
 
-Basic grid elements only have one type of appearance and behavior regardless of the properties of the entity interactiong with them.
+Basic grid elements only have one type of appearance and behavior regardless of the properties of the entity interacting with them.
 
-The prototype frameworks provides the following default basic grid elements:
+The prototype frameworks provides the following default basic grid elements, as seen on Figure:
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=1\linewidth]{Figures/grid/all_tiles.png} 
+  \caption{A base set of tiles.
+  First row: Clear tile, goal tile, wall tile
+  Second row: Curtain tile, lethal tile, lethal wall tile
+  Third row: Glass tile, effect tile, null tile}
+  \label{slk:tile_grid_tiles/floor.png}
+\end{figure}
 
 \paragraph{Clear tile}
 
@@ -622,17 +641,17 @@ The base form of a tile - does not block objects from crossing it, destroy objec
 \paragraph{Goal tile}
 The goal tile is considered the objective of any test.
 
-Unless specified otherwise, the goal of every agent is to reach a goal tile, and a variation of this event, such as:
+Unless specified otherwise, the goal of every agent is to reach a goal tile - and in a variation of this event, some of which are noted below, the simulation will register a victory state and stop if configured accordingly.
 \begin{itemize}
 \item One active agent reaching a goal tile
 \item Every active agent reaching a goal tile
 \item One or more passive agents reaching a goal tile
-\item etc...
+\item A combination of the above, with special conditions if applicable
 \end{itemize}
-the simulation will stop, and in most cases - but depending on reward configuration - the agent/agents will be awarded a significantly positive result.
+ In most cases - but depending on reward configuration - the agent/agents will be awarded a significantly positive result.
 
 \paragraph{Wall tile}
-Much like with walls in the physical world, the role of this tile is to stop any entities from passing through it. Additionally, the wall tile will block vision of entities that rely on ground-level vision.
+Much like with walls in the physical world, the role of this tile is to stop any entities from passing through it. Additionally, the wall tile will block the vision of entities that rely on ground-level vision.
 
 \paragraph{Curtain tile}
 Unlike walls, curtain tiles will allow entities to pass them - but they will still block an entity's line of sight.
