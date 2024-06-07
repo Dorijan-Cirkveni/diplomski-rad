@@ -1,3 +1,5 @@
+import json
+
 import util.CommonExceptions
 from util.UtilManager import reverseIf
 from util.struct.Combiner import iCombinable
@@ -124,11 +126,16 @@ class Grid2D(iCombinable):
 
     @classmethod
     def from_string(cls,s):
-        """
-        Do we need this?
-        :param s:
-        """
-        raise util.CommonExceptions.ImplementAsNeededException()
+        ds,ms=s.split("\n\n")
+        DS=json.loads(ds)
+        mL=ms.split("\n")
+        M=[]
+        for sL in mL:
+            L=[int(e) for e in sL]
+            M.append(L)
+        DS['M']=M
+        return Grid2D(**DS)
+
 
     DRAW_ELEMENTS = {
         "rect": Rect,
@@ -154,7 +161,7 @@ class Grid2D(iCombinable):
         if type(scale) == list:
             scale = tuple(scale)
         if type(scale) != tuple:
-            raise Exception("Dimensions tuple scale must be a tuple, not {}".format(type(scale)))
+            raise Exception("Dimensions tuple scale must be a tuple, not {}: {}".format(type(scale), scale))
         if len(scale) != 2:
             raise Exception("Dimensions tuple scale must be 2, not {}".format(len(scale)))
         self.scale = scale
@@ -786,6 +793,14 @@ def test_diff():
 
 
 def main():
+    testtest="""{"scale":[10,10]}
+
+0123
+1230
+2300
+3004"""
+    G=Grid2D.from_string(testtest)
+    print(G.get_text_display('01234'))
     return
 
 
