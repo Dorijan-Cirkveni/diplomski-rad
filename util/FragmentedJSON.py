@@ -160,6 +160,11 @@ class FragmentedJsonStruct:
 
         newroot = deepcopy(self.root)
         nestr.NestedStructWalk(newroot, checkDepth)
+        return newroot
+
+class FragmentedJsonManager:
+    def __init__(self):
+        self.files=dict()
 
 
 def main():
