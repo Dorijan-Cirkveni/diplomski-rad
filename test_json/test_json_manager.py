@@ -2,81 +2,16 @@ import json
 import os
 
 from util.FragmentedJsonProcessor import *
+from util.Filesystem import *
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 import os
 
-def search_files(maindir: str, extension:str=".json") -> dict:
-    """
-    Search for files with a specified extension in the given directory and its subdirectories.
-
-    :param maindir: The main directory to start the search.
-    :param extension: Chosen extension, defaults to .json
-    :return: A dictionary containing the found filenames as keys and their paths as values.
-    """
-    result = {}
-
-    k=-len(extension)
-    for root, dirs, files in os.walk(maindir):
-        for file in files:
-            if file.endswith(extension):
-                result[file[:k]] = os.path.join(root, file)
-
-    return result
-
-notenv=[
-    "agents",
-    "tiles",
-    "entities",
-    "grids",
-    "effects.json",
-    "syntax test sandbox.json",
-    "sandbox.json"
-]
-
-def filter_env_paths(filedict:dict, forbidden:set=None)->dict:
-    if forbidden is None:
-        forbidden = set(notenv)
-    filtered=dict()
-    for name,path in filedict.items():
-        S=set(path.split("\\"))
-        if S&forbidden:
-            continue
-        filtered[name]=filedict[name]
-    return filtered
-
-def get_grid_files(custom_exceptions=None):
-    D=search_files(current_dir)
-    res=filter_env_paths(D,custom_exceptions)
-    return res
-
-def read_file_to_dict(name, filepath, resdict):
-    F = open(filepath, 'r')
-    raw = F.read()
-    F.close()
-    try:
-        processed = json.loads(raw)
-        resdict[name] = processed
-    except json.decoder.JSONDecodeError as err:
-        raise Exception(filepath, err)
-
-
-def read_all_files(exceptions=None):
-    if exceptions is None:
-        exceptions = {"sandbox.json"}
-    all_paths:dict=search_files(current_dir)
-    filt=filter_env_paths(all_paths,exceptions)
-    paths={e:all_paths[e] for e in filt}
-    resdict = dict()
-    for name, filepath in paths.items():
-        read_file_to_dict(name,filepath,resdict)
-    return resdict
-
 
 JSON_data = read_all_files()
-GRIDFILES = get_grid_files()
+GRIDFILES = get_valid_files()
 
 
 def ImportManagedJSON(address, files: dict = None, applyToMain=False, error_if_not_env=True):
@@ -118,7 +53,7 @@ def test(full_addr):
 
 def getNamesAndIndices(files=None):
     if files is None:
-        files = get_grid_files()
+        files = get_valid_files()
     data={file:[] for file in files}
     for file in files:
         L=ImportManagedJSON(file)
@@ -129,7 +64,7 @@ def getNamesAndIndices(files=None):
 
 def getRaw(files=None):
     if files is None:
-        files = get_grid_files()
+        files = get_valid_files()
     data=[]
     for file,path in files.items():
         F=open(path)

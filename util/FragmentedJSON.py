@@ -6,6 +6,7 @@ import InformationCompiler as infcmp
 from util.debug.ExceptionCatchers import *
 from util.struct.Combiner import Combine
 import util.struct.NestedStructFunctions as nestr
+import util.Filesystem as fisys
 
 
 class FragmentedJSONException(Exception):
@@ -117,18 +118,35 @@ def ProcessFragmentedJSON(root, fragmentNameRule=FragmentDefaultNameRule):
 
 
 class FragmentedJsonStruct:
-    def __init__(self, root):
+    def __init__(self, root, filepath=None):
         self.root = root
+        self.filepath = filepath
 
     @staticmethod
     def load(filepath):
         F = open(filepath, 'r')
         s = F.read()
         F.close()
-        root = json.loads(s)
-        return FragmentedJsonStruct(root)
+        try:
+            root = json.loads(s)
+        except json.decoder.JSONDecodeError as err:
+            raise Exception(filepath, err)
+        return FragmentedJsonStruct(root, filepath)
 
-    def save(self, filepath):
+    def get(self, indices:list=None):
+        if indices is None:
+            indices = []
+        s=json.dumps(self.root)
+        root=json.loads(s)
+        if indices:
+            root=nestr.NestedStructGet(root,indices)
+        return root
+
+    def save(self, filepath = None):
+        if filepath is None:
+            filepath=self.filepath
+        if filepath is None:
+            raise ValueError("Fragment has no saved file path and none has been provided!")
         s = json.dumps(self.root)
         F = open(filepath, 'w')
         F.write(s)
@@ -162,17 +180,23 @@ class FragmentedJsonStruct:
         nestr.NestedStructWalk(newroot, checkDepth)
         return newroot
 
+
 class FragmentedJsonManager:
-    def __init__(self, files):
-        self.files=dict()
+    def __init__(self, root: str=None):
+        if root is None:
+            root = fisys.RootPathManager.GetMain().GetFullPath("test_json")
+        files=fisys.get_valid_files(current_dir=root)
+        self.files={}
+        for e,v in files.items():
+            struct=FragmentedJsonStruct.load(v)
+            self.files=struct
+
+
 
 
 def main():
-    ext = "<EXTEND.C>"
-    val = {"wasd": [-1, -1]}
-    A = {ext: val, "wasd": [1, 2, 3]}
-    ExtendAllApplicable(A)
-    print(A)
+
+    X=FragmentedJsonManager()
     return
 
 
