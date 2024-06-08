@@ -3,7 +3,6 @@ import re
 from collections import deque
 from copy import deepcopy
 
-import InformationCompiler as infcmp
 from util.debug.ExceptionCatchers import *
 from util.struct.Combiner import Combine
 import util.struct.NestedStructFunctions as nestr
@@ -39,7 +38,8 @@ def ReadFragmentAddress(s: str):
 
 
 def is_extendable(position):
-    re.match("<EXTEND.*>", position)
+    rem=re.match("<EXTEND.*>", position)
+    return rem is not None
 
 
 def extendAppl(arch, position, cur, ty):

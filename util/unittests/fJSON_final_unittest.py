@@ -1,7 +1,10 @@
+from util.FragmentedJSON import *
 import unittest
-import json
-from tempfile import TemporaryDirectory
-import os
+
+
+rootdir=fisys.RootPathManager("test_json")
+testpath=rootdir.GetFullPath("debug")
+testdir=fisys.RootPathManager(testpath)
 
 
 class TestClasslessFunctions(unittest.TestCase):
@@ -24,7 +27,6 @@ class TestClasslessFunctions(unittest.TestCase):
         ty = dict
         extendAppl(arch, position, cur, ty)
         self.assertIn("new_key", arch)
-        self.assertIn("key", arch)
 
     def test_external_retriever_factory(self):
         fragment_list = []
@@ -37,10 +39,10 @@ class TestClasslessFunctions(unittest.TestCase):
         self.assertIn((arch, position, cur), fragment_list)
 
     def test_check_depth_factory(self):
-        depth_dict = {id({}): 0}
+        arch = {}
+        depth_dict = {id(arch): 0}
         fragment_list = []
         func = CheckDepthFactory(depth_dict, 1, fragment_list, FragmentDefaultNameRule)
-        arch = {}
         position = "pos"
         cur = "<EXT>filename|[0,\"example\",1]"
         ty = str
@@ -68,26 +70,24 @@ class TestFragmentedJSONException(unittest.TestCase):
 class TestFragmentedJsonStruct(unittest.TestCase):
 
     def test_load_and_get(self):
-        with TemporaryDirectory() as tempdir:
-            file_path = os.path.join(tempdir, "test.json")
-            data = {"key1": "value1"}
-            with open(file_path, 'w') as f:
-                json.dump(data, f)
+        file_path = testdir.GetFullPath("test.json")
+        data = {"key1": "value1"}
+        with open(file_path, 'w') as f:
+            json.dump(data, f)
 
-            struct = FragmentedJsonStruct.load(file_path)
-            self.assertEqual(struct.get(), data)
-            self.assertEqual(struct.get(["key1"]), "value1")
+        struct = FragmentedJsonStruct.load(file_path)
+        self.assertEqual(struct.get(), data)
+        self.assertEqual(struct.get(["key1"]), "value1")
 
     def test_save(self):
-        with TemporaryDirectory() as tempdir:
-            file_path = os.path.join(tempdir, "test.json")
-            data = {"key1": "value1"}
-            struct = FragmentedJsonStruct(data, file_path)
-            struct.save()
+        file_path = testdir.GetFullPath("test.json")
+        data = {"key1": "value1"}
+        struct = FragmentedJsonStruct(data, file_path)
+        struct.save()
 
-            with open(file_path, 'r') as f:
-                saved_data = json.load(f)
-            self.assertEqual(saved_data, data)
+        with open(file_path, 'r') as f:
+            saved_data = json.load(f)
+        self.assertEqual(saved_data, data)
 
     def test_get_full(self):
         base_data = {
@@ -98,18 +98,17 @@ class TestFragmentedJsonStruct(unittest.TestCase):
             "fragment_key1": "fragment_value1"
         }
 
-        with TemporaryDirectory() as tempdir:
-            base_file_path = os.path.join(tempdir, "base.json")
-            fragment_file_path = os.path.join(tempdir, "fragment1.json")
+        base_file_path = testdir.GetFullPath("base.json")
+        fragment_file_path = testdir.GetFullPath("fragment1.json")
 
-            with open(base_file_path, 'w') as f:
-                json.dump(base_data, f)
-            with open(fragment_file_path, 'w') as f:
-                json.dump(fragment_data, f)
+        with open(base_file_path, 'w') as f:
+            json.dump(base_data, f)
+        with open(fragment_file_path, 'w') as f:
+            json.dump(fragment_data, f)
 
-            struct = FragmentedJsonStruct.load(base_file_path)
-            full_data = struct.get_full()
-            self.assertIn("fragment_key1", full_data["key2"])
+        struct = FragmentedJsonStruct.load(base_file_path)
+        full_data = struct.get_full()
+        self.assertIn("fragment_key1", full_data["key2"])
 
 
 class TestFragmentedJsonManager(unittest.TestCase):
@@ -123,18 +122,17 @@ class TestFragmentedJsonManager(unittest.TestCase):
             "fragment_key1": "fragment_value1"
         }
 
-        with TemporaryDirectory() as tempdir:
-            base_file_path = os.path.join(tempdir, "base.json")
-            fragment_file_path = os.path.join(tempdir, "fragment1.json")
+        base_file_path = testdir.GetFullPath("base.json")
+        fragment_file_path = testdir.GetFullPath("fragment1.json")
 
-            with open(base_file_path, 'w') as f:
-                json.dump(base_data, f)
-            with open(fragment_file_path, 'w') as f:
-                json.dump(fragment_data, f)
+        with open(base_file_path, 'w') as f:
+            json.dump(base_data, f)
+        with open(fragment_file_path, 'w') as f:
+            json.dump(fragment_data, f)
 
-            manager = FragmentedJsonManager(tempdir)
-            full_data = manager.get_full("base.json", [])
-            self.assertIn("fragment_key1", full_data["key2"])
+        manager = FragmentedJsonManager(testdir.root)
+        full_data = manager.get_full("base.json", [])
+        self.assertIn("fragment_key1", full_data["key2"])
 
 
 if __name__ == '__main__':

@@ -89,7 +89,8 @@ def search_files(maindir: str, extension: str = ".json") -> dict:
     return result
 
 
-notenv = ["agents", "tiles", "entities", "grids", "effects.json", "syntax test sandbox.json", "sandbox.json"]
+notenv = ["agents", "tiles", "entities", "grids", "debug",
+          "effects.json", "syntax test sandbox.json", "sandbox.json"]
 
 
 def filter_env_paths(filedict: dict, forbidden: set = None) -> dict:
