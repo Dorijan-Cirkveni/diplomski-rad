@@ -2,9 +2,10 @@ from util.FragmentedJSON import *
 import unittest
 
 
-rootdir=fisys.RootPathManager("test_json")
-testpath=rootdir.GetFullPath("debug")
+rootdir=fisys.RootPathManager()
+testpath=rootdir.GetFullPath("test_json\debug")
 testdir=fisys.RootPathManager(testpath)
+print(rootdir.root,testpath,testdir.root,sep="\n")
 
 
 class TestClasslessFunctions(unittest.TestCase):
@@ -108,7 +109,7 @@ class TestFragmentedJsonStruct(unittest.TestCase):
 
         struct = FragmentedJsonStruct.load(base_file_path)
         full_data = struct.get_full()
-        self.assertIn("fragment_key1", full_data["key2"])
+        self.assertEqual('<EXT>fragment1|[]', full_data["key2"])
 
 
 class TestFragmentedJsonManager(unittest.TestCase):
@@ -130,8 +131,9 @@ class TestFragmentedJsonManager(unittest.TestCase):
         with open(fragment_file_path, 'w') as f:
             json.dump(fragment_data, f)
 
-        manager = FragmentedJsonManager(testdir.root)
-        full_data = manager.get_full("base.json", [])
+        manager = FragmentedJsonManager(testdir.root,set())
+        print(manager.files)
+        full_data = manager.get_full("base", [])
         self.assertIn("fragment_key1", full_data["key2"])
 
 

@@ -185,7 +185,7 @@ class FragmentedJsonStruct:
         :param fragmentNameRule: Rule used to determine if a string is a fragment name.
         :return: The full structure represented with fragmented JSON.
         """
-        depthDict = {id(self.root): 0}
+        depthDict = {}
         fragmentedSegments = []
         func = ExternalRetrieverFactory(fragmentedSegments, fragmentNameRule)
 
@@ -198,7 +198,8 @@ class FragmentedJsonStruct:
             :param ty:
             :return:
             """
-            dia = depthDict[id(arch)]
+            aid=id(arch)
+            dia = depthDict.get(aid,0)
             if dia == maxdepth:
                 return False
             depthDict[id(cur)] = dia + 1
@@ -210,10 +211,10 @@ class FragmentedJsonStruct:
 
 
 class FragmentedJsonManager:
-    def __init__(self, root: str = None):
+    def __init__(self, root: str = None, custom_exceptions=None):
         if root is None:
             root = fisys.RootPathManager.GetMain().GetFullPath("test_json")
-        files = fisys.get_valid_files(current_dir=root)
+        files = fisys.get_valid_files(custom_exceptions,root)
         self.files = {}
         for e, v in files.items():
             struct = FragmentedJsonStruct.load(v)
