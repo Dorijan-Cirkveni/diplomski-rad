@@ -1,6 +1,10 @@
 import json
+import re
+
 import InformationCompiler as infcmp
 from util.debug.ExceptionCatchers import *
+from util.struct.Combiner import Combine
+import util.struct.NestedStructFunctions as nestr
 
 
 class FragmentedJSONException(Exception):
@@ -30,23 +34,40 @@ def ReadFragmentAddress(s: str):
     name = F[0][5:]
     return name, F[1:]
 
-def SearchStructureStack(root, execOnEach: callable):
-    archroot = [root]
-    stack = [(archroot, 0)]
-    while stack:
-        arch, position = stack.pop()
-        cur = arch[position]
-        ty = type(cur)
-        if ty == dict:
-            cur: dict
-            stack.extend([(cur, i) for i in cur.keys()])
-        if ty == list:
-            cur: list
-            stack.extend([(cur, i) for i in range(len(cur))])
-        execOnEach(arch, position, cur, ty)
+def extendAppl(arch, position, cur, ty):
+    testtypes=(type(arch),type(position),ty)
+    reftypes=(dict,str,dict)
+    if testtypes!=reftypes:
+        return False
+    if not re.match("<EXTEND.*>", position):
+        return False
+    position: str
+    keys = set(position[7:][:-1].upper())
+    arch: dict
+    cur: dict
+    arch.pop(position)
+    for e, v in cur.items():
+        if e not in arch:
+            arch[e] = v
+            continue
+        av = arch[e]
+        if "C" in keys:
+            new_v=Combine(av,v,{})
+            arch[e] = new_v
+            continue
+        if "A" not in keys:
+            arch[e] = v
+    return True
 
+def ExtendAllApplicable(root):
+    nestr.NestedStructWalk(root,extendAppl)
 
 def main():
+    ext="<EXTEND.C>"
+    val={"wasd":[-1,-1]}
+    A={ext:val,"wasd":[1,2,3]}
+    ExtendAllApplicable(A)
+    print(A)
     return
 
 
