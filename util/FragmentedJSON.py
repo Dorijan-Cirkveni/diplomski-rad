@@ -60,7 +60,50 @@ def extendAppl(arch, position, cur, ty):
     return True
 
 def ExtendAllApplicable(root):
+    """
+
+    :param root:
+    """
     nestr.NestedStructWalk(root,extendAppl)
+
+def ExtenderFactory(fragment_list:list, fragmentNameRule=FragmentDefaultNameRule):
+    """
+    Creates extender function to be used in a nested structure walk.
+    :param fragment_list:
+    """
+
+    def extendExec(arch, position, cur, ty):
+        """
+
+        :param arch:
+        :param position:
+        :param cur:
+        :param ty:
+        :return:
+        """
+        if ty != str:
+            return False
+        if not fragmentNameRule(cur):
+            return False
+        fragment_list.append((arch, position, cur))
+        return True
+    return extendExec
+
+def ProcessFragmentedJSON(root, fragmentNameRule=FragmentDefaultNameRule):
+    """
+    Process a fragmented JSON file to find places to insert other fragments.
+    :param root: The base data structure (usually a list or a dictionary) of the file.
+    :param fragmentNameRule: The rule used to determine where to insert other fragments.
+    :return:
+    """
+    if type(root) == str:
+        if fragmentNameRule(root):
+            raise FragmentedJSONException("Root cannot be fragment!".format())
+        return []
+    fragmentedSegments = []
+    func=ExtenderFactory(fragmentedSegments,fragmentNameRule)
+    nestr.NestedStructWalk(root,func)
+    return fragmentedSegments
 
 def main():
     ext="<EXTEND.C>"
