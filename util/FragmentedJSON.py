@@ -112,7 +112,7 @@ def CheckDepthFactory(depthDict, maxdepth, fragment_list:list, fragmentNameRule)
         :param ty:
         :return:
         """
-        dia = depthDict[id(arch)]
+        dia = depthDict.get(id(arch),-1)
         if dia == maxdepth:
             return False
         depthDict[id(cur)] = dia + 1
@@ -178,11 +178,11 @@ class FragmentedJsonStruct:
         F.write(s)
         F.close()
 
-    def get_full(self, indices:list, maxdepth=-1,
+    def get_full(self, indices:list, maxdepth=-2,
                  fragmentNameRule=FragmentDefaultNameRule, fragmentedSegments=None):
         """
         Get all content of the file and referenced files
-        :param maxdepth: Depth limit (lower than 0 if not applicable)
+        :param maxdepth: Depth limit (lower than -1 if not applicable)
         :param fragmentNameRule: Rule used to determine if a string is a fragment name.
         :param fragmentedSegments:
         :return: The full structure represented with fragmented JSON.
@@ -192,21 +192,8 @@ class FragmentedJsonStruct:
         depthDict = {}
         func = ExternalRetrieverFactory(fragmentedSegments, fragmentNameRule)
 
-        def checkDepth(arch, position, cur, ty):
-            """
-
-            :param arch:
-            :param position:
-            :param cur:
-            :param ty:
-            :return:
-            """
-            aid=id(arch)
-            dia = depthDict.get(aid,0)
-            if dia == maxdepth:
-                return False
-            depthDict[id(cur)] = dia + 1
-            return func(arch, position, cur, ty)
+        checkDepth=CheckDepthFactory(depthDict,maxdepth,
+                                     fragmentedSegments,fragmentNameRule)
 
         newroot = deepcopy(self.root)
         nestr.NestedStructWalk(newroot, checkDepth)
@@ -224,7 +211,7 @@ class FragmentedJsonManager:
             self.files[e] = struct
 
     def get_full(self, file, indices,
-                 maxdepth=-1, fragmentNameRule=FragmentDefaultNameRule):
+                 maxdepth=-2, fragmentNameRule=FragmentDefaultNameRule):
         if file not in self.files:
             raise Exception(f"File {file} not found!")
         unread_fragments = deque()
@@ -236,8 +223,8 @@ class FragmentedJsonManager:
             res=fragment.get_full(indices,maxdepth-depth,
                                   fragmentNameRule=fragmentNameRule,
                                   fragmentedSegments=frag_segm)
-            print(res)
-            print(frag_segm)
+            print(json.dumps(res,indent=4))
+            print(json.dumps(frag_segm,indent=4))
             return
 
 
@@ -245,7 +232,7 @@ class FragmentedJsonManager:
 def main():
     manager = FragmentedJsonManager('C:\\FER_diplomski\\dip_rad\\testenv\\diplomski-rad\\test_json\\debug',set())
     print(manager.files)
-    full_data = manager.get_full("base", [])
+    full_data = manager.get_full("base", [], 0)
     return
 
 
