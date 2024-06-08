@@ -132,6 +132,7 @@ class TestFragmentedJsonManager(unittest.TestCase):
             json.dump(fragment_data, f)
 
         manager = FragmentedJsonManager(testdir.root,set())
+        print([testdir.root])
         print(manager.files)
         full_data = manager.get_full("base", [])
         self.assertIn("fragment_key1", full_data["key2"])

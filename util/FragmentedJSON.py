@@ -178,15 +178,18 @@ class FragmentedJsonStruct:
         F.write(s)
         F.close()
 
-    def get_full(self, maxdepth=-1, fragmentNameRule=FragmentDefaultNameRule):
+    def get_full(self, indices:list, maxdepth=-1,
+                 fragmentNameRule=FragmentDefaultNameRule, fragmentedSegments=None):
         """
         Get all content of the file and referenced files
         :param maxdepth: Depth limit (lower than 0 if not applicable)
         :param fragmentNameRule: Rule used to determine if a string is a fragment name.
+        :param fragmentedSegments:
         :return: The full structure represented with fragmented JSON.
         """
+        if fragmentedSegments is None:
+            fragmentedSegments = []
         depthDict = {}
-        fragmentedSegments = []
         func = ExternalRetrieverFactory(fragmentedSegments, fragmentNameRule)
 
         def checkDepth(arch, position, cur, ty):
@@ -224,12 +227,25 @@ class FragmentedJsonManager:
                  maxdepth=-1, fragmentNameRule=FragmentDefaultNameRule):
         if file not in self.files:
             raise Exception(f"File {file} not found!")
-        main_fragment = self.files[file]
         unread_fragments = deque()
+        unread_fragments.append((file,[],0))
+        while unread_fragments:
+            file,indices,depth=unread_fragments.popleft()
+            fragment=self.files[file]
+            frag_segm=[]
+            res=fragment.get_full(indices,maxdepth-depth,
+                                  fragmentNameRule=fragmentNameRule,
+                                  fragmentedSegments=frag_segm)
+            print(res)
+            print(frag_segm)
+            return
+
 
 
 def main():
-    X = FragmentedJsonManager()
+    manager = FragmentedJsonManager('C:\\FER_diplomski\\dip_rad\\testenv\\diplomski-rad\\test_json\\debug',set())
+    print(manager.files)
+    full_data = manager.get_full("base", [])
     return
 
 
