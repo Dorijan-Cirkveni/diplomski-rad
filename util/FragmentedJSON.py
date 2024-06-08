@@ -35,13 +35,15 @@ def ReadFragmentAddress(s: str):
     name = F[0][5:]
     return name, F[1:]
 
+
 def is_extendable(position):
     re.match("<EXTEND.*>", position)
 
+
 def extendAppl(arch, position, cur, ty):
-    testtypes=(type(arch),type(position),ty)
-    reftypes=(dict,str,dict)
-    if testtypes!=reftypes:
+    testtypes = (type(arch), type(position), ty)
+    reftypes = (dict, str, dict)
+    if testtypes != reftypes:
         return False
     if not is_extendable(position):
         return False
@@ -56,27 +58,29 @@ def extendAppl(arch, position, cur, ty):
             continue
         av = arch[e]
         if "C" in keys:
-            new_v=Combine(av,v,{})
+            new_v = Combine(av, v, {})
             arch[e] = new_v
             continue
         if "A" not in keys:
             arch[e] = v
     return True
 
+
 def ExtendAllApplicable(root):
     """
 
     :param root:
     """
-    nestr.NestedStructWalk(root,extendAppl)
+    nestr.NestedStructWalk(root, extendAppl)
 
-def ExtenderFactory(fragment_list:list, fragmentNameRule=FragmentDefaultNameRule):
+
+def ExternalRetrieverFactory(fragment_list: list, fragmentNameRule=FragmentDefaultNameRule):
     """
     Creates extender function to be used in a nested structure walk.
     :param fragment_list:
     """
 
-    def extendExec(arch, position, cur, ty):
+    def func(arch, position, cur, ty):
         """
 
         :param arch:
@@ -91,7 +95,9 @@ def ExtenderFactory(fragment_list:list, fragmentNameRule=FragmentDefaultNameRule
             return False
         fragment_list.append((arch, position, cur))
         return True
-    return extendExec
+
+    return func
+
 
 def ProcessFragmentedJSON(root, fragmentNameRule=FragmentDefaultNameRule):
     """
@@ -105,27 +111,40 @@ def ProcessFragmentedJSON(root, fragmentNameRule=FragmentDefaultNameRule):
             raise FragmentedJSONException("Root cannot be fragment!".format())
         return []
     fragmentedSegments = []
-    func=ExtenderFactory(fragmentedSegments,fragmentNameRule)
-    nestr.NestedStructWalk(root,func)
+    func = ExternalRetrieverFactory(fragmentedSegments, fragmentNameRule)
+    nestr.NestedStructWalk(root, func)
     return fragmentedSegments
+
 
 class FragmentedJsonStruct:
     def __init__(self, root):
-        self.root=root
+        self.root = root
+
     @staticmethod
     def load(filepath):
-        F=open(filepath,'r')
-        s=F.read()
+        F = open(filepath, 'r')
+        s = F.read()
         F.close()
-        root=json.loads(s)
+        root = json.loads(s)
         return FragmentedJsonStruct(root)
-    def save(self,filepath):
-        s=json.dumps(self.root)
-        F=open(filepath,'w')
+
+    def save(self, filepath):
+        s = json.dumps(self.root)
+        F = open(filepath, 'w')
         F.write(s)
         F.close()
-    def get_full(self, maxdepth=-1):
-        depthDict={id(self.root):0}
+
+    def get_full(self, maxdepth=-1, fragmentNameRule=FragmentDefaultNameRule):
+        """
+        Get all content of the file and referenced files
+        :param maxdepth: Depth limit (lower than 0 if not applicable)
+        :param fragmentNameRule: Rule used to determine if a string is a fragment name.
+        :return: The full structure represented with fragmented JSON.
+        """
+        depthDict = {id(self.root): 0}
+        fragmentedSegments = []
+        func = ExternalRetrieverFactory(fragmentedSegments, fragmentNameRule)
+
         def checkDepth(arch, position, cur, ty):
             """
 
@@ -135,20 +154,18 @@ class FragmentedJsonStruct:
             :param ty:
             :return:
             """
-            if is_extendable(position):
-
-            if id(arch)==maxdepth:
+            if id(arch) == maxdepth:
                 return False
-        newroot=deepcopy(self.root)
-        nestr.NestedStructWalk(newroot,checkDepth,extendAppl)
+            return func(arch, position, cur, ty)
 
-
+        newroot = deepcopy(self.root)
+        nestr.NestedStructWalk(newroot, checkDepth)
 
 
 def main():
-    ext="<EXTEND.C>"
-    val={"wasd":[-1,-1]}
-    A={ext:val,"wasd":[1,2,3]}
+    ext = "<EXTEND.C>"
+    val = {"wasd": [-1, -1]}
+    A = {ext: val, "wasd": [1, 2, 3]}
     ExtendAllApplicable(A)
     print(A)
     return
