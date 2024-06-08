@@ -58,6 +58,24 @@ def ValidateIndex(struct,ind, extra_data):
     raise TypeError("Unrecognised structure (HOW?):{}".format(type(struct)))
 
 
+def MakeMissingFilesException(missingFiles: dict):
+    """
+
+    :param missingFiles:
+    """
+    MFM = []
+    for e, V in missingFiles.items():
+        if len(V) == 1 and V[0] == 'ROOT':
+            exc = "{} (Root file)"
+            lis = None
+        else:
+            exc = "{} (Referenced in: {})"
+            lis = ", ".join(V)
+        MFM.append(exc.format(e, lis))
+    mexc = "; ".join(MFM)
+    raise Exception("Missing files: " + mexc)
+
+
 def main():
     return
 

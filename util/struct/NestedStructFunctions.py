@@ -44,7 +44,7 @@ STRUCTITERS = {
 }
 
 
-def NestedStructWalk(root, func):
+def NestedStructWalk(root, postfunc=None, prefunc=None):
     archroot = [root]
     stack = [(archroot, 0)]
     while stack:
@@ -52,10 +52,13 @@ def NestedStructWalk(root, func):
         cur = arch[position]
         ty = type(cur)
         iters = STRUCTITERS.get(ty,NULLSTRUCT)(cur)
+        if prefunc is not None:
+            prefunc(arch, position, cur, ty)
         for i in iters:
             E = (cur, i)
             stack.append(E)
-        func(arch, position, cur, ty)
+        if postfunc is not None:
+            postfunc(arch, position, cur, ty)
 
 
 def main():

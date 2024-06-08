@@ -1,5 +1,6 @@
 import json
 import re
+from copy import deepcopy
 
 import InformationCompiler as infcmp
 from util.debug.ExceptionCatchers import *
@@ -34,12 +35,15 @@ def ReadFragmentAddress(s: str):
     name = F[0][5:]
     return name, F[1:]
 
+def is_extendable(position):
+    re.match("<EXTEND.*>", position)
+
 def extendAppl(arch, position, cur, ty):
     testtypes=(type(arch),type(position),ty)
     reftypes=(dict,str,dict)
     if testtypes!=reftypes:
         return False
-    if not re.match("<EXTEND.*>", position):
+    if not is_extendable(position):
         return False
     position: str
     keys = set(position[7:][:-1].upper())
@@ -104,6 +108,42 @@ def ProcessFragmentedJSON(root, fragmentNameRule=FragmentDefaultNameRule):
     func=ExtenderFactory(fragmentedSegments,fragmentNameRule)
     nestr.NestedStructWalk(root,func)
     return fragmentedSegments
+
+class FragmentedJsonStruct:
+    def __init__(self, root):
+        self.root=root
+    @staticmethod
+    def load(filepath):
+        F=open(filepath,'r')
+        s=F.read()
+        F.close()
+        root=json.loads(s)
+        return FragmentedJsonStruct(root)
+    def save(self,filepath):
+        s=json.dumps(self.root)
+        F=open(filepath,'w')
+        F.write(s)
+        F.close()
+    def get_full(self, maxdepth=-1):
+        depthDict={id(self.root):0}
+        def checkDepth(arch, position, cur, ty):
+            """
+
+            :param arch:
+            :param position:
+            :param cur:
+            :param ty:
+            :return:
+            """
+            if is_extendable(position):
+
+            if id(arch)==maxdepth:
+                return False
+        newroot=deepcopy(self.root)
+        nestr.NestedStructWalk(newroot,checkDepth,extendAppl)
+
+
+
 
 def main():
     ext="<EXTEND.C>"
