@@ -163,7 +163,7 @@ class FragmentedJsonStruct:
         return newroot
 
 class FragmentedJsonManager:
-    def __init__(self):
+    def __init__(self, files):
         self.files=dict()
 
 

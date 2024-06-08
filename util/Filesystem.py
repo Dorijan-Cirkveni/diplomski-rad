@@ -69,6 +69,25 @@ class RootPathManager:
         return os.path.join(self.root, path)
 
 
+def search_files(maindir: str, extension: str = ".json") -> dict:
+    """
+    Search for files with a specified extension in the given directory and its subdirectories.
+
+    :param maindir: The main directory to start the search.
+    :param extension: Chosen extension, defaults to .json
+    :return: A dictionary containing the found filenames as keys and their paths as values.
+    """
+    result = {}
+
+    k = -len(extension)
+    for root, dirs, files in os.walk(maindir):
+        for file in files:
+            if file.endswith(extension):
+                result[file[:k]] = os.path.join(root, file)
+
+    return result
+
+
 def main():
     # Example usage
     dm: RootPathManager = RootPathManager.GetMain('testenv')

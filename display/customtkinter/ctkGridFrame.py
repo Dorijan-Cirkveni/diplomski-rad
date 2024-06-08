@@ -6,7 +6,7 @@ from PIL import Image, ImageTk
 import definitions
 from display.customtkinter.base.ctkDefinitions import *
 from environments.GridEnvironment import *
-from util.RootPathManager import RootPathManager
+from util.Filesystem import RootPathManager
 from display.customtkinter.base import ctkDisplayBase as DiB
 
 rpm = RootPathManager()
