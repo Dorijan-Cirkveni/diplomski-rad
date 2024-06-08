@@ -1,6 +1,6 @@
 import json
 import re
-from collections import deque
+from collections import deque, defaultdict
 from copy import deepcopy
 
 from util.debug.ExceptionCatchers import *
@@ -34,6 +34,7 @@ def ReadFragmentAddress(s: str):
     """
     F = s.split("|")
     name = F[0][5:]
+    X=[]
     return name, F[1:]
 
 
@@ -112,7 +113,7 @@ def CheckDepthFactory(depthDict, maxdepth, fragment_list:list, fragmentNameRule)
         :param ty:
         :return:
         """
-        dia = depthDict.get(id(arch),-1)
+        dia = depthDict.get(id(arch),depthDict.get(None,-1))
         if dia == maxdepth:
             return False
         depthDict[id(cur)] = dia + 1
@@ -179,7 +180,7 @@ class FragmentedJsonStruct:
         F.write(s)
         F.close()
 
-    def get_full(self, indices:list, maxdepth=-2,
+    def get_full(self, indices:list, maxdepth=-2, curdepth=0,
                  fragmentNameRule=FragmentDefaultNameRule, fragmentedSegments=None):
         """
         Get all content of the file and referenced files
@@ -190,7 +191,7 @@ class FragmentedJsonStruct:
         """
         if fragmentedSegments is None:
             fragmentedSegments = []
-        depthDict = {}
+        depthDict = {None:curdepth-1}
         func = ExternalRetrieverFactory(fragmentedSegments, fragmentNameRule)
 
         checkDepth=CheckDepthFactory(depthDict,maxdepth,
@@ -218,18 +219,22 @@ class FragmentedJsonManager:
         unread_fragments = deque()
 
         arch=[file]
-        unread_fragments.append((arch,0,indices,0))
+        unread_fragments.append((arch,0,(file,indices),0))
+        read_fragments=[]
+        missingFiles=defaultdict(list)
         while unread_fragments:
-            arch,addr,(file,indices),depth=unread_fragments.popleft()
+            E=unread_fragments.popleft()
+            read_fragments.append(E)
+            arch, addr, filedata, depth=E
+            (file, indices)=filedata
             fragment=self.files[file]
             frag_segm=[]
-            res=fragment.get_full(indices,maxdepth-depth,
+            res=fragment.get_full(indices,maxdepth,depth,
                                   fragmentNameRule=fragmentNameRule,
                                   fragmentedSegments=frag_segm)
-            print(json.dumps(res,indent=4))
-            print(json.dumps(frag_segm[0],indent=4))
-            return
-
+            unread_fragments.extend(res)
+        if missingFiles:
+            raise MakeMissingFilesException(missingFiles)
 
 
 def main():

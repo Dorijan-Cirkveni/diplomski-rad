@@ -11,15 +11,15 @@ print(rootdir.root,testpath,testdir.root,sep="\n")
 class TestClasslessFunctions(unittest.TestCase):
 
     def test_fragment_default_name_rule(self):
-        self.assertTrue(FragmentDefaultNameRule("<EXT>filename|[0,\"example\",1]"))
-        self.assertFalse(FragmentDefaultNameRule("filename|[0,\"example\",1]"))
+        self.assertTrue(FragmentDefaultNameRule("<EXT>filename"))
+        self.assertFalse(FragmentDefaultNameRule("filename"))
 
     def test_read_fragment_address(self):
-        self.assertEqual(ReadFragmentAddress("<EXT>filename|[0,\"example\",1]"), ("filename", ["[0,\"example\",1]"]))
+        self.assertEqual(ReadFragmentAddress("<EXT>filename|0|example|1"), ("filename", ["0","example","1"]))
 
     def test_is_extendable(self):
         self.assertTrue(is_extendable("<EXTEND[C]>"))
-        self.assertFalse(is_extendable("<EXT>filename|[0,\"example\",1]"))
+        self.assertFalse(is_extendable("<EXT>filename|0|example|1"))
 
     def test_extend_appl(self):
         arch = {"<EXTEND[C]>": {"key": "value"}}
@@ -34,7 +34,7 @@ class TestClasslessFunctions(unittest.TestCase):
         func = ExternalRetrieverFactory(fragment_list)
         arch = {}
         position = "pos"
-        cur = "<EXT>filename|[0,\"example\",1]"
+        cur = "<EXT>filename|0|example|1"
         ty = str
         func(arch, position, cur, ty)
         self.assertIn((arch, position, cur), fragment_list)
@@ -45,7 +45,7 @@ class TestClasslessFunctions(unittest.TestCase):
         fragment_list = []
         func = CheckDepthFactory(depth_dict, 1, fragment_list, FragmentDefaultNameRule)
         position = "pos"
-        cur = "<EXT>filename|[0,\"example\",1]"
+        cur = "<EXT>filename|0|example|1"
         ty = str
         func(arch, position, cur, ty)
         self.assertIn((arch, position, cur, 1), fragment_list)
@@ -53,12 +53,12 @@ class TestClasslessFunctions(unittest.TestCase):
     def test_process_fragmented_json(self):
         root = {
             "key1": "value1",
-            "key2": "<EXT>fragment1|[]",
+            "key2": "<EXT>fragment1",
             "key3": {"subkey1": "subvalue1"}
         }
         result = ProcessFragmentedJSON(root)
         self.assertEqual(len(result), 1)
-        self.assertEqual(result[0][2], "<EXT>fragment1|[]")
+        self.assertEqual(result[0][2], "<EXT>fragment1")
 
 
 class TestFragmentedJSONException(unittest.TestCase):
@@ -93,7 +93,7 @@ class TestFragmentedJsonStruct(unittest.TestCase):
     def test_get_full(self):
         base_data = {
             "key1": "value1",
-            "key2": "<EXT>fragment1|[]"
+            "key2": "<EXT>fragment1"
         }
         fragment_data = {
             "fragment_key1": "fragment_value1"
@@ -109,7 +109,7 @@ class TestFragmentedJsonStruct(unittest.TestCase):
 
         struct = FragmentedJsonStruct.load(base_file_path)
         full_data = struct.get_full()
-        self.assertEqual('<EXT>fragment1|[]', full_data["key2"])
+        self.assertEqual('<EXT>fragment1', full_data["key2"])
 
 
 class TestFragmentedJsonManager(unittest.TestCase):
@@ -117,7 +117,7 @@ class TestFragmentedJsonManager(unittest.TestCase):
     def test_get_full(self):
         base_data = {
             "key1": "value1",
-            "key2": "<EXT>fragment1|[]"
+            "key2": "<EXT>fragment1"
         }
         fragment_data = {
             "fragment_key1": "fragment_value1"
