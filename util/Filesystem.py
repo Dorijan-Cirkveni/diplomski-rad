@@ -90,11 +90,13 @@ def search_files(maindir: str, extension: str = ".json") -> dict:
 
 def main():
     # Example usage
-    dm: RootPathManager = RootPathManager.GetMain('testenv')
-    dm2: RootPathManager = RootPathManager.GetMain()
-    print(dm.root)
-    print(dm2.root)
-    print(dm.MAIN.root)
+    dm: RootPathManager = RootPathManager.GetMain('diplomski-rad')
+    path = dm.GetFullPath('test_json')
+    print(path)
+    test=search_files(path)
+    for e,v in test.items():
+        vs=v.split('diplomski-rad')[-1]
+        print(vs+" "*((-len(vs))%10+10),e)
 
 
 if __name__ == "__main__":

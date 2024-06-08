@@ -1,7 +1,7 @@
 import pygame
 import copy
 
-from util.RootPathManager import RootPathManager
+from util.Filesystem import RootPathManager
 from util.struct.TupleDotOperations import *
 
 ROOTMNGR=RootPathManager()

@@ -3,7 +3,7 @@ import pygame
 
 from display.customtkinter.base.ctkDefinitions import *
 from environments.GridEnvironment import *
-import util.RootPathManager as RPM
+import util.Filesystem as RPM
 
 fixedBG = (0, 0, 0)
 GRID_COLOR = (255, 255, 255)
