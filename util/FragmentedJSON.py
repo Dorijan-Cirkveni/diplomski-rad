@@ -1,5 +1,6 @@
 import json
 import re
+from collections import deque
 from copy import deepcopy
 
 import InformationCompiler as infcmp
@@ -100,6 +101,31 @@ def ExternalRetrieverFactory(fragment_list: list, fragmentNameRule=FragmentDefau
     return func
 
 
+def CheckDepthFactory(depthDict, maxdepth, fragment_list:list, fragmentNameRule):
+
+    def checkDepth(arch, position, cur, ty):
+        """
+
+        :param arch:
+        :param position:
+        :param cur:
+        :param ty:
+        :return:
+        """
+        dia = depthDict[id(arch)]
+        if dia == maxdepth:
+            return False
+        depthDict[id(cur)] = dia + 1
+        if ty != str:
+            return False
+        if not fragmentNameRule(cur):
+            return False
+        fragment_list.append((arch, position, cur, dia+1))
+        return True
+
+    return checkDepth
+
+
 def ProcessFragmentedJSON(root, fragmentNameRule=FragmentDefaultNameRule):
     """
     Process a fragmented JSON file to find places to insert other fragments.
@@ -133,18 +159,18 @@ class FragmentedJsonStruct:
             raise Exception(filepath, err)
         return FragmentedJsonStruct(root, filepath)
 
-    def get(self, indices:list=None):
+    def get(self, indices: list = None):
         if indices is None:
             indices = []
-        s=json.dumps(self.root)
-        root=json.loads(s)
+        s = json.dumps(self.root)
+        root = json.loads(s)
         if indices:
-            root=nestr.NestedStructGet(root,indices)
+            root = nestr.NestedStructGet(root, indices)
         return root
 
-    def save(self, filepath = None):
+    def save(self, filepath=None):
         if filepath is None:
-            filepath=self.filepath
+            filepath = self.filepath
         if filepath is None:
             raise ValueError("Fragment has no saved file path and none has been provided!")
         s = json.dumps(self.root)
@@ -172,8 +198,10 @@ class FragmentedJsonStruct:
             :param ty:
             :return:
             """
-            if id(arch) == maxdepth:
+            dia = depthDict[id(arch)]
+            if dia == maxdepth:
                 return False
+            depthDict[id(cur)] = dia + 1
             return func(arch, position, cur, ty)
 
         newroot = deepcopy(self.root)
@@ -182,21 +210,25 @@ class FragmentedJsonStruct:
 
 
 class FragmentedJsonManager:
-    def __init__(self, root: str=None):
+    def __init__(self, root: str = None):
         if root is None:
             root = fisys.RootPathManager.GetMain().GetFullPath("test_json")
-        files=fisys.get_valid_files(current_dir=root)
-        self.files={}
-        for e,v in files.items():
-            struct=FragmentedJsonStruct.load(v)
-            self.files=struct
+        files = fisys.get_valid_files(current_dir=root)
+        self.files = {}
+        for e, v in files.items():
+            struct = FragmentedJsonStruct.load(v)
+            self.files[e] = struct
 
-
+    def get_full(self, file, indices,
+                 maxdepth=-1, fragmentNameRule=FragmentDefaultNameRule):
+        if file not in self.files:
+            raise Exception(f"File {file} not found!")
+        main_fragment = self.files[file]
+        unread_fragments = deque()
 
 
 def main():
-
-    X=FragmentedJsonManager()
+    X = FragmentedJsonManager()
     return
 
 
