@@ -255,14 +255,17 @@ class FragmentedJsonStruct:
 
 
 class FragmentedJsonManager:
-    def __init__(self, root: str = None, custom_exceptions=None):
+    def __init__(self, root: str = None, allowed=None, denied=None):
         if root is None:
             root = fisys.RootPathManager.GetMain().GetFullPath("test_json")
-        files = fisys.get_valid_files(root, custom_exceptions=custom_exceptions)
+        files = fisys.get_valid_files(root, allowed=allowed, denied=denied)
         self.files = {}
         for e, v in files.items():
             struct = FragmentedJsonStruct.load(v)
             self.files[e] = struct
+
+    @staticmethod
+    def load(root:str, criteria:list[]):
 
     def get_full(self, file, indices=None, fragmentNameRule=FragmentDefaultNameRule):
         if indices is None:
@@ -324,8 +327,8 @@ class FragmentedJsonManager:
 
 
 def main():
-    manager = FragmentedJsonManager('C:\\FER_diplomski\\dip_rad\\testenv\\diplomski-rad\\test_json\\debug',set())
-    full_data = manager.get_to_depth("base", [], 1)
+    manager = FragmentedJsonManager('C:\\FER_diplomski\\dip_rad\\testenv\\diplomski-rad\\test_json')
+    full_data = manager.get_to_depth("all_categories", [], 1)
     print(json.dumps(full_data,indent=4))
     return
 

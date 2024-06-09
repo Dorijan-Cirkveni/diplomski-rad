@@ -93,29 +93,27 @@ notenv = ["agents", "tiles", "entities", "grids", "debug",
           "effects.json", "syntax test sandbox.json", "sandbox.json"]
 
 
-def filter_env_paths(filedict: dict, required:set = None, forbidden: set = None) -> dict:
-    if required is None:
-        required = set()
+def filter_env_paths(filedict: dict, allowed:set = None, forbidden: set = None) -> dict:
     if forbidden is None:
         forbidden = set(notenv)
-    if required & forbidden:
+    if allowed & forbidden:
         return {}
     filtered = dict()
     for name, path in filedict.items():
         S = set(path.split("\\"))
         if S & forbidden:
             continue
-        if S & required != required:
+        if not (allowed is None or S & allowed):
             continue
         filtered[name] = filedict[name]
     return filtered
 
 
-def get_valid_files(current_dir:str=None, extension: str = ".json", custom_requirements=None, custom_exceptions=None):
+def get_valid_files(current_dir:str=None, extension: str = ".json", allowed=None, denied=None):
     if current_dir is None:
         current_dir = RootPathManager.GetMain().root
     D = search_files(current_dir, extension)
-    res = filter_env_paths(D, custom_requirements, custom_exceptions)
+    res = filter_env_paths(D, allowed, denied)
     return res
 
 
