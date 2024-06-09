@@ -224,7 +224,6 @@ class FragmentedJsonManager:
         missingFiles=defaultdict(list)
         while unread_fragments:
             E=unread_fragments.popleft()
-            read_fragments.append(E)
             arch, addr, filedata, depth=E
             (file, indices)=filedata
             fragment=self.files[file]
@@ -246,8 +245,8 @@ class FragmentedJsonManager:
 
 def main():
     manager = FragmentedJsonManager('C:\\FER_diplomski\\dip_rad\\testenv\\diplomski-rad\\test_json\\debug',set())
-    print(manager.files)
     full_data = manager.get_full("base", [], 1)
+    print(json.dumps(full_data,indent=4))
     return
 
 
