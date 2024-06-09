@@ -218,7 +218,7 @@ class FragmentedJsonManager:
             raise Exception(f"File {file} not found!")
         unread_fragments = deque()
 
-        arch=[file]
+        arch=[None]
         unread_fragments.append((arch,0,(file,indices),0))
         read_fragments=[]
         missingFiles=defaultdict(list)
@@ -232,9 +232,16 @@ class FragmentedJsonManager:
             res=fragment.get_full(indices,maxdepth,depth,
                                   fragmentNameRule=fragmentNameRule,
                                   fragmentedSegments=frag_segm)
-            unread_fragments.extend(res)
+            read_fragments.append((arch,addr,res))
+            unread_fragments.extend(frag_segm)
         if missingFiles:
             raise MakeMissingFilesException(missingFiles)
+        while read_fragments:
+            arch,addr,res = read_fragments.pop()
+            arch[addr] = res
+        ExtendAllApplicable(arch)
+        return arch[0]
+
 
 
 def main():
