@@ -55,7 +55,7 @@ class EnvCustomFrame(ctk.CTkFrame):
     def set_env(self, file, fragment:frjson.FragmentedJsonStruct, ind, name):
         envname = utilmngr.MakeClassNameReadable(file) + ": " + name
         self.s_env.set(envname)
-        self.env_data = fragment.get_full()
+        self.env_data = fragment.get_to_depth()
 
     def set_agent(self, agentname, agentraw):
         agentclass = agentmngr.ALL_AGENTS[agentname]

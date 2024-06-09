@@ -134,7 +134,7 @@ class TestFragmentedJsonManager(unittest.TestCase):
         manager = FragmentedJsonManager(testdir.root,set())
         print([testdir.root])
         print(manager.files)
-        full_data = manager.get_full("base", [])
+        full_data = manager.get_to_depth("base", [])
         self.assertIn("fragment_key1", full_data["key2"])
 
 

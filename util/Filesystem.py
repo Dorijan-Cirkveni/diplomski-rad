@@ -118,8 +118,6 @@ def get_valid_files(current_dir:str=None, extension: str = ".json", custom_requi
     res = filter_env_paths(D, custom_requirements, custom_exceptions)
     return res
 
-def find_valid_files(custom_requirements=None)
-
 
 def read_file_to_dict(name, filepath, resdict):
     F = open(filepath, 'r')

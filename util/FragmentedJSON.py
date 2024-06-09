@@ -34,7 +34,6 @@ def ReadFragmentAddress(s: str):
     """
     F = s.split("|")
     name = F[0][5:]
-    X=[]
     return name, F[1:]
 
 
@@ -47,7 +46,6 @@ def FragNestedStructGet(root, indices):
     """
     for e_key in indices:
         e_key: str
-        if type(root)==dict and
         ValidateIndex(root, e_key, indices)
         e_key: [str, int]
         root = root[e_key]
@@ -59,7 +57,29 @@ def is_extendable(position):
     return rem is not None
 
 
+def get_extend_keys(position):
+    keys = set(position[7:][:-1].upper())
+    return keys
+
+
 def extendAppl(arch, position, cur, ty):
+    """
+    Extend dictionary using one of its entries.
+    :param arch: Extended dictionary.
+    :param position: Key of extending dictionary, containing key characters if applicable.
+            Special case: \<EXTEND<keychars and unused chars>\>
+            Key characters (absence indicates inverse behaviour):
+                Priority:
+                    -(A)rch Priority: when conflict occurs, arch value is prioritised.
+                    -Default: when conflict occurs, cur value is prioritised.
+                Substructure handling:
+                    -(C)ombine Substructures: when applicable (list to list, dict to dict),
+                    substructures are combined rather than overwritten.
+                    -Default: Substructures are always overwritten.
+    :param cur:
+    :param ty:
+    :return:
+    """
     testtypes = (type(arch), type(position), ty)
     reftypes = (dict, str, dict)
     if testtypes != reftypes:
@@ -67,7 +87,8 @@ def extendAppl(arch, position, cur, ty):
     if not is_extendable(position):
         return False
     position: str
-    keys = set(position[7:][:-1].upper())
+    keys = get_extend_keys(position)
+
     arch: dict
     cur: dict
     arch.pop(position)
@@ -196,8 +217,7 @@ class FragmentedJsonStruct:
         F.write(s)
         F.close()
 
-    def get_full(self, indices:list, maxdepth=-2, curdepth=0,
-                 fragmentNameRule=FragmentDefaultNameRule, fragmentedSegments=None):
+    def get_full(self, fragmentNameRule=FragmentDefaultNameRule, fragmentedSegments=None):
         """
         Get all content of the file and referenced files
         :param maxdepth: Depth limit (lower than -1 if not applicable)
@@ -207,7 +227,23 @@ class FragmentedJsonStruct:
         """
         if fragmentedSegments is None:
             fragmentedSegments = []
-        depthDict = {None:curdepth-1}
+        func = ExternalRetrieverFactory(fragmentedSegments, fragmentNameRule)
+        newroot = deepcopy(self.root)
+        nestr.NestedStructWalk(newroot, func)
+        return newroot
+
+    def get_to_depth(self, indices:list, maxdepth=None, curdepth=0,
+                     fragmentNameRule=FragmentDefaultNameRule, fragmentedSegments=None):
+        """
+        Get all content of the file and referenced files
+        :param maxdepth: Depth limit (lower than -1 if not applicable)
+        :param fragmentNameRule: Rule used to determine if a string is a fragment name.
+        :param fragmentedSegments:
+        :return: The full structure represented with fragmented JSON.
+        """
+        if fragmentedSegments is None:
+            fragmentedSegments = []
+        depthDict = {None:curdepth-(len(indices)+1)}
         func = ExternalRetrieverFactory(fragmentedSegments, fragmentNameRule)
 
         checkDepth=CheckDepthFactory(depthDict,maxdepth,
@@ -228,8 +264,9 @@ class FragmentedJsonManager:
             struct = FragmentedJsonStruct.load(v)
             self.files[e] = struct
 
-    def get_full(self, file, indices,
-                 maxdepth=-2, fragmentNameRule=FragmentDefaultNameRule):
+    def get_full(self, file, indices=None, fragmentNameRule=FragmentDefaultNameRule):
+        if indices is None:
+            indices = []
         if file not in self.files:
             raise Exception(f"File {file} not found!")
         unread_fragments = deque()
@@ -244,9 +281,36 @@ class FragmentedJsonManager:
             (file, indices)=filedata
             fragment=self.files[file]
             frag_segm=[]
-            res=fragment.get_full(indices,maxdepth,depth,
-                                  fragmentNameRule=fragmentNameRule,
-                                  fragmentedSegments=frag_segm)
+            res=fragment.get_full(fragmentNameRule=fragmentNameRule, fragmentedSegments=frag_segm)
+            read_fragments.append((arch,addr,res))
+            unread_fragments.extend(frag_segm)
+        if missingFiles:
+            raise MakeMissingFilesException(missingFiles)
+        while read_fragments:
+            arch,addr,res = read_fragments.pop()
+            arch[addr] = res
+        ExtendAllApplicable(arch)
+        return arch[0]
+
+    def get_to_depth(self, file, indices,
+                     maxdepth=-2, fragmentNameRule=FragmentDefaultNameRule):
+        if file not in self.files:
+            raise Exception(f"File {file} not found!")
+        unread_fragments = deque()
+
+        arch=[None]
+        unread_fragments.append((arch,0,(file,indices),0))
+        read_fragments=[]
+        missingFiles=defaultdict(list)
+        while unread_fragments:
+            E=unread_fragments.popleft()
+            arch, addr, filedata, depth=E
+            (file, indices)=filedata
+            fragment=self.files[file]
+            frag_segm=[]
+            res=fragment.get_to_depth(indices, maxdepth, depth,
+                                      fragmentNameRule=fragmentNameRule,
+                                      fragmentedSegments=frag_segm)
             read_fragments.append((arch,addr,res))
             unread_fragments.extend(frag_segm)
         if missingFiles:
@@ -261,7 +325,7 @@ class FragmentedJsonManager:
 
 def main():
     manager = FragmentedJsonManager('C:\\FER_diplomski\\dip_rad\\testenv\\diplomski-rad\\test_json\\debug',set())
-    full_data = manager.get_full("base", [], 1)
+    full_data = manager.get_to_depth("base", [], 1)
     print(json.dumps(full_data,indent=4))
     return
 
