@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  9 JUN 2024 10:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  9 JUN 2024 12:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -614,7 +614,8 @@ tex.def
 File: l3backend-pdftex.def 2023-11-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count317
 \l__pdf_internal_box=\box55
-) (master_thesis.aux)
+)
+No file master_thesis.aux.
 \openout1 = `master_thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
@@ -831,7 +832,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {C:/Users/doric/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dori
 c/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_jg4h6q.enc}]
 [2]
-<hr_0036501554_56.pdf, id=284, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=280, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 48.
@@ -840,7 +841,7 @@ File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 48.
 (pdftex.def)             Requested size: 598.23354pt x 845.15544pt.
-<hr_0036501554_56.pdf, id=287, page=1, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=283, page=1, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
 Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 48.
@@ -879,7 +880,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.50 ...ating consciousness}{29}{subsection.1.6.4}
+l.50 ...ating consciousness}{29}{subsection.1.7.4}
                                                   % [1
 
 
@@ -909,21 +910,23 @@ l.68 \chapter
 ts/enc/dvips/stix2-type1/stix2-ts1.enc}]
 Chapter 1.
 
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 77.
-
-
 LaTeX Warning: Citation `owid-brief-history-of-ai' on page 4 undefined on input
- line 82.
+ line 76.
 
-<Figures/AI performance history.png, id=394, 853.1875pt x 383.4325pt>
+LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <16> not availabl
+e
+(Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
+e 78.
+LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
+(Font)              scaled to size 16.0pt on input line 78.
+<Figures/AI performance history.png, id=389, 853.1875pt x 383.4325pt>
 File: Figures/AI performance history.png Graphic file (type png)
 <use Figures/AI performance history.png>
 Package pdftex.def Info: Figures/AI performance history.png  used on input line
- 85.
+ 86.
 (pdftex.def)             Requested size: 441.01773pt x 198.20421pt.
 
-Overfull \hbox (14.28706pt too wide) in paragraph at lines 90--91
+Overfull \hbox (14.28706pt too wide) in paragraph at lines 91--92
 \T1/stix2/m/n/12 achieve su-per-hu-man ac-cu-racy in im-age recog-ni-tion tasks
 , rec-og-niz-ing ob-jects, scenes,
  []
@@ -934,122 +937,98 @@ been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.96     \item \textbf
-                      {Robotic Control} Reinforcement learning has enabled a...
+                      {AlphaGo's Defeat of Lee Sedol} In 2016, AlphaGo, an A...
 [4
 
 ] [5 <./Figures/AI performance history.png>]
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <12> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 104.
+e 105.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 12.0pt on input line 104.
+(Font)              scaled to size 12.0pt on input line 105.
 
-Overfull \hbox (5.6914pt too wide) in paragraph at lines 108--109
+Overfull \hbox (5.6914pt too wide) in paragraph at lines 109--110
 \T1/stix2/m/n/12 min-i-mal prompts and sug-ges-tions from the hu-man au-thor of
  this the-sis. These
  []
 
-<Figures/bing image creator prompt 1a.jpeg, id=404, 352.31625pt x 352.31625pt>
+
+LaTeX Warning: Citation `bard2023' on page 6 undefined on input line 111.
+
+<Figures/bing image creator prompt 1a.jpeg, id=398, 352.31625pt x 352.31625pt>
 File: Figures/bing image creator prompt 1a.jpeg Graphic file (type jpg)
 <use Figures/bing image creator prompt 1a.jpeg>
 Package pdftex.def Info: Figures/bing image creator prompt 1a.jpeg  used on inp
-ut line 116.
+ut line 117.
 (pdftex.def)             Requested size: 167.58888pt x 167.58849pt.
-[6]
-LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <16> not availabl
-e
-(Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 128.
-LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 128.
- [7 <./Figures/bing image creator prompt 1a.jpeg>] [8] [9]
-Overfull \hbox (7.0845pt too wide) in paragraph at lines 214--215
+[6] [7 <./Figures/bing image creator prompt 1a.jpeg>] [8] [9]
+Overfull \hbox (7.0845pt too wide) in paragraph at lines 215--216
 []\T1/stix2/m/n/12 This ap-proach is more gen-eral than the pre-vi-ously listed
  "laws-of-thought" ap-proach,
  []
 
-[10] [11] [12] [13] [14]
-
-LaTeX Warning: Citation `descartes1' on page 15 undefined on input line 312.
-
-[15]
-Overfull \hbox (2.17796pt too wide) in paragraph at lines 321--322
+[10] [11] [12] [13] [14] [15]
+Overfull \hbox (2.17796pt too wide) in paragraph at lines 322--323
 \T1/stix2/m/n/12 Anthropomorphism is a com-mon hu-man ten-dency to as-cribe hu-
 man traits to non-human
  []
 
-[16]
-
-LaTeX Warning: Citation `lemoine2022lamda' on page 17 undefined on input line 3
-59.
-
-[17]
-<Figures/LaMDA tweet 1.png, id=472, 444.4605pt x 151.767pt>
+[16] [17]
+<Figures/LaMDA tweet 1.png, id=465, 444.4605pt x 151.767pt>
 File: Figures/LaMDA tweet 1.png Graphic file (type png)
 <use Figures/LaMDA tweet 1.png>
-Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 368.
+Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 369.
 (pdftex.def)             Requested size: 441.01773pt x 150.59714pt.
-<Figures/LaMDA tweet 2.png, id=474, 437.83575pt x 258.9675pt>
+<Figures/LaMDA tweet 2.png, id=467, 437.83575pt x 258.9675pt>
 File: Figures/LaMDA tweet 2.png Graphic file (type png)
 <use Figures/LaMDA tweet 2.png>
-Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 374.
+Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 375.
 (pdftex.def)             Requested size: 441.01773pt x 260.85962pt.
  [18 <./Figures/LaMDA tweet 1.png> <./Figures/LaMDA tweet 2.png>]
-
-LaTeX Warning: Citation `turing1' on page 19 undefined on input line 399.
-
 [19]
-<Figures/DataTNG.jpeg, id=489, 301.125pt x 168.63pt>
+<Figures/DataTNG.jpeg, id=482, 301.125pt x 168.63pt>
 File: Figures/DataTNG.jpeg Graphic file (type jpg)
 <use Figures/DataTNG.jpeg>
-Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 410.
+Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 411.
 (pdftex.def)             Requested size: 227.62204pt x 127.4731pt.
-<Figures/James_Moriarty_hologram.png, id=490, 1058.95625pt x 1058.95625pt>
+<Figures/James_Moriarty_hologram.png, id=483, 1058.95625pt x 1058.95625pt>
 File: Figures/James_Moriarty_hologram.png Graphic file (type png)
 <use Figures/James_Moriarty_hologram.png>
 Package pdftex.def Info: Figures/James_Moriarty_hologram.png  used on input lin
-e 420.
+e 421.
 (pdftex.def)             Requested size: 227.62204pt x 227.60652pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [20 <./Figures/DataTNG.jpeg>]
-<Figures/VoyagerEMH.png, id=496, 468.75125pt x 531.9875pt>
+<Figures/VoyagerEMH.png, id=489, 468.75125pt x 531.9875pt>
 File: Figures/VoyagerEMH.png Graphic file (type png)
 <use Figures/VoyagerEMH.png>
-Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 429.
+Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 430.
 (pdftex.def)             Requested size: 227.62204pt x 258.3221pt.
  [21 <./Figures/James_Moriarty_hologram.png> <./Figures/VoyagerEMH.png>] [22] [
 23]
-Overfull \hbox (7.07155pt too wide) in paragraph at lines 491--491
+Overfull \hbox (7.07155pt too wide) in paragraph at lines 492--492
 []\T1/opensans-TLF/b/n/14 A few no-table at-tempts at sim-u-lat-ing/creating in
 -tel-li-gence 
  []
 
-[24] [25]
-
-LaTeX Warning: Citation `turing1' on page 26 undefined on input line 523.
-
-[26]
-
-LaTeX Warning: Citation `ELIZA' on page 27 undefined on input line 539.
-
-[27] [28]
-Overfull \hbox (0.49295pt too wide) in paragraph at lines 578--578
+[24] [25] [26] [27] [28]
+Overfull \hbox (0.49295pt too wide) in paragraph at lines 580--580
 []\T1/opensans-TLF/b/n/14 A few no-table projects re-lated to sim-u-lat-ing/cre
 ating con-
  []
 
 
-Overfull \hbox (1.13382pt too wide) in paragraph at lines 585--586
+Overfull \hbox (1.13382pt too wide) in paragraph at lines 587--588
 \T1/stix2/m/n/12 Cog was a robotics and ar-ti-fi-cial in-tel-li-gence project d
 e-vel-oped by the Hu-manoid Robotics
  []
 
 [29]
-Overfull \hbox (11.34108pt too wide) in paragraph at lines 593--594
+Overfull \hbox (11.34108pt too wide) in paragraph at lines 595--596
 \T1/stix2/m/n/12 The Blue Brain Project, launched by the École Poly-tech-nique 
 Fédérale de Lau-sanne (EPFL),
  []
@@ -1059,23 +1038,19 @@ Chapter 2.
 [31
 
 ]
-<Figures/grid/all_tiles.png, id=559, 120.45pt x 132.495pt>
+<Figures/grid/all_tiles.png, id=552, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
-Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 628.
+Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 630.
 (pdftex.def)             Requested size: 441.01773pt x 485.16747pt.
  [32 <./Figures/grid/all_tiles.png>] [33] [34] [35] [36]
-Overfull \hbox (3.06107pt too wide) in paragraph at lines 738--739
+Overfull \hbox (3.06107pt too wide) in paragraph at lines 740--741
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-mi-sa-tion meth-
  []
 
-[37]
-
-LaTeX Warning: Citation `Chomsky2023' on page 38 undefined on input line 765.
-
-[38]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 793--794
+[37] [38]
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 796--797
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
@@ -1083,7 +1058,7 @@ e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
 [39] [40] [41]
 Chapter 3.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 822.
+ut line 825.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1092,9 +1067,9 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 822.
+ne 825.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 822.
+(Font)              scaled to size 16.0pt on input line 825.
  [42
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
@@ -1104,26 +1079,25 @@ Chapter 4.
 
 ]
 Chapter 5.
-(master_thesis.bbl [44
+No file master_thesis.bbl.
+[44
 
-]) [45
+] [45
 
 ] [46
-
-] [47
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.884 \chapter{The Code}
+l.888 \chapter{The Code}
                         
 Appendix A.
-[48
+[47
 
 
-] [49] (master_thesis.aux)
+] [48] (master_thesis.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
@@ -1250,20 +1224,22 @@ Figures/James_Moriarty_hologram.png
 Figures/VoyagerEMH.png
 Figures/grid/all_tiles.png
 ts1opensans-tlf.fd
-master_thesis.bbl
  ***********
 
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 1A6BD36C5CDFCCA2AD8A3F649A6685CC;13041.
+(rerunfilecheck)             Checksum: D1EB4C12A5121896E48B4FE0BA5D5CF6;12930.
  ) 
 Here is how much of TeX's memory you used:
- 18295 strings out of 474586
- 289601 string characters out of 5745681
+ 18268 strings out of 474586
+ 288903 string characters out of 5745681
  1937558 words of memory out of 5000000
- 39977 multiletter control sequences out of 15000+600000
+ 39959 multiletter control sequences out of 15000+600000
  639722 words of font info for 142 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,1248b,664s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1274,9 +1250,9 @@ X/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/User
 s/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-
 Regular.pfb>
-Output written on master_thesis.pdf (53 pages, 1584316 bytes).
+Output written on master_thesis.pdf (52 pages, 1580958 bytes).
 PDF statistics:
- 750 PDF objects out of 1000 (max. 8388607)
- 194 named destinations out of 1000 (max. 500000)
- 605 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 735 PDF objects out of 1000 (max. 8388607)
+ 190 named destinations out of 1000 (max. 500000)
+ 597 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -93,24 +93,32 @@ notenv = ["agents", "tiles", "entities", "grids", "debug",
           "effects.json", "syntax test sandbox.json", "sandbox.json"]
 
 
-def filter_env_paths(filedict: dict, forbidden: set = None) -> dict:
+def filter_env_paths(filedict: dict, required:set = None, forbidden: set = None) -> dict:
+    if required is None:
+        required = set()
     if forbidden is None:
         forbidden = set(notenv)
+    if required & forbidden:
+        return {}
     filtered = dict()
     for name, path in filedict.items():
         S = set(path.split("\\"))
         if S & forbidden:
             continue
+        if S & required != required:
+            continue
         filtered[name] = filedict[name]
     return filtered
 
 
-def get_valid_files(custom_exceptions=None, current_dir=None, extension: str = ".json"):
+def get_valid_files(current_dir:str=None, extension: str = ".json", custom_requirements=None, custom_exceptions=None):
     if current_dir is None:
         current_dir = RootPathManager.GetMain().root
     D = search_files(current_dir, extension)
-    res = filter_env_paths(D, custom_exceptions)
+    res = filter_env_paths(D, custom_requirements, custom_exceptions)
     return res
+
+def find_valid_files(custom_requirements=None)
 
 
 def read_file_to_dict(name, filepath, resdict):
@@ -141,6 +149,7 @@ def read_all_files(exceptions=None, current_dir=None):
 def main():
     # Example usage
     dm: RootPathManager = RootPathManager.GetMain('diplomski-rad')
+    curd=dm.GetFullPath("test_json")
     path = dm.GetFullPath('test_json')
     print(path)
     test = search_files(path)

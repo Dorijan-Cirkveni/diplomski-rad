@@ -76,6 +76,7 @@ def getRaw(files=None):
 
 
 def main():
+    files=get_valid_files(current_dir="test_json")
     res=getRaw()
     for name,L in res:
         print(name)

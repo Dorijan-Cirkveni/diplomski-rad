@@ -38,6 +38,22 @@ def ReadFragmentAddress(s: str):
     return name, F[1:]
 
 
+def FragNestedStructGet(root, indices):
+    """
+    Gets value from a nested data structure.
+    :param root: The root of the structure.
+    :param indices: The list of indices.
+    :return: The value.
+    """
+    for e_key in indices:
+        e_key: str
+        if type(root)==dict and
+        ValidateIndex(root, e_key, indices)
+        e_key: [str, int]
+        root = root[e_key]
+    return root
+
+
 def is_extendable(position):
     rem=re.match("<EXTEND.*>", position)
     return rem is not None
@@ -206,7 +222,7 @@ class FragmentedJsonManager:
     def __init__(self, root: str = None, custom_exceptions=None):
         if root is None:
             root = fisys.RootPathManager.GetMain().GetFullPath("test_json")
-        files = fisys.get_valid_files(custom_exceptions,root)
+        files = fisys.get_valid_files(root, custom_exceptions=custom_exceptions)
         self.files = {}
         for e, v in files.items():
             struct = FragmentedJsonStruct.load(v)

@@ -1,4 +1,4 @@
-import test_json.test_json_manager as jsonmngr
+import util.FragmentedJSON as frjson
 import util.UtilManager
 import util.UtilManager as utilmngr
 from display.customtkinter.ctkDataManager import ctkDataManager
@@ -52,10 +52,10 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.save_button = ctk.CTkButton(self, text="Save environment", command=self.save_env_start)
         self.save_button.pack(padx=10, pady=10)
 
-    def set_env(self, file, ind, name):
+    def set_env(self, file, fragment:frjson.FragmentedJsonStruct, ind, name):
         envname = utilmngr.MakeClassNameReadable(file) + ": " + name
         self.s_env.set(envname)
-        self.env_data = jsonmngr.ImportManagedJSON(f"{file}|{ind}")
+        self.env_data = fragment.get_full()
 
     def set_agent(self, agentname, agentraw):
         agentclass = agentmngr.ALL_AGENTS[agentname]
@@ -142,6 +142,7 @@ class SelectionFrame(iTkFrame):
         self.w_agents = None
         self.w_envs = None
         self.w_data = None
+        self.env_mngr = frjson.FragmentedJsonManager()
         self.env_names = jsonmngr.getNamesAndIndices()  # Format: [("file", ["Env1", "Env2", "Env3"])]
         self.default_env_names = [(name,envs[:]) for name,envs in self.env_names]
         self.kwargs = kwargs
