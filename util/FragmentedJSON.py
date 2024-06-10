@@ -47,9 +47,7 @@ def FragNestedStructGet(root, indices):
     """
     for e_key in indices:
         e_key: str
-        ValidateIndex(root, e_key, indices)
-        e_key: [str, int]
-        root = root[e_key]
+        root=ValidateIndex(root, e_key, indices)
     return root
 
 
@@ -272,8 +270,7 @@ class FragmentedJsonManager:
         F.close()
         S=set(L)
         print(S)
-        files=fisys.get_valid_files(root, allowed=S)
-        print(json.dumps(files,indent=1))
+        return FragmentedJsonManager(root,allowed=S,denied=set())
 
     def get_full(self, file, indices=None, fragmentNameRule=FragmentDefaultNameRule):
         if indices is None:
@@ -339,8 +336,9 @@ def main():
     print(RPM.root,">")
     root=RPM.GetFullPath("test_json")
     manager = FragmentedJsonManager.load(root,fisys.PathJoin(root,'solo_files.txt'))
-    full_data = manager.get_to_depth("all_categories", [], 1)
-    print(json.dumps(full_data,indent=4))
+    for cat in manager.files:
+        full_data = manager.get_to_depth(cat, [], 1)
+        print(json.dumps(full_data,indent=4))
     return
 
 
