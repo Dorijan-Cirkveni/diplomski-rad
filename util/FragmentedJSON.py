@@ -184,6 +184,7 @@ class FragmentedJsonStruct:
             raise Exception(filepath, err)
         return FragmentedJsonStruct(root, filepath)
 
+
     def get(self, indices: list = None):
         if indices is None:
             indices = []
@@ -244,6 +245,7 @@ class FragmentedJsonManager:
     def __init__(self, root: str = None, allowed=None, denied=None):
         if root is None:
             root = fisys.RootPathManager.GetMain().GetFullPath("test_json")
+        self.root=root
         files = fisys.get_valid_files(root, allowed=allowed, denied=denied)
         self.files = {}
         for e, v in files.items():
@@ -255,6 +257,19 @@ class FragmentedJsonManager:
         if loadfile:
             allowed, denied = fisys.get_allowed_denied_from_file(root,loadfile)
         return FragmentedJsonManager(root,allowed=allowed,denied=denied)
+
+    def get_names(self, critfile="solo_files.txt"):
+        if ":" not in critfile:
+            critfile=fisys.PathJoin(self.root,critfile)
+        RES=[]
+        for cat in fisys.get_valid_files_from_file(self.root,critfile):
+            CUR=[]
+            full_data = self.get_to_depth(cat, [], 1)
+            for i,e in enumerate(full_data):
+                assert isinstance(e,dict)
+                CUR.append((e.get("name"),e))
+            RES.append((cat,CUR))
+        return RES
 
     def get_full(self, file, indices=None, fragmentNameRule=FragmentDefaultNameRule):
         if indices is None:
@@ -320,13 +335,11 @@ def main():
     print(RPM.root,">")
     root=RPM.GetFullPath("test_json")
     manager = FragmentedJsonManager.load(root,denied=set())
-    file=fisys.PathJoin(root,"solo_files.txt")
-    for cat in fisys.get_valid_files_from_file(root,file):
-        print(cat in manager.files)
-        print(cat)
-        full_data = manager.get_to_depth(cat, [], 1)
-        for i,e in enumerate(full_data):
-            print("\t",i,e.get('name')if type(e)==dict else type(e))
+    RES=manager.get_names("solo_files.txt")
+    for name,E in RES:
+        print(name)
+        for subname,X in E:
+            print("\t",subname)
     return
 
 
