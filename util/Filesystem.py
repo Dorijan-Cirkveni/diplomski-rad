@@ -126,7 +126,8 @@ def filter_env_paths(filedict: dict, allowed:set = None, forbidden: set = None) 
     if forbidden is None:
         forbidden = set(notenv)
     if allowed & forbidden:
-        return {}
+        print("Overlap:",allowed & forbidden)
+        allowed -= forbidden
     filtered = dict()
     for name, path in filedict.items():
         S = set(path.split("\\"))
@@ -175,13 +176,11 @@ def main():
     # Example usage
     print("Root:", FindRoot())
     dm: RootPathManager = RootPathManager.GetMain()
-    curd=dm.GetFullPath("test_json")
     path = dm.GetFullPath('test_json')
     print(path)
-    test = search_files(path)
-    for e, v in test.items():
-        vs = v.split('diplomski-rad')[-1]
-        print(vs + " " * ((-len(vs)) % 10 + 10), e)
+    S={'basic', 'mirror_test.json', 'custom', 'main_batch.json', 'all_categories.json', 'tiles', 'mazes'}
+    res=get_valid_files(path,allowed=S)
+    print(json.dumps(res,indent=4))
 
 
 if __name__ == "__main__":
