@@ -53,7 +53,6 @@ def FindRoot(marker_files=None, slash="\\"):
     path=""
     respath=None
     for e in PL:
-        print(path)
         for marker_file in marker_files:
             checkpath=PathJoin(path,marker_file)
             if os.path.exists(checkpath):
@@ -125,7 +124,7 @@ notenv = ["agents", "tiles", "entities", "grids", "debug",
 def filter_env_paths(filedict: dict, allowed:set = None, forbidden: set = None) -> dict:
     if forbidden is None:
         forbidden = set(notenv)
-    if allowed & forbidden:
+    if allowed and allowed & forbidden:
         print("Overlap:",allowed & forbidden)
         allowed -= forbidden
     filtered = dict()
@@ -145,6 +144,25 @@ def get_valid_files(current_dir:str=None, extension: str = ".json", allowed=None
     D = search_files(current_dir, extension)
     res = filter_env_paths(D, allowed, denied)
     return res
+
+
+def get_allowed_denied_from_file(root:str, loadfile:str):
+    F=open(loadfile,'r')
+    L=F.read().split("\n")
+    F.close()
+    allowed=set()
+    denied=set()
+    for E in L:
+        if E[0]=="!":
+            denied.add(E[1:])
+        else:
+            allowed.add(E)
+    return allowed if allowed else None, denied if denied else None
+
+
+def get_valid_files_from_file(root:str, loadfile:str):
+    allowed, denied = get_allowed_denied_from_file(root, loadfile)
+    return get_valid_files(root,".json", allowed, denied)
 
 
 def read_file_to_dict(name, filepath, resdict):

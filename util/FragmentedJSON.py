@@ -251,13 +251,10 @@ class FragmentedJsonManager:
             self.files[e] = struct
 
     @staticmethod
-    def load(root:str, loadfile:str):
-        F=open(loadfile,'r')
-        L=F.read().split("\n")
-        F.close()
-        S=set(L)
-        print(S)
-        return FragmentedJsonManager(root,allowed=S,denied=set())
+    def load(root:str, loadfile:str=None, allowed=None, denied=None):
+        if loadfile:
+            allowed, denied = fisys.get_allowed_denied_from_file(root,loadfile)
+        return FragmentedJsonManager(root,allowed=allowed,denied=denied)
 
     def get_full(self, file, indices=None, fragmentNameRule=FragmentDefaultNameRule):
         if indices is None:
@@ -322,10 +319,14 @@ def main():
     RPM=fisys.RootPathManager.GetMain()
     print(RPM.root,">")
     root=RPM.GetFullPath("test_json")
-    manager = FragmentedJsonManager.load(root,fisys.PathJoin(root,'solo_files.txt'))
-    for cat in manager.files:
+    manager = FragmentedJsonManager.load(root,denied=set())
+    file=fisys.PathJoin(root,"solo_files.txt")
+    for cat in fisys.get_valid_files_from_file(root,file):
+        print(cat in manager.files)
+        print(cat)
         full_data = manager.get_to_depth(cat, [], 1)
-        print(json.dumps(full_data,indent=4))
+        for i,e in enumerate(full_data):
+            print("\t",i,e.get('name')if type(e)==dict else type(e))
     return
 
 
