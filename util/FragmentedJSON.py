@@ -267,7 +267,9 @@ class FragmentedJsonManager:
             full_data = self.get_to_depth(cat, [], 1)
             for i,e in enumerate(full_data):
                 assert isinstance(e,dict)
-                CUR.append((e.get("name"),e))
+                if "name" not in e:
+                    raise Exception(f"Category {cat}, entry {i} doesn't have a name!")
+                CUR.append(e["name"])
             RES.append((cat,CUR))
         return RES
 
@@ -338,7 +340,7 @@ def main():
     RES=manager.get_names("solo_files.txt")
     for name,E in RES:
         print(name)
-        for subname,X in E:
+        for subname in E:
             print("\t",subname)
     return
 
