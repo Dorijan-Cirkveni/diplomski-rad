@@ -19,6 +19,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
         self.run_command = run_command
 
+        self.catname = None
         self.envname = None
         self.agentclass = None
         self.eval = GridEvalMethod
@@ -53,9 +54,11 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.save_button.pack(padx=10, pady=10)
 
     def set_env(self, file, fragment:frjson.FragmentedJsonStruct, ind, name):
+        self.catname = file
         envname = utilmngr.MakeClassNameReadable(file) + ": " + name
         self.s_env.set(envname)
-        self.env_data = fragment.get_to_depth()
+        self.env_data = (fragment,ind)
+        print(envname,fragment,ind)
 
     def set_agent(self, agentname, agentraw):
         agentclass = agentmngr.ALL_AGENTS[agentname]
@@ -65,9 +68,14 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agent_data = agentraw
 
     def get_parameters(self):
+        frag,ind=self.env_data
+        frag:frjson.FragmentedJsonStruct
+        ind:int
         data = {
+            "Category name": self.catname,
             "Environment name": self.s_env.get(),
-            "Environment data": self.env_data,
+            "Env meta": self.env_data,
+            "Environment data": frag.root[ind],
             "Agent data": self.agent_data,
             "Evaluation method": self.eval.__name__,
             "Evaluation parameters": self.evalparams
@@ -80,7 +88,9 @@ class EnvCustomFrame(ctk.CTkFrame):
 
     def close_edit_parameters(self,data):
         self.s_env.set(data["Environment name"])
-        self.env_data = data["Environment data"]
+        env_data = data["Environment data"]
+        frag,ind=self.env_data
+        frag.root[ind]=env_data
         self.agent_data = data["Agent data"]
         method=data["Evaluation method"]
         self.s_method.set("Method: "+method)
@@ -92,11 +102,11 @@ class EnvCustomFrame(ctk.CTkFrame):
         print("-" * 160)
         data=self.get_parameters()
         env_name=data.get("Environment name",None)
-        env_data=data.get("Environment data",None)
+        env_data_short=data.get("Environment data",None)
         if env_name is None:
             PopupMessage(self, "Error", "Missing environment name!")
             return
-        if env_data is None:
+        if env_data_short is None:
             PopupMessage(self, "Error", "Missing environment data!")
             return
         if self.agentclass is None:
@@ -179,9 +189,9 @@ class SelectionFrame(iTkFrame):
         self.w_data = middle_frame
         return
 
-    def factory_env(self, file, ind, name):
+    def factory_env(self, file:str, fragment:frjson.FragmentedJsonStruct, ind:int, name:str):
         def env():
-            return self.w_data.set_env(file, ind, name)
+            return self.w_data.set_env(file, fragment, ind, name)
 
         return env
 
@@ -195,9 +205,10 @@ class SelectionFrame(iTkFrame):
         cats = []
         for filename, envs in self.env_names:
             elements = []
+            fragment = self.env_mngr.files[filename]
             for ind, name in enumerate(envs):
                 legible_text = util.UtilManager.ProcessClassName(name)
-                elements.append(ButtonData(legible_text, self.factory_env(filename, ind, name), 1))
+                elements.append(ButtonData(legible_text, self.factory_env(filename, fragment, ind, name), 1))
             cat = CategoryData(filename, elements, 0)
             cats.append(cat)
         return cats
@@ -217,6 +228,11 @@ class SelectionFrame(iTkFrame):
         return cats
 
     def run_environment(self, data):
+        EDC="Environment data"
+        catname=data["Category name"]
+        _, ind = data["Env meta"]
+        fragdata=self.env_mngr.get_full(catname,ind)
+        data[EDC]=fragdata
         func = self.swapFrameFactory(GRIDDISPLAY, data)
         func()
 
