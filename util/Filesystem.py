@@ -4,6 +4,12 @@ import os
 DEFAULTROOT = "diplomski-rad"
 
 
+def PathJoin(start, end, slash="\\"):
+    if start:
+        start+=slash
+    return start+end
+
+
 def Synchronise(path, slash: str):
     """
 
@@ -34,7 +40,9 @@ def MakeRootPath(root=None, slash="\\"):
         PL.pop()
     return slash.join(PL)
 
-def FindRoot(marker_files:set={"LICENSE"}, slash="\\"):
+def FindRoot(marker_files=None, slash="\\"):
+    if marker_files is None:
+        marker_files = {"LICENSE"}
     if isinstance(marker_files,str):
         marker_files={marker_files}
     if isinstance(marker_files,list):
@@ -42,14 +50,15 @@ def FindRoot(marker_files:set={"LICENSE"}, slash="\\"):
     path = os.path.dirname(os.path.abspath(__file__))
     path = Synchronise(path, slash)
     PL = path.split(slash)
-    path=PL[0]
+    path=""
     respath=None
-    for e in PL[1:]:
+    for e in PL:
         print(path)
         for marker_file in marker_files:
-            if os.path.exists(slash.join([path,marker_file])):
+            checkpath=PathJoin(path,marker_file)
+            if os.path.exists(checkpath):
                 respath=path
-        path=slash.join([path,e])
+        path=PathJoin(path,e)
     return respath
 
 
@@ -87,7 +96,7 @@ class RootPathManager:
         :return:
         """
         # Add path to defaultroot and return result.
-        return os.path.join(self.root, path)
+        return PathJoin(self.root, path)
 
 
 def search_files(maindir: str, extension: str = ".json") -> dict:
@@ -104,7 +113,7 @@ def search_files(maindir: str, extension: str = ".json") -> dict:
     for root, dirs, files in os.walk(maindir):
         for file in files:
             if file.endswith(extension):
-                result[file[:k]] = os.path.join(root, file)
+                result[file[:k]] = PathJoin(root, file)
 
     return result
 
