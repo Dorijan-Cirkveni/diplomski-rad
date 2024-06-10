@@ -1,4 +1,5 @@
 import json
+import os.path
 import re
 from collections import deque, defaultdict
 from copy import deepcopy
@@ -335,8 +336,8 @@ class FragmentedJsonManager:
 def main():
     RPM=fisys.RootPathManager.GetMain()
     print(RPM.root,">")
-    root='C:\\FER_diplomski\\dip_rad\\testenv\\diplomski-rad\\test_json'
-    manager = FragmentedJsonManager.load(root)
+    root=RPM.GetFullPath("test_json")
+    manager = FragmentedJsonManager.load(root,os.path.join())
     full_data = manager.get_to_depth("all_categories", [], 1)
     print(json.dumps(full_data,indent=4))
     return
