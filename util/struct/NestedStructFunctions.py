@@ -46,7 +46,7 @@ class StepData:
     """
     A data structure describing a step connection.
     """
-    def __init__(self,filename:str,arch,position:[int,str],cur,*args):
+    def __init__(self,filename:str,arch,position:[int,str],cur,depth=0):
         """
         :param filename: File name.
         :param arch: Data structure
@@ -58,16 +58,18 @@ class StepData:
         self.arch = arch
         self.position = position
         self.cur = cur
-        self.args=args
+        self.depth = depth
+    def __repr__(self):
+        return f"StepData({self.filename},{type(self.arch)},{self.position},{self.cur},{self.depth})"
 
 
-def NestedStructWalk(root, postfunc=None, prefunc=None):
+def NestedStructWalk(root, postfunc=None, prefunc=None, filename=""):
     archroot = [root]
     stack = [(archroot, 0)]
     while stack:
         arch, position = stack.pop()
         cur = arch[position]
-        sd=StepData("",arch,position,cur)
+        sd=StepData(filename,arch,position,cur)
         iters = STRUCTITERS.get(type(cur),NULLSTRUCT)(cur)
         if prefunc is not None:
             prefunc(sd)

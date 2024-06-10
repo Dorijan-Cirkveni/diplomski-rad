@@ -137,7 +137,6 @@ def CheckDepthFactory(depthDict, maxdepth, fragment_list: list, fragmentNameRule
             return False
         if not fragmentNameRule(cur):
             return False
-        addr = ReadFragmentAddress(cur)
         fragment_list.append(sd)
         return True
 
@@ -213,7 +212,7 @@ class FragmentedJsonStruct:
         nestr.NestedStructWalk(newroot, func)
         return nestr.NestedStructGet(newroot, indices)
 
-    def get_to_depth(self, indices: list, maxdepth=None, curdepth=0,
+    def get_to_depth(self, indices: list, maxdepth=None, curdepth=0, filename="",
                      fragmentNameRule=FragmentDefaultNameRule, fragmentedSegments=None):
         """
         Get all content of the file and referenced files
@@ -231,7 +230,7 @@ class FragmentedJsonStruct:
                                        fragmentedSegments, fragmentNameRule)
         root = nestr.NestedStructGet(self.root, indices)
         newroot = deepcopy(root)
-        nestr.NestedStructWalk(newroot, checkDepth)
+        nestr.NestedStructWalk(newroot, checkDepth, filename=filename)
         return newroot
 
 
@@ -258,7 +257,7 @@ class FragmentedJsonManager:
         RES = []
         for cat in fisys.get_valid_files_from_file(self.root, critfile):
             CUR = []
-            full_data = self.get_to_depth(cat, [], 1)
+            full_data = self.get(cat, [], 2)
             for i, e in enumerate(full_data):
                 assert isinstance(e, dict)
                 if "name" not in e:
@@ -267,26 +266,26 @@ class FragmentedJsonManager:
             RES.append((cat, CUR))
         return RES
 
-    def process_fragment(self, E: nestr.StepData, read_by_addr: dict, fragcount: dict, unread_fragments,
+    def process_fragment(self, E: nestr.StepData, read_by_addr: dict, fragcount: dict, unread_fragments, maxdepth=None,
                          fragmentNameRule=FragmentDefaultNameRule):
         # arch, addr, filedata, depth=E
-        filedata = E.position
+        filedata = E.cur
         if type(filedata) == str:
             filedata = ReadFragmentAddress(filedata)
         (file, indices) = filedata
-        fragcount[file] = fragcount.get(file, 0)
-        fragcount[E.filename] += 1
+        fragcount[file]=0
+        fragcount[E.filename]+=1
 
         fragment = self.files[file]
         frag_segm = []
-        res = fragment.get_full(indices, fragmentNameRule=fragmentNameRule, fragmentedSegments=frag_segm)
-        E.cur = res
+        res = fragment.get_to_depth(indices, maxdepth, E.depth, filename=file,
+                                    fragmentNameRule=fragmentNameRule, fragmentedSegments=frag_segm)
+        E.cur = (filedata,res)
         read_by_addr[file].append(E)
-        if frag_segm:
-            unread_fragments.extend(frag_segm)
-            fragcount[file] += len(frag_segm)
+        unread_fragments.extend(frag_segm)
 
-    def get_full(self, file, indices=None, fragmentNameRule=FragmentDefaultNameRule):
+    def get(self, file, indices=None, maxdepth=None,
+            fragmentNameRule=FragmentDefaultNameRule):
         if indices is None:
             indices = []
         if file not in self.files:
@@ -294,54 +293,31 @@ class FragmentedJsonManager:
         unread_fragments = deque()
 
         arch = [None]
-        unread_fragments.append((None, arch, 0, (file, indices), 0))
+        initfragment=nestr.StepData("", arch, 0, (file, indices), 0)
+        unread_fragments.append(initfragment)
         missingFiles = defaultdict(list)
 
-        fragcount = defaultdict(int)
+        fragcount = {"":0}
         read_by_addr = defaultdict(list)
-        free_fragments = []
         while unread_fragments:
             E = unread_fragments.popleft()
-            self.process_fragment(E, read_by_addr, fragcount, unread_fragments, fragmentNameRule)
+            self.process_fragment(E, read_by_addr, fragcount, unread_fragments, maxdepth, fragmentNameRule)
+
         if missingFiles:
             raise MakeMissingFilesException(missingFiles)
+        free_fragments=[e for e,v in fragcount.items() if v==0]
         while free_fragments:
             ffcur = free_fragments.pop()
-            read_fragments = read_by_addr.pop(ffcur)
+            read_fragments = read_by_addr.pop(ffcur,[])
             while read_fragments:
-                arch, addr, res = read_fragments.pop()
-                arch[addr] = res
-        ExtendAllApplicable(arch)
-        return arch[0]
+                E:nestr.StepData = read_fragments.pop()
+                E.arch[E.position]=E.cur[1]
+                fragcount[E.filename]-=1
+                if fragcount[E.filename]==0:
+                    free_fragments.append(E.filename)
 
-    def get_to_depth(self, file, indices,
-                     maxdepth=-2, fragmentNameRule=FragmentDefaultNameRule):
-        if file not in self.files:
-            raise Exception(f"File {file} not found!")
-        unread_fragments = deque()
-
-        arch = [None]
-        start_fragment = nestr.StepData("", arch, 0, (file, indices), 0)
-        unread_fragments.append(start_fragment)
-        read_fragments = []
-        missingFiles = defaultdict(list)
-        while unread_fragments:
-            E: nestr.StepData = unread_fragments.popleft()
-            (file, indices) = E.cur
-            depth = E.args[0]
-            fragment = self.files[file]
-            frag_segm = []
-            res = fragment.get_to_depth(indices, maxdepth, depth,
-                                        fragmentNameRule=fragmentNameRule,
-                                        fragmentedSegments=frag_segm)
-            read_fragments.append((arch, addr, res))
-            unread_fragments.extend(frag_segm)
-        if missingFiles:
-            raise MakeMissingFilesException(missingFiles)
-        while read_fragments:
-            arch, addr, res = read_fragments.pop()
-            arch[addr] = res
         ExtendAllApplicable(arch)
+        print(arch[0])
         return arch[0]
 
 

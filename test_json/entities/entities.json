@@ -1,3 +1,4 @@
 {
-  "box": {"id": -1, "displays": [4], "curdis": 0, "properties": {"loc": [0,0]}}
+  "box": {"id": -1, "displays": [4], "curdis": 0, "properties": {"loc": [0,0]}},
+  "mazeent": {"id": 0, "displays": [0,1,2,3], "curdis": 3, "properties": {"loc": [2, 5], "viewdir": 15}}
 }

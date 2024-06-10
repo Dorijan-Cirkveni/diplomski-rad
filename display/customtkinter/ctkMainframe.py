@@ -45,7 +45,7 @@ def main():
     RPM=fisys.RootPathManager.GetMain()
     fileroot=RPM.GetFullPath("test_json")
     manager = frjson.FragmentedJsonManager.load(fileroot,denied=set())
-    raw=manager.get_full('t_base',[0])
+    raw=manager.get('t_base',[0])
     env = GridEnvironment.raw_init(raw)
     env: GridEnvironment
     env.assign_active_agent(GraphicManualInputAgent())
