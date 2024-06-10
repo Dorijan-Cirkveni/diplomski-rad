@@ -42,21 +42,40 @@ STRUCTITERS = {
 }
 
 
+class StepData:
+    """
+    A data structure describing a step connection.
+    """
+    def __init__(self,filename:str,arch,position:[int,str],cur,*args):
+        """
+        :param filename: File name.
+        :param arch: Data structure
+        :param position: Index of "cur" in arch
+        :param cur: Another data structure
+        :param ty: Type of cur
+        """
+        self.filename = filename
+        self.arch = arch
+        self.position = position
+        self.cur = cur
+        self.args=args
+
+
 def NestedStructWalk(root, postfunc=None, prefunc=None):
     archroot = [root]
     stack = [(archroot, 0)]
     while stack:
         arch, position = stack.pop()
         cur = arch[position]
-        ty = type(cur)
-        iters = STRUCTITERS.get(ty,NULLSTRUCT)(cur)
+        sd=StepData("",arch,position,cur)
+        iters = STRUCTITERS.get(type(cur),NULLSTRUCT)(cur)
         if prefunc is not None:
-            prefunc(arch, position, cur, ty)
+            prefunc(sd)
         for i in iters:
             E = (cur, i)
             stack.append(E)
         if postfunc is not None:
-            postfunc(arch, position, cur, ty)
+            postfunc(sd)
 
 
 def main():

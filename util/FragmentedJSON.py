@@ -39,7 +39,7 @@ def ReadFragmentAddress(s: str):
 
 
 def is_extendable(position):
-    rem=re.match("<EXTEND.*>", position)
+    rem = re.match("<EXTEND.*>", position)
     return rem is not None
 
 
@@ -48,25 +48,23 @@ def get_extend_keys(position):
     return keys
 
 
-def extendAppl(arch, position, cur, ty):
+def extendAppl(sd: nestr.StepData):
     """
     Extend dictionary using one of its entries.
-    :param arch: Extended dictionary.
-    :param position: Key of extending dictionary, containing key characters if applicable.
-            Special case: \<EXTEND<keychars and unused chars>\>
-            Key characters (absence indicates inverse behaviour):
-                Priority:
-                    -(A)rch Priority: when conflict occurs, arch value is prioritised.
-                    -Default: when conflict occurs, cur value is prioritised.
-                Substructure handling:
-                    -(C)ombine Substructures: when applicable (list to list, dict to dict),
-                    substructures are combined rather than overwritten.
-                    -Default: Substructures are always overwritten.
-    :param cur:
-    :param ty:
+    :param sd: Step data
+    Value of "position": <EXTEND(keychars and unused chars)>
+    Key characters (absence indicates inverse behaviour):
+        Priority:
+            -(A)rch Priority: when conflict occurs, arch value is prioritised.
+            -Default: when conflict occurs, cur value is prioritised.
+        Substructure handling:
+            -(C)ombine Substructures: when applicable (list to list, dict to dict),
+            substructures are combined rather than overwritten.
+            -Default: Substructures are always overwritten.
     :return:
     """
-    testtypes = (type(arch), type(position), ty)
+    arch, position, cur = sd.arch, sd.position, sd.cur
+    testtypes = (type(arch), type(position), type(cur))
     reftypes = (dict, str, dict)
     if testtypes != reftypes:
         return False
@@ -104,48 +102,43 @@ def ExternalRetrieverFactory(fragment_list: list, fragmentNameRule=FragmentDefau
     """
     Creates extender function to be used in a nested structure walk.
     :param fragment_list:
+    :param fragmentNameRule:
     """
 
-    def func(arch, position, cur, ty):
+    def func(sd: nestr.StepData):
         """
 
-        :param arch:
-        :param position:
-        :param cur:
-        :param ty:
+        :param sd:
         :return:
         """
-        if ty != str:
+        if type(sd.cur) != str:
             return False
-        if not fragmentNameRule(cur):
+        if not fragmentNameRule(sd.cur):
             return False
-        fragment_list.append((arch, position, cur, ty))
+        fragment_list.append(sd)
         return True
 
     return func
 
 
-def CheckDepthFactory(depthDict, maxdepth, fragment_list:list, fragmentNameRule):
-
-    def checkDepth(arch, position, cur, ty):
+def CheckDepthFactory(depthDict, maxdepth, fragment_list: list, fragmentNameRule):
+    def checkDepth(sd: nestr.StepData):
         """
 
-        :param arch:
-        :param position:
-        :param cur:
-        :param ty:
+        :param sd:
         :return:
         """
-        dia = depthDict.get(id(arch),depthDict.get(None,-1))
+        dia = depthDict.get(id(sd.arch), depthDict.get(None, -1))
         if dia == maxdepth:
             return False
+        cur = sd.cur
         depthDict[id(cur)] = dia + 1
-        if ty != str:
+        if not isinstance(cur, str):
             return False
         if not fragmentNameRule(cur):
             return False
-        addr=ReadFragmentAddress(cur)
-        fragment_list.append((arch, position, addr, dia+1))
+        addr = ReadFragmentAddress(cur)
+        fragment_list.append(sd)
         return True
 
     return checkDepth
@@ -184,7 +177,6 @@ class FragmentedJsonStruct:
             raise Exception(filepath, err)
         return FragmentedJsonStruct(root, filepath)
 
-
     def get(self, indices: list = None):
         if indices is None:
             indices = []
@@ -219,9 +211,9 @@ class FragmentedJsonStruct:
         func = ExternalRetrieverFactory(fragmentedSegments, fragmentNameRule)
         newroot = deepcopy(self.root)
         nestr.NestedStructWalk(newroot, func)
-        return nestr.NestedStructGet(newroot,indices)
+        return nestr.NestedStructGet(newroot, indices)
 
-    def get_to_depth(self, indices:list, maxdepth=None, curdepth=0,
+    def get_to_depth(self, indices: list, maxdepth=None, curdepth=0,
                      fragmentNameRule=FragmentDefaultNameRule, fragmentedSegments=None):
         """
         Get all content of the file and referenced files
@@ -232,12 +224,12 @@ class FragmentedJsonStruct:
         """
         if fragmentedSegments is None:
             fragmentedSegments = []
-        depthDict = {None:curdepth-(len(indices)+1)}
+        depthDict = {None: curdepth - (len(indices) + 1)}
         func = ExternalRetrieverFactory(fragmentedSegments, fragmentNameRule)
 
-        checkDepth=CheckDepthFactory(depthDict,maxdepth,
-                                     fragmentedSegments,fragmentNameRule)
-        root=nestr.NestedStructGet(self.root,indices)
+        checkDepth = CheckDepthFactory(depthDict, maxdepth,
+                                       fragmentedSegments, fragmentNameRule)
+        root = nestr.NestedStructGet(self.root, indices)
         newroot = deepcopy(root)
         nestr.NestedStructWalk(newroot, checkDepth)
         return newroot
@@ -247,7 +239,7 @@ class FragmentedJsonManager:
     def __init__(self, root: str = None, allowed=None, denied=None):
         if root is None:
             root = fisys.RootPathManager.GetMain().GetFullPath("test_json")
-        self.root=root
+        self.root = root
         files = fisys.get_valid_files(root, allowed=allowed, denied=denied)
         self.files = {}
         for e, v in files.items():
@@ -255,25 +247,44 @@ class FragmentedJsonManager:
             self.files[e] = struct
 
     @staticmethod
-    def load(root:str, loadfile:str=None, allowed=None, denied=None):
+    def load(root: str, loadfile: str = None, allowed=None, denied=None):
         if loadfile:
-            allowed, denied = fisys.get_allowed_denied_from_file(root,loadfile)
-        return FragmentedJsonManager(root,allowed=allowed,denied=denied)
+            allowed, denied = fisys.get_allowed_denied_from_file(root, loadfile)
+        return FragmentedJsonManager(root, allowed=allowed, denied=denied)
 
     def get_names(self, critfile="solo_files.txt"):
         if ":" not in critfile:
-            critfile=fisys.PathJoin(self.root,critfile)
-        RES=[]
-        for cat in fisys.get_valid_files_from_file(self.root,critfile):
-            CUR=[]
+            critfile = fisys.PathJoin(self.root, critfile)
+        RES = []
+        for cat in fisys.get_valid_files_from_file(self.root, critfile):
+            CUR = []
             full_data = self.get_to_depth(cat, [], 1)
-            for i,e in enumerate(full_data):
-                assert isinstance(e,dict)
+            for i, e in enumerate(full_data):
+                assert isinstance(e, dict)
                 if "name" not in e:
                     raise Exception(f"Category {cat}, entry {i} doesn't have a name!")
                 CUR.append(e["name"])
-            RES.append((cat,CUR))
+            RES.append((cat, CUR))
         return RES
+
+    def process_fragment(self, E: nestr.StepData, read_by_addr: dict, fragcount: dict, unread_fragments,
+                         fragmentNameRule=FragmentDefaultNameRule):
+        # arch, addr, filedata, depth=E
+        filedata = E.position
+        if type(filedata) == str:
+            filedata = ReadFragmentAddress(filedata)
+        (file, indices) = filedata
+        fragcount[file] = fragcount.get(file, 0)
+        fragcount[E.filename] += 1
+
+        fragment = self.files[file]
+        frag_segm = []
+        res = fragment.get_full(indices, fragmentNameRule=fragmentNameRule, fragmentedSegments=frag_segm)
+        E.cur = res
+        read_by_addr[file].append(E)
+        if frag_segm:
+            unread_fragments.extend(frag_segm)
+            fragcount[file] += len(frag_segm)
 
     def get_full(self, file, indices=None, fragmentNameRule=FragmentDefaultNameRule):
         if indices is None:
@@ -282,26 +293,24 @@ class FragmentedJsonManager:
             raise Exception(f"File {file} not found!")
         unread_fragments = deque()
 
-        arch=[None]
-        unread_fragments.append((arch,0,(file,indices),0))
-        read_fragments=[]
-        missingFiles=defaultdict(list)
+        arch = [None]
+        unread_fragments.append((None, arch, 0, (file, indices), 0))
+        missingFiles = defaultdict(list)
+
+        fragcount = defaultdict(int)
+        read_by_addr = defaultdict(list)
+        free_fragments = []
         while unread_fragments:
-            E=unread_fragments.popleft()
-            arch, addr, filedata, depth=E
-            if type(filedata)==str:
-                filedata=ReadFragmentAddress(filedata)
-            (file, indices)=filedata
-            fragment=self.files[file]
-            frag_segm=[]
-            res=fragment.get_full(indices, fragmentNameRule=fragmentNameRule, fragmentedSegments=frag_segm)
-            read_fragments.append((arch,addr,res))
-            unread_fragments.extend(frag_segm)
+            E = unread_fragments.popleft()
+            self.process_fragment(E, read_by_addr, fragcount, unread_fragments, fragmentNameRule)
         if missingFiles:
             raise MakeMissingFilesException(missingFiles)
-        while read_fragments:
-            arch,addr,res = read_fragments.pop()
-            arch[addr] = res
+        while free_fragments:
+            ffcur = free_fragments.pop()
+            read_fragments = read_by_addr.pop(ffcur)
+            while read_fragments:
+                arch, addr, res = read_fragments.pop()
+                arch[addr] = res
         ExtendAllApplicable(arch)
         return arch[0]
 
@@ -311,41 +320,41 @@ class FragmentedJsonManager:
             raise Exception(f"File {file} not found!")
         unread_fragments = deque()
 
-        arch=[None]
-        unread_fragments.append((arch,0,(file,indices),0))
-        read_fragments=[]
-        missingFiles=defaultdict(list)
+        arch = [None]
+        start_fragment = nestr.StepData("", arch, 0, (file, indices), 0)
+        unread_fragments.append(start_fragment)
+        read_fragments = []
+        missingFiles = defaultdict(list)
         while unread_fragments:
-            E=unread_fragments.popleft()
-            arch, addr, filedata, depth=E
-            (file, indices)=filedata
-            fragment=self.files[file]
-            frag_segm=[]
-            res=fragment.get_to_depth(indices, maxdepth, depth,
-                                      fragmentNameRule=fragmentNameRule,
-                                      fragmentedSegments=frag_segm)
-            read_fragments.append((arch,addr,res))
+            E: nestr.StepData = unread_fragments.popleft()
+            (file, indices) = E.cur
+            depth = E.args[0]
+            fragment = self.files[file]
+            frag_segm = []
+            res = fragment.get_to_depth(indices, maxdepth, depth,
+                                        fragmentNameRule=fragmentNameRule,
+                                        fragmentedSegments=frag_segm)
+            read_fragments.append((arch, addr, res))
             unread_fragments.extend(frag_segm)
         if missingFiles:
             raise MakeMissingFilesException(missingFiles)
         while read_fragments:
-            arch,addr,res = read_fragments.pop()
+            arch, addr, res = read_fragments.pop()
             arch[addr] = res
         ExtendAllApplicable(arch)
         return arch[0]
 
 
-
 def main():
-    RPM=fisys.RootPathManager.GetMain()
-    print(RPM.root,">")
-    root=RPM.GetFullPath("test_json")
-    manager = FragmentedJsonManager.load(root,denied=set())
-    RES=manager.get_names("solo_files.txt")
-    for name,E in RES:
+    RPM = fisys.RootPathManager.GetMain()
+    print(RPM.root, ">")
+    root = RPM.GetFullPath("test_json")
+    manager = FragmentedJsonManager.load(root, denied=set())
+    RES = manager.get_names("solo_files.txt")
+    for name, E in RES:
         print(name)
         for subname in E:
-            print("\t",subname)
+            print("\t", subname)
     return
 
 
