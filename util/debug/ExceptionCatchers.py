@@ -33,12 +33,13 @@ def RaiseIf(condition, message, exc_type=Exception):
 
 def ValidateIndex(struct,ind, extra_data):
     if type(struct) == list:
-        dump=[ind, extra_data, "invalid"]
-        RaiseIf(
-            not isinteger(ind),
-            json.dumps(dump),
-            TypeError
-        )
+        if not isinstance(ind, int):
+            dump=[ind, extra_data, "invalid"]
+            RaiseIf(
+                not isinteger(ind),
+                json.dumps(dump),
+                TypeError
+            )
         ind: int = int(ind)
         dump=[ind, extra_data, "out of range"]
         RaiseIf(

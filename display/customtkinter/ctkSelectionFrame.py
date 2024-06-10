@@ -142,8 +142,8 @@ class SelectionFrame(iTkFrame):
         self.w_agents = None
         self.w_envs = None
         self.w_data = None
-        self.env_mngr = frjson.FragmentedJsonManager()
-        self.env_names = jsonmngr.getNamesAndIndices()  # Format: [("file", ["Env1", "Env2", "Env3"])]
+        self.env_mngr = frjson.FragmentedJsonManager(denied=set())
+        self.env_names = self.env_mngr.get_names("solo_files.txt")  # Format: [("file", ["Env1", "Env2", "Env3"])]
         self.default_env_names = [(name,envs[:]) for name,envs in self.env_names]
         self.kwargs = kwargs
         super().__init__(master, GRIDSELECT, dimensions)

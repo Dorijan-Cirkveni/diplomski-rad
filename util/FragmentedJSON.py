@@ -119,7 +119,7 @@ def ExternalRetrieverFactory(fragment_list: list, fragmentNameRule=FragmentDefau
             return False
         if not fragmentNameRule(cur):
             return False
-        fragment_list.append((arch, position, cur))
+        fragment_list.append((arch, position, cur, ty))
         return True
 
     return func
@@ -204,7 +204,7 @@ class FragmentedJsonStruct:
         F.write(s)
         F.close()
 
-    def get_full(self, fragmentNameRule=FragmentDefaultNameRule, fragmentedSegments=None):
+    def get_full(self, indices=None, fragmentNameRule=FragmentDefaultNameRule, fragmentedSegments=None):
         """
         Get all content of the file and referenced files
         :param maxdepth: Depth limit (lower than -1 if not applicable)
@@ -212,12 +212,14 @@ class FragmentedJsonStruct:
         :param fragmentedSegments:
         :return: The full structure represented with fragmented JSON.
         """
+        if indices is None:
+            indices = []
         if fragmentedSegments is None:
             fragmentedSegments = []
         func = ExternalRetrieverFactory(fragmentedSegments, fragmentNameRule)
         newroot = deepcopy(self.root)
         nestr.NestedStructWalk(newroot, func)
-        return newroot
+        return nestr.NestedStructGet(newroot,indices)
 
     def get_to_depth(self, indices:list, maxdepth=None, curdepth=0,
                      fragmentNameRule=FragmentDefaultNameRule, fragmentedSegments=None):
@@ -287,10 +289,12 @@ class FragmentedJsonManager:
         while unread_fragments:
             E=unread_fragments.popleft()
             arch, addr, filedata, depth=E
+            if type(filedata)==str:
+                filedata=ReadFragmentAddress(filedata)
             (file, indices)=filedata
             fragment=self.files[file]
             frag_segm=[]
-            res=fragment.get_full(fragmentNameRule=fragmentNameRule, fragmentedSegments=frag_segm)
+            res=fragment.get_full(indices, fragmentNameRule=fragmentNameRule, fragmentedSegments=frag_segm)
             read_fragments.append((arch,addr,res))
             unread_fragments.extend(frag_segm)
         if missingFiles:

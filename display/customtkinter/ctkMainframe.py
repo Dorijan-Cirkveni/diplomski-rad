@@ -1,4 +1,5 @@
-import test_json.test_json_manager as jsonmngr
+import util.FragmentedJSON as frjson
+import util.Filesystem as fisys
 
 from environments.GridEnvironment import *
 import agents.AgentManager as agentmngr
@@ -16,8 +17,8 @@ class MainFrame(SwapFrame):
         master.geometry("{}x{}".format(*screen_size))
 
 
-def testframe():
-    data = jsonmngr.ImportManagedJSON('t_base')
+def testframe(manager:frjson.FragmentedJsonManager):
+    data = manager.get_full("t_base")
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     X = readPlaneEnvironment(data, 0)
     Y = X.__copy__()
@@ -41,7 +42,10 @@ def main():
     frame.add_frame(grid_display_frame)
     frame.show_frame(GRIDSELECT)
 
-    raw = jsonmngr.ImportManagedJSON("t_base|0")
+    RPM=fisys.RootPathManager.GetMain()
+    fileroot=RPM.GetFullPath("test_json")
+    manager = frjson.FragmentedJsonManager.load(fileroot,denied=set())
+    raw=manager.get_full('t_base',[0])
     env = GridEnvironment.raw_init(raw)
     env: GridEnvironment
     env.assign_active_agent(GraphicManualInputAgent())

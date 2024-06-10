@@ -27,7 +27,7 @@ def ImportManagedJSON(address, files: dict = None, applyToMain=False, error_if_n
     files = JSON_data if files is None else files
     if main_file not in files:
         s="{} does not exist, try one of these: {}"
-        s2=s.format(main_file,GRIDFILES)
+        s2=s.format(main_file,set(GRIDFILES))
         raise FragmentedJSONException(s2)
     if error_if_not_env and main_file not in GRIDFILES:
         s="{} is not a registered environment! Must be on list {}"
