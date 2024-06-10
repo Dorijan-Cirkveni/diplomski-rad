@@ -38,19 +38,6 @@ def ReadFragmentAddress(s: str):
     return name, F[1:]
 
 
-def FragNestedStructGet(root, indices):
-    """
-    Gets value from a nested data structure.
-    :param root: The root of the structure.
-    :param indices: The list of indices.
-    :return: The value.
-    """
-    for e_key in indices:
-        e_key: str
-        root=ValidateIndex(root, e_key, indices)
-    return root
-
-
 def is_extendable(position):
     rem=re.match("<EXTEND.*>", position)
     return rem is not None
