@@ -305,13 +305,20 @@ class FragmentedJsonManager:
 
         if missingFiles:
             raise MakeMissingFilesException(missingFiles)
+        print(fragcount)
         free_fragments=[e for e,v in fragcount.items() if v==0]
+        saved_fragments=dict()
         while free_fragments:
             ffcur = free_fragments.pop()
             read_fragments = read_by_addr.pop(ffcur,[])
             while read_fragments:
                 E:nestr.StepData = read_fragments.pop()
-                E.arch[E.position]=E.cur[1]
+                cur=E.cur[1]
+                if type(cur)==str and cur in saved_fragments:
+                    cur=saved_fragments.pop(cur)
+                saved_fragments[E.arch[E.position]]=cur
+                E.arch[E.position]=cur
+                print(E.filename,E.position,ffcur)
                 fragcount[E.filename]-=1
                 if fragcount[E.filename]==0:
                     free_fragments.append(E.filename)
