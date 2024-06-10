@@ -231,7 +231,7 @@ class SelectionFrame(iTkFrame):
         EDC="Environment data"
         catname=data["Category name"]
         _, ind = data["Env meta"]
-        fragdata=self.env_mngr.get_full(catname,ind)
+        fragdata=self.env_mngr.get(catname,[ind])
         data[EDC]=fragdata
         func = self.swapFrameFactory(GRIDDISPLAY, data)
         func()
