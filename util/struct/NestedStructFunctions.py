@@ -10,9 +10,7 @@ def NestedStructGet(root, indices):
     """
     for e_key in indices:
         e_key: str
-        exct.ValidateIndex(root, e_key, indices)
-        e_key: [str, int]
-        root = root[e_key]
+        root=exct.ValidateIndex(root, e_key, indices)
     return root
 
 
@@ -24,13 +22,13 @@ def NestedStructGetRef(arch, archind, indices):
     :param indices: The list of indices.
     :return: The structure immediately containing the needed value and the value's index.
     """
-    exct.ValidateIndex(arch, archind, indices)
+    archind=exct.ValidateIndex(arch, archind, indices)
     for e_key in indices:
         e_key: str
         struct = arch[archind]
-        exct.ValidateIndex(struct, e_key, indices)
-        e_key: [str, int]
-        arch, archind = struct, e_key
+        valid_key=exct.ValidateIndex(struct, e_key, indices)
+        valid_key: [str, int]
+        arch, archind = struct, valid_key
     return arch, archind
 
 
