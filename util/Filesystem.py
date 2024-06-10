@@ -63,7 +63,7 @@ class RootPathManager:
 
     def __init__(self, localpath=None):
         if localpath is None:
-            localpath = MakeRootPath()
+            localpath = FindRoot()
         if ":" not in localpath:
             localpath = MakeRootPath(localpath)
         self.root = localpath
@@ -165,7 +165,7 @@ def read_all_files(exceptions=None, current_dir=None):
 def main():
     # Example usage
     print("Root:", FindRoot())
-    dm: RootPathManager = RootPathManager.GetMain('diplomski-rad')
+    dm: RootPathManager = RootPathManager.GetMain()
     curd=dm.GetFullPath("test_json")
     path = dm.GetFullPath('test_json')
     print(path)

@@ -333,7 +333,7 @@ class FragmentedJsonManager:
 
 
 def main():
-    RPM=fisys.RootPathManager('util')
+    RPM=fisys.RootPathManager.GetMain()
     print(RPM.root,">")
     root='C:\\FER_diplomski\\dip_rad\\testenv\\diplomski-rad\\test_json'
     manager = FragmentedJsonManager.load(root)
