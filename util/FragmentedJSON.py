@@ -267,8 +267,10 @@ class FragmentedJsonManager:
     @staticmethod
     def load(root:str, loadfile:str):
         F=open(loadfile,'r')
-
-        files=fisys.get_valid_files(root, allowed=allowed, denied=denied)
+        L=F.read().split("\n")
+        F.close()
+        S=set(L)
+        files=fisys.get_valid_files(root, allowed=S)
         print(json.dumps(files,indent=1))
 
     def get_full(self, file, indices=None, fragmentNameRule=FragmentDefaultNameRule):
@@ -331,6 +333,8 @@ class FragmentedJsonManager:
 
 
 def main():
+    RPM=fisys.RootPathManager('util')
+    print(RPM.root,">")
     root='C:\\FER_diplomski\\dip_rad\\testenv\\diplomski-rad\\test_json'
     manager = FragmentedJsonManager.load(root)
     full_data = manager.get_to_depth("all_categories", [], 1)

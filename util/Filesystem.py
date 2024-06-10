@@ -34,6 +34,26 @@ def MakeRootPath(root=None, slash="\\"):
         PL.pop()
     return slash.join(PL)
 
+def FindRoot(marker_files:set={"LICENSE"}, slash="\\"):
+    if isinstance(marker_files,str):
+        marker_files={marker_files}
+    if isinstance(marker_files,list):
+        marker_files=set(marker_files)
+    path = os.path.dirname(os.path.abspath(__file__))
+    path = Synchronise(path, slash)
+    PL = path.split(slash)
+    path=PL[0]
+    respath=None
+    for e in PL[1:]:
+        print(path)
+        for marker_file in marker_files:
+            if os.path.exists(slash.join([path,marker_file])):
+                respath=path
+        path=slash.join([path,e])
+    return respath
+
+
+
 
 class RootPathManager:
     """
@@ -144,6 +164,7 @@ def read_all_files(exceptions=None, current_dir=None):
 
 def main():
     # Example usage
+    print("Root:", FindRoot())
     dm: RootPathManager = RootPathManager.GetMain('diplomski-rad')
     curd=dm.GetFullPath("test_json")
     path = dm.GetFullPath('test_json')
