@@ -1,6 +1,7 @@
 import util.UtilManager
 from ctkScrollableFrames import *
 from display.customtkinter.base.ctkInputs import *
+from util import FragmentedJSON as frjson
 
 
 class AdvancedInputFrame(JSONInputFrame):
@@ -13,6 +14,19 @@ class AdvancedInputFrame(JSONInputFrame):
         super().create_widgets()
         self.inception_button = ctk.CTkButton(self, text="Edit elements", command=self.inception_lambda)
         self.inception_button.grid(row=2, column=0, columnspan=2, pady=10)
+
+
+class FragmentedInputFrame(JSONInputFrame):
+    def __init__(self, master, return_lambda: callable, inception_lambda: callable, *args, **kwargs):
+        self.inception_button = None
+        self.inception_lambda = inception_lambda
+        super().__init__(master, return_lambda, *args, **kwargs)
+
+    def create_widgets(self):
+        super().create_widgets()
+        if frjson.is_extendable(self.input):
+            self.inception_button = ctk.CTkButton(self, text="Edit fragment", command=self.inception_lambda)
+            self.inception_button.grid(row=2, column=0, columnspan=2, pady=10)
 
 
 class ctkDataManager(ctk.CTkToplevel):
@@ -68,6 +82,9 @@ class ctkDataManager(ctk.CTkToplevel):
         self.show_cur_value_interface(loaded_value)
 
     def make_edit_frames(self):
+        advanced = AdvancedInputFrame(self.edit_archframe, self.apply, self.stack_action,
+                                      (0, 0), util.UtilManager.IsValidJSON,
+                                      text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
         advanced = AdvancedInputFrame(self.edit_archframe, self.apply, self.stack_action,
                                       (0, 0), util.UtilManager.IsValidJSON,
                                       text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
