@@ -1,6 +1,7 @@
 import util.UtilManager
 from ctkScrollableFrames import *
 from display.customtkinter.base.ctkInputs import *
+import display.customtkinter.ctkPopups as ctkp
 from util import FragmentedJSON as frjson
 
 
@@ -24,7 +25,8 @@ class FragmentedInputFrame(JSONInputFrame):
 
     def create_widgets(self):
         super().create_widgets()
-        if frjson.is_extendable(self.input):
+        s = self.input.get(0.0, ctk.END)
+        if frjson.is_extendable(s):
             self.inception_button = ctk.CTkButton(self, text="Edit fragment", command=self.inception_lambda)
             self.inception_button.grid(row=2, column=0, columnspan=2, pady=10)
 
@@ -89,11 +91,12 @@ class ctkDataManager(ctk.CTkToplevel):
         advanced = AdvancedInputFrame(self.edit_archframe, self.apply, self.stack_action,
                                       (0, 0), util.UtilManager.IsValidJSON,
                                       text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
+        self.edit_frames[list] = advanced
+        self.edit_frames[dict] = advanced
         fragment = FragmentedInputFrame(self.edit_archframe, self.apply, self.stack_action,
                                         (0, 0), util.UtilManager.IsValidJSON,
                                         text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
-        self.edit_frames[list] = advanced
-        self.edit_frames[dict] = advanced
+        self.edit_frames[str]=fragment
         simple = JSONInputFrame(self.edit_archframe,
                                 self.apply, (0, 0), util.UtilManager.IsValidJSON,
                                 text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
@@ -169,9 +172,16 @@ class ctkDataManager(ctk.CTkToplevel):
 
         return func
 
-    def return_action(self):
+    def return_action(self, popup_action=None):
         while not self.stack:
             if self.metastack:
+                if popup_action is None:
+                    L=[
+                        ("Overwrite existing",lambda:self.return_action(0)),
+                        ("Overwrite existing",lambda:self.return_action(1))
+                    ]
+                    ctkp.MultiChoiceMessage(DarkCTK.GetMain(),"Save fragment?","Save fragment?",L)
+                    return
                 self.stack = self.metastack.pop()
                 continue
             self.apply_action()
