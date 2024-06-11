@@ -6,6 +6,9 @@ from util import FragmentedJSON as frjson
 
 from threading import Lock, Event
 
+from util.struct import misc
+
+
 class AdvancedInputFrame(JSONInputFrame):
     def __init__(self, master, return_lambda: callable, inception_lambda: callable, *args, **kwargs):
         self.inception_button = None
@@ -96,7 +99,7 @@ class ctkDataManager(ctk.CTkToplevel):
         fragment = FragmentedInputFrame(self.edit_archframe, self.apply, self.fragment_action,
                                         (0, 0), util.UtilManager.IsValidJSON,
                                         text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
-        self.edit_frames[str]=fragment
+        self.edit_frames[str] = fragment
         simple = JSONInputFrame(self.edit_archframe,
                                 self.apply, (0, 0), util.UtilManager.IsValidJSON,
                                 text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
@@ -110,9 +113,10 @@ class ctkDataManager(ctk.CTkToplevel):
         def func():
             self.cur.append(None)
             self.show_cur_keys()
+
         if self.stack:
-            B=ButtonData("Append element", func, 0)
-            X=[B]+X
+            B = ButtonData("Append element", func, 0)
+            X = [B] + X
         return X
 
     def generate_dict(self, D):
@@ -134,8 +138,8 @@ class ctkDataManager(ctk.CTkToplevel):
                     i += 1
                 InputMessage(self, "New dictionary entry", "Insert key", sk.format(i), func=func)
 
-            B=ButtonData("Add key...", func2, 0)
-            X=[B]+X
+            B = ButtonData("Add key...", func2, 0)
+            X = [B] + X
         return X
 
     def make_scroll_generators(self):
@@ -176,58 +180,48 @@ class ctkDataManager(ctk.CTkToplevel):
 
         return func
 
-    def return_action(self, popup_action=None):
-        if not self.stack:
-            if self.metastack:
-                if popup_action is None:
-                    event = Event()
-                    def overwrite_action():
-                        self.return_action(0)
-                        event.set()
+    def close_fragment(self):
+        event = Event()
+        returnstruct = [None]
+        L = [
+            ("Overwrite existing", self.continue_closing_fragment(0)),
+            ("Append new", self.continue_closing_fragment(1)),
+            ("Discard changes", self.continue_closing_fragment(2)),
+        ]
+        ctkp.MultiChoiceMessage(DarkCTK.GetMain(), "Save fragment?", "Save fragment?", L)
 
-                    def append_action():
-                        self.return_action(1)
-                        event.set()
-
-                    def discard_action():
-                        self.return_action(2)
-                        event.set()
-
-                    L = [
-                        ("Overwrite existing", overwrite_action),
-                        ("Append new", append_action),
-                        ("Discard changes", discard_action),
-                    ]
-                    ctkp.MultiChoiceMessage(DarkCTK.GetMain(), "Save fragment?", "Save fragment?", L)
-                    event.wait()
-                    return
-
-                self.stack = self.metastack.pop()
-                if popup_action == 2:
-                    continue
-                A = list(self.cur)[0]
-                file, inds = frjson.ReadFragmentAddress(A)
-                fragment = self.fragment_manager.files[file]
-                data = fragment.get(file)
-                arch, archind = frjson.nestr.NestedStructGetRef([data], 0, inds)
-                if archind is None:
-                    ctkp.PopupMessage(DarkCTK(), "Error", "Structure does not exist in direct subfile!")
-                    return self.return_action(2)
-                if popup_action == 1:
-                    if isinstance(arch, list):
-                        archind = len(arch)
-                        arch.append(None)
-                    elif isinstance(arch, dict):
-                        # Add handling for dict case
-                        pass
-                arch[archind] = self.cur[self.curkey]
-                fragment.save()
-                print(A)
-                continue
-
-            self.apply_action()
+    def continue_closing_fragment(self, popup_action, new_index=None):
+        self.stack = self.metastack.pop()
+        if popup_action == 2:
             return
+        A = list(self.cur)[0]
+        file, inds = frjson.ReadFragmentAddress(A)
+        fragment = self.fragment_manager.files[file]
+        data = fragment.get(file)
+        arch, archind = frjson.nestr.NestedStructGetRef([data], 0, inds)
+        if archind is None:
+            ctkp.PopupMessage(DarkCTK(), "Error", "Structure does not exist in direct subfile!")
+            return
+        if popup_action == 1:
+            if isinstance(arch, list):
+                archind = len(arch)
+                arch.append(None)
+            elif isinstance(arch, dict):
+                if new_index is None:
+                    ctkp.InputMessage(DarkCTK(), "New index", "New index:", archind,
+                                      func=lambda e: self. continue_closing_fragment(1,e))
+                    return
+            raise Exception("HOW IN TURING'S NAME DID THIS HAPPEN?")
+        arch[archind] = self.cur[self.curkey]
+        fragment.save()
 
+    def return_action(self):
+        if not self.stack:
+            if not self.metastack:
+                self.apply_action()
+            else:
+                self.close_fragment()
+            return
         last, lastkey = self.stack.pop()
         last[lastkey] = self.cur
         self.cur = last
