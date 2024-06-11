@@ -181,10 +181,13 @@ class ctkDataManager(ctk.CTkToplevel):
                 if popup_action is None:
                     L=[
                         ("Overwrite existing",lambda:self.return_action(0)),
-                        ("Overwrite existing",lambda:self.return_action(1))
+                        ("Append new",lambda:self.return_action(1))
                     ]
                     ctkp.MultiChoiceMessage(DarkCTK.GetMain(),"Save fragment?","Save fragment?",L)
                     return
+                A=list(self.cur)[0]
+                file,inds=
+                print(A)
                 self.stack = self.metastack.pop()
                 continue
             self.apply_action()
