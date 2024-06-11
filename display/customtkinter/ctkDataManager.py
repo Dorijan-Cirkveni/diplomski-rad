@@ -184,9 +184,9 @@ class ctkDataManager(ctk.CTkToplevel):
         event = Event()
         returnstruct = [None]
         L = [
-            ("Overwrite existing", self.continue_closing_fragment(0)),
-            ("Append new", self.continue_closing_fragment(1)),
-            ("Discard changes", self.continue_closing_fragment(2)),
+            ("Overwrite existing", lambda:self.continue_closing_fragment(0)),
+            ("Append new", lambda:self.continue_closing_fragment(1)),
+            ("Discard changes", lambda:self.continue_closing_fragment(2)),
         ]
         ctkp.MultiChoiceMessage(DarkCTK.GetMain(), "Save fragment?", "Save fragment?", L)
 
@@ -197,7 +197,7 @@ class ctkDataManager(ctk.CTkToplevel):
         A = list(self.cur)[0]
         file, inds = frjson.ReadFragmentAddress(A)
         fragment = self.fragment_manager.files[file]
-        data = fragment.get(file)
+        data = fragment.root
         arch, archind = frjson.nestr.NestedStructGetRef([data], 0, inds)
         if archind is None:
             ctkp.PopupMessage(DarkCTK(), "Error", "Structure does not exist in direct subfile!")
@@ -209,7 +209,7 @@ class ctkDataManager(ctk.CTkToplevel):
             elif isinstance(arch, dict):
                 if new_index is None:
                     ctkp.InputMessage(DarkCTK(), "New index", "New index:", archind,
-                                      func=lambda e: self. continue_closing_fragment(1,e))
+                                      func=lambda e: self.continue_closing_fragment(1,e))
                     return
             raise Exception("HOW IN TURING'S NAME DID THIS HAPPEN?")
         arch[archind] = self.cur[self.curkey]

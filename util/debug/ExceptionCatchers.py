@@ -47,7 +47,7 @@ def ValidateIndex(struct,ind, extra_data):
             json.dumps(dump),
             TypeError
         )
-        return struct[ind]
+        return ind
     if type(struct) == dict:
         dump=[ind, extra_data, "not found"]
         RaiseIf(
@@ -55,7 +55,7 @@ def ValidateIndex(struct,ind, extra_data):
             json.dumps(dump),
             TypeError
         )
-        return struct[ind]
+        return ind
     raise TypeError("Unrecognised structure (HOW?):{}".format(type(struct)))
 
 

@@ -10,7 +10,8 @@ def NestedStructGet(root, indices):
     """
     for e_key in indices:
         e_key: str
-        root=exct.ValidateIndex(root, e_key, indices)
+        e_key=exct.ValidateIndex(root, e_key, indices)
+        root=root[e_key]
     return root
 
 
