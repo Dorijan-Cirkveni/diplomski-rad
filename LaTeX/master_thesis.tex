@@ -656,6 +656,24 @@ However, the prototype will only rely on a single type of test environment.
 The test environment in question will take the form of a simple two-dimensional grid similar to that used in the Gridworlds AI safety experiment.
 
 This thesis is accompanied by a prototype framework for a grid-based test environment with multiple entities, some of which are designated to be controlled by the AI agent being tested.
+
+This environment type was chosen because of several reasons:
+\begin{itemize}
+\item{Ease of implementation}
+
+Compared to more complex simulated environments,
+a grid-based environment is simple enough to implement even as part
+of a single-person project.
+
+\item{Versatility}
+
+Thanks to a few more advanced features such as dynamic grids or
+property-dependent grid-to-agent interaction, a grid-based environment is capable of simulating a wide array of simplified scenarios.
+
+\item{Visual displayability}
+
+A grid environment, especially a twodimensional one, is easy to display on a screen, which makes it easier to fix errors and demonstrate results.
+\end{itemize}
 \section{Grid elements}
 
 The test environment takes the form of a rectangular grid, which is divided into square elements. The square elements have distinct appearances and allow for distinct interaction with the entities involved in the test.
