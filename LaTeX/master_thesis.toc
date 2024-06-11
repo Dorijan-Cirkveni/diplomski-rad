@@ -68,7 +68,7 @@
 \contentsline {subsection}{\numberline {2.2.3}Visible and solid grid modes}{34}{subsection.2.2.3}%
 \contentsline {subsection}{\numberline {2.2.4}Grid routines}{34}{subsection.2.2.4}%
 \contentsline {section}{\numberline {2.3}Test entity design}{34}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Entity/Agent duality}{35}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.1}Entity/Agent duality}{34}{subsection.2.3.1}%
 \contentsline {subsection}{\numberline {2.3.2}Entity properties}{35}{subsection.2.3.2}%
 \contentsline {subsubsection}{Entity appearance properties}{35}{section*.42}%
 \contentsline {subsubsection}{Entity vision properties}{35}{section*.43}%
@@ -83,7 +83,7 @@
 \contentsline {paragraph}{Mirror}{36}{section*.48}%
 \contentsline {section}{\numberline {2.6}A suggestion for a knowledge-based classification of intelligence}{36}{section.2.6}%
 \contentsline {subsubsection}{Knowledge by source}{36}{section*.49}%
-\contentsline {paragraph}{Explicitly coded knowledge}{36}{section*.50}%
+\contentsline {paragraph}{Explicitly coded knowledge}{37}{section*.50}%
 \contentsline {paragraph}{Learning phase knowledge}{37}{section*.51}%
 \contentsline {paragraph}{Live learning knowledge}{37}{section*.52}%
 \contentsline {subsubsection}{Knowledge by level}{37}{section*.53}%
@@ -91,8 +91,7 @@
 \contentsline {subsection}{\numberline {2.7.1}Processing time}{38}{subsection.2.7.1}%
 \contentsline {subsection}{\numberline {2.7.2}Processing space}{38}{subsection.2.7.2}%
 \contentsline {subsection}{\numberline {2.7.3}Learning data size}{38}{subsection.2.7.3}%
-\contentsline {subsection}{\numberline {2.7.4}Learning data size}{38}{subsection.2.7.4}%
-\contentsline {subsection}{\numberline {2.7.5}Learning data level}{38}{subsection.2.7.5}%
+\contentsline {subsection}{\numberline {2.7.4}Learning data level}{38}{subsection.2.7.4}%
 \contentsline {section}{\numberline {2.8}Primary approach choice}{38}{section.2.8}%
 \contentsline {section}{\numberline {2.9}Implementation choice}{38}{section.2.9}%
 \contentsline {subsection}{\numberline {2.9.1}Programming language choice}{38}{subsection.2.9.1}%
