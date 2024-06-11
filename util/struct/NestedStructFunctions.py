@@ -26,6 +26,8 @@ def NestedStructGetRef(arch, archind, indices):
     for e_key in indices:
         e_key: str
         struct = arch[archind]
+        if type(struct) not in (dict,list):
+            return None, None
         valid_key=exct.ValidateIndex(struct, e_key, indices)
         valid_key: [str, int]
         arch, archind = struct, valid_key

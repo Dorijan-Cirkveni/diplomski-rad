@@ -4,6 +4,8 @@ from display.customtkinter.base.ctkInputs import *
 import display.customtkinter.ctkPopups as ctkp
 from util import FragmentedJSON as frjson
 
+from threading import Lock
+
 
 class AdvancedInputFrame(JSONInputFrame):
     def __init__(self, master, return_lambda: callable, inception_lambda: callable, *args, **kwargs):
@@ -175,20 +177,37 @@ class ctkDataManager(ctk.CTkToplevel):
 
         return func
 
-    def return_action(self, popup_action=None):
+    def return_action(self):
         while not self.stack:
             if self.metastack:
                 if popup_action is None:
                     L=[
                         ("Overwrite existing",lambda:self.return_action(0)),
-                        ("Append new",lambda:self.return_action(1))
+                        ("Append new",lambda:self.return_action(1)),
+                        ("Discard changes",lambda:self.return_action(2)),
                     ]
                     ctkp.MultiChoiceMessage(DarkCTK.GetMain(),"Save fragment?","Save fragment?",L)
                     return
-                A=list(self.cur)[0]
-                file,inds=
-                print(A)
                 self.stack = self.metastack.pop()
+                if popup_action==2:
+                    continue
+                A=list(self.cur)[0]
+                file,inds=frjson.ReadFragmentAddress(A)
+                fragment=self.fragment_manager.files[file]
+                data=fragment.get(file)
+                arch,archind=frjson.nestr.NestedStructGetRef([data],0,inds)
+                if archind is None:
+                    ctkp.PopupMessage(DarkCTK(),"Error","Structure does not exist in direct subfile!")
+                    return self.return_action(2)
+                if popup_action==1:
+                    if isinstance(arch,list):
+                        archind=len(arch)
+                        arch.append(None)
+                    elif isinstance(arch,dict):
+
+                arch[archind]=self.cur[self.curkey]
+                fragment.save()
+                print(A)
                 continue
             self.apply_action()
             return
