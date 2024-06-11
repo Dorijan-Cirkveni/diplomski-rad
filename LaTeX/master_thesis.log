@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  11 JUN 2024 12:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  11 JUN 2024 13:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -885,7 +885,7 @@ l.50 ...ating consciousness}{29}{subsection.1.7.4}
 
 ]
 LaTeX Font Info:    Trying to load font information for TS1+stix2 on input line
- 115.
+ 118.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ts1stix2.fd
 File: ts1stix2.fd 2018/04/02 v2.0.0-latex stix2 TS1 font definitions
@@ -894,7 +894,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.116 ...ther research suggestions}{43}{chapter.4}
+l.119 ...ther research suggestions}{44}{chapter.4}
                                                   % [2])
 \tf@toc=\write4
 \openout4 = `master_thesis.toc'.
@@ -1034,22 +1034,22 @@ File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
 Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 696.
 (pdftex.def)             Requested size: 441.01773pt x 485.16747pt.
- [32] [33] [34] [35]
-Overfull \hbox (3.06107pt too wide) in paragraph at lines 806--807
+ [32] [33] [34] [35] [36]
+Overfull \hbox (3.06107pt too wide) in paragraph at lines 825--826
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-mi-sa-tion meth-
  []
 
-[36] [37] [38]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 862--863
+[37] [38]
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 881--882
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
 
-[39] [40] [41 <./Figures/grid/all_tiles.png>]
+[39] [40] [41] [42 <./Figures/grid/all_tiles.png>]
 Chapter 3.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 891.
+ut line 910.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1058,38 +1058,38 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 891.
+ne 910.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 891.
- [42
+(Font)              scaled to size 16.0pt on input line 910.
+ [43
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
 .enc}]
 Chapter 4.
-[43
+[44
 
 ]
 Chapter 5.
-(master_thesis.bbl [44
+(master_thesis.bbl [45
 
-]) [45
-
-] [46
+]) [46
 
 ] [47
+
+] [48
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.953 \chapter{The Code}
+l.972 \chapter{The Code}
                         
 Appendix A.
-[48
+[49
 
 
-] [49] (master_thesis.aux)
+] [50] (master_thesis.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
@@ -1220,14 +1220,14 @@ master_thesis.bbl
  ***********
 
 Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 45CE4D5913B547D1FACA32A60D27EE20;13026.
+(rerunfilecheck)             Checksum: F06B8B524DBD8E065A847DA4F40CBC46;13026.
  ) 
 Here is how much of TeX's memory you used:
- 18293 strings out of 474586
- 289558 string characters out of 5745681
+ 18299 strings out of 474586
+ 289632 string characters out of 5745681
  1937558 words of memory out of 5000000
- 39976 multiletter control sequences out of 15000+600000
- 639722 words of font info for 142 fonts, out of 8000000 for 9000
+ 39977 multiletter control sequences out of 15000+600000
+ 640068 words of font info for 143 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,776b,664s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/opensans/O
@@ -1237,9 +1237,9 @@ X/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/User
 s/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-
 Regular.pfb>
-Output written on master_thesis.pdf (53 pages, 1584602 bytes).
+Output written on master_thesis.pdf (54 pages, 1587207 bytes).
 PDF statistics:
- 747 PDF objects out of 1000 (max. 8388607)
- 193 named destinations out of 1000 (max. 500000)
+ 757 PDF objects out of 1000 (max. 8388607)
+ 197 named destinations out of 1000 (max. 500000)
  605 words of extra memory for PDF output out of 10000 (max. 10000000)
 
