@@ -4,8 +4,7 @@ from display.customtkinter.base.ctkInputs import *
 import display.customtkinter.ctkPopups as ctkp
 from util import FragmentedJSON as frjson
 
-from threading import Lock
-
+from threading import Lock, Event
 
 class AdvancedInputFrame(JSONInputFrame):
     def __init__(self, master, return_lambda: callable, inception_lambda: callable, *args, **kwargs):
@@ -177,40 +176,58 @@ class ctkDataManager(ctk.CTkToplevel):
 
         return func
 
-    def return_action(self):
-        while not self.stack:
+    def return_action(self, popup_action=None):
+        if not self.stack:
             if self.metastack:
                 if popup_action is None:
-                    L=[
-                        ("Overwrite existing",lambda:self.return_action(0)),
-                        ("Append new",lambda:self.return_action(1)),
-                        ("Discard changes",lambda:self.return_action(2)),
-                    ]
-                    ctkp.MultiChoiceMessage(DarkCTK.GetMain(),"Save fragment?","Save fragment?",L)
-                    return
-                self.stack = self.metastack.pop()
-                if popup_action==2:
-                    continue
-                A=list(self.cur)[0]
-                file,inds=frjson.ReadFragmentAddress(A)
-                fragment=self.fragment_manager.files[file]
-                data=fragment.get(file)
-                arch,archind=frjson.nestr.NestedStructGetRef([data],0,inds)
-                if archind is None:
-                    ctkp.PopupMessage(DarkCTK(),"Error","Structure does not exist in direct subfile!")
-                    return self.return_action(2)
-                if popup_action==1:
-                    if isinstance(arch,list):
-                        archind=len(arch)
-                        arch.append(None)
-                    elif isinstance(arch,dict):
+                    event = Event()
+                    def overwrite_action():
+                        self.return_action(0)
+                        event.set()
 
-                arch[archind]=self.cur[self.curkey]
+                    def append_action():
+                        self.return_action(1)
+                        event.set()
+
+                    def discard_action():
+                        self.return_action(2)
+                        event.set()
+
+                    L = [
+                        ("Overwrite existing", overwrite_action),
+                        ("Append new", append_action),
+                        ("Discard changes", discard_action),
+                    ]
+                    ctkp.MultiChoiceMessage(DarkCTK.GetMain(), "Save fragment?", "Save fragment?", L)
+                    event.wait()
+                    return
+
+                self.stack = self.metastack.pop()
+                if popup_action == 2:
+                    continue
+                A = list(self.cur)[0]
+                file, inds = frjson.ReadFragmentAddress(A)
+                fragment = self.fragment_manager.files[file]
+                data = fragment.get(file)
+                arch, archind = frjson.nestr.NestedStructGetRef([data], 0, inds)
+                if archind is None:
+                    ctkp.PopupMessage(DarkCTK(), "Error", "Structure does not exist in direct subfile!")
+                    return self.return_action(2)
+                if popup_action == 1:
+                    if isinstance(arch, list):
+                        archind = len(arch)
+                        arch.append(None)
+                    elif isinstance(arch, dict):
+                        # Add handling for dict case
+                        pass
+                arch[archind] = self.cur[self.curkey]
                 fragment.save()
                 print(A)
                 continue
+
             self.apply_action()
             return
+
         last, lastkey = self.stack.pop()
         last[lastkey] = self.cur
         self.cur = last
@@ -237,8 +254,8 @@ class ctkDataManager(ctk.CTkToplevel):
         self.stack = []
         frgm = last[lastkey]
         file, indices = frjson.ReadFragmentAddress(frgm)
-        value=self.fragment_manager.get(file, indices)
-        self.cur = {frgm:value}
+        value = self.fragment_manager.get(file, indices)
+        self.cur = {frgm: value}
         self.curkey = frgm
         self.show_cur_keys()
         self.hide_cur_value_interface()
