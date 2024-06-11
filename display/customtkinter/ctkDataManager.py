@@ -109,8 +109,9 @@ class ctkDataManager(ctk.CTkToplevel):
         def func():
             self.cur.append(None)
             self.show_cur_keys()
-
-        X.append(ButtonData("Append element", func, 0))
+        if self.stack:
+            B=ButtonData("Append element", func, 0)
+            X=[B]+X
         return X
 
     def generate_dict(self, D):
@@ -122,15 +123,18 @@ class ctkDataManager(ctk.CTkToplevel):
             self.cur[key] = None
             self.show_cur_keys()
 
-        def func2():
-            sk = "Key {}"
-            i = 1
-            while sk.format(i) in D:
-                i += 1
-            InputMessage(self, "New dictionary entry", "Insert key", sk.format(i), func=func)
-
         X.sort(key=lambda el: el.text)
-        X.append(ButtonData("Add key...", func2, 0))
+
+        if self.stack:
+            def func2():
+                sk = "Key {}"
+                i = 1
+                while sk.format(i) in D:
+                    i += 1
+                InputMessage(self, "New dictionary entry", "Insert key", sk.format(i), func=func)
+
+            B=ButtonData("Add key...", func2, 0)
+            X=[B]+X
         return X
 
     def make_scroll_generators(self):

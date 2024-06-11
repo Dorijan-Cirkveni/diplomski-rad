@@ -68,7 +68,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agentclass = agentclass
         self.agent_data = agentraw
 
-    def get_parameters(self):
+    def get_parameters(self, edit_only=False):
         frag,ind=self.env_data
         frag:frjson.FragmentedJsonStruct
         ind:int
@@ -81,10 +81,12 @@ class EnvCustomFrame(ctk.CTkFrame):
             "Evaluation method": self.eval.__name__,
             "Evaluation parameters": self.evalparams
         }
+        if edit_only:
+            data.pop('Env meta')
         return data
 
     def edit_parameters(self):
-        data=self.get_parameters()
+        data=self.get_parameters(True)
         ctkDataManager(self, data, self.close_edit_parameters, self.manager)
 
     def close_edit_parameters(self,data):
