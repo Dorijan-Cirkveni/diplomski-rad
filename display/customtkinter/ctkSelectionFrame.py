@@ -24,7 +24,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agentclass = None
         self.eval = GridEvalMethod
 
-        self.env_data = [None],0
+        self.env_data = [frjson.FragmentedJsonStruct([])],0
         self.agent_data = None
         self.evalparams={}
         self.manager=manager

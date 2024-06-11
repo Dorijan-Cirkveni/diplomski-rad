@@ -27,7 +27,7 @@ class MultiChoiceMessage(ctk.CTkToplevel):
         super().__init__(master)
 
         self.title(title)
-        size=(300,150)
+        size=(300,300)
         self.geometry(getLoc(master,size))
         self.wm_attributes("-topmost", 1)
 
@@ -36,12 +36,16 @@ class MultiChoiceMessage(ctk.CTkToplevel):
 
         for E in choices:
             (text,func)=E
-            ctk.CTkButton(self, text=text, command=func).pack(pady=10)
+            ctk.CTkButton(self, text=text, command=self.make_close(func)).pack(pady=10)
 
         self.grab_set()  # Make the popup modal
 
-    def close(self):
-        self.destroy()
+    def make_close(self, func):
+        def close():
+            self.destroy()
+            func()
+        return close
+
 
 
 class InputMessage(ctk.CTkToplevel):
@@ -72,9 +76,7 @@ class InputMessage(ctk.CTkToplevel):
         self.destroy()
 
 
-def main():
-    root = DarkCTK()
-    root.geometry("400x200")
+def main1(root):
 
     def show_input_message():
         def handle_input(value):
@@ -85,6 +87,20 @@ def main():
     test_button = ctk.CTkButton(root, text="Show Input Message", command=show_input_message)
     test_button.pack(pady=20)
 
+    root.mainloop()
+
+def main():
+    root = DarkCTK()
+    root.geometry("400x400")
+    fn_a=lambda:print("wasd")
+    fn_b=lambda:print("aaaaaaaaaaa")
+    fn_c=lambda:print("CTHULHU FHTAGN")
+    fnL=[
+        ("try",fn_a),
+        ("Try.",fn_b),
+        ("T R Y",fn_c)
+    ]
+    MultiChoiceMessage(root,"Try?","try?",fnL)
     root.mainloop()
 
 
