@@ -22,6 +22,28 @@ class PopupMessage(ctk.CTkToplevel):
         self.destroy()
 
 
+class MultiChoiceMessage(ctk.CTkToplevel):
+    def __init__(self, master, title:str, message:str, choices:list):
+        super().__init__(master)
+
+        self.title(title)
+        size=(300,150)
+        self.geometry(getLoc(master,size))
+        self.wm_attributes("-topmost", 1)
+
+        self.message_label = ctk.CTkLabel(self, text=message, wraplength=250)
+        self.message_label.pack(pady=20)
+
+        for E in choices:
+            (text,func)=E
+            ctk.CTkButton(self, text=text, command=func).pack(pady=10)
+
+        self.grab_set()  # Make the popup modal
+
+    def close(self):
+        self.destroy()
+
+
 class InputMessage(ctk.CTkToplevel):
     def __init__(self, master, title="Title", message="Message", default="", ok_text="Apply", func=print):
         super().__init__(master)

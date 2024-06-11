@@ -30,7 +30,9 @@ class FragmentedInputFrame(JSONInputFrame):
 
 
 class ctkDataManager(ctk.CTkToplevel):
-    def __init__(self, root, root_struct, return_command: callable, *args, **kwargs):
+    def __init__(self, root, root_struct, return_command: callable,
+                 fragment_manager: frjson.FragmentedJsonManager,
+                 *args, **kwargs):
         super().__init__(root, *args, **kwargs)
 
         self.root = root
@@ -41,6 +43,7 @@ class ctkDataManager(ctk.CTkToplevel):
         self.curkey = None
         self.stack = []
         self.metastack = []
+        self.fragment_manager = fragment_manager
 
         self.title("Data Manager")
         size = (600, 400)
@@ -52,7 +55,6 @@ class ctkDataManager(ctk.CTkToplevel):
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(1, weight=1)
-
 
         self.return_button = ctk.CTkButton(self, text="Return", command=self.return_action)
         self.return_button.grid(row=0, column=0, padx=10, pady=10, sticky="w")
@@ -88,40 +90,45 @@ class ctkDataManager(ctk.CTkToplevel):
                                       (0, 0), util.UtilManager.IsValidJSON,
                                       text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
         fragment = FragmentedInputFrame(self.edit_archframe, self.apply, self.stack_action,
-                                      (0, 0), util.UtilManager.IsValidJSON,
-                                      text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
+                                        (0, 0), util.UtilManager.IsValidJSON,
+                                        text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
         self.edit_frames[list] = advanced
         self.edit_frames[dict] = advanced
-        simple =JSONInputFrame(self.edit_archframe,
-                               self.apply, (0, 0), util.UtilManager.IsValidJSON,
-                               text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
+        simple = JSONInputFrame(self.edit_archframe,
+                                self.apply, (0, 0), util.UtilManager.IsValidJSON,
+                                text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
         self.edit_frames[object] = simple
 
     def generate_list(self, L):
         X = []
         for i in range(len(L)):
             X.append(ButtonData(str(i), self.factory_choose_key(i), 0))
+
         def func():
             self.cur.append(None)
             self.show_cur_keys()
-        X.append(ButtonData("Append element",func,0))
+
+        X.append(ButtonData("Append element", func, 0))
         return X
 
     def generate_dict(self, D):
         X = []
         for e in D:
             X.append(ButtonData(str(e), self.factory_choose_key(e), 0))
+
         def func(key):
-            self.cur[key]=None
+            self.cur[key] = None
             self.show_cur_keys()
+
         def func2():
-            sk="Key {}"
-            i=1
+            sk = "Key {}"
+            i = 1
             while sk.format(i) in D:
-                i+=1
-            InputMessage(self,"New dictionary entry","Insert key",sk.format(i),func=func)
+                i += 1
+            InputMessage(self, "New dictionary entry", "Insert key", sk.format(i), func=func)
+
         X.sort(key=lambda el: el.text)
-        X.append(ButtonData("Add key...",func2,0))
+        X.append(ButtonData("Add key...", func2, 0))
         return X
 
     def make_scroll_generators(self):
@@ -165,7 +172,7 @@ class ctkDataManager(ctk.CTkToplevel):
     def return_action(self):
         while not self.stack:
             if self.metastack:
-                self.stack=self.metastack.pop()
+                self.stack = self.metastack.pop()
                 continue
             self.apply_action()
             return
@@ -192,18 +199,20 @@ class ctkDataManager(ctk.CTkToplevel):
         last, lastkey = self.cur, self.curkey
         self.stack.append((last, lastkey))
         self.metastack.append(self.stack)
-        self.stack=[]
-        # Google todo comment
-        # Holy hell
-        # New fragment just dropped
-        # Call fragment manager
-
+        self.stack = []
+        frgm = last[lastkey]
+        file, indices = frjson.get_extend_keys(frgm)
+        self.cur = self.fragment_manager.get(file, indices)
+        self.curkey = None
+        self.show_cur_keys()
+        self.hide_cur_value_interface()
 
 
 def structTest(struct):
     root = DarkCTK.GetMain()
     root.geometry("600x400")
-    data_manager = ctkDataManager(root, struct, print)
+    struct_manager = frjson.FragmentedJsonManager()
+    data_manager = ctkDataManager(root, struct, print, struct_manager)
     root.mainloop()
 
 

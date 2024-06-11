@@ -15,7 +15,7 @@ from display.customtkinter.ctkDisplayFrame import DisplayFrame
 
 
 class EnvCustomFrame(ctk.CTkFrame):
-    def __init__(self, master, run_command, **kwargs):
+    def __init__(self, master, run_command, manager:frjson.FragmentedJsonManager, **kwargs):
         super().__init__(master, **kwargs)
         self.run_command = run_command
 
@@ -24,9 +24,10 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agentclass = None
         self.eval = GridEvalMethod
 
-        self.env_data = None
+        self.env_data = [None],0
         self.agent_data = None
         self.evalparams={}
+        self.manager=manager
 
         self.s_env = ctk.StringVar()
         self.s_env.set("No environment loaded")
@@ -84,7 +85,7 @@ class EnvCustomFrame(ctk.CTkFrame):
 
     def edit_parameters(self):
         data=self.get_parameters()
-        ctkDataManager(self, data, self.close_edit_parameters)
+        ctkDataManager(self, data, self.close_edit_parameters, self.manager)
 
     def close_edit_parameters(self,data):
         self.s_env.set(data["Environment name"])
@@ -173,6 +174,7 @@ class SelectionFrame(iTkFrame):
         ECFc: type
         ECFa: dict
         ECFc, ECFa = self.kwargs.get("middle", (EnvCustomFrame, {}))
+        ECFa["manager"]=self.env_mngr
         ECF = ECFc(self, self.run_environment, **ECFa)
         assert isinstance(ECF, EnvCustomFrame)
         middle_frame = ECF
