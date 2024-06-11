@@ -755,6 +755,8 @@ In order to allow environment variants with limited visibility (such as a mirror
 
 In order to allow more dynamic environment variants where the state of the grid may vary from iteration to iteration, the grid data is formatted in the form of a grid routine which may return different grids depending on the current iteration.
 
+A grid routine consists of a set of grids that may loop or stay on the last grid shown when all grids have been used. 
+
 \section{Test entity design}
 
 The most important part of a test environment are the test entities, the means through which the artificial intelligence will interact with the environment, both receiving information limited and/or altered by the properties of the entities and influencing the actions of the entities through instruction decided upon based on a combination of input data, learned information, and rational deduction.
@@ -768,7 +770,8 @@ Every entity possesses certain properties that affect the way the entity interac
 
 \subsubsection{Entity appearance properties}
 
-One of the properties every entity on the grid possesses is its appearance. 
+One of the properties every entity on the grid possesses is its appearance. This appearance only has a visual purpose on its own.
+However, in combination with entity vision and property-dependent grid interactions, 
 
 \subsubsection{Entity vision properties}
 
@@ -784,9 +787,16 @@ The simplest entity vision setting an agent can be placed in is full vision, in 
 
 \item{Local vision}
 
+In this variant, the entity can only see what is within its field of vision.
 
+\item{Blindness}
+
+In this variant, the entity can't see anything.
 
 \end{itemize}
+
+There is also a special type of entity vision: self-vision, which determines whether the entity can see itself directly.
+This property is important for self-awareness tests such as the mirror test.
 
 \paragraph{•}
 
