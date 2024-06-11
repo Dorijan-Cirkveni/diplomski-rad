@@ -75,7 +75,7 @@ class MultiLineInputFrame(BaseInputFrame):
 
         self.label.grid(row=0, column=0, sticky="ew", padx=10, pady=5)
         self.input.grid(row=1, column=0, sticky="ew", padx=10, pady=5)
-        self.button.grid(row=2, column=0, pady=10, sticky="ew", padx=10)
+        self.button.grid(row=3, column=0, pady=10, sticky="ew", padx=10)
         self.input.delete(0.0, ctk.END)
         self.input.insert(0.0, defaultValue)
 
