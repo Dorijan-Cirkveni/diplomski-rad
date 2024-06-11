@@ -23,10 +23,9 @@ class FragmentedInputFrame(JSONInputFrame):
         self.inception_lambda = inception_lambda
         super().__init__(master, return_lambda, *args, **kwargs)
 
-    def create_widgets(self):
-        super().create_widgets()
-        s = self.input.get(0.0, ctk.END)
-        if frjson.is_extendable(s):
+    def set(self, s):
+        super().set(s)
+        if frjson.FragmentDefaultNameRule(s):
             self.inception_button = ctk.CTkButton(self, text="Edit fragment", command=self.inception_lambda)
             self.inception_button.grid(row=2, column=0, columnspan=2, pady=10)
 
