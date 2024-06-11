@@ -1,4 +1,5 @@
 import json
+import random
 
 import util.CommonExceptions
 from agents.Agent import BoxAgent
@@ -27,6 +28,7 @@ class GridEntity(itf.iEntity):
     S_allseeing = "allsee"
     S_frozen = "frozen"
     S_mirror = "mirror"
+    S_drunk = "drunk"
     P_viewdirections = "viewdir"  # down=0, up=1, left=2, right=3
     S_view_self = "viewse"
     S_relativepos = "relpos"
@@ -96,6 +98,17 @@ class GridEntity(itf.iEntity):
         if self.properties.get(self.S_frozen, False):
             actions = dict()
         res = self.agent.performAction(actions)
+        drunk = self.get(self.S_drunk,0)
+        if drunk<=0:
+            return res
+        if drunk>1:
+            drunk=1
+        ran=random.random()
+        if ran>=drunk:
+            return res
+        ran/=drunk
+        ind=int(ran/drunk*len(actions))
+        res=actions[ind]
         return res
 
 
