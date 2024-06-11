@@ -85,9 +85,9 @@ class MultiLineInputFrame(BaseInputFrame):
         self.input.insert(0.0, s)
 
     def doOutput(self):
-        assert type(self.input) == ctk.CTkEntry
-        self.input: ctk.CTkEntry
-        s = self.input.get()
+        assert type(self.input) == ctk.CTkTextbox
+        self.input: ctk.CTkTextbox
+        s = self.input.get(0.0, ctk.END)
         if not self.rule(s):
             print("{} not valid!".format(s))
             PopupMessage(self,"Input Error",self.errmsg)

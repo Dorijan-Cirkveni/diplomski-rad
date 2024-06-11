@@ -63,7 +63,9 @@ class ctkDataManager(ctk.CTkToplevel):
         self.show_cur_keys()
 
     def apply(self, value):
-        self.cur[self.curkey] = json.loads(value)
+        loaded_value = json.loads(value)
+        self.cur[self.curkey] = loaded_value
+        self.show_cur_value_interface(loaded_value)
 
     def make_edit_frames(self):
         advanced = AdvancedInputFrame(self.edit_archframe, self.apply, self.stack_action,
