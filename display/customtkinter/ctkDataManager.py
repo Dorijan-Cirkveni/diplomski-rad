@@ -92,7 +92,7 @@ class ctkDataManager(ctk.CTkToplevel):
                                       text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
         self.edit_frames[list] = advanced
         self.edit_frames[dict] = advanced
-        fragment = FragmentedInputFrame(self.edit_archframe, self.apply, self.stack_action,
+        fragment = FragmentedInputFrame(self.edit_archframe, self.apply, self.fragment_action,
                                         (0, 0), util.UtilManager.IsValidJSON,
                                         text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
         self.edit_frames[str]=fragment
@@ -210,9 +210,10 @@ class ctkDataManager(ctk.CTkToplevel):
         self.metastack.append(self.stack)
         self.stack = []
         frgm = last[lastkey]
-        file, indices = frjson.get_extend_keys(frgm)
-        self.cur = self.fragment_manager.get(file, indices)
-        self.curkey = None
+        file, indices = frjson.ReadFragmentAddress(frgm)
+        value=self.fragment_manager.get(file, indices)
+        self.cur = {frgm:value}
+        self.curkey = frgm
         self.show_cur_keys()
         self.hide_cur_value_interface()
 
