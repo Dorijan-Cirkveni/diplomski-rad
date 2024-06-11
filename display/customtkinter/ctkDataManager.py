@@ -40,6 +40,8 @@ class ctkDataManager(ctk.CTkToplevel):
 
         self.curkey = None
         self.stack = []
+        self.metastack = []
+
         self.title("Data Manager")
         size = (600, 400)
         loc = getLoc(root, size)
@@ -85,7 +87,7 @@ class ctkDataManager(ctk.CTkToplevel):
         advanced = AdvancedInputFrame(self.edit_archframe, self.apply, self.stack_action,
                                       (0, 0), util.UtilManager.IsValidJSON,
                                       text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
-        advanced = AdvancedInputFrame(self.edit_archframe, self.apply, self.stack_action,
+        fragment = FragmentedInputFrame(self.edit_archframe, self.apply, self.stack_action,
                                       (0, 0), util.UtilManager.IsValidJSON,
                                       text="Raw JSON value:", butext="Apply", errmsg="Invalid JSON!")
         self.edit_frames[list] = advanced
@@ -161,7 +163,10 @@ class ctkDataManager(ctk.CTkToplevel):
         return func
 
     def return_action(self):
-        if not self.stack:
+        while not self.stack:
+            if self.metastack:
+                self.stack=self.metastack.pop()
+                continue
             self.apply_action()
             return
         last, lastkey = self.stack.pop()
@@ -182,6 +187,17 @@ class ctkDataManager(ctk.CTkToplevel):
         self.curkey = None
         self.show_cur_keys()
         self.hide_cur_value_interface()
+
+    def fragment_action(self):
+        last, lastkey = self.cur, self.curkey
+        self.stack.append((last, lastkey))
+        self.metastack.append(self.stack)
+        self.stack=[]
+        # Google todo comment
+        # Holy hell
+        # New fragment just dropped
+        # Call fragment manager
+
 
 
 def structTest(struct):
