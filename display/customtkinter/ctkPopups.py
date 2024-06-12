@@ -2,12 +2,12 @@ from display.customtkinter.base.ctkDefinitions import *
 
 
 class PopupMessage(ctk.CTkToplevel):
-    def __init__(self, master, title="Title", message="Message", ok_text="OK", call_upon_close:callable=None):
+    def __init__(self, master, title="Title", message="Message", ok_text="OK", call_upon_close: callable = None):
         super().__init__(master)
 
         self.title(title)
-        size=(300,150)
-        self.geometry(getLoc(master,size))
+        size = (300, 150)
+        self.geometry(getLoc(master, size))
         self.wm_attributes("-topmost", 1)
 
         self.message_label = ctk.CTkLabel(self, text=message, wraplength=250)
@@ -15,14 +15,16 @@ class PopupMessage(ctk.CTkToplevel):
 
         self.ok_button = ctk.CTkButton(self, text=ok_text, command=self.close)
         self.ok_button.pack(pady=10)
-        self.call=call_upon_close
+        self.call = call_upon_close
 
         self.grab_set()  # Make the popup modal
+        self.protocol("WM_DELETE_WINDOW", self.close)  # Handle window close event
 
     def close(self):
         self.destroy()
         if self.call:
             self.call()
+
 
 
 class MultiChoiceMessage(ctk.CTkToplevel):
@@ -79,6 +81,21 @@ class InputMessage(ctk.CTkToplevel):
         self.destroy()
 
 
+def test_popup(root):
+
+    def show_input_message():
+        def handle_input():
+            print("Popup closed")
+
+        PopupMessage(root, title="Input Needed", message="Input Not Needed", ok_text="...ok?",
+                     call_upon_close=handle_input)
+
+    test_button = ctk.CTkButton(root, text="Show Input Message?", command=show_input_message)
+    test_button.pack(pady=20)
+
+    root.mainloop()
+
+
 def main1(root):
 
     def show_input_message():
@@ -92,9 +109,7 @@ def main1(root):
 
     root.mainloop()
 
-def main():
-    root = DarkCTK()
-    root.geometry("400x400")
+def main2(root):
     fn_a=lambda:print("wasd")
     fn_b=lambda:print("aaaaaaaaaaa")
     fn_c=lambda:print("CTHULHU FHTAGN")
@@ -105,6 +120,11 @@ def main():
     ]
     MultiChoiceMessage(root,"Try?","try?",fnL)
     root.mainloop()
+
+def main():
+    root = DarkCTK()
+    root.geometry("400x400")
+    test_popup(root)
 
 
 if __name__ == "__main__":
