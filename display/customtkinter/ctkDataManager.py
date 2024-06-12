@@ -48,7 +48,6 @@ class ctkDataManager(ctk.CTkToplevel):
         self.curkey = None
         self.stack = []
         self.metastack = []
-        self.altered=False
         self.fragment_manager = fragment_manager
 
         self.title("Data Manager")
@@ -220,7 +219,7 @@ class ctkDataManager(ctk.CTkToplevel):
 
     def finalise_fragment_close(self):
         self.cur=self.curkey
-        self.stack,self.altered=self.metastack.pop()
+        self.stack=self.metastack.pop()
         self.return_action()
 
 
@@ -253,8 +252,7 @@ class ctkDataManager(ctk.CTkToplevel):
     def fragment_action(self):
         last, lastkey = self.cur, self.curkey
         self.stack.append((last, lastkey))
-        E=(self.stack,self.altered)
-        self.metastack.append(E)
+        self.metastack.append(self.stack)
         self.stack = []
         frgm = last[lastkey]
         file, indices = frjson.ReadFragmentAddress(frgm)
