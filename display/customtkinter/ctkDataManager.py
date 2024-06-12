@@ -198,12 +198,15 @@ class ctkDataManager(ctk.CTkToplevel):
         file, inds = frjson.ReadFragmentAddress(A)
         fragment = self.fragment_manager.files[file]
         data = fragment.root
-        arch, archind = frjson.nestr.NestedStructGetRef([data], 0, inds)
+        true_arch=[data]
+        arch, archind = frjson.nestr.NestedStructGetRef(true_arch, 0, inds)
         if archind is None:
             ctkp.PopupMessage(DarkCTK(), "Error", "Structure does not exist in direct subfile!")
             return
         if popup_action == 1:
-            if isinstance(arch, list):
+            if arch is true_arch:
+                raise Exception("Cannot append new if root!")
+            elif isinstance(arch, list):
                 archind = len(arch)
                 arch.append(None)
             elif isinstance(arch, dict):
@@ -211,9 +214,14 @@ class ctkDataManager(ctk.CTkToplevel):
                     ctkp.InputMessage(DarkCTK(), "New index", "New index:", archind,
                                       func=lambda e: self.continue_closing_fragment(1,e))
                     return
-            raise Exception("HOW IN TURING'S NAME DID THIS HAPPEN?")
+                archind = new_index
+            else:
+                raise Exception("HOW IN TURING'S NAME DID THIS HAPPEN?")
         arch[archind] = self.cur[self.curkey]
+        inds[-1]=
         fragment.save()
+        self.cur=
+        return
 
     def return_action(self):
         if not self.stack:
