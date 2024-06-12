@@ -846,12 +846,12 @@ Depending on the setting, this may be:
 \item An inverted mirror (moves in the opposite direction of the original)
 \end{itemize}
  
- \section{Tested agent types}
-
+\section{Tested agent types}
+\subsection{Hardcoded instruction agents}
 \section{A suggestion for a knowledge-based classification of intelligence}
-This thesis proposes a model of intelligence similar to the Cattell-Horn-Carroll theory.
-However, the model proposed here is tailored to artificial subjects by deriving levels of information from the three stratums of intelligence, and further distinguishing information by immediate source:
-\subsubsection{Knowledge by source}
+This thesis proposes a model of intelligence tailored to artificial subjects
+by differentiating various levels of knowledge in two dimensions - knowledge by source and knowledge by level.
+\subsection{Knowledge by source}
 We can differentiate three types of knowledge sources:
 \paragraph{Explicitly coded knowledge}
 This type of knowledge is what most classical computer programs rely on. For example, a computer program doesn't need to understand mathematics in order to perform mathematical operations - they are as natural to it as cell division is to us.
@@ -863,16 +863,19 @@ This type of knowledge is the foundation of machine learning, and includes all i
 It is highly unlikely this form of knowledge can be considered a sign of intelligence, either, much like rote memorisation cannot be considered as such.
 \paragraph{Live learning knowledge}
 And finally, live learning knowledge is the surest sign of intelligence of the three as it pertains to knowledge acquired and inferred by agents in action.
-\subsubsection{Knowledge by level}
-\begin{enumerate}
-\item[Immediate action knowledge]
+\subsection{Knowledge by level}
+
+\paragraph{Immediate environment knowledge}
+\subparagraph{Immediate action knowledge}
 Immediate action knowledge entails knowing what action needs to be taken in a given moment. This is the lowest level of know
-\item[End goal knowledge]
-End goal knowledge, however, 
-\item[Immediate environment knowledge]
-\item[Immediate context knowledge]
-\item[General context knowledge]
-\end{enumerate}
+\subparagraph{Immediate end goal knowledge}
+End goal knowledge, however, ent
+\subparagraph{Immediate environment knowledge}
+\paragraph{Environment type knowledge}
+\subparagraph{Immediate context knowledge}
+\paragraph{General context knowledge}
+\subparagraph{Current general context knowledge}
+\subparagraph{First principles knowledge}
 
 
 \section{Agent aspect considerations}
@@ -891,6 +894,8 @@ The human mind is not, like ChatGPT and its ilk, a lumbering statistical engine 
 \end{quote}
 \subsection{Learning data level}
 However, we also need to consider the type of knowledge available to the agent, as well as its source.
+
+
 
 \chapter{Implementation}
 

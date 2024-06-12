@@ -3,138 +3,148 @@
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{\numberline {1}Introduction}{4}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Recent advances in artificial intelligence}{4}{section.1.1}%
-\contentsline {subsection}{\numberline {1.1.1}Public adoption}{5}{subsection.1.1.1}%
-\contentsline {subsubsection}{Large Language Models}{6}{section*.3}%
-\contentsline {subsubsection}{Image generation AI}{6}{section*.4}%
-\contentsline {subsection}{\numberline {1.1.2}Backlash to "AI art" and the question of consciousness}{7}{subsection.1.1.2}%
-\contentsline {section}{\numberline {1.2}Objective}{7}{section.1.2}%
-\contentsline {section}{\numberline {1.3}Choosing an approach}{8}{section.1.3}%
-\contentsline {subsection}{\numberline {1.3.1}Thinking rationally (Artificial intelligence)}{9}{subsection.1.3.1}%
-\contentsline {subsection}{\numberline {1.3.2}Acting rationally (Apparent artificial intelligence)}{10}{subsection.1.3.2}%
-\contentsline {subsection}{\numberline {1.3.3}Thinking "humanly" (consciousness?)}{11}{subsection.1.3.3}%
-\contentsline {subsection}{\numberline {1.3.4}Acting "humanly" (apparent consciousness)}{13}{subsection.1.3.4}%
-\contentsline {section}{\numberline {1.4}Artificial intelligence}{14}{section.1.4}%
-\contentsline {subsection}{\numberline {1.4.1}The five schools of artificial intelligence}{14}{subsection.1.4.1}%
-\contentsline {subsubsection}{Connectionism}{14}{section*.7}%
-\contentsline {subsubsection}{Symbollism}{15}{section*.8}%
-\contentsline {subsubsection}{Evolutionism}{15}{section*.9}%
-\contentsline {subsubsection}{Bayesian approach}{15}{section*.10}%
-\contentsline {subsubsection}{Analogizing}{15}{section*.11}%
-\contentsline {section}{\numberline {1.5}Artificial consciousness}{15}{section.1.5}%
-\contentsline {subsection}{\numberline {1.5.1}Anthropomorphism and AI}{16}{subsection.1.5.1}%
-\contentsline {subsubsection}{LaMDA}{16}{section*.12}%
-\contentsline {subsubsection}{ELIZA}{19}{section*.15}%
-\contentsline {subsubsection}{Ramifications}{19}{section*.16}%
-\contentsline {subsection}{\numberline {1.5.2}The Chinese Room Argument}{19}{subsection.1.5.2}%
-\contentsline {subsection}{\numberline {1.5.3}Popular media depictions of AI as artificial consciousness}{20}{subsection.1.5.3}%
-\contentsline {subsection}{\numberline {1.5.4}Why should we care about artificial consciousness?}{22}{subsection.1.5.4}%
-\contentsline {section}{\numberline {1.6}Defining intelligence}{23}{section.1.6}%
-\contentsline {subsection}{\numberline {1.6.1}Types of intelligence}{23}{subsection.1.6.1}%
-\contentsline {subsection}{\numberline {1.6.2}Testing for intelligence}{24}{subsection.1.6.2}%
-\contentsline {subsection}{\numberline {1.6.3}A few notable attempts at simulating/creating intelligence}{25}{subsection.1.6.3}%
-\contentsline {subsubsection}{The Logic Theorist (1956)}{25}{section*.20}%
-\contentsline {subsubsection}{SHRDLU (1968)}{25}{section*.21}%
-\contentsline {subsubsection}{Scalable Instructable Multiworld Agent (2024)}{25}{section*.22}%
-\contentsline {section}{\numberline {1.7}Defining consciousness}{25}{section.1.7}%
-\contentsline {subsection}{\numberline {1.7.1}Existing theories}{25}{subsection.1.7.1}%
-\contentsline {subsubsection}{Integrated Information Theory}{26}{section*.23}%
-\contentsline {subsubsection}{Global Workspace Theory}{26}{section*.24}%
-\contentsline {subsubsection}{Attention Schema Theory}{26}{section*.25}%
-\contentsline {subsection}{\numberline {1.7.2}Testing for consciousness}{26}{subsection.1.7.2}%
-\contentsline {subsubsection}{The Turing Test}{27}{section*.26}%
-\contentsline {subsection}{\numberline {1.7.3}Self-awareness tests}{28}{subsection.1.7.3}%
-\contentsline {subsubsection}{Mirror test analogy}{28}{section*.27}%
-\contentsline {subsubsection}{Theory-of-mind tests}{29}{section*.28}%
-\contentsline {subsection}{\numberline {1.7.4}A few notable projects related to simulating/creating consciousness}{29}{subsection.1.7.4}%
-\contentsline {subsubsection}{The Self-Organizing Map}{29}{section*.29}%
-\contentsline {subsubsection}{COG}{30}{section*.30}%
-\contentsline {subsubsection}{Blue Brain Project}{30}{section*.31}%
-\contentsline {chapter}{\numberline {2}Materials and Methods}{31}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Virtual testing environment}{31}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Grid elements}{32}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Basic grid elements}{32}{subsection.2.2.1}%
-\contentsline {paragraph}{Clear tile}{32}{section*.33}%
-\contentsline {paragraph}{Goal tile}{32}{section*.34}%
-\contentsline {paragraph}{Wall tile}{33}{section*.35}%
-\contentsline {paragraph}{Curtain tile}{33}{section*.36}%
-\contentsline {paragraph}{Lethal tile}{33}{section*.37}%
-\contentsline {paragraph}{Lethal Wall tile}{33}{section*.38}%
-\contentsline {paragraph}{Glass tile}{33}{section*.39}%
-\contentsline {paragraph}{Effects tile}{33}{section*.40}%
-\contentsline {paragraph}{Null tile}{34}{section*.41}%
-\contentsline {subsection}{\numberline {2.2.2}Composite grid elements}{34}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Visible and solid grid modes}{34}{subsection.2.2.3}%
-\contentsline {subsection}{\numberline {2.2.4}Grid routines}{34}{subsection.2.2.4}%
-\contentsline {section}{\numberline {2.3}Test entity design}{34}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Entity/Agent duality}{35}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Entity properties}{35}{subsection.2.3.2}%
-\contentsline {subsubsection}{Entity appearance properties}{35}{section*.42}%
-\contentsline {subsubsection}{Entity vision properties}{35}{section*.43}%
-\contentsline {paragraph}{Entity motion properties}{36}{section*.44}%
-\contentsline {section}{\numberline {2.4}Test environment design}{36}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Reference test environments}{36}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Mirror test environments}{36}{subsection.2.4.2}%
-\contentsline {section}{\numberline {2.5}Agent behavior types}{37}{section.2.5}%
-\contentsline {subsubsection}{Basic entity behaviour types}{37}{section*.45}%
-\contentsline {paragraph}{Box}{37}{section*.46}%
-\contentsline {paragraph}{Actions loop}{37}{section*.47}%
-\contentsline {paragraph}{Mirror}{37}{section*.48}%
-\contentsline {section}{\numberline {2.6}Tested agent types}{37}{section.2.6}%
-\contentsline {section}{\numberline {2.7}A suggestion for a knowledge-based classification of intelligence}{37}{section.2.7}%
-\contentsline {subsubsection}{Knowledge by source}{38}{section*.49}%
-\contentsline {paragraph}{Explicitly coded knowledge}{38}{section*.50}%
-\contentsline {paragraph}{Learning phase knowledge}{38}{section*.51}%
-\contentsline {paragraph}{Live learning knowledge}{38}{section*.52}%
-\contentsline {subsubsection}{Knowledge by level}{38}{section*.53}%
-\contentsline {section}{\numberline {2.8}Agent aspect considerations}{39}{section.2.8}%
-\contentsline {subsection}{\numberline {2.8.1}Steps taken}{39}{subsection.2.8.1}%
-\contentsline {subsection}{\numberline {2.8.2}Processing time}{39}{subsection.2.8.2}%
-\contentsline {subsection}{\numberline {2.8.3}Processing space}{39}{subsection.2.8.3}%
-\contentsline {subsection}{\numberline {2.8.4}Learning data size}{39}{subsection.2.8.4}%
-\contentsline {subsection}{\numberline {2.8.5}Learning data level}{40}{subsection.2.8.5}%
-\contentsline {chapter}{\numberline {3}Implementation}{42}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Implementation choices}{42}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Programming language choice}{42}{subsection.3.1.1}%
-\contentsline {section}{\numberline {3.2}Tested agent choice}{42}{section.3.2}%
-\contentsline {subsubsection}{Template}{43}{section*.54}%
-\contentsline {paragraph}{Description}{43}{section*.55}%
-\contentsline {paragraph}{Interface}{43}{section*.56}%
-\contentsline {paragraph}{Advantages}{43}{section*.57}%
-\contentsline {paragraph}{Disadvantages}{43}{section*.58}%
-\contentsline {subsection}{\numberline {3.2.1}Reference agents}{43}{subsection.3.2.1}%
-\contentsline {subsubsection}{Human input}{43}{section*.59}%
-\contentsline {paragraph}{Description}{43}{section*.60}%
-\contentsline {paragraph}{Advantages}{44}{section*.61}%
-\contentsline {paragraph}{Disadvantages}{44}{section*.62}%
-\contentsline {subsubsection}{Pre-determined sets of actions}{44}{section*.63}%
-\contentsline {subsubsection}{Large language model}{44}{section*.64}%
-\contentsline {paragraph}{Advantages}{44}{section*.65}%
-\contentsline {subparagraph}{Generality}{44}{section*.66}%
-\contentsline {paragraph}{Disadvantages}{44}{section*.67}%
-\contentsline {section}{\numberline {3.3}Implementation details}{44}{section.3.3}%
-\contentsline {chapter}{\numberline {4}Results and Discussion}{45}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Instructions for usage of test environment interface}{45}{section.4.1}%
-\contentsline {section}{\numberline {4.2}•}{45}{section.4.2}%
-\contentsline {chapter}{\numberline {5}Further research suggestions}{46}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Environment improvements}{46}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Technical debt management}{46}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Optimisation}{46}{section.5.3}%
-\contentsline {paragraph}{More complex environments}{46}{section*.68}%
-\contentsline {section}{\numberline {5.4}Future research concerns}{46}{section.5.4}%
-\contentsline {subsection}{\numberline {5.4.1}Gain-of-function AI development risks}{46}{subsection.5.4.1}%
-\contentsline {subsection}{\numberline {5.4.2}Safety versus speed}{46}{subsection.5.4.2}%
-\contentsline {chapter}{\numberline {6}Conclusion}{47}{chapter.6}%
-\contentsline {chapter}{References}{48}{chapter*.69}%
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Recent advances in artificial intelligence}{2}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Public adoption}{3}{subsection.1.1.1}%
+\contentsline {subsubsection}{Large Language Models}{4}{section*.3}%
+\contentsline {subsubsection}{Image generation AI}{4}{section*.4}%
+\contentsline {subsection}{\numberline {1.1.2}Backlash to "AI art" and the question of consciousness}{5}{subsection.1.1.2}%
+\contentsline {section}{\numberline {1.2}Objective}{5}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Choosing an approach}{6}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Thinking rationally (Artificial intelligence)}{7}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}Acting rationally (Apparent artificial intelligence)}{8}{subsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.3.3}Thinking "humanly" (consciousness?)}{9}{subsection.1.3.3}%
+\contentsline {subsection}{\numberline {1.3.4}Acting "humanly" (apparent consciousness)}{11}{subsection.1.3.4}%
+\contentsline {section}{\numberline {1.4}Artificial intelligence}{12}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}The five schools of artificial intelligence}{12}{subsection.1.4.1}%
+\contentsline {subsubsection}{Connectionism}{12}{section*.7}%
+\contentsline {subsubsection}{Symbollism}{13}{section*.8}%
+\contentsline {subsubsection}{Evolutionism}{13}{section*.9}%
+\contentsline {subsubsection}{Bayesian approach}{13}{section*.10}%
+\contentsline {subsubsection}{Analogizing}{13}{section*.11}%
+\contentsline {section}{\numberline {1.5}Artificial consciousness}{13}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Anthropomorphism and AI}{14}{subsection.1.5.1}%
+\contentsline {subsubsection}{LaMDA}{14}{section*.12}%
+\contentsline {subsubsection}{ELIZA}{17}{section*.15}%
+\contentsline {subsubsection}{Ramifications}{17}{section*.16}%
+\contentsline {subsection}{\numberline {1.5.2}The Chinese Room Argument}{17}{subsection.1.5.2}%
+\contentsline {subsection}{\numberline {1.5.3}Popular media depictions of AI as artificial consciousness}{18}{subsection.1.5.3}%
+\contentsline {subsection}{\numberline {1.5.4}Why should we care about artificial consciousness?}{20}{subsection.1.5.4}%
+\contentsline {section}{\numberline {1.6}Defining intelligence}{21}{section.1.6}%
+\contentsline {subsection}{\numberline {1.6.1}Types of intelligence}{21}{subsection.1.6.1}%
+\contentsline {subsection}{\numberline {1.6.2}Testing for intelligence}{22}{subsection.1.6.2}%
+\contentsline {subsection}{\numberline {1.6.3}A few notable attempts at simulating/creating intelligence}{23}{subsection.1.6.3}%
+\contentsline {subsubsection}{The Logic Theorist (1956)}{23}{section*.20}%
+\contentsline {subsubsection}{SHRDLU (1968)}{23}{section*.21}%
+\contentsline {subsubsection}{Scalable Instructable Multiworld Agent (2024)}{23}{section*.22}%
+\contentsline {section}{\numberline {1.7}Defining consciousness}{23}{section.1.7}%
+\contentsline {subsection}{\numberline {1.7.1}Existing theories}{23}{subsection.1.7.1}%
+\contentsline {subsubsection}{Integrated Information Theory}{24}{section*.23}%
+\contentsline {subsubsection}{Global Workspace Theory}{24}{section*.24}%
+\contentsline {subsubsection}{Attention Schema Theory}{24}{section*.25}%
+\contentsline {subsection}{\numberline {1.7.2}Testing for consciousness}{24}{subsection.1.7.2}%
+\contentsline {subsubsection}{The Turing Test}{25}{section*.26}%
+\contentsline {subsection}{\numberline {1.7.3}Self-awareness tests}{26}{subsection.1.7.3}%
+\contentsline {subsubsection}{Mirror test analogy}{26}{section*.27}%
+\contentsline {subsubsection}{Theory-of-mind tests}{27}{section*.28}%
+\contentsline {subsection}{\numberline {1.7.4}A few notable projects related to simulating/creating consciousness}{27}{subsection.1.7.4}%
+\contentsline {subsubsection}{The Self-Organizing Map}{27}{section*.29}%
+\contentsline {subsubsection}{COG}{28}{section*.30}%
+\contentsline {subsubsection}{Blue Brain Project}{28}{section*.31}%
+\contentsline {chapter}{\numberline {2}Materials and Methods}{29}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Virtual testing environment}{29}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Grid elements}{30}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Basic grid elements}{30}{subsection.2.2.1}%
+\contentsline {paragraph}{Clear tile}{30}{section*.33}%
+\contentsline {paragraph}{Goal tile}{30}{section*.34}%
+\contentsline {paragraph}{Wall tile}{31}{section*.35}%
+\contentsline {paragraph}{Curtain tile}{31}{section*.36}%
+\contentsline {paragraph}{Lethal tile}{31}{section*.37}%
+\contentsline {paragraph}{Lethal Wall tile}{31}{section*.38}%
+\contentsline {paragraph}{Glass tile}{31}{section*.39}%
+\contentsline {paragraph}{Effects tile}{31}{section*.40}%
+\contentsline {paragraph}{Null tile}{32}{section*.41}%
+\contentsline {subsection}{\numberline {2.2.2}Composite grid elements}{32}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Visible and solid grid modes}{32}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Grid routines}{32}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Test entity design}{32}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Entity/Agent duality}{33}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Entity properties}{33}{subsection.2.3.2}%
+\contentsline {subsubsection}{Entity appearance properties}{33}{section*.42}%
+\contentsline {subsubsection}{Entity vision properties}{33}{section*.43}%
+\contentsline {paragraph}{Entity motion properties}{34}{section*.44}%
+\contentsline {section}{\numberline {2.4}Test environment design}{34}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Reference test environments}{34}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Mirror test environments}{34}{subsection.2.4.2}%
+\contentsline {section}{\numberline {2.5}Agent behavior types}{35}{section.2.5}%
+\contentsline {subsubsection}{Basic entity behaviour types}{35}{section*.45}%
+\contentsline {paragraph}{Box}{35}{section*.46}%
+\contentsline {paragraph}{Actions loop}{35}{section*.47}%
+\contentsline {paragraph}{Mirror}{35}{section*.48}%
+\contentsline {section}{\numberline {2.6}Tested agent types}{35}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Hardcoded instruction agents}{35}{subsection.2.6.1}%
+\contentsline {section}{\numberline {2.7}A suggestion for a knowledge-based classification of intelligence}{35}{section.2.7}%
+\contentsline {subsection}{\numberline {2.7.1}Knowledge by source}{36}{subsection.2.7.1}%
+\contentsline {paragraph}{Explicitly coded knowledge}{36}{section*.49}%
+\contentsline {paragraph}{Learning phase knowledge}{36}{section*.50}%
+\contentsline {paragraph}{Live learning knowledge}{36}{section*.51}%
+\contentsline {subsection}{\numberline {2.7.2}Knowledge by level}{36}{subsection.2.7.2}%
+\contentsline {paragraph}{Immediate environment knowledge}{36}{section*.52}%
+\contentsline {subparagraph}{Immediate action knowledge}{36}{section*.53}%
+\contentsline {subparagraph}{Immediate end goal knowledge}{36}{section*.54}%
+\contentsline {subparagraph}{Immediate environment knowledge}{36}{section*.55}%
+\contentsline {paragraph}{Environment type knowledge}{36}{section*.56}%
+\contentsline {subparagraph}{Immediate context knowledge}{37}{section*.57}%
+\contentsline {paragraph}{General context knowledge}{37}{section*.58}%
+\contentsline {subparagraph}{Current general context knowledge}{37}{section*.59}%
+\contentsline {subparagraph}{First principles knowledge}{37}{section*.60}%
+\contentsline {section}{\numberline {2.8}Agent aspect considerations}{37}{section.2.8}%
+\contentsline {subsection}{\numberline {2.8.1}Steps taken}{37}{subsection.2.8.1}%
+\contentsline {subsection}{\numberline {2.8.2}Processing time}{37}{subsection.2.8.2}%
+\contentsline {subsection}{\numberline {2.8.3}Processing space}{37}{subsection.2.8.3}%
+\contentsline {subsection}{\numberline {2.8.4}Learning data size}{37}{subsection.2.8.4}%
+\contentsline {subsection}{\numberline {2.8.5}Learning data level}{38}{subsection.2.8.5}%
+\contentsline {chapter}{\numberline {3}Implementation}{40}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Implementation choices}{40}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Programming language choice}{40}{subsection.3.1.1}%
+\contentsline {section}{\numberline {3.2}Tested agent choice}{40}{section.3.2}%
+\contentsline {subsubsection}{Template}{41}{section*.61}%
+\contentsline {paragraph}{Description}{41}{section*.62}%
+\contentsline {paragraph}{Interface}{41}{section*.63}%
+\contentsline {paragraph}{Advantages}{41}{section*.64}%
+\contentsline {paragraph}{Disadvantages}{41}{section*.65}%
+\contentsline {subsection}{\numberline {3.2.1}Reference agents}{41}{subsection.3.2.1}%
+\contentsline {subsubsection}{Human input}{41}{section*.66}%
+\contentsline {paragraph}{Description}{41}{section*.67}%
+\contentsline {paragraph}{Advantages}{42}{section*.68}%
+\contentsline {paragraph}{Disadvantages}{42}{section*.69}%
+\contentsline {subsubsection}{Pre-determined sets of actions}{42}{section*.70}%
+\contentsline {subsubsection}{Large language model}{42}{section*.71}%
+\contentsline {paragraph}{Advantages}{42}{section*.72}%
+\contentsline {subparagraph}{Generality}{42}{section*.73}%
+\contentsline {paragraph}{Disadvantages}{42}{section*.74}%
+\contentsline {section}{\numberline {3.3}Implementation details}{42}{section.3.3}%
+\contentsline {chapter}{\numberline {4}Results and Discussion}{43}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Instructions for usage of test environment interface}{43}{section.4.1}%
+\contentsline {section}{\numberline {4.2}•}{43}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Further research suggestions}{44}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Environment improvements}{44}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Technical debt management}{44}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Optimisation}{44}{section.5.3}%
+\contentsline {paragraph}{More complex environments}{44}{section*.75}%
+\contentsline {section}{\numberline {5.4}Future research concerns}{44}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Gain-of-function AI development risks}{44}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Safety versus speed}{44}{subsection.5.4.2}%
+\contentsline {chapter}{\numberline {6}Conclusion}{45}{chapter.6}%
+\contentsline {chapter}{References}{46}{chapter*.76}%
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Abstract}{49}{chapter*.70}%
+\contentsline {chapter}{Abstract}{47}{chapter*.77}%
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
-\contentsline {chapter}{Sa\v {z}etak}{50}{chapter*.71}%
+\contentsline {chapter}{Sa\v {z}etak}{48}{chapter*.78}%
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{\numberline {A:}The Code}{51}{chapter.1}%
+\contentsline {chapter}{\numberline {A:}The Code}{49}{chapter.1}%
