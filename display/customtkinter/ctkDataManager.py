@@ -223,6 +223,26 @@ class ctkDataManager(ctk.CTkToplevel):
         self.cur=
         return
 
+    def input_save_fragment_to_custom(self):
+        self.stack = self.metastack.pop()
+        if self.curkey is None:
+            self.curkey=list(self.cur)[0]
+        file, inds = frjson.ReadFragmentAddress(self.curkey)
+        fragment = self.fragment_manager.files[file]
+        data = fragment.root
+        true_arch=[data]
+        arch, archind = frjson.nestr.NestedStructGetRef(true_arch, 0, inds)
+        ctkp.InputMessage(DarkCTK(), "New index", "New index:", archind,
+                          func=self.save_fragment_to_custom)
+        return
+
+    def save_fragment_to_custom(self, new_address:str):
+        file, inds = frjson.ReadFragmentAddress(self.curkey)
+        if file not in self.fragment_manager.files:
+            raise NotImplementedError
+        fragment = self.fragment_manager.files[file]
+
+
     def return_action(self):
         if not self.stack:
             if not self.metastack:
