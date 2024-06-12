@@ -2,7 +2,7 @@ from display.customtkinter.base.ctkDefinitions import *
 
 
 class PopupMessage(ctk.CTkToplevel):
-    def __init__(self, master, title="Title", message="Message", ok_text="OK"):
+    def __init__(self, master, title="Title", message="Message", ok_text="OK", call_upon_close:callable=None):
         super().__init__(master)
 
         self.title(title)
@@ -15,11 +15,14 @@ class PopupMessage(ctk.CTkToplevel):
 
         self.ok_button = ctk.CTkButton(self, text=ok_text, command=self.close)
         self.ok_button.pack(pady=10)
+        self.call=call_upon_close
 
         self.grab_set()  # Make the popup modal
 
     def close(self):
         self.destroy()
+        if self.call:
+            self.call()
 
 
 class MultiChoiceMessage(ctk.CTkToplevel):
