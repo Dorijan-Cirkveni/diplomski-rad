@@ -849,7 +849,8 @@ Depending on the setting, this may be:
  \section{Tested agent types}
 
 \section{A suggestion for a knowledge-based classification of intelligence}
-This thesis proposes a model of intelligence based on the Cattell-Horn-Carroll theory, but tailored to artificial subjects by deriving levels of information from the three stratums of intelligence, and further distinguishing information by immediate source:
+This thesis proposes a model of intelligence similar to the Cattell-Horn-Carroll theory.
+However, the model proposed here is tailored to artificial subjects by deriving levels of information from the three stratums of intelligence, and further distinguishing information by immediate source:
 \subsubsection{Knowledge by source}
 We can differentiate three types of knowledge sources:
 \paragraph{Explicitly coded knowledge}
@@ -876,10 +877,12 @@ End goal knowledge, however,
 
 \section{Agent aspect considerations}
 In order to determine whether an agent could be intelligent and/or conscious, we need to determine certain characteristics of the agent, as well as its learning/training process:
+\subsection{Steps taken}
+An intelligent agent, given sufficient information about the immediate environment, will be capable of reaching the goal within the smallest amount of steps.
 \subsection{Processing time}
-Given enough time, even a brute-force algorithm is capable of providing the optimal answer 
+Given enough time, even a brute-force algorithm may be capable of providing the optimal answer to any given situation. However, an intelligent agent is more likely to provide an answer within a reasonable amount of time, 
 \subsection{Processing space}
-Similarly, 
+Similarly, an intelligent agent may be capable of providing an answer to a given problem more efficiently in terms of storage space used.
 \subsection{Learning data size}
 It would also be far-fetched to call a simple search function intelligent, and we should take care not to declare machine learning models with more data than inference intelligent, let alone conscious:
 \begin{quote}
@@ -891,17 +894,18 @@ However, we also need to consider the type of knowledge available to the agent, 
 
 \chapter{Implementation}
 
-
-\section{Primary approach choice}
-\section{Implementation choice}
+\section{Implementation choices}
 \subsection{Programming language choice}
 Python-based implementation was chosen for this paper due to several factors:
 \begin{itemize}
 \item Ease of prototyping
+
 While low-level languages generally outperform Python in terms of performance by orders of magnitude, its ease of use makes it an adequate choice for prototyping.
 \item Ability to leverage low-level language performance
+
 Various tools, such as C extensions, libraries with low-level implementations, and alternative interpreters allow Python to mitigate its base weakness and perform better.
 \item Specialised machine learning libraries
+
 Libraries such as Scikit-learn, TensorFlow, and Keras have been developed specifically for machine learning and will significantly accelerate development of test environments and AI agents.
 \end{itemize}
 \section{Tested agent choice}
