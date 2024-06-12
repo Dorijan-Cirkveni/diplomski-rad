@@ -826,7 +826,16 @@ The simplest type of entity, the box, is meant to be nothing more than a test el
 \paragraph{Actions loop}
 This entity runs a pre-recorded set of action and is primarily used to verify test environment functionality, although it can also be used as a test element.
 \paragraph{Mirror}
+This entity receives information about another agent's motion patterns and mirrors them.
 
+Depending on the setting, this may be:
+\begin{itemize}
+\item A copycat mirror (move matches original move),
+\item A horizontal mirror (moves left when original moves right and vice versa)
+\item A vertical mirror (moves down when original moves up and vice versa)
+\item An inverted mirror (moves in the opposite direction of the original)
+\end{itemize}
+ 
 
 \section{A suggestion for a knowledge-based classification of intelligence}
 This thesis proposes a model of intelligence based on the Cattell-Horn-Carroll theory, but tailored to artificial subjects by deriving levels of information from the three stratums of intelligence, and further distinguishing information by immediate source:

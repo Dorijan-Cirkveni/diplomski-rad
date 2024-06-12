@@ -15,7 +15,7 @@ from display.customtkinter.ctkDisplayFrame import DisplayFrame
 
 
 class EnvCustomFrame(ctk.CTkFrame):
-    def __init__(self, master, run_command, manager:frjson.FragmentedJsonManager, **kwargs):
+    def __init__(self, master, run_command, manager: frjson.FragmentedJsonManager, **kwargs):
         super().__init__(master, **kwargs)
         self.run_command = run_command
 
@@ -24,17 +24,17 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agentclass = None
         self.eval = GridEvalMethod
 
-        self.env_data = [frjson.FragmentedJsonStruct([])],0
+        self.arch_call = [frjson.FragmentedJsonStruct([])], 0
         self.agent_data = None
-        self.evalparams={}
-        self.manager=manager
+        self.evalparams = {}
+        self.manager = manager
 
         self.s_env = ctk.StringVar()
         self.s_env.set("No environment loaded")
         self.s_ag = ctk.StringVar()
         self.s_ag.set("No agent loaded")
-        self.s_method=ctk.StringVar()
-        self.s_method.set("Method: "+self.eval.__name__)
+        self.s_method = ctk.StringVar()
+        self.s_method.set("Method: " + self.eval.__name__)
 
         self.env_label = ctk.CTkLabel(self, textvariable=self.s_env, font=("Helvetica", 18))
         self.env_label.pack(padx=10, pady=5)
@@ -54,12 +54,12 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.save_button = ctk.CTkButton(self, text="Save environment", command=self.save_env_start)
         self.save_button.pack(padx=10, pady=10)
 
-    def set_env(self, file, fragment:frjson.FragmentedJsonStruct, ind, name):
+    def set_env(self, file, fragment: frjson.FragmentedJsonStruct, ind, name):
         self.catname = file
         envname = utilmngr.MakeClassNameReadable(file) + ": " + name
         self.s_env.set(envname)
-        self.env_data = (fragment,ind)
-        print(envname,fragment,ind)
+        self.arch_call = (fragment, ind)
+        print(envname, fragment, ind)
 
     def set_agent(self, agentname, agentraw):
         agentclass = agentmngr.ALL_AGENTS[agentname]
@@ -69,13 +69,13 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agent_data = agentraw
 
     def get_parameters(self, edit_only=False):
-        frag,ind=self.env_data
-        frag:frjson.FragmentedJsonStruct
-        ind:int
+        frag, ind = self.arch_call
+        frag: frjson.FragmentedJsonStruct
+        ind: int
         data = {
             "Category name": self.catname,
             "Environment name": self.s_env.get(),
-            "Env meta": self.env_data,
+            "Env meta": self.arch_call,
             "Environment data": frag.root[ind],
             "Agent data": self.agent_data,
             "Evaluation method": self.eval.__name__,
@@ -86,26 +86,28 @@ class EnvCustomFrame(ctk.CTkFrame):
         return data
 
     def edit_parameters(self):
-        data=self.get_parameters(True)
+        data = self.get_parameters(True)
         ctkDataManager(self, data, self.close_edit_parameters, self.manager)
 
-    def close_edit_parameters(self,data):
-        self.s_env.set(data["Environment name"])
+    def close_edit_parameters(self, data):
+        envname = data["Environment name"]
+        self.s_env.set(envname)
         env_data = data["Environment data"]
-        frag,ind=self.env_data
-        frag.root[ind]=env_data
+        fragname, ind = self.arch_call
+        frag = self.manager.get(fragname)
+        frag.root[ind] = env_data
         self.agent_data = data["Agent data"]
-        method=data["Evaluation method"]
-        self.s_method.set("Method: "+method)
-        self.eval=EVALMETHODS[method]
-        self.evalparams=data["Evaluation parameters"]
+        method = data["Evaluation method"]
+        self.s_method.set("Method: " + method)
+        self.eval = EVALMETHODS[method]
+        self.evalparams = data["Evaluation parameters"]
         print("Close successful.")
 
     def run_env(self):
         print("-" * 160)
-        data=self.get_parameters()
-        env_name=data.get("Environment name",None)
-        env_data_short=data.get("Environment data",None)
+        data = self.get_parameters()
+        env_name = data.get("Environment name", None)
+        env_data_short = data.get("Environment data", None)
         if env_name is None:
             PopupMessage(self, "Error", "Missing environment name!")
             return
@@ -115,8 +117,8 @@ class EnvCustomFrame(ctk.CTkFrame):
         if self.agentclass is None:
             PopupMessage(self, "Error", "Missing agent!")
             return
-        data["Agent class"]=self.agentclass
-        print(env_name is None,)
+        data["Agent class"] = self.agentclass
+        print(env_name is None, )
         print("Env:", env_name)
         print("Agent class", self.agentclass)
         print("Agent data", self.agent_data)
@@ -124,30 +126,29 @@ class EnvCustomFrame(ctk.CTkFrame):
 
     def save_env_start(self):
         print("-" * 160)
-        data=self.get_parameters()
-        env_name=data.get("Environment name",None)
-        env_data=data.get("Environment data",None)
+        data = self.get_parameters()
+        env_name = data.get("Environment name", None)
+        env_data = data.get("Environment data", None)
         if env_name is None:
             PopupMessage(self, "Error", "Missing environment name!")
             return
         if env_data is None:
             PopupMessage(self, "Error", "Missing environment data!")
             return
-        print(env_name is None,)
+        print(env_name is None, )
         print("Env:", env_name)
         print("Agent class", self.agentclass)
         print("Agent data", self.agent_data)
-        InputMessage(DarkCTK.GetMain(),"Save...","Select save file location","","Save",
+        InputMessage(DarkCTK.GetMain(), "Save...", "Select save file location", "", "Save",
                      self.save_env_end)
 
     def save_env_end(self, filename):
-        data=self.get_parameters()
-        env_name=data.get("Environment name",None)
-        env_data=data.get("Environment data",None)
-        data=self.get_parameters()
-        data["Agent class"]=self.agentclass
+        data = self.get_parameters()
+        env_name = data.get("Environment name", None)
+        env_data = data.get("Environment data", None)
+        data = self.get_parameters()
+        data["Agent class"] = self.agentclass
         raise NotImplementedError
-
 
 
 class SelectionFrame(iTkFrame):
@@ -157,7 +158,7 @@ class SelectionFrame(iTkFrame):
         self.w_data = None
         self.env_mngr = frjson.FragmentedJsonManager(denied=set())
         self.env_names = self.env_mngr.get_names("solo_files.txt")  # Format: [("file", ["Env1", "Env2", "Env3"])]
-        self.default_env_names = [(name,envs[:]) for name,envs in self.env_names]
+        self.default_env_names = [(name, envs[:]) for name, envs in self.env_names]
         self.kwargs = kwargs
         super().__init__(master, GRIDSELECT, dimensions)
 
@@ -176,7 +177,7 @@ class SelectionFrame(iTkFrame):
         ECFc: type
         ECFa: dict
         ECFc, ECFa = self.kwargs.get("middle", (EnvCustomFrame, {}))
-        ECFa["manager"]=self.env_mngr
+        ECFa["manager"] = self.env_mngr
         ECF = ECFc(self, self.run_environment, **ECFa)
         assert isinstance(ECF, EnvCustomFrame)
         middle_frame = ECF
@@ -193,7 +194,7 @@ class SelectionFrame(iTkFrame):
         self.w_data = middle_frame
         return
 
-    def factory_env(self, file:str, fragment:frjson.FragmentedJsonStruct, ind:int, name:str):
+    def factory_env(self, file: str, fragment: frjson.FragmentedJsonStruct, ind: int, name: str):
         def env():
             return self.w_data.set_env(file, fragment, ind, name)
 
@@ -217,7 +218,6 @@ class SelectionFrame(iTkFrame):
             cats.append(cat)
         return cats
 
-
     def get_agent_presets(self):
         cats = []
         for agname, agclass in agentmngr.TEST_AGENTS.items():
@@ -232,11 +232,11 @@ class SelectionFrame(iTkFrame):
         return cats
 
     def run_environment(self, data):
-        EDC="Environment data"
-        catname=data["Category name"]
+        EDC = "Environment data"
+        catname = data["Category name"]
         _, ind = data["Env meta"]
-        fragdata=self.env_mngr.get(catname,[ind])
-        data[EDC]=fragdata
+        fragdata = self.env_mngr.get(catname, [ind])
+        data[EDC] = fragdata
         func = self.swapFrameFactory(GRIDDISPLAY, data)
         func()
 

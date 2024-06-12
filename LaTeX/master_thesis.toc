@@ -85,25 +85,25 @@
 \contentsline {subsubsection}{Knowledge by source}{37}{section*.49}%
 \contentsline {paragraph}{Explicitly coded knowledge}{37}{section*.50}%
 \contentsline {paragraph}{Learning phase knowledge}{37}{section*.51}%
-\contentsline {paragraph}{Live learning knowledge}{37}{section*.52}%
+\contentsline {paragraph}{Live learning knowledge}{38}{section*.52}%
 \contentsline {subsubsection}{Knowledge by level}{38}{section*.53}%
 \contentsline {section}{\numberline {2.7}Agent aspect considerations}{38}{section.2.7}%
 \contentsline {subsection}{\numberline {2.7.1}Processing time}{38}{subsection.2.7.1}%
 \contentsline {subsection}{\numberline {2.7.2}Processing space}{38}{subsection.2.7.2}%
-\contentsline {subsection}{\numberline {2.7.3}Learning data size}{38}{subsection.2.7.3}%
+\contentsline {subsection}{\numberline {2.7.3}Learning data size}{39}{subsection.2.7.3}%
 \contentsline {subsection}{\numberline {2.7.4}Learning data level}{39}{subsection.2.7.4}%
 \contentsline {section}{\numberline {2.8}Primary approach choice}{39}{section.2.8}%
 \contentsline {section}{\numberline {2.9}Implementation choice}{39}{section.2.9}%
 \contentsline {subsection}{\numberline {2.9.1}Programming language choice}{39}{subsection.2.9.1}%
-\contentsline {section}{\numberline {2.10}Tested agent choice}{39}{section.2.10}%
+\contentsline {section}{\numberline {2.10}Tested agent choice}{40}{section.2.10}%
 \contentsline {subsubsection}{Template}{40}{section*.54}%
 \contentsline {paragraph}{Description}{40}{section*.55}%
 \contentsline {paragraph}{Interface}{40}{section*.56}%
 \contentsline {paragraph}{Advantages}{40}{section*.57}%
 \contentsline {paragraph}{Disadvantages}{40}{section*.58}%
-\contentsline {subsection}{\numberline {2.10.1}Reference agents}{40}{subsection.2.10.1}%
-\contentsline {subsubsection}{Human input}{40}{section*.59}%
-\contentsline {paragraph}{Description}{40}{section*.60}%
+\contentsline {subsection}{\numberline {2.10.1}Reference agents}{41}{subsection.2.10.1}%
+\contentsline {subsubsection}{Human input}{41}{section*.59}%
+\contentsline {paragraph}{Description}{41}{section*.60}%
 \contentsline {paragraph}{Advantages}{41}{section*.61}%
 \contentsline {paragraph}{Disadvantages}{41}{section*.62}%
 \contentsline {subsubsection}{Pre-determined sets of actions}{41}{section*.63}%
