@@ -181,8 +181,6 @@ class ctkDataManager(ctk.CTkToplevel):
         return func
 
     def close_fragment(self):
-        event = Event()
-        returnstruct = [None]
         L = [
             ("Overwrite existing", lambda:self.save_fragment_to_custom(self.curkey)),
             ("Append new", self.input_save_fragment_to_custom),
@@ -191,20 +189,14 @@ class ctkDataManager(ctk.CTkToplevel):
         ctkp.MultiChoiceMessage(DarkCTK.GetMain(), "Save fragment?", "Save fragment?", L)
 
     def input_save_fragment_to_custom(self):
-        self.stack = self.metastack.pop()
         if self.curkey is None:
             self.curkey=list(self.cur)[0]
-        file, inds = frjson.ReadFragmentAddress(self.curkey)
-        fragment = self.fragment_manager.files[file]
-        data = fragment.root
-        true_arch=[data]
-        arch, archind = frjson.nestr.NestedStructGetRef(true_arch, 0, inds)
-        ctkp.InputMessage(DarkCTK(), "New index", "New index:", archind,
+        ctkp.InputMessage(DarkCTK(), "New index", "New index:", self.curkey,
                           func=self.save_fragment_to_custom)
         return
 
     def save_fragment_to_custom(self, new_address:str):
-        file, inds = frjson.ReadFragmentAddress(self.curkey)
+        file, inds = frjson.ReadFragmentAddress(new_address)
         if file not in self.fragment_manager.files:
             raise NotImplementedError
         fragment = self.fragment_manager.files[file]
@@ -213,7 +205,7 @@ class ctkDataManager(ctk.CTkToplevel):
         arch, archind = frjson.nestr.NestedStructGetRef(true_arch, 0, inds)
         if archind is None:
             ctkp.PopupMessage(DarkCTK(), "Error", "Structure does not exist in direct subfile!",
-                              call_upon_close=lambda:self.save_fragment_to_custom(new_address))
+                              call_upon_close=self.input_save_fragment_to_custom)
             return
         if type(archind)==int and archind==-1:
             archind=len(arch)
@@ -222,7 +214,6 @@ class ctkDataManager(ctk.CTkToplevel):
             new_address=frjson.WriteFragmentAddress(file,inds)
         arch[archind] = self.cur[self.curkey]
         fragment.save()
-        self.cur=
         return
 
     def finalise_fragment_close(self):
