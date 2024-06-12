@@ -38,6 +38,13 @@ def ReadFragmentAddress(s: str):
     return name, F[1:]
 
 
+def WriteFragmentAddress(file:str,indices:list[[str,int]]):
+    X=[file]
+    for e in indices:
+        X.append(str(e))
+    return "<EXT>"+"|".join(X)
+
+
 def is_extendable(position):
     rem = re.match("<EXTEND.*>", position)
     return rem is not None

@@ -248,10 +248,11 @@ class ctkDataManager(ctk.CTkToplevel):
             ctkp.PopupMessage(DarkCTK(), "Error", "Structure does not exist in direct subfile!",
                               call_upon_close=lambda:self.save_fragment_to_custom(new_address))
             return
-
         if type(archind)==int and archind==-1:
+            archind=len(arch)
             arch.append(None)
-            archind=
+            inds[-1]=archind
+            new_address=frjson.WriteFragmentAddress(file,inds)
         arch[archind] = self.cur[self.curkey]
         fragment.save()
         self.cur=
