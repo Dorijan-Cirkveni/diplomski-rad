@@ -241,16 +241,18 @@ class ctkDataManager(ctk.CTkToplevel):
         if file not in self.fragment_manager.files:
             raise NotImplementedError
         fragment = self.fragment_manager.files[file]
-        fragment = self.fragment_manager.files[file]
         data = fragment.root
         true_arch=[data]
         arch, archind = frjson.nestr.NestedStructGetRef(true_arch, 0, inds)
         if archind is None:
-            ctkp.PopupMessage(DarkCTK(), "Error", "Structure does not exist in direct subfile!")
+            ctkp.PopupMessage(DarkCTK(), "Error", "Structure does not exist in direct subfile!",
+                              call_upon_close=lambda:self.save_fragment_to_custom(new_address))
             return
 
+        if type(archind)==int and archind==-1:
+            arch.append(None)
+            archind=
         arch[archind] = self.cur[self.curkey]
-        inds[-1]=
         fragment.save()
         self.cur=
         return
