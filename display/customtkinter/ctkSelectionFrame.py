@@ -15,7 +15,7 @@ from display.customtkinter.ctkDisplayFrame import DisplayFrame
 
 
 class EnvCustomFrame(ctk.CTkFrame):
-    def __init__(self, master, run_command, manager: frjson.FragmentedJsonManager, **kwargs):
+    def __init__(self, master, run_command, json_manager: frjson.FragmentedJsonManager, **kwargs):
         super().__init__(master, **kwargs)
         self.run_command = run_command
 
@@ -24,10 +24,10 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agentclass = None
         self.eval = GridEvalMethod
 
-        self.arch_call = [frjson.FragmentedJsonStruct([])], 0
+        self.arch_call = frjson.FragmentedJsonStruct([]), 0
         self.agent_data = None
         self.evalparams = {}
-        self.manager = manager
+        self.frjsonmngr:frjson.FragmentedJsonManager = json_manager
 
         self.s_env = ctk.StringVar()
         self.s_env.set("No environment loaded")
@@ -51,7 +51,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.run_button = ctk.CTkButton(self, text="Run environment", command=self.run_env)
         self.run_button.pack(padx=10, pady=10)
 
-        self.save_button = ctk.CTkButton(self, text="Save environment", command=self.save_env_start)
+        self.save_button = ctk.CTkButton(self, text="Save environment", command=self.save_env_step_1)
         self.save_button.pack(padx=10, pady=10)
 
     def set_env(self, file, fragment: frjson.FragmentedJsonStruct, ind, name):
@@ -87,14 +87,14 @@ class EnvCustomFrame(ctk.CTkFrame):
 
     def edit_parameters(self):
         data = self.get_parameters(True)
-        ctkDataManager(self, data, self.close_edit_parameters, self.manager)
+        ctkDataManager(self, data, self.close_edit_parameters, self.frjsonmngr)
 
     def close_edit_parameters(self, data):
         envname = data["Environment name"]
         self.s_env.set(envname)
         env_data = data["Environment data"]
         fragname, ind = self.arch_call
-        frag = self.manager.get(fragname)
+        frag = self.frjsonmngr.get(fragname)
         frag.root[ind] = env_data
         self.agent_data = data["Agent data"]
         method = data["Evaluation method"]
@@ -124,29 +124,37 @@ class EnvCustomFrame(ctk.CTkFrame):
         print("Agent data", self.agent_data)
         self.run_command(data)
 
-    def save_env_start(self):
-        print("-" * 160)
-        data = self.get_parameters()
-        env_name = data.get("Environment name", None)
-        env_data = data.get("Environment data", None)
+    def save_env_step_1(self):
+        frag,ind=self.arch_call
+        env_data = frag.root[ind]
         if env_data is None:
             PopupMessage(self, "Error", "Missing environment data!")
             return
-        if env_name is None:
-            PopupMessage(self, "Error", "Missing environment name!")
-            return
-        print("Env:", env_name)
-        print("Agent class", self.agentclass)
-        print("Agent data", self.agent_data)
-        self.save_env_step_1(data)
-
-    def save_env_step_1(self,data):
-        frag,ind=self.arch_call
         address=frjson.WriteFragmentAddress(self.catname,ind)
         InputMessage(DarkCTK.GetMain(), "New index", "New index:", address,
                           func=self.save_env_step_2)
 
     def save_env_step_2(self,s):
+        try:
+            file, inds = frjson.ReadFragmentAddress(s)
+        except Exception as exc:
+            PopupMessage(DarkCTK(), "Exception thrown",exc,
+                         call_upon_close=self.save_env_step_1())
+            return
+        if file not in self.frjsonmngr.files:
+            PopupMessage(DarkCTK(), "File no exist", "File no exist",
+                         call_upon_close=self.save_env_step_1())
+        frag = self.frjsonmngr.files[file]
+        arch=frag.root
+        if not isinstance(arch, list):
+            PopupMessage(DarkCTK(), "Error",
+                         f"File root structure must be list, not {type(arch)}!",
+                         call_upon_close=self.save_env_step_1())
+        ind=inds[0]
+        if ind<0:
+            ind=len(arch)
+            arch.append(None)
+        arch[ind]=s
         return
 
 
