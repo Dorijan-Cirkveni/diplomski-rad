@@ -51,7 +51,10 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.run_button = ctk.CTkButton(self, text="Run environment", command=self.run_env)
         self.run_button.pack(padx=10, pady=10)
 
-        self.save_button = ctk.CTkButton(self, text="Save environment", command=self.save_env_step_1)
+        self.copy_button = ctk.CTkButton(self, text="Copy environment to other location", command=self.save_env_step_1)
+        self.copy_button.pack(padx=10, pady=10)
+
+        self.save_button = ctk.CTkButton(self, text="Save environment", command=self.save_env)
         self.save_button.pack(padx=10, pady=10)
 
     def set_env(self, file, fragment: frjson.FragmentedJsonStruct, ind, name):
@@ -123,6 +126,13 @@ class EnvCustomFrame(ctk.CTkFrame):
         print("Agent class", self.agentclass)
         print("Agent data", self.agent_data)
         self.run_command(data)
+
+    def save_env(self):
+        frag,ind=self.arch_call
+        if not frag.filepath:
+            PopupMessage(self, "Error", "Empty!")
+            return
+        frag.save()
 
     def save_env_step_1(self):
         frag,ind=self.arch_call
