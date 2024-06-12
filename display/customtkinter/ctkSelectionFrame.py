@@ -129,18 +129,26 @@ class EnvCustomFrame(ctk.CTkFrame):
         data = self.get_parameters()
         env_name = data.get("Environment name", None)
         env_data = data.get("Environment data", None)
-        if env_name is None:
-            PopupMessage(self, "Error", "Missing environment name!")
-            return
         if env_data is None:
             PopupMessage(self, "Error", "Missing environment data!")
             return
-        print(env_name is None, )
+        if env_name is None:
+            PopupMessage(self, "Error", "Missing environment name!")
+            return
         print("Env:", env_name)
         print("Agent class", self.agentclass)
         print("Agent data", self.agent_data)
-        InputMessage(DarkCTK.GetMain(), "Save...", "Select save file location", "", "Save",
-                     self.save_env_end)
+        self.save_env_step_1(data)
+
+    def save_env_step_1(self,data):
+        frag,ind=self.arch_call
+        address=frjson.WriteFragmentAddress(self.catname,ind)
+        InputMessage(DarkCTK.GetMain(), "New index", "New index:", address,
+                          func=self.save_env_step_2)
+
+    def save_env_step_2(self,s):
+        return
+
 
     def save_env_end(self, filename):
         data = self.get_parameters()

@@ -38,7 +38,9 @@ def ReadFragmentAddress(s: str):
     return name, F[1:]
 
 
-def WriteFragmentAddress(file:str,indices:list[[str,int]]):
+def WriteFragmentAddress(file:str,indices:[list[[str,int]],str,int]):
+    if type(indices)!=list:
+        indices=[indices]
     X=[file]
     for e in indices:
         X.append(str(e))

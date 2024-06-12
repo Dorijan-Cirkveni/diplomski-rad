@@ -191,7 +191,7 @@ class ctkDataManager(ctk.CTkToplevel):
     def input_save_fragment_to_custom(self):
         if self.curkey is None:
             self.curkey=list(self.cur)[0]
-        ctkp.InputMessage(DarkCTK(), "New index", "New index:", self.curkey,
+        ctkp.InputMessage(DarkCTK.GetMain(), "New index", "New index:", self.curkey,
                           func=self.save_fragment_to_custom)
         return
 
