@@ -93,38 +93,39 @@
 \contentsline {subsection}{\numberline {2.8.2}Processing space}{39}{subsection.2.8.2}%
 \contentsline {subsection}{\numberline {2.8.3}Learning data size}{39}{subsection.2.8.3}%
 \contentsline {subsection}{\numberline {2.8.4}Learning data level}{39}{subsection.2.8.4}%
-\contentsline {section}{\numberline {2.9}Primary approach choice}{40}{section.2.9}%
-\contentsline {section}{\numberline {2.10}Implementation choice}{40}{section.2.10}%
-\contentsline {subsection}{\numberline {2.10.1}Programming language choice}{40}{subsection.2.10.1}%
-\contentsline {section}{\numberline {2.11}Tested agent choice}{40}{section.2.11}%
-\contentsline {subsubsection}{Template}{40}{section*.54}%
-\contentsline {paragraph}{Description}{40}{section*.55}%
-\contentsline {paragraph}{Interface}{40}{section*.56}%
-\contentsline {paragraph}{Advantages}{40}{section*.57}%
-\contentsline {paragraph}{Disadvantages}{41}{section*.58}%
-\contentsline {subsection}{\numberline {2.11.1}Reference agents}{41}{subsection.2.11.1}%
-\contentsline {subsubsection}{Human input}{41}{section*.59}%
-\contentsline {paragraph}{Description}{41}{section*.60}%
-\contentsline {paragraph}{Advantages}{41}{section*.61}%
-\contentsline {paragraph}{Disadvantages}{41}{section*.62}%
-\contentsline {subsubsection}{Pre-determined sets of actions}{42}{section*.63}%
-\contentsline {subsubsection}{Large language model}{42}{section*.64}%
-\contentsline {paragraph}{Advantages}{42}{section*.65}%
-\contentsline {subparagraph}{Generality}{42}{section*.66}%
-\contentsline {paragraph}{Disadvantages}{42}{section*.67}%
-\contentsline {section}{\numberline {2.12}Implementation details}{42}{section.2.12}%
-\contentsline {chapter}{\numberline {3}Results and Discussion}{44}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Instructions for usage of test environment interface}{44}{section.3.1}%
-\contentsline {section}{\numberline {3.2}•}{44}{section.3.2}%
-\contentsline {chapter}{\numberline {4}Further research suggestions}{45}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Environment improvements}{45}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Technical debt management}{45}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Optimisation}{45}{section.4.3}%
+\contentsline {chapter}{\numberline {3}Implementation}{41}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Primary approach choice}{41}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Implementation choice}{41}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Programming language choice}{41}{subsection.3.2.1}%
+\contentsline {section}{\numberline {3.3}Tested agent choice}{41}{section.3.3}%
+\contentsline {subsubsection}{Template}{41}{section*.54}%
+\contentsline {paragraph}{Description}{42}{section*.55}%
+\contentsline {paragraph}{Interface}{42}{section*.56}%
+\contentsline {paragraph}{Advantages}{42}{section*.57}%
+\contentsline {paragraph}{Disadvantages}{42}{section*.58}%
+\contentsline {subsection}{\numberline {3.3.1}Reference agents}{42}{subsection.3.3.1}%
+\contentsline {subsubsection}{Human input}{42}{section*.59}%
+\contentsline {paragraph}{Description}{42}{section*.60}%
+\contentsline {paragraph}{Advantages}{43}{section*.61}%
+\contentsline {paragraph}{Disadvantages}{43}{section*.62}%
+\contentsline {subsubsection}{Pre-determined sets of actions}{43}{section*.63}%
+\contentsline {subsubsection}{Large language model}{43}{section*.64}%
+\contentsline {paragraph}{Advantages}{43}{section*.65}%
+\contentsline {subparagraph}{Generality}{43}{section*.66}%
+\contentsline {paragraph}{Disadvantages}{43}{section*.67}%
+\contentsline {section}{\numberline {3.4}Implementation details}{43}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Results and Discussion}{44}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Instructions for usage of test environment interface}{44}{section.4.1}%
+\contentsline {section}{\numberline {4.2}•}{44}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Further research suggestions}{45}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Environment improvements}{45}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Technical debt management}{45}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Optimisation}{45}{section.5.3}%
 \contentsline {paragraph}{More complex environments}{45}{section*.68}%
-\contentsline {section}{\numberline {4.4}Future research concerns}{45}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Gain-of-function AI development risks}{45}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Safety versus speed}{45}{subsection.4.4.2}%
-\contentsline {chapter}{\numberline {5}Conclusion}{46}{chapter.5}%
+\contentsline {section}{\numberline {5.4}Future research concerns}{45}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Gain-of-function AI development risks}{45}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Safety versus speed}{45}{subsection.5.4.2}%
+\contentsline {chapter}{\numberline {6}Conclusion}{46}{chapter.6}%
 \contentsline {chapter}{References}{47}{chapter*.69}%
 \babel@toc {english}{}\relax 
 \contentsline {chapter}{Abstract}{48}{chapter*.70}%
