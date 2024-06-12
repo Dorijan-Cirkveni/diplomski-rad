@@ -76,26 +76,26 @@
 \contentsline {section}{\numberline {2.4}Test environment design}{36}{section.2.4}%
 \contentsline {subsection}{\numberline {2.4.1}Reference test environments}{36}{subsection.2.4.1}%
 \contentsline {subsection}{\numberline {2.4.2}Mirror test environments}{36}{subsection.2.4.2}%
-\contentsline {section}{\numberline {2.5}Agent behavior types}{36}{section.2.5}%
+\contentsline {section}{\numberline {2.5}Agent behavior types}{37}{section.2.5}%
 \contentsline {subsubsection}{Basic entity behaviour types}{37}{section*.45}%
 \contentsline {paragraph}{Box}{37}{section*.46}%
 \contentsline {paragraph}{Actions loop}{37}{section*.47}%
 \contentsline {paragraph}{Mirror}{37}{section*.48}%
 \contentsline {section}{\numberline {2.6}Tested agent types}{37}{section.2.6}%
 \contentsline {section}{\numberline {2.7}A suggestion for a knowledge-based classification of intelligence}{37}{section.2.7}%
-\contentsline {subsubsection}{Knowledge by source}{37}{section*.49}%
-\contentsline {paragraph}{Explicitly coded knowledge}{37}{section*.50}%
+\contentsline {subsubsection}{Knowledge by source}{38}{section*.49}%
+\contentsline {paragraph}{Explicitly coded knowledge}{38}{section*.50}%
 \contentsline {paragraph}{Learning phase knowledge}{38}{section*.51}%
 \contentsline {paragraph}{Live learning knowledge}{38}{section*.52}%
 \contentsline {subsubsection}{Knowledge by level}{38}{section*.53}%
-\contentsline {section}{\numberline {2.8}Agent aspect considerations}{38}{section.2.8}%
+\contentsline {section}{\numberline {2.8}Agent aspect considerations}{39}{section.2.8}%
 \contentsline {subsection}{\numberline {2.8.1}Processing time}{39}{subsection.2.8.1}%
 \contentsline {subsection}{\numberline {2.8.2}Processing space}{39}{subsection.2.8.2}%
 \contentsline {subsection}{\numberline {2.8.3}Learning data size}{39}{subsection.2.8.3}%
 \contentsline {subsection}{\numberline {2.8.4}Learning data level}{39}{subsection.2.8.4}%
-\contentsline {section}{\numberline {2.9}Primary approach choice}{39}{section.2.9}%
-\contentsline {section}{\numberline {2.10}Implementation choice}{39}{section.2.10}%
-\contentsline {subsection}{\numberline {2.10.1}Programming language choice}{39}{subsection.2.10.1}%
+\contentsline {section}{\numberline {2.9}Primary approach choice}{40}{section.2.9}%
+\contentsline {section}{\numberline {2.10}Implementation choice}{40}{section.2.10}%
+\contentsline {subsection}{\numberline {2.10.1}Programming language choice}{40}{subsection.2.10.1}%
 \contentsline {section}{\numberline {2.11}Tested agent choice}{40}{section.2.11}%
 \contentsline {subsubsection}{Template}{40}{section*.54}%
 \contentsline {paragraph}{Description}{40}{section*.55}%
@@ -107,9 +107,9 @@
 \contentsline {paragraph}{Description}{41}{section*.60}%
 \contentsline {paragraph}{Advantages}{41}{section*.61}%
 \contentsline {paragraph}{Disadvantages}{41}{section*.62}%
-\contentsline {subsubsection}{Pre-determined sets of actions}{41}{section*.63}%
-\contentsline {subsubsection}{Large language model}{41}{section*.64}%
-\contentsline {paragraph}{Advantages}{41}{section*.65}%
+\contentsline {subsubsection}{Pre-determined sets of actions}{42}{section*.63}%
+\contentsline {subsubsection}{Large language model}{42}{section*.64}%
+\contentsline {paragraph}{Advantages}{42}{section*.65}%
 \contentsline {subparagraph}{Generality}{42}{section*.66}%
 \contentsline {paragraph}{Disadvantages}{42}{section*.67}%
 \contentsline {section}{\numberline {2.12}Implementation details}{42}{section.2.12}%
