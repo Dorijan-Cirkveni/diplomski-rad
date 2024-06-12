@@ -43,7 +43,7 @@ def ValidateIndex(struct,ind, extra_data):
         ind: int = int(ind)
         dump=[ind, extra_data, "out of range"]
         RaiseIf(
-            ind not in range(len(struct)),
+            ind not in range(-len(struct),len(struct)),
             json.dumps(dump),
             TypeError
         )

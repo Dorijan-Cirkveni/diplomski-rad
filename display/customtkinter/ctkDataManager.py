@@ -214,9 +214,11 @@ class ctkDataManager(ctk.CTkToplevel):
             new_address=frjson.WriteFragmentAddress(file,inds)
         arch[archind] = self.cur[self.curkey]
         fragment.save()
-        return
+        self.curkey=new_address
+        self.finalise_fragment_close()
 
     def finalise_fragment_close(self):
+        self.cur=self.curkey
         self.stack=self.metastack.pop()
         self.return_action()
 
