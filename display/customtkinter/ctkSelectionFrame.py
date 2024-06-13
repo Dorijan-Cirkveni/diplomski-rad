@@ -96,9 +96,8 @@ class EnvCustomFrame(ctk.CTkFrame):
         envname = data["Environment name"]
         self.s_env.set(envname)
         env_data = data["Environment data"]
-        fragname, ind = self.arch_call
-        frag = self.frjsonmngr.get(fragname)
-        frag.root[ind] = env_data
+        fragref, ind = self.arch_call
+        fragref.root[ind] = env_data
         self.agent_data = data["Agent data"]
         method = data["Evaluation method"]
         self.s_method.set("Method: " + method)
