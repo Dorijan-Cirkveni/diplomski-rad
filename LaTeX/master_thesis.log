@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  13 JUN 2024 17:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  13 JUN 2024 17:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -960,33 +960,33 @@ man traits to non-human
  []
 
 [16] [17]
-<Figures/LaMDA tweet 1.png, id=504, 444.4605pt x 151.767pt>
+<Figures/LaMDA tweet 1.png, id=507, 444.4605pt x 151.767pt>
 File: Figures/LaMDA tweet 1.png Graphic file (type png)
 <use Figures/LaMDA tweet 1.png>
-Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 419.
+Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 420.
 (pdftex.def)             Requested size: 441.01773pt x 150.59714pt.
-<Figures/LaMDA tweet 2.png, id=506, 437.83575pt x 258.9675pt>
+<Figures/LaMDA tweet 2.png, id=509, 437.83575pt x 258.9675pt>
 File: Figures/LaMDA tweet 2.png Graphic file (type png)
 <use Figures/LaMDA tweet 2.png>
-Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 425.
+Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 426.
 (pdftex.def)             Requested size: 441.01773pt x 260.85962pt.
  [18 <./Figures/LaMDA tweet 1.png>] [19 <./Figures/LaMDA tweet 2.png>]
-<Figures/DataTNG.jpeg, id=522, 301.125pt x 168.63pt>
+<Figures/DataTNG.jpeg, id=527, 301.125pt x 168.63pt>
 File: Figures/DataTNG.jpeg Graphic file (type jpg)
 <use Figures/DataTNG.jpeg>
-Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 461.
+Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 462.
 (pdftex.def)             Requested size: 227.62204pt x 127.4731pt.
-<Figures/James_Moriarty_hologram.png, id=523, 1058.95625pt x 1058.95625pt>
+<Figures/James_Moriarty_hologram.png, id=528, 1058.95625pt x 1058.95625pt>
 File: Figures/James_Moriarty_hologram.png Graphic file (type png)
 <use Figures/James_Moriarty_hologram.png>
 Package pdftex.def Info: Figures/James_Moriarty_hologram.png  used on input lin
-e 471.
+e 472.
 (pdftex.def)             Requested size: 227.62204pt x 227.60652pt.
 [20 <./Figures/DataTNG.jpeg>]
-<Figures/VoyagerEMH.png, id=529, 468.75125pt x 531.9875pt>
+<Figures/VoyagerEMH.png, id=535, 468.75125pt x 531.9875pt>
 File: Figures/VoyagerEMH.png Graphic file (type png)
 <use Figures/VoyagerEMH.png>
-Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 480.
+Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 481.
 (pdftex.def)             Requested size: 227.62204pt x 258.3221pt.
 
 
@@ -994,25 +994,25 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [21 <./Figures/James_Moriarty_hologram.png>] [22 <./Figures/VoyagerEMH.png>]
 [23] [24]
-Overfull \hbox (7.07155pt too wide) in paragraph at lines 542--542
+Overfull \hbox (7.07155pt too wide) in paragraph at lines 543--543
 []\T1/opensans-TLF/b/n/14 A few no-table at-tempts at sim-u-lat-ing/creating in
 -tel-li-gence 
  []
 
 [25] [26] [27] [28]
-Overfull \hbox (0.49295pt too wide) in paragraph at lines 630--630
+Overfull \hbox (0.49295pt too wide) in paragraph at lines 631--631
 []\T1/opensans-TLF/b/n/14 A few no-table projects re-lated to sim-u-lat-ing/cre
 ating con-
  []
 
 [29]
-Overfull \hbox (1.13382pt too wide) in paragraph at lines 637--638
+Overfull \hbox (1.13382pt too wide) in paragraph at lines 638--639
 \T1/stix2/m/n/12 Cog was a robotics and ar-ti-fi-cial in-tel-li-gence project d
 e-vel-oped by the Hu-manoid Robotics
  []
 
 
-Overfull \hbox (11.34108pt too wide) in paragraph at lines 645--646
+Overfull \hbox (11.34108pt too wide) in paragraph at lines 646--647
 \T1/stix2/m/n/12 The Blue Brain Project, launched by the École Poly-tech-nique 
 Fédérale de Lau-sanne (EPFL),
  []
@@ -1020,7 +1020,7 @@ Fédérale de Lau-sanne (EPFL),
 [30]
 Chapter 2.
 
-Overfull \hbox (12.14853pt too wide) in paragraph at lines 672--674
+Overfull \hbox (12.14853pt too wide) in paragraph at lines 673--675
 []\T1/stix2/m/n/12 Thanks to a few more ad-vanced fea-tures such as dy-namic gr
 ids or property-dependent
  []
@@ -1028,19 +1028,19 @@ ids or property-dependent
 [31
 
 ]
-<Figures/grid/all_tiles.png, id=590, 120.45pt x 132.495pt>
+<Figures/grid/all_tiles.png, id=599, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
-Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 693.
+Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 694.
 (pdftex.def)             Requested size: 220.50887pt x 242.58272pt.
  [32 <./Figures/grid/all_tiles.png>] [33] [34] [35] [36] [37]
-Overfull \hbox (3.06107pt too wide) in paragraph at lines 863--864
+Overfull \hbox (3.06107pt too wide) in paragraph at lines 864--865
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-mi-sa-tion meth-
  []
 
 [38]
-Overfull \hbox (6.15874pt too wide) in paragraph at lines 872--877
+Overfull \hbox (6.15874pt too wide) in paragraph at lines 873--878
  []\T1/stix2/b/n/12 Immediate ac-tion knowl-edge[] \T1/stix2/m/n/12 Im-me-di-at
 e ac-tion knowl-edge en-tails know-ing what
  []
@@ -1050,7 +1050,7 @@ Chapter 3.
 [41
 
 ]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 935--936
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 938--939
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
@@ -1058,7 +1058,7 @@ e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
 [42] [43]
 Chapter 4.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 965.
+ut line 968.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1067,9 +1067,9 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 965.
+ne 968.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 965.
+(Font)              scaled to size 16.0pt on input line 968.
  [44
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
@@ -1081,24 +1081,24 @@ Chapter 5.
 Chapter 6.
 (master_thesis.bbl [46
 
-]) [47
+] [47
 
-] [48
+]) [48] [49
 
-] [49
+] [50
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1027 \chapter{The Code}
+l.1030 \chapter{The Code}
                          
 Appendix A.
-[50
+[51
 
 
-] [51] (master_thesis.aux)
+] [52] (master_thesis.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
@@ -1232,13 +1232,13 @@ Package rerunfilecheck Info: File `master_thesis.out' has not changed.
 (rerunfilecheck)             Checksum: F00FD89285101A8B81BD1A003EFC0C38;13901.
  ) 
 Here is how much of TeX's memory you used:
- 18319 strings out of 474586
- 290043 string characters out of 5745681
+ 18330 strings out of 474586
+ 290177 string characters out of 5745681
  1937558 words of memory out of 5000000
- 39985 multiletter control sequences out of 15000+600000
+ 39990 multiletter control sequences out of 15000+600000
  639722 words of font info for 142 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 87i,17n,131p,776b,664s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 87i,17n,131p,776b,670s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/opensans/O
 penSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/asce
 nder/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs/MiKTe
@@ -1246,9 +1246,9 @@ X/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/User
 s/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-
 Regular.pfb>
-Output written on master_thesis.pdf (55 pages, 1597417 bytes).
+Output written on master_thesis.pdf (56 pages, 1602250 bytes).
 PDF statistics:
- 801 PDF objects out of 1000 (max. 8388607)
- 210 named destinations out of 1000 (max. 500000)
+ 821 PDF objects out of 1000 (max. 8388607)
+ 216 named destinations out of 1000 (max. 500000)
  645 words of extra memory for PDF output out of 10000 (max. 10000000)
 
