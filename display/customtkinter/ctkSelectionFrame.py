@@ -52,6 +52,9 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.run_button = ctk.CTkButton(self, text="Run environment", command=self.run_env)
         self.run_button.pack(padx=10, pady=10)
 
+        self.run_button = ctk.CTkButton(self, text="Run environment offscreen", command=self.run_env_auto)
+        self.run_button.pack(padx=10, pady=10)
+
         self.copy_button = ctk.CTkButton(self, text="Copy environment to other location", command=self.save_env_step_1)
         self.copy_button.pack(padx=10, pady=10)
 
@@ -106,7 +109,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.evalparams = data["Evaluation parameters"]
         print("Close successful.")
 
-    def run_env(self):
+    def prepare_run_data(self):
         print("-" * 160)
         data = self.get_parameters()
         env_name = data.get("Environment name", None)
@@ -125,6 +128,20 @@ class EnvCustomFrame(ctk.CTkFrame):
         print("Env:", env_name)
         print("Agent class", self.agentclass)
         print("Agent data", self.agent_data)
+        return data
+
+    def run_env_auto(self):
+        data=self.prepare_run_data()
+        if data is None:
+            return
+        data["auto"]=True
+        self.run_command(data)
+
+    def run_env(self):
+        data=self.prepare_run_data()
+        if data is None:
+            return
+        data["auto"]=False
         self.run_command(data)
 
     def save_env(self):
@@ -297,15 +314,10 @@ class SelectionFrame(iTkFrame):
         _, ind = data["Env meta"]
         fragdata = self.env_mngr.get(catname, [ind])
         data[EDC] = fragdata
-        func = self.swapFrameFactory(GRIDDISPLAY, data)
-        func()
-
-    def run_environment_offscreen(self, data):
-        EDC = "Environment data"
-        catname = data["Category name"]
-        _, ind = data["Env meta"]
-        fragdata = self.env_mngr.get(catname, [ind])
-        data[EDC] = fragdata
+        if not data.get("auto",False):
+            func = self.swapFrameFactory(GRIDDISPLAY, data)
+            func()
+            return
         envraw = deepcopy(data["Environment data"])
         agentclass: iAgent = data["Agent class"]
         if agentclass==GraphicManualInputAgent:
@@ -321,6 +333,7 @@ class SelectionFrame(iTkFrame):
             em_params=data["Evaluation parameters"]
             evalmethod=GEMM.init_eval_method(em_name,em_params)
         print(env.run(agent,100,False))
+        input()
         return
 
 
