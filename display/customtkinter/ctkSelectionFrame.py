@@ -27,7 +27,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.arch_call = frjson.FragmentedJsonStruct([{}]), 0
         self.agent_data = None
         self.evalparams = {}
-        self.frjsonmngr: frjson.FragmentedJsonManager = json_manager
+        self.frjsonmngr:frjson.FragmentedJsonManager = json_manager
 
         self.s_env = ctk.StringVar()
         self.s_env.set("No environment loaded")
@@ -127,48 +127,49 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.run_command(data)
 
     def save_env(self):
-        frag, ind = self.arch_call
+        frag,ind=self.arch_call
         if not frag.filepath:
             PopupMessage(self, "Error", "Empty!")
             return
         frag.save()
 
     def save_env_step_1(self):
-        frag, ind = self.arch_call
+        frag,ind=self.arch_call
         env_data = frag.root[ind]
         if env_data is None:
             PopupMessage(self, "Error", "Missing environment data!")
             return
-        address = frjson.WriteFragmentAddress(self.catname, ind)
+        address=frjson.WriteFragmentAddress(self.catname,ind)
         InputMessage(DarkCTK.GetMain(), "New index", "New index:", address,
-                     func=self.save_env_step_2)
+                          func=self.save_env_step_2)
 
-    def save_env_step_2(self, s):
+    def save_env_step_2(self,s):
         try:
             file, inds = frjson.ReadFragmentAddress(s)
         except Exception as exc:
-            PopupMessage(DarkCTK(), "Exception thrown", exc,
+            PopupMessage(DarkCTK(), "Exception thrown",exc,
                          call_upon_close=self.save_env_step_1())
             return
         if file not in self.frjsonmngr.files:
             PopupMessage(DarkCTK(), "File no exist", "File no exist",
                          call_upon_close=self.save_env_step_1())
         frag = self.frjsonmngr.files[file]
-        arch = frag.root
+        arch=frag.root
         if not isinstance(arch, list):
             PopupMessage(DarkCTK(), "Error",
                          f"File root structure must be list, not {type(arch)}!",
                          call_upon_close=self.save_env_step_1())
-        frag2, ind = self.arch_call
+        frag2,ind=self.arch_call
         env_data = frag2.root[ind]
-        ind = inds[0]
-        if type(arch) == list:
-            ind = int(ind)
-            if ind < 0:
-                ind = len(arch)
+        ind=inds[0]
+        if type(arch)==list:
+            ind=int(ind)
+            if ind<0:
+                ind=len(arch)
                 arch.append(None)
-        arch[ind] = env_data
+        arch[ind]=env_data
         return
+
 
     def save_env_end(self, filename):
         data = self.get_parameters()
@@ -247,7 +248,7 @@ class SelectionFrame(iTkFrame):
             cats.append(cat)
         return cats
 
-    def get_static_agent_pre(self, agname, agclass, cats):
+    def get_static_agent_pre(self,agname,agclass,cats):
         agclass: agentmngr.iAgent
         classname = utilmngr.MakeClassNameReadable(agclass.__name__)
         elements = []
@@ -257,13 +258,13 @@ class SelectionFrame(iTkFrame):
         cat = CategoryData(classname, elements, 0)
         cats.append(cat)
 
-    def get_active_agent_pre(self, agname, agclass, cats):
+    def get_active_agent_pre(self,agname,agclass,cats):
         agclass: agentmngr.iActiveAgent
         classname = utilmngr.MakeClassNameReadable(agclass.__name__)
         elements = []
-        active_presets = agclass.get_active_presets(self.env_mngr)
-        self.preset_dict: dict
-        self.preset_dict[agname] = active_presets
+        active_presets=agclass.get_active_presets(self.env_mngr)
+        self.preset_dict:dict
+        self.preset_dict[agname]=active_presets
         for name, data in active_presets:
             legible_text = util.UtilManager.ProcessClassName(name)
             elements.append(ButtonData(legible_text, self.factory_agent(agname, data), 1))
@@ -273,16 +274,17 @@ class SelectionFrame(iTkFrame):
     def get_agent_presets(self):
         cats = []
         for agname, agclass in agentmngr.TEST_AGENTS.items():
-            self.get_static_agent_pre(agname, agclass, cats)
+            self.get_static_agent_pre(agname,agclass,cats)
         return cats
 
     def get_active_agent_presets(self):
         cats = []
-        decL = [self.get_static_agent_pre, self.get_active_agent_pre]
         for agname, agclass in agentmngr.TEST_AGENTS.items():
-            dec = isinstance(agclass, agentmngr.iActiveAgent)
-            func = decL[dec]
-            func(agname, agclass, cats)
+            dec=isinstance(agclass,agentmngr.iActiveAgent)
+            if dec:
+                self.get_active_agent_pre(agname,agclass,cats)
+            else:
+                self.get_static_agent_pre(agname,agclass,cats)
         return cats
 
     def run_environment(self, data):
