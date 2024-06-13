@@ -200,7 +200,7 @@ class FragmentedJsonStruct:
         if filepath is None:
             raise ValueError("Fragment has no saved file path and none has been provided!")
         print("Saving",self.filepath)
-        s = json.dumps(self.root)
+        s = json.dumps(self.root,indent=2)
         F = open(filepath, 'w')
         F.write(s)
         F.close()

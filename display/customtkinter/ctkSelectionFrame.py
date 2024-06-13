@@ -203,7 +203,7 @@ class SelectionFrame(iTkFrame):
         ECFc: type
         ECFa: dict
         ECFc, ECFa = self.kwargs.get("middle", (EnvCustomFrame, {}))
-        ECFa["manager"] = self.env_mngr
+        ECFa["json_manager"] = self.env_mngr
         ECF = ECFc(self, self.run_environment, **ECFa)
         assert isinstance(ECF, EnvCustomFrame)
         middle_frame = ECF
