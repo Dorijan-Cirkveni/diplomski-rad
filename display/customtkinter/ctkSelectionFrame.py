@@ -24,7 +24,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agentclass = None
         self.eval = GridEvalMethod
 
-        self.arch_call = frjson.FragmentedJsonStruct([]), 0
+        self.arch_call = frjson.FragmentedJsonStruct([{}]), 0
         self.agent_data = None
         self.evalparams = {}
         self.frjsonmngr:frjson.FragmentedJsonManager = json_manager
@@ -160,9 +160,11 @@ class EnvCustomFrame(ctk.CTkFrame):
                          f"File root structure must be list, not {type(arch)}!",
                          call_upon_close=self.save_env_step_1())
         ind=inds[0]
-        if ind<0:
-            ind=len(arch)
-            arch.append(None)
+        if type(arch)==list:
+            ind=int(ind)
+            if ind<0:
+                ind=len(arch)
+                arch.append(None)
         arch[ind]=s
         return
 

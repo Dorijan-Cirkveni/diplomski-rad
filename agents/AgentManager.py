@@ -11,6 +11,7 @@ import agents.ComplexAgents.RuleBasedAgent as RBA
 # from definitions import ACTIONS
 
 TEST_AGENTS:dict = {
+    "RAA": base.RecordedActionsAgent,
     "RBA": RBA.RuleBasedAgent,
     "GMI": base.GraphicManualInputAgent
 }
@@ -18,7 +19,6 @@ TEST_AGENTS:dict = {
 TEST_AGENTS.update(ZIA)
 
 ALL_AGENTS:dict = {
-    "RAA": base.RecordedActionsAgent,
     "MIRROR": base.MirrorAgent,
     "BOX": base.BoxAgent
 }
