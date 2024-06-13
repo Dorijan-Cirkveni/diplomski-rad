@@ -29,4 +29,27 @@ S.~J. Russell and P.~Norvig, \emph{Artificial Intelligence : A Modern
   Approach.}\hskip 1em plus 0.5em minus 0.4em\relax Upper Saddle River:
   Prentice-Hall, 2010.
 
+\bibitem{owid-brief-history-of-ai}
+M.~Roser, ``The brief history of artificial intelligence: the world has changed
+  fast — what might be next?'' \emph{Our World in Data}, 2022,
+  https://ourworldindata.org/brief-history-of-ai.
+
+\bibitem{saeidi_opfermann_kam_wei_leonard_hsieh_kang_krieger_2022}
+\BIBentryALTinterwordspacing
+H.~Saeidi, J.~D. Opfermann, M.~Kam, S.~Wei, S.~Leonard, M.~H. Hsieh, J.~U.
+  Kang, and A.~Krieger, ``Autonomous robotic laparoscopic surgery for
+  intestinal anastomosis,'' \emph{Science Robotics}, vol.~7, no.~62, Jan 2022.
+  \url{https://doi.org/https://doi.org/10.1126/scirobotics.abj2908}
+\BIBentrySTDinterwordspacing
+
+\bibitem{bard2023}
+Bard, ``Bard, a large language model from google ai,'' 2023.
+
+\bibitem{lemoine2022lamda}
+\BIBentryALTinterwordspacing
+B.~Lemoine, ``Is lamda sentient? — an interview,'' \emph{Medium}, 2022.
+  [Online]. Available:
+  \url{https://cajundiscordian.medium.com/is-lamda-sentient-an-interview-ea64d916d917}
+\BIBentrySTDinterwordspacing
+
 \end{thebibliography}
