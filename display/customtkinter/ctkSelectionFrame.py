@@ -4,7 +4,8 @@ import util.UtilManager as utilmngr
 from display.customtkinter.ctkDataManager import ctkDataManager
 
 from environments.GridEnvironment import *
-from environments.GridEvalMethodManager import EVALMETHODS
+import environments.EnvironmentManager
+import environments.GridEvalMethodManager as GEMM
 import agents.AgentManager as agentmngr
 from agents.Agent import GraphicManualInputAgent
 
@@ -101,7 +102,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.agent_data = data["Agent data"]
         method = data["Evaluation method"]
         self.s_method.set("Method: " + method)
-        self.eval = EVALMETHODS[method]
+        self.eval = GEMM.EVALMETHODS[method]
         self.evalparams = data["Evaluation parameters"]
         print("Close successful.")
 
@@ -298,6 +299,29 @@ class SelectionFrame(iTkFrame):
         data[EDC] = fragdata
         func = self.swapFrameFactory(GRIDDISPLAY, data)
         func()
+
+    def run_environment_offscreen(self, data):
+        EDC = "Environment data"
+        catname = data["Category name"]
+        _, ind = data["Env meta"]
+        fragdata = self.env_mngr.get(catname, [ind])
+        data[EDC] = fragdata
+        envraw = deepcopy(data["Environment data"])
+        agentclass: iAgent = data["Agent class"]
+        if agentclass==GraphicManualInputAgent:
+            PopupMessage("Agent Error","Cannot run manual agent offscreen!")
+            return
+        agentdata = deepcopy(data["Agent data"])
+        print("Initialising environment...")
+        env: GridEnvironment = environments.EnvironmentManager.readEnvironment([envraw], 0)
+        agent = agentclass.raw_init(agentdata)
+        env.assign_active_agent(agent)
+        if "Evaluation method" in data and "Evaluation parameters" in data:
+            em_name=data["Evaluation method"]
+            em_params=data["Evaluation parameters"]
+            evalmethod=GEMM.init_eval_method(em_name,em_params)
+        print(env.run(agent,100,False))
+        return
 
 
 def main():
