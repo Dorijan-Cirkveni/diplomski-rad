@@ -135,7 +135,7 @@ class RawImporter:
     @classmethod
     def GetMain(cls):
         if cls.main is None:
-            cls.main = RawImporter
+            cls.main = RawImporter()
         return cls.main
 
     def add_pattern(self, pattern: tuple, isDict: bool, isList: bool):

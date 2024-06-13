@@ -193,7 +193,18 @@ class Grid2D(iCombinable):
         :return:
         """
         raw['M'] = raw.get('grid', [])
-        raw = iRawDictInit.raw_process_dict(raw, params)
+        raw = iRawInit.raw_process_dict(raw, params)
+        return raw
+
+    @staticmethod
+    def raw_process_list(raw: list, params: list):
+        """
+
+        :param raw:
+        :param params:
+        :return:
+        """
+        raw = iRawInit.raw_process_list(raw, params)
         return raw
 
     def raw_post_init(self):
@@ -674,8 +685,14 @@ class Grid2D(iCombinable):
         for i in range(len(frame)):
             self[frameLocations[i]] = movedFrame[i]
         return
+def isGrid2D(raw):
+    try:
+        Grid2D.raw_init(raw)
+        return True
+    except:
+        return False
 importer=RawImporter.GetMain()
-importer.add_pattern()
+importer.add_pattern((isGrid2D,Grid2D),True,True)
 
 
 def init_framed_grid(size: tuple[int, int], frameType: int, fillType: int):
