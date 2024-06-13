@@ -461,6 +461,7 @@ class RuleBasedAgent(AgI.iActiveAgent):
                 if name=="Grid2D":
                     pers_vars[e]=Grid2D(v[1])
 
+
         return itf.iRawListInit.raw_process_list(raw, params)
 
     def receiveEnvironmentData(self, raw_data: dict):

@@ -674,6 +674,8 @@ class Grid2D(iCombinable):
         for i in range(len(frame)):
             self[frameLocations[i]] = movedFrame[i]
         return
+importer=RawImporter.GetMain()
+importer.add_pattern()
 
 
 def init_framed_grid(size: tuple[int, int], frameType: int, fillType: int):

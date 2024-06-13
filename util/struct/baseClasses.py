@@ -154,6 +154,7 @@ class RawImporter:
         for key, value in patterns:
             if key(raw_data):
                 return value.raw_init(raw_data)
+        return raw_data
 
 
 def main():
