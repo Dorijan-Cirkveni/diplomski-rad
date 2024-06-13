@@ -159,13 +159,15 @@ class EnvCustomFrame(ctk.CTkFrame):
             PopupMessage(DarkCTK(), "Error",
                          f"File root structure must be list, not {type(arch)}!",
                          call_upon_close=self.save_env_step_1())
+        frag2,ind=self.arch_call
+        env_data = frag2.root[ind]
         ind=inds[0]
         if type(arch)==list:
             ind=int(ind)
             if ind<0:
                 ind=len(arch)
                 arch.append(None)
-        arch[ind]=s
+        arch[ind]=env_data
         return
 
 
