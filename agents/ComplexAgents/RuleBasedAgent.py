@@ -421,6 +421,7 @@ class RuleBasedAgent(AgI.iActiveAgent):
     DEFAULT_STR_INPUT = "DEPRECATED"
     DEFAULT_RAW_INPUT = [[], {'rel': Grid2D((3, 3), [[0, 1, 0], [1, 1, 1], [0, 1, 0]])}, ]
     INPUT_PRESETS = {}
+    INPUT_PRESET_FILE = "<EXT>agent_presets|RBA"
 
     def __init__(self, rulelist: list, pers_vars: dict = None, trans_vars=None, defaultAction=ACTIONS[-1]):
         super().__init__(ADP.AgentDataPreprocessor([ADP.ReLocADP()]))

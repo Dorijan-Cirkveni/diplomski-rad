@@ -2,7 +2,7 @@ import json
 
 import agents.Agent as base
 import util.UtilManager
-from agents.AgentInterfaces import iAgent
+from agents.AgentInterfaces import iAgent,iActiveAgent
 from agents.SimpleAgents.ZeroInstructionAgents import ZIA
 from definitions import ACTIONS
 

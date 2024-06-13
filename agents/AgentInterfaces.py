@@ -5,6 +5,7 @@ import util.struct.baseClasses as baseClasses
 from util.InformationCompiler import InformationCompiler
 import agents.AgentUtils.AgentDataPreprocessor as ADP
 from util.struct.Grid2D import Grid2D
+import util.FragmentedJSON as frjson
 
 
 class iAgent(baseClasses.iRawInit):
@@ -75,6 +76,7 @@ class iActiveAgent(iAgent):
     DEFAULT_STR_INPUT = None
     DEFAULT_RAW_INPUT = None
     INPUT_PRESETS = {}
+    INPUT_PRESET_FILE=""
 
     def __init__(self, preprocessor: ADP.AgentDataPreprocessor):
         super().__init__()
@@ -83,6 +85,42 @@ class iActiveAgent(iAgent):
     @classmethod
     def get_full_name(cls):
         return util.UtilManager.MakeClassNameReadable(cls.__name__)
+
+    @classmethod
+    def get_active_presets(cls, frjson_manager: frjson.FragmentedJsonManager)->list:
+        if not cls.INPUT_PRESET_FILE:
+            return [("Default", cls.DEFAULT_RAW_INPUT)]
+        filename, address=frjson.ReadFragmentAddress(cls.INPUT_PRESET_FILE)
+        frag=frjson_manager.files[filename]
+        arch, archind=[frag.root],0
+        arch, archind=frjson.nestr.NestedStructGetRef(arch,archind,address)
+        if arch is None:
+            raise Exception("Called preset file cannot be fragmented!")
+        XDICT:dict=arch[archind]
+        X = sorted(list(XDICT.items()))
+        X.append(("Default", cls.DEFAULT_RAW_INPUT))
+        return X
+
+    @classmethod
+    def set_active_presets(cls, frjson_manager: frjson.FragmentedJsonManager, presetlist:list[tuple[object,object]]):
+        if not cls.INPUT_PRESET_FILE:
+            return False
+        filename, address=frjson.ReadFragmentAddress(cls.INPUT_PRESET_FILE)
+        frag=frjson_manager.files[filename]
+        arch, archind=[frag.root],0
+        arch, archind=frjson.nestr.NestedStructGetRef(arch,archind,address)
+        if arch is None:
+            raise Exception("Called preset file cannot be fragmented!")
+        XDICT:dict={}
+        for e,v in presetlist:
+            XDICT[e]=v
+        if "Default" in XDICT:
+            XDICT.pop("Default")
+        arch[archind]=XDICT
+        frag.save()
+        return True
+
+
 
     def receiveEnvironmentData(self, data:dict):
         """
