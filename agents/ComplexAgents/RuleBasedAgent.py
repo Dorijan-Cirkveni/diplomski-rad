@@ -454,6 +454,12 @@ class RuleBasedAgent(AgI.iActiveAgent):
                 raise ValueError(f"Must be long 3, not {len(e)} ({e})")
             rule = RuleInitRaw(*e)
             rulelist[i] = rule
+        pers_vars={}
+        for e,v in pers_vars:
+            if type(v) in (list,tuple):
+                name=v[0]
+                if name=="Grid2D":
+                    pers_vars[e]=Grid2D(v[1])
 
         return itf.iRawListInit.raw_process_list(raw, params)
 
