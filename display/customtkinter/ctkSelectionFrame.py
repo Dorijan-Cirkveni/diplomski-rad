@@ -271,6 +271,15 @@ class SelectionFrame(iTkFrame):
         cat = CategoryData(classname, elements, 0)
         cats.append(cat)
 
+    def set_active_agent_pre(self,agname,agclass):
+        agclass:agentmngr.iActiveAgent
+        pd=self.preset_dict
+        L=pd.get(agname,pd.get(agclass,None))
+        if L is None:
+            raise Exception(f"{agname} and {agclass} not recorded!")
+        agclass.set_active_presets(self.env_mngr,L)
+        return
+
     def get_agent_presets(self):
         cats = []
         for agname, agclass in agentmngr.TEST_AGENTS.items():
