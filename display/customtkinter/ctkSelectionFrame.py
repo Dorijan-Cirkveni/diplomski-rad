@@ -283,12 +283,6 @@ class SelectionFrame(iTkFrame):
     def get_agent_presets(self):
         cats = []
         for agname, agclass in agentmngr.TEST_AGENTS.items():
-            self.get_static_agent_pre(agname,agclass,cats)
-        return cats
-
-    def get_active_agent_presets(self):
-        cats = []
-        for agname, agclass in agentmngr.TEST_AGENTS.items():
             dec=isinstance(agclass,agentmngr.iActiveAgent)
             if dec:
                 self.get_active_agent_pre(agname,agclass,cats)

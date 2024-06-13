@@ -454,6 +454,7 @@ class RuleBasedAgent(AgI.iActiveAgent):
                 raise ValueError(f"Must be long 3, not {len(e)} ({e})")
             rule = RuleInitRaw(*e)
             rulelist[i] = rule
+        
         return itf.iRawListInit.raw_process_list(raw, params)
 
     def receiveEnvironmentData(self, raw_data: dict):
