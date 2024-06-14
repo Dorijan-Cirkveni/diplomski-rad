@@ -186,6 +186,7 @@ class iEnvironment(iRawDictInit):
         self.entityPriority.sort(reverse=True)
         self.runData = dict()
         self.cur_iter = 0
+        self.winStatus=(None,-1)
 
     def assign_active_agent(self, agent: iAgent):
         """
@@ -303,6 +304,10 @@ class iEnvironment(iRawDictInit):
         D.update(cur_D)
         res = self.step(D)
         self.applyEffects()
+        if self.isLoss():
+            self.winStatus = (False,cur_iter)
+        if self.isWin():
+            self.winStatus = (True,cur_iter)
         return res
 
     def isWin(self):
@@ -311,15 +316,13 @@ class iEnvironment(iRawDictInit):
     def isLoss(self):
         raise NotImplementedError
 
-    def run(self, agent: iAgent, timeLimit: int, timeoutWin: bool = True):
+    def run(self, agent: iAgent, timeLimit: int, timeoutWin: bool = True)->tuple[bool,int]:
         self.assign_active_agent(agent)
         for i in range(timeLimit):
             self.runIteration()
-            if self.isLoss():
-                return i, False
-            if self.isWin():
-                return i, True
-        return timeLimit + 1, timeoutWin
+            if self.winStatus[0] is not None:
+                return self.winStatus
+        return timeoutWin, timeLimit + 1
 
     def evaluateActiveEntities(self, evalMethod: callable)->float:
         raise NotImplementedError
@@ -376,7 +379,7 @@ class iEnvironment(iRawDictInit):
                 pass  # TODO
         for i, groupSize in enumerate(ratio):
             X.append(self.GenerateGroup(groupSize, learning_aspects, requests))
-        return
+        return []
 
 
     def GenerateGroupTest(self, groupsize, learning_aspects, requests: dict, eval_summary:callable=sum):

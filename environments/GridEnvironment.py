@@ -85,7 +85,6 @@ class GridEnvironment(itf.iEnvironment):
         self.grids = dict()
         self.solidGrid = None
         self.viewedGrid = None
-        self.winStatus=(None,-1)
         self.updateGrids()
 
         self.tileTypes = defaultTileTypes if tileTypes is None else tileTypes

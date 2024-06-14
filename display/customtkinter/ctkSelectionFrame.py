@@ -336,8 +336,8 @@ class SelectionFrame(iTkFrame):
             evalmethod:GridEvalMethod
             score=env.evaluateActiveEntities(evalmethod.evaluate)
         data=env.run(agent,100,False)
-        winloss=["Loss","Win"][data[1]]
-        output=f"Cycles: {data[0]}\nResult: {winloss}\nScore:{score}"
+        winloss=["Loss","Win"][data[0]]
+        output=f"Cycles: {data[1]}\nResult: {winloss}\nScore:{score}"
         PopupMessage(DarkCTK.GetMain(),"Result",output)
         return
 
