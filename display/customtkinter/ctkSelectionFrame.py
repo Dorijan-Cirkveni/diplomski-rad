@@ -328,12 +328,17 @@ class SelectionFrame(iTkFrame):
         env: GridEnvironment = environments.EnvironmentManager.readEnvironment([envraw], 0)
         agent = agentclass.raw_init(agentdata)
         env.assign_active_agent(agent)
+        score=None
         if "Evaluation method" in data and "Evaluation parameters" in data:
             em_name=data["Evaluation method"]
             em_params=data["Evaluation parameters"]
             evalmethod=GEMM.init_eval_method(em_name,em_params)
-        print(env.run(agent,100,False))
-        input()
+            evalmethod:GridEvalMethod
+            score=env.evaluateActiveEntities(evalmethod.evaluate)
+        data=env.run(agent,100,False)
+        winloss=["Loss","Win"][data[1]]
+        output=f"Cycles: {data[0]}\nResult: {winloss}\nScore:{score}"
+        PopupMessage(DarkCTK.GetMain(),"Result",output)
         return
 
 
