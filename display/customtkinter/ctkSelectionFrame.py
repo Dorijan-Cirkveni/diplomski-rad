@@ -16,9 +16,10 @@ from display.customtkinter.ctkDisplayFrame import DisplayFrame
 
 
 class EnvCustomFrame(ctk.CTkFrame):
-    def __init__(self, master, run_command, json_manager: frjson.FragmentedJsonManager, **kwargs):
+    def __init__(self, master, run_command, precheck_command, json_manager: frjson.FragmentedJsonManager, **kwargs):
         super().__init__(master, **kwargs)
         self.run_command = run_command
+        self.precheck_command = precheck_command
 
         self.catname = None
         self.envname = None
@@ -63,9 +64,27 @@ class EnvCustomFrame(ctk.CTkFrame):
 
         self.run_button = ctk.CTkButton(run_square, text="Run environment", command=self.run_env)
         self.run_button.pack(padx=10, pady=10)
+        self.run_auto_button = ctk.CTkButton(run_square, text="Run environment offscreen", command=self.run_env_auto)
+        self.run_auto_button.pack(padx=10, pady=10)
 
-        self.run_button = ctk.CTkButton(run_square, text="Run environment offscreen", command=self.run_env_auto)
-        self.run_button.pack(padx=10, pady=10)
+        self.configure_run_button(self.run_button)
+        self.configure_run_button(self.run_auto_button,auto=True)
+
+    def check_runnability(self, check:callable=None, auto:bool=False):
+        data=self.prepare_run_data(False)
+        if data is None:
+            return False
+        data["auto"]=auto
+        if check is None:
+            check = self.precheck_command
+        result=check(data)
+        return result
+
+    def configure_run_button(self, button:ctk.CTkButton, check:callable=None, auto:bool=False):
+        colors = ["dark red", "green"]
+        result=self.check_runnability(check,auto)
+        button.configure(fg_color=colors[result])
+
 
     def set_env(self, file, fragment: frjson.FragmentedJsonStruct, ind, name):
         self.catname = file
@@ -73,6 +92,8 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.s_env.set(envname)
         self.arch_call = (fragment, ind)
         print(envname, fragment, ind)
+        self.configure_run_button(self.run_button)
+        self.configure_run_button(self.run_auto_button,auto=True)
 
     def set_agent(self, agentname, agentraw):
         agentclass = agentmngr.ALL_AGENTS[agentname]
@@ -80,6 +101,8 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.s_ag.set("Agent: " + classname)
         self.agentclass = agentclass
         self.agent_data = agentraw
+        self.configure_run_button(self.run_button)
+        self.configure_run_button(self.run_auto_button,auto=True)
 
     def get_parameters(self, edit_only=False):
         frag, ind = self.arch_call
@@ -115,19 +138,22 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.evalparams = data["Evaluation parameters"]
         print("Close successful.")
 
-    def prepare_run_data(self):
+    def prepare_run_data(self, show_popups=True):
         print("-" * 160)
         data = self.get_parameters()
         env_name = data.get("Environment name", None)
         env_data_short = data.get("Environment data", None)
         if env_name is None:
-            PopupMessage(self, "Error", "Missing environment name!")
+            if show_popups:
+                PopupMessage(self, "Error", "Missing environment name!")
             return
         if env_data_short is None:
-            PopupMessage(self, "Error", "Missing environment data!")
+            if show_popups:
+                PopupMessage(self, "Error", "Missing environment data!")
             return
         if self.agentclass is None:
-            PopupMessage(self, "Error", "Missing agent!")
+            if show_popups:
+                PopupMessage(self, "Error", "Missing agent!")
             return
         data["Agent class"] = self.agentclass
         print(env_name is None, )
@@ -321,9 +347,8 @@ class SelectionFrame(iTkFrame):
         data["Environment data"] = fragdata
         if not data.get("auto",False):
             return True
-        envraw = deepcopy(data["Environment data"])
         agentclass: iAgent = data["Agent class"]
-        return agentclass!=GraphicManualInputAgent
+        return agentclass not in (GraphicManualInputAgent,None)
 
     def run_environment(self, data):
         EDC = "Environment data"
