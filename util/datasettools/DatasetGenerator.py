@@ -1,4 +1,5 @@
 from util.struct.TupleDotOperations import *
+import random
 
 
 def AdjustRatio(size: int, ratio: list[float]) -> list[int]:
@@ -23,11 +24,11 @@ def AdjustRatio(size: int, ratio: list[float]) -> list[int]:
         raise ValueError("All elements in ratio must be positive numbers.")
     if not ratio:
         return []
-    rsum=sum(ratio)
+    rsum = sum(ratio)
     adjRatio = [e * size / rsum for e in ratio]
 
     adjRatio = [(i, int(e), e - int(e)) for i, e in enumerate(adjRatio)]
-    adjRatio.sort(key=lambda e: e[2]) # sort by remainder in ascending order
+    adjRatio.sort(key=lambda e: e[2])  # sort by remainder in ascending order
     if adjRatio[-1][1] != 0:
         rem = size - sum([e[1] for e in adjRatio])
         temp = []
@@ -56,18 +57,17 @@ class InputRange(iSplittableInputGroup):
         return
 
     def splitByRatio(self, ratio: list[int], specialRequests: dict) -> list:
-        ratio=AdjustRatio(self.end - self.start, ratio)
-        curfirst=self.start
-        RES=[]
+        ratio = AdjustRatio(self.end - self.start, ratio)
+        curfirst = self.start
+        RES = []
         for e in ratio:
-            curlast=curfirst+e
-            RES.append(InputRange(curfirst,curlast))
-            curfirst=curlast
-        return curlast
-
+            curlast = curfirst + e
+            RES.append(InputRange(curfirst, curlast))
+            curfirst = curlast
+        return RES
 
     def generateRandom(self, randomizer: random.Random):
-        return randomizer.randint(self.start,self.end)
+        return randomizer.randint(self.start, self.end - 1)
 
 
 class InputGrid(iSplittableInputGroup):
@@ -82,35 +82,49 @@ class InputGrid(iSplittableInputGroup):
         size = Tmin(self.start, self.end)
         if mode == "largest":
             mode = "colGroups" if size[0] > size[1] else "rowGroups"
+        adjRatio:list[tuple]
+        start = self.start
+        groups:list[tuple[tuple[int,int],tuple[int,int]]]
         if mode in ("colGroups", "rowGroups"):
-            start = self.start
-            lastRatio = (0, 0)
-
             if mode == "colGroups":
-                adjRatio = AdjustRatio(size[0], ratio)
-                jump = (1, 0)
-                end = (start[0], self.end[1])
+                d1ratio = AdjustRatio(size[0], ratio)
+                # Split the area into groups of columns of sizes indicated by d1ratio.
             else:
-                adjRatio = AdjustRatio(size[1], ratio)
-                jump = (0, 1)
-                end = (self.end[0], start[1])
-            for E in adjRatio:
-                start = Tadd(start, lastRatio)
-                end = Tadd(end, E)
-                groups.append((start,end))
-                lastRatio = Tmul((E,E),jump)
-        return [InputGrid(a,b) for (a,b) in groups]
+                d1ratio = AdjustRatio(size[1], ratio)
+                # Split the area into groups of rows of sizes indicated by d1ratio.
+        elif mode == "diagonal":
+            xratio=AdjustRatio(size[0], ratio)
+            yratio=AdjustRatio(size[1], ratio)
+            # Split the area into groups of squares of sizes indicated by the ratios
+            #
+        return [InputGrid(*E) for E in groups]
 
     def generateRandom(self, randomizer: random.Random):
         return
 
 
-
 class DatasetGenerator:
-    def __init__(self,aspects):
-        raise NotImplementedError
-    def generate_dataset(self,size,ratio,conditions):
-        raise NotImplementedError
+
+    def __init__(self, aspects: list[iSplittableInputGroup]):
+        self.aspects = aspects
+
+    def generate_dataset(self, size, ratio=None, isRandom=True,
+                         randomizer: random.Random = None, specialRequests=None):
+        if specialRequests is None:
+            specialRequests = {}
+        if isRandom and randomizer is None:
+            randomizer = random.Random()
+        if ratio is None:
+            ratio = [60, 20, 20]
+        adj_ratio = AdjustRatio(size, ratio)
+        curset = {tuple([]): size}
+        for aspect in self.aspects:
+            groups:list[iSplittableInputGroup]
+            groups=aspect.splitByRatio(adj_ratio,specialRequests)
+            newset=dict()
+            if isRandom:
+                # Randomly pick
+
 
 
 def main():
