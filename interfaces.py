@@ -317,14 +317,15 @@ class iEnvironment(iRawDictInit):
     def isLoss(self):
         raise NotImplementedError
 
-    def run(self, agent: iAgent, timeLimit: int, timeoutWin: bool = True)->tuple[bool,int]:
+    def run(self, agent: iAgent, cycle_limit: int, timeoutWin: bool = True)->tuple[bool,int]:
+        cycle_limit=self.data.get("Cycle limit", cycle_limit)
         self.assign_active_agent(agent)
-        for i in range(timeLimit):
+        for i in range(cycle_limit):
             self.runIteration()
             if self.winStatus[0] is not None:
                 self.winStatus:tuple[bool,int]
                 return self.winStatus
-        return timeoutWin, timeLimit + 1
+        return timeoutWin, cycle_limit + 1
 
     def evaluateActiveEntities(self, evalMethod: callable)->float:
         raise NotImplementedError
