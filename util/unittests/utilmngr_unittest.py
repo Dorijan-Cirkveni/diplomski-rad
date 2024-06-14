@@ -113,13 +113,5 @@ class TestAdjustRatio(unittest.TestCase):
         self.assertEqual(AdjustRatio(10, [1, 2]), [3, 7])
 
 
-class TestAddValueToLayeredStruct(unittest.TestCase):
-    def test_cases(self):
-        S = {'a': [1, 2, 3]}
-        F = lambda: AddValueToLayeredStruct(S, [dict, list], ['a', 1], 5, 'a')
-        self.assertRaises(ImplementAsNeededException, F)
-        # self.assertEqual(S['a'][1], 5)
-
-
 if __name__ == "__main__":
     unittest.main()

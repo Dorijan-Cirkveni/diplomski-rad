@@ -169,28 +169,6 @@ def AdjustRatio(size, ratio: list):
     return adjRatio
 
 
-def AddValueToLayeredStruct(S: [dict, list], types: list[type], indices: list, value, mode: str):
-    stack = []
-    for i, e in enumerate(indices):
-        stack.append((S, e))
-        if type(S) == list:
-            if type(e) != int:
-                raise Exception("figure it out yourself")
-            if e not in range(len(S)):
-                raise Exception("figure it out yourself")
-        elif type(S) == dict:
-            S = S.get(e, types[i]())
-    if mode == "a":
-        if type(S) == list:
-            S.append(value)
-            value = S
-    while stack:
-        S, e = stack.pop()
-        S[e] = value
-        value = S
-    raise ImplementAsNeededException()
-
-
 def main():
     s = "Hello World"
     s2 = StringLimbo(s, 10)
