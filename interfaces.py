@@ -366,22 +366,7 @@ class iEnvironment(iRawDictInit):
         if ratio is None:
             ratio = [60, 20, 20]
         ratio = dsmngr.AdjustRatio(size, ratio)
-        X = []
-        LA = [dict() for _ in ratio]
-        for k, V in learning_aspects.items():
-            V: list[tuple]
-            L = []
-            LV = []
-            for (v, count) in V:
-                L.append(v)
-                LV.append(count)
-            LV = dsmngr.AdjustRatio(size, LV)
-            curind = 0
-            curleft = LV[0]
-            for i, e in enumerate(ratio):
-                pass  # TODO
-        for i, groupSize in enumerate(ratio):
-            X.append(self.GenerateGroup(groupSize, learning_aspects, requests))
+
         return []
 
 
