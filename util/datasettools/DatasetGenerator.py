@@ -15,31 +15,24 @@ def AdjustRatio(size: int, ratio: list[float]) -> list[int]:
     - `size` must be a positive integer.
     - All elements in `ratio` must be positive numbers (not necessarily integers).
     """
-    # Check if size is positive
     if size <= 0:
         raise ValueError("Size must be a positive integer.")
-
-    # Check if all elements in ratio are positive
     if any(x < 0 for x in ratio):
         raise ValueError("All elements in ratio must be positive numbers.")
     if not ratio:
         return []
+
     rsum = sum(ratio)
     adjRatio = [e * size / rsum for e in ratio]
-
     adjRatio = [(i, int(e), e - int(e)) for i, e in enumerate(adjRatio)]
-    adjRatio.sort(key=lambda e: e[2])  # sort by remainder in ascending order
-    if adjRatio[-1][1] != 0:
-        rem = size - sum([e[1] for e in adjRatio])
-        temp = []
-        for i in range(rem):
-            E = adjRatio.pop()
-            temp.append((E[0], E[1] + 1))
-        temp.extend(adjRatio)
-        temp.sort()
-        adjRatio = temp
-    adjRatio = [e[1] for e in adjRatio]
-    return adjRatio
+    adjRatio.sort(key=lambda e: e[2], reverse=True)
+
+    remainder = size - sum(e[1] for e in adjRatio)
+    for i in range(remainder):
+        adjRatio[i] = (adjRatio[i][0], adjRatio[i][1] + 1, adjRatio[i][2])
+
+    adjRatio.sort(key=lambda e: e[0])
+    return [e[1] for e in adjRatio]
 
 
 class iSplittableInputGroup:
@@ -54,17 +47,16 @@ class InputRange(iSplittableInputGroup):
     def __init__(self, start, end):
         self.start = start
         self.end = end
-        return
 
     def splitByRatio(self, ratio: list[int], specialRequests: dict) -> list:
         ratio = AdjustRatio(self.end - self.start, ratio)
         curfirst = self.start
-        RES = []
+        res = []
         for e in ratio:
             curlast = curfirst + e
-            RES.append(InputRange(curfirst, curlast))
+            res.append(InputRange(curfirst, curlast))
             curfirst = curlast
-        return RES
+        return res
 
     def generateRandom(self, randomizer: random.Random):
         return randomizer.randint(self.start, self.end - 1)
@@ -79,32 +71,47 @@ class InputGrid(iSplittableInputGroup):
     def splitByRatio(self, ratio: list[int], specialRequests: dict) -> list:
         mode = specialRequests.get("mode", "colGroups")
         groups = []
-        size = Tmin(self.start, self.end)
+        size = Tmax(Tsub(self.end, self.start), (0, 0))
+
         if mode == "largest":
             mode = "colGroups" if size[0] > size[1] else "rowGroups"
-        adjRatio:list[tuple]
-        start = self.start
-        groups:list[tuple[tuple[int,int],tuple[int,int]]]
+
         if mode in ("colGroups", "rowGroups"):
             if mode == "colGroups":
                 d1ratio = AdjustRatio(size[0], ratio)
-                # Split the area into groups of columns of sizes indicated by d1ratio.
+                curfirst = self.start[0]
+                for e in d1ratio:
+                    curlast = curfirst + e
+                    start=(curfirst, self.start[1])
+                    end=(curlast, self.end[1])
+                    groups.append((start, end))
+                    curfirst = curlast
             else:
                 d1ratio = AdjustRatio(size[1], ratio)
-                # Split the area into groups of rows of sizes indicated by d1ratio.
+                curfirst = self.start[1]
+                for e in d1ratio:
+                    curlast = curfirst + e
+                    start=(self.start[0], curfirst)
+                    end=(self.end[0], curlast)
+                    groups.append((start, end))
+                    curfirst = curlast
         elif mode == "diagonal":
-            xratio=AdjustRatio(size[0], ratio)
-            yratio=AdjustRatio(size[1], ratio)
-            # Split the area into groups of squares of sizes indicated by the ratios
-            #
+            xratio = AdjustRatio(size[0], ratio)
+            yratio = AdjustRatio(size[1], ratio)
+            curx, cury = self.start[0], self.start[1]
+            for xr, yr in zip(xratio, yratio):
+                nextx = curx + xr
+                nexty = cury + yr
+                groups.append(((curx, cury), (nextx, nexty)))
+                curx, cury = nextx, nexty
+
         return [InputGrid(*E) for E in groups]
 
     def generateRandom(self, randomizer: random.Random):
-        return
+        return randomizer.randint(self.start[0], self.end[0] - 1), randomizer.randint(self.start[1], self.end[1] - 1)
 
 
 class DatasetGenerator:
-
     def __init__(self, aspects: list[iSplittableInputGroup]):
         self.aspects = aspects
 
@@ -118,18 +125,32 @@ class DatasetGenerator:
             ratio = [60, 20, 20]
         adj_ratio = AdjustRatio(size, ratio)
         curset = {tuple([]): size}
-        for aspect in self.aspects:
-            groups:list[iSplittableInputGroup]
-            groups=aspect.splitByRatio(adj_ratio,specialRequests)
-            newset=dict()
-            if isRandom:
-                # Randomly pick
+        dataset = []
 
+        for aspect in self.aspects:
+            newset = {}
+            groups = aspect.splitByRatio(adj_ratio, specialRequests)
+            for key, count in curset.items():
+                adj_count = AdjustRatio(count, ratio)
+                for group, cnt in zip(groups, adj_count):
+                    new_key = key + (group,)
+                    newset[new_key] = cnt
+                    if isRandom:
+                        for _ in range(cnt):
+                            dataset.append(new_key + (group.generateRandom(randomizer),))
+
+            curset = newset
+        return dataset
 
 
 def main():
-    print(AdjustRatio(50, []))
-    return
+    range_aspect = InputRange(0, 100)
+    grid_aspect = InputGrid((0, 0), (10, 10))
+    aspects = [range_aspect, grid_aspect]
+    generator = DatasetGenerator(aspects)
+    dataset = generator.generate_dataset(1000, ratio=[60, 30, 10], isRandom=True)
+    for data in dataset[:10]:  # print first 10 for brevity
+        print(data)
 
 
 if __name__ == "__main__":
