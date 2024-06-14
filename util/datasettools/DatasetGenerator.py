@@ -113,11 +113,11 @@ class InputGrid(iSplittableInputGroup):
 
 
 class DatasetGenerator:
-    def __init__(self, aspects: list[iSplittableInputGroup], ratio, randomizer:random.Random, specialRequests:dict=None):
+    def __init__(self, aspects: list[iSplittableInputGroup], ratio, randomizer:random.Random=None, specialRequests:dict=None):
         if specialRequests is None:
             specialRequests = {}
         self.ratio = ratio
-        self.randomizer = randomizer
+        self.randomizer = utilmngr.FirstNotNull(randomizer,random.Random(42))
         self.specialRequests = specialRequests
         self.aspects = aspects
 
@@ -147,8 +147,8 @@ def main():
     range_aspect = InputRange(0, 100)
     grid_aspect = InputGrid((0, 0), (10, 10))
     aspects = [range_aspect, grid_aspect]
-    generator = DatasetGenerator(aspects)
-    dataset = generator.generate_dataset(1000, ratio=[60, 30, 10], isRandom=True)
+    generator = DatasetGenerator(aspects, ratio=[60, 30, 10])
+    dataset = generator.generate_dataset(1000)
     for data in dataset[:10]:  # print first 10 for brevity
         print(data)
 
