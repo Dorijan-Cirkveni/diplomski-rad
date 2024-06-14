@@ -151,24 +151,6 @@ def limrange(start, end, step, limit):
     return range(start, end, step)
 
 
-def AdjustRatio(size, ratio: list):
-    s = sum(ratio)
-    adjRatio = [e * size / s for e in ratio]
-    adjRatio = [(i, int(e), e - int(e)) for i, e in enumerate(adjRatio)]
-    adjRatio.sort(key=lambda e: e[2])
-    if adjRatio[-1][1] != 0:
-        rem = size - sum([e[1] for e in adjRatio])
-        temp = []
-        for i in range(rem):
-            E = adjRatio.pop()
-            temp.append((E[0], E[1] + 1))
-        temp.extend(adjRatio)
-        temp.sort()
-        adjRatio = temp
-    adjRatio = [e[1] for e in adjRatio]
-    return adjRatio
-
-
 def main():
     s = "Hello World"
     s2 = StringLimbo(s, 10)

@@ -10,6 +10,7 @@ import definitions
 from util.InformationCompiler import InformationCompiler
 from util.struct.PriorityList import PriorityList
 import util.UtilManager as util_mngr
+import util.datasettools.DatasetGenerator as dsmngr
 from util.struct.baseClasses import *
 
 from agents.AgentInterfaces import iAgent
@@ -321,6 +322,7 @@ class iEnvironment(iRawDictInit):
         for i in range(timeLimit):
             self.runIteration()
             if self.winStatus[0] is not None:
+                self.winStatus:tuple[bool,int]
                 return self.winStatus
         return timeoutWin, timeLimit + 1
 
@@ -362,7 +364,7 @@ class iEnvironment(iRawDictInit):
         """
         if ratio is None:
             ratio = [60, 20, 20]
-        ratio = util_mngr.AdjustRatio(size, ratio)
+        ratio = dsmngr.AdjustRatio(size, ratio)
         X = []
         LA = [dict() for _ in ratio]
         for k, V in learning_aspects.items():
@@ -372,7 +374,7 @@ class iEnvironment(iRawDictInit):
             for (v, count) in V:
                 L.append(v)
                 LV.append(count)
-            LV = util_mngr.AdjustRatio(size, LV)
+            LV = dsmngr.AdjustRatio(size, LV)
             curind = 0
             curleft = LV[0]
             for i, e in enumerate(ratio):

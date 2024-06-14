@@ -1,7 +1,7 @@
 from util.struct.TupleDotOperations import *
 
 
-def adjustRatio(size: int, ratio: list[float]) -> list[int]:
+def AdjustRatio(size: int, ratio: list[float]) -> list[int]:
     """
     Multiplies the value of all values in ratio by size/sum(ratio),
     converts them into integers, and distributes the difference according to descending order of remainder values.
@@ -19,7 +19,7 @@ def adjustRatio(size: int, ratio: list[float]) -> list[int]:
         raise ValueError("Size must be a positive integer.")
 
     # Check if all elements in ratio are positive
-    if any(x <= 0 for x in ratio):
+    if any(x < 0 for x in ratio):
         raise ValueError("All elements in ratio must be positive numbers.")
     if not ratio:
         return []
@@ -56,7 +56,7 @@ class InputRange(iSplittableInputGroup):
         return
 
     def splitByRatio(self, ratio: list[int], specialRequests: dict) -> list:
-        ratio=adjustRatio(self.end-self.start,ratio)
+        ratio=AdjustRatio(self.end - self.start, ratio)
         curfirst=self.start
         RES=[]
         for e in ratio:
@@ -87,11 +87,11 @@ class InputGrid(iSplittableInputGroup):
             lastRatio = (0, 0)
 
             if mode == "colGroups":
-                adjRatio = adjustRatio(size[0], ratio)
+                adjRatio = AdjustRatio(size[0], ratio)
                 jump = (1, 0)
                 end = (start[0], self.end[1])
             else:
-                adjRatio = adjustRatio(size[1], ratio)
+                adjRatio = AdjustRatio(size[1], ratio)
                 jump = (0, 1)
                 end = (self.end[0], start[1])
             for E in adjRatio:
@@ -114,7 +114,7 @@ class DatasetGenerator:
 
 
 def main():
-    print(adjustRatio(50,[]))
+    print(AdjustRatio(50, []))
     return
 
 
