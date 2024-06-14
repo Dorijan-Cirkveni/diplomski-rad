@@ -347,7 +347,8 @@ class iEnvironment(iRawDictInit):
         """
         raise NotImplementedError
 
-    def GenerateSetGroups(self, size, learning_aspects: dict, requests: dict, ratio=None) -> list[
+    def GenerateSetGroups(self, size, learning_aspects_raw: dict, requests: dict, ratio=None, *args,
+                          prev_manager:dsmngr.DatasetGenerator=None, **kwargs) -> list[
         list['iEnvironment']]:
         """
         Generates multiple groups of entities based on specified learning aspects and requests.
@@ -358,6 +359,7 @@ class iEnvironment(iRawDictInit):
             requests (dict): A dictionary of requests.
             ratio (list[int], optional): A list representing the ratio of sizes for each group.
                 Defaults to None, in which case a default ratio of [60, 20, 20] is used.
+        :param prev_manager:
 
         Returns:
             list[list[GridEnvironment]]: A list containing groups of GridEnvironment objects.
@@ -365,8 +367,13 @@ class iEnvironment(iRawDictInit):
         """
         if ratio is None:
             ratio = [60, 20, 20]
-        ratio = dsmngr.AdjustRatio(size, ratio)
 
+        learning_aspects = {}
+        for e, aspect in learning_aspects_raw.items():
+            typename,typedata=aspect
+
+        ratio = dsmngr.AdjustRatio(size, ratio)
+        generator = dsmngr.DatasetGenerator()
         return []
 
 

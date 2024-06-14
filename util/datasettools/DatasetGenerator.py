@@ -2,7 +2,6 @@ from util.struct.TupleDotOperations import *
 import util.UtilManager as utilmngr
 import random
 
-
 def AdjustRatio(size: int, ratio: list[float]) -> list[int]:
     """
     Multiplies the value of all values in ratio by size/sum(ratio),
@@ -143,6 +142,9 @@ class DatasetGenerator:
                         D[keys[j]]=new_data[j]
         return curset
 
+ASPECTS={}
+# Make it so for every class in this file (determined dynamically, DON'T JUST LIST THEM),
+# ASPECT has a key-value pair e.g. exampleclass.__name__:exampleclass
 
 def main():
     range_aspect = InputRange(0, 100)
