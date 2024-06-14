@@ -135,11 +135,12 @@ class DatasetGenerator:
                 group:iSplittableInputGroup
                 cur_subset=curset[i]
                 for L in cur_subset:
-                    new_data=group.generateRandom(r)
-
-
-            curset = newset
-        return dataset
+                    new_data=group.generateRandom(randomizer)
+                    if type(new_data) in {list,tuple}:
+                        L.extend(list(new_data))
+                    else:
+                        L.append(new_data)
+        return curset
 
 
 def main():
