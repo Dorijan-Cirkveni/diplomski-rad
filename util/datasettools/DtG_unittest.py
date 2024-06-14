@@ -1,6 +1,7 @@
 from DatasetGenerator import *
 import unittest
 
+
 class TestAdjustRatio(unittest.TestCase):
 
     def test_adjust_ratio_basic(self):
@@ -37,7 +38,7 @@ class TestInputGrid(unittest.TestCase):
         input_grid = InputGrid((0, 0), (10, 10))
         split_grids = input_grid.splitByRatio([1, 1, 1], {"mode": "colGroups"})
         expected = [((0, 0), (4, 10)), ((4, 0), (7, 10)), ((7, 0), (10, 10))]
-        self.assertEqual(expected,[(g.start, g.end) for g in split_grids])
+        self.assertEqual(expected, [(g.start, g.end) for g in split_grids])
 
     def test_split_by_ratio_rowGroups(self):
         input_grid = InputGrid((0, 0), (10, 10))
@@ -56,10 +57,11 @@ class TestDatasetGenerator(unittest.TestCase):
     def test_generate_dataset(self):
         range_aspect = InputRange(0, 100)
         grid_aspect = InputGrid((0, 0), (10, 10))
-        generator = DatasetGenerator([range_aspect, grid_aspect], ratio=[60, 30, 10], randomizer=random.Random(42))
+        aspects = {"range": range_aspect, "grid": grid_aspect}
+        generator = DatasetGenerator(aspects, ratio=[60, 30, 10], randomizer=random.Random(42))
         dataset = generator.generate_dataset(1000)
         self.assertEqual(len(dataset), 3)
-        self.assertEqual(sum([len(e) for e in dataset]),1000)
+        self.assertEqual(sum([len(e) for e in dataset]), 1000)
 
 
 if __name__ == "__main__":
