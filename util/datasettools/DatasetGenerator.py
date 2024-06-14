@@ -1,4 +1,5 @@
 from util.struct.TupleDotOperations import *
+import util.UtilManager as utilmngr
 import random
 
 
@@ -112,32 +113,30 @@ class InputGrid(iSplittableInputGroup):
 
 
 class DatasetGenerator:
-    def __init__(self, aspects: list[iSplittableInputGroup]):
-        self.aspects = aspects
-
-    def generate_dataset(self, size, ratio=None, isRandom=True,
-                         randomizer: random.Random = None, specialRequests=None):
+    def __init__(self, aspects: list[iSplittableInputGroup], ratio, randomizer:random.Random, specialRequests:dict=None):
         if specialRequests is None:
             specialRequests = {}
-        if isRandom and randomizer is None:
-            randomizer = random.Random()
-        if ratio is None:
-            ratio = [60, 20, 20]
+        self.ratio = ratio
+        self.randomizer = randomizer
+        self.specialRequests = specialRequests
+        self.aspects = aspects
+
+    def generate_dataset(self, size, **kwargs):
+        randomizer=kwargs.get("randomizer",self.randomizer)
+        specialRequests=kwargs.get("specialRequests",self.specialRequests)
+        ratio=kwargs.get("ratio",self.ratio)
         adj_ratio = AdjustRatio(size, ratio)
-        curset = {tuple([]): size}
-        dataset = []
+        curset = [[[] for _ in range(e)] for e in adj_ratio]
 
         for aspect in self.aspects:
-            newset = {}
+            newset = []
             groups = aspect.splitByRatio(adj_ratio, specialRequests)
-            for key, count in curset.items():
-                adj_count = AdjustRatio(count, ratio)
-                for group, cnt in zip(groups, adj_count):
-                    new_key = key + (group,)
-                    newset[new_key] = cnt
-                    if isRandom:
-                        for _ in range(cnt):
-                            dataset.append(new_key + (group.generateRandom(randomizer),))
+            for i,group in enumerate(groups):
+                group:iSplittableInputGroup
+                cur_subset=curset[i]
+                for L in cur_subset:
+                    new_data=group.generateRandom(r)
+
 
             curset = newset
         return dataset

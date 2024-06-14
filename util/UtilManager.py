@@ -151,6 +151,13 @@ def limrange(start, end, step, limit):
     return range(start, end, step)
 
 
+def FirstNotNull(*args):
+    for e in args:
+        if e is not None:
+            return e
+    return None
+
+
 def main():
     s = "Hello World"
     s2 = StringLimbo(s, 10)

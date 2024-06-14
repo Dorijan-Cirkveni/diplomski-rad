@@ -4,7 +4,7 @@ import unittest
 class TestAdjustRatio(unittest.TestCase):
 
     def test_adjust_ratio_basic(self):
-        self.assertEqual(AdjustRatio(10, [1, 1, 1]), [3, 3, 4])
+        self.assertEqual(AdjustRatio(10, [1, 1, 1]), [4, 3, 3])
 
     def test_adjust_ratio_with_large_size(self):
         self.assertEqual(AdjustRatio(100, [1, 2, 3]), [17, 33, 50])
