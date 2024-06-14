@@ -305,9 +305,9 @@ class iEnvironment(iRawDictInit):
         res = self.step(D)
         self.applyEffects()
         if self.isLoss():
-            self.winStatus = (False,cur_iter)
+            self.winStatus = (False,self.cur_iter)
         if self.isWin():
-            self.winStatus = (True,cur_iter)
+            self.winStatus = (True,self.cur_iter)
         return res
 
     def isWin(self):
