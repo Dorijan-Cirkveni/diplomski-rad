@@ -356,10 +356,12 @@ class SelectionFrame(iTkFrame):
         _, ind = data["Env meta"]
         fragdata = self.env_mngr.get(catname, [ind])
         data[EDC] = fragdata
-        if not data.get("auto",False):
-            func = self.swapFrameFactory(GRIDDISPLAY, data)
-            func()
-            return
+        if data.get("auto",False):
+            self.run_environment_auto(data)
+        else:
+            self.swapFrameFactory(GRIDDISPLAY, data)()
+
+    def run_environment_auto(self, data):
         envraw = deepcopy(data["Environment data"])
         agentclass: iAgent = data["Agent class"]
         if agentclass==GraphicManualInputAgent:
@@ -382,6 +384,7 @@ class SelectionFrame(iTkFrame):
         output=f"Cycles: {data[1]}\nResult: {winloss}\nScore:{score}"
         PopupMessage(DarkCTK.GetMain(),"Result",output)
         return
+
 
 
 def main():
