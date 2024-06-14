@@ -113,7 +113,7 @@ class InputGrid(iSplittableInputGroup):
 
 
 class DatasetGenerator:
-    def __init__(self, aspects: list[iSplittableInputGroup], ratio, randomizer:random.Random=None, specialRequests:dict=None):
+    def __init__(self, aspects: dict[str,iSplittableInputGroup], ratio, randomizer:random.Random=None, specialRequests:dict=None):
         if specialRequests is None:
             specialRequests = {}
         self.ratio = ratio
@@ -126,20 +126,21 @@ class DatasetGenerator:
         specialRequests=kwargs.get("specialRequests",self.specialRequests)
         ratio=kwargs.get("ratio",self.ratio)
         adj_ratio = AdjustRatio(size, ratio)
-        curset = [[[] for _ in range(e)] for e in adj_ratio]
+        curset = [[{} for _ in range(e)] for e in adj_ratio]
 
-        for aspect in self.aspects:
-            newset = []
+        for keys,aspect in self.aspects.items():
+            if keys not in {list,tuple}:
+                keys=[keys]
             groups = aspect.splitByRatio(adj_ratio, specialRequests)
             for i,group in enumerate(groups):
                 group:iSplittableInputGroup
                 cur_subset=curset[i]
-                for L in cur_subset:
+                for D in cur_subset:
                     new_data=group.generateRandom(randomizer)
-                    if type(new_data) in {list,tuple}:
-                        L.extend(list(new_data))
-                    else:
-                        L.append(new_data)
+                    if new_data not in (list,tuple):
+                        new_data=[new_data for e in keys]
+                    for j in range(min(len(new_data),len(keys))):
+                        D[keys[j]]=new_data[j]
         return curset
 
 
