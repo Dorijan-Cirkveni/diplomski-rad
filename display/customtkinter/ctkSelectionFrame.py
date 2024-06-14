@@ -46,20 +46,26 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.method_label = ctk.CTkLabel(self, textvariable=self.s_method, font=("Helvetica", 18))
         self.method_label.pack(padx=10, pady=5)
 
-        self.edit_button = ctk.CTkButton(self, text="Edit parameters...", command=self.edit_parameters)
+        edit_square=ctk.CTkFrame(self)
+        edit_square.pack()
+
+        self.edit_button = ctk.CTkButton(edit_square, text="Edit parameters...", command=self.edit_parameters)
         self.edit_button.pack(padx=10, pady=10)
-
-        self.run_button = ctk.CTkButton(self, text="Run environment", command=self.run_env)
-        self.run_button.pack(padx=10, pady=10)
-
-        self.run_button = ctk.CTkButton(self, text="Run environment offscreen", command=self.run_env_auto)
-        self.run_button.pack(padx=10, pady=10)
-
-        self.copy_button = ctk.CTkButton(self, text="Copy environment to other location", command=self.save_env_step_1)
+        self.copy_button = ctk.CTkButton(edit_square, text="Copy environment to other location", command=self.save_env_step_1)
         self.copy_button.pack(padx=10, pady=10)
-
-        self.save_button = ctk.CTkButton(self, text="Save environment", command=self.save_env)
+        self.save_button = ctk.CTkButton(edit_square, text="Save environment", command=self.save_env)
         self.save_button.pack(padx=10, pady=10)
+
+
+
+        run_square=ctk.CTkFrame(self)
+        run_square.pack()
+
+        self.run_button = ctk.CTkButton(run_square, text="Run environment", command=self.run_env)
+        self.run_button.pack(padx=10, pady=10)
+
+        self.run_button = ctk.CTkButton(run_square, text="Run environment offscreen", command=self.run_env_auto)
+        self.run_button.pack(padx=10, pady=10)
 
     def set_env(self, file, fragment: frjson.FragmentedJsonStruct, ind, name):
         self.catname = file
@@ -226,7 +232,7 @@ class SelectionFrame(iTkFrame):
         ECFa: dict
         ECFc, ECFa = self.kwargs.get("middle", (EnvCustomFrame, {}))
         ECFa["json_manager"] = self.env_mngr
-        ECF = ECFc(self, self.run_environment, **ECFa)
+        ECF = ECFc(self, self.run_environment, self.precheck_env, **ECFa)
         assert isinstance(ECF, EnvCustomFrame)
         middle_frame = ECF
         middle_frame.grid(row=0, column=1, sticky="nsew")
@@ -307,6 +313,17 @@ class SelectionFrame(iTkFrame):
             else:
                 self.get_static_agent_pre(agname,agclass,cats)
         return cats
+
+    def precheck_env(self, data):
+        catname = data["Category name"]
+        _, ind = data["Env meta"]
+        fragdata = self.env_mngr.get(catname, [ind])
+        data["Environment data"] = fragdata
+        if not data.get("auto",False):
+            return True
+        envraw = deepcopy(data["Environment data"])
+        agentclass: iAgent = data["Agent class"]
+        return agentclass!=GraphicManualInputAgent
 
     def run_environment(self, data):
         EDC = "Environment data"
