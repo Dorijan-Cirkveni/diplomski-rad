@@ -362,7 +362,7 @@ class iEnvironment(iRawDictInit):
         """
         if ratio is None:
             ratio = [60, 20, 20]
-        ratio = util_mngr.adjustRatio(size, ratio)
+        ratio = util_mngr.AdjustRatio(size, ratio)
         X = []
         LA = [dict() for _ in ratio]
         for k, V in learning_aspects.items():
@@ -372,7 +372,7 @@ class iEnvironment(iRawDictInit):
             for (v, count) in V:
                 L.append(v)
                 LV.append(count)
-            LV = util_mngr.adjustRatio(size, LV)
+            LV = util_mngr.AdjustRatio(size, LV)
             curind = 0
             curleft = LV[0]
             for i, e in enumerate(ratio):

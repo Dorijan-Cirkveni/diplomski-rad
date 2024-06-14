@@ -109,8 +109,8 @@ class TestLimRange(unittest.TestCase):
 
 class TestAdjustRatio(unittest.TestCase):
     def test_cases(self):
-        self.assertEqual(adjustRatio(10, [1, 1]), [5, 5])
-        self.assertEqual(adjustRatio(10, [1, 2]), [3, 7])
+        self.assertEqual(AdjustRatio(10, [1, 1]), [5, 5])
+        self.assertEqual(AdjustRatio(10, [1, 2]), [3, 7])
 
 
 class TestAddValueToLayeredStruct(unittest.TestCase):

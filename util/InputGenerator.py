@@ -39,11 +39,11 @@ class InputGrid(iSplittableInputGroup):
             start = self.start
             lastRatio = (0, 0)
             if mode == "colGroups":
-                adjRatio = util_mngr.adjustRatio(size[0], ratio)
+                adjRatio = util_mngr.AdjustRatio(size[0], ratio)
                 jump = (1, 0)
                 end = (start[0], self.end[1])
             else:
-                adjRatio = util_mngr.adjustRatio(size[1], ratio)
+                adjRatio = util_mngr.AdjustRatio(size[1], ratio)
                 jump = (0, 1)
                 end = (self.end[0], start[1])
             for E in adjRatio:

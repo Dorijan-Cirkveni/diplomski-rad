@@ -151,7 +151,7 @@ def limrange(start, end, step, limit):
     return range(start, end, step)
 
 
-def adjustRatio(size, ratio: list):
+def AdjustRatio(size, ratio: list):
     s = sum(ratio)
     adjRatio = [e * size / s for e in ratio]
     adjRatio = [(i, int(e), e - int(e)) for i, e in enumerate(adjRatio)]
