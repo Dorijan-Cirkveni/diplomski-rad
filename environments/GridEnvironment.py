@@ -48,8 +48,7 @@ class GridEnvironment(itf.iEnvironment):
     routineType = GridRoutine
     # Parameters
     DEFAULT_PARAM_GROUPS={
-        "ex_a":('InputRange',(0,10)),
-        "ex_A":('InputRange',(0,10))
+        "No parameters available":('InputRange',(0,10))
     }
 
     def __init__(self, gridRoutines: dict[str, GridRoutine],

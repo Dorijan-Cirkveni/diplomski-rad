@@ -147,8 +147,12 @@ class MazeEnvironment(GridEnvironment):
     """
     A class representing a maze environment.
     """
+    # Parameters
+    DEFAULT_PARAM_GROUPS={
+        "scale"
+    }
 
-    def __init__(self, scale: tuple, start: tuple, maze_creator: iMazeCreator, maze_seed=0, entity=None, tileTypes=None,
+    def __init__(self, scale: tuple, start: tuple, maze_creator: iMazeCreator, maze_seed=0, tileTypes=None,
                  extraData: dict = None):
         """
         Initialize the MazeEnvironment.
@@ -162,6 +166,7 @@ class MazeEnvironment(GridEnvironment):
             tileTypes (list, optional): The types of tiles in the environment. Defaults to None.
             extraData (dict, optional): Extra data for the environment. Defaults to None.
         """
+        entity = agents.Agent.BoxAgent()
         tiles: set = extraData.get("tiles", (0, 2, 1))
         rand = random.Random(maze_seed)
         self.start = start
@@ -177,20 +182,21 @@ class MazeEnvironment(GridEnvironment):
         super().__init__(grids, [entity], {0}, tileTypes, effect_types, effects, extraData=extraData)
 
     @staticmethod
-    def raw_init(raw: dict):
+    def raw_process_dict(raw: dict, params: list):
         """
         Create a MazeEnvironment object from a dictionary.
 
-        Args:
-            raw (dict): The dictionary containing environment data.
-
-        Returns:
-            MazeEnvironment: A MazeEnvironment object.
+        :param raw:  The dictionary containing environment data.
+        :param params: Class parameters.
+        :return: MazeEnvironment: A MazeEnvironment object.
         """
         scale = tuple(raw.get("scale", [25, 25]))
+        raw["scale"]=scale
         ranseed = raw.get("seed", random.randint(0, 1 << 32 - 1))
+        raw["maze_seed"]=ranseed
         randomizer: random.Random = random.Random(ranseed)
         maze_type: iMazeCreator = EvenMazeCreatorDFS(scale, randomizer)
+        raw["maze_creator"]=maze_type
 
         agentDict = raw.get("agentDict", None)
         agentDict = AgentManager.ALL_AGENTS if agentDict is None else agentDict
@@ -201,17 +207,10 @@ class MazeEnvironment(GridEnvironment):
         entity_data = raw.get("entity")
         entity = GridEntity.raw_init(entity_data)
         entity.agent = agent
+        raw["entity"]=entity
 
-        start = raw.get("start", maze_type.get_random_start())
-        res = MazeEnvironment(
-            scale,
-            tuple(start),
-            maze_type,
-            ranseed,
-            entity,
-            extraData=raw
-        )
-        return res
+        raw["start"] = raw.get("start", maze_type.get_random_start())
+        return iRawInit.raw_process_dict(raw,params)
 
     def GenerateGroup(self, size, learning_aspects: dict, requests: dict, randomSeed=42):
         """
