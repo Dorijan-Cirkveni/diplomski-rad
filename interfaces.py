@@ -403,8 +403,7 @@ class iTrainingMethod:
     def evaluate(self, testExamples=list[callable]):
         raise NotImplementedError
 
-
-def main():
+def test_effect():
     X = Effect("test", 1, 1)
     s = X.__repr__()
     print(s)
@@ -412,6 +411,9 @@ def main():
     print(L)
     Y = Effect.raw_init(L)
     print(Y, Y.__repr__())
+
+
+def main():
     return
 
 
