@@ -348,7 +348,8 @@ class iEnvironment(iRawDictInit):
         """
         raise NotImplementedError
 
-    def GenerateSetGroups(self, size, learning_aspects_raw: dict, requests: dict, ratio=None, *args,
+    @classmethod
+    def GenerateSetGroups(cls, size, learning_aspects_raw: dict, requests: dict, ratio=None, *args,
                           randomizer: random.Random = None, randomseed=42,
                           prev_manager: dsmngr.DatasetGenerator = None, **kwargs) -> list[
         list['iEnvironment']]:
