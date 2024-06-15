@@ -1,0 +1,141 @@
+\documentclass{article}
+\usepackage{enumitem}
+
+\begin{document}
+
+\section*{iRawInit Methods}
+
+\begin{itemize}
+    \item \texttt{from_string(cls, s)}
+    \begin{itemize}
+        \item Initializes an instance of the class from a JSON string.
+        \item \textbf{Parameters:}
+        \begin{itemize}
+            \item \texttt{s}: JSON string to initialize the instance.
+        \end{itemize}
+        \item \textbf{Returns:}
+        \begin{itemize}
+            \item Instance of the class.
+        \end{itemize}
+    \end{itemize}
+    
+    \item \texttt{raw_init(cls, raw)}
+    \begin{itemize}
+        \item Initializes an instance of the class from a raw dictionary or list.
+        \item \textbf{Parameters:}
+        \begin{itemize}
+            \item \texttt{raw}: Raw dictionary or list to initialize the instance.
+        \end{itemize}
+        \item \textbf{Returns:}
+        \begin{itemize}
+            \item Instance of the class.
+        \end{itemize}
+    \end{itemize}
+    
+    \item \texttt{raw_post_init(self)}
+    \begin{itemize}
+        \item Additional initialization to be performed after the main initialization.
+        \item Can be overridden in subclasses.
+    \end{itemize}
+
+    \item \texttt{raw_process_dict(raw, params)}
+    \begin{itemize}
+        \item Processes a raw dictionary to match the parameters of the class constructor.
+        \item \textbf{Parameters:}
+        \begin{itemize}
+            \item \texttt{raw}: Raw dictionary.
+            \item \texttt{params}: List of parameter names and default values.
+        \end{itemize}
+        \item \textbf{Returns:}
+        \begin{itemize}
+            \item Processed dictionary.
+        \end{itemize}
+    \end{itemize}
+    
+    \item \texttt{raw_process_list(raw, params)}
+    \begin{itemize}
+        \item Processes a raw list to match the parameters of the class constructor.
+        \item \textbf{Parameters:}
+        \begin{itemize}
+            \item \texttt{raw}: Raw list.
+            \item \texttt{params}: List of parameter names and default values.
+        \end{itemize}
+        \item \textbf{Returns:}
+        \begin{itemize}
+            \item Processed list.
+        \end{itemize}
+    \end{itemize}
+    
+    \item \texttt{\_\_copy\_\_(self)}
+    \begin{itemize}
+        \item Creates a shallow copy of the instance.
+        \item \textbf{Returns:}
+        \begin{itemize}
+            \item Shallow copy of the instance.
+        \end{itemize}
+    \end{itemize}
+    
+    \item \texttt{copy(self)}
+    \begin{itemize}
+        \item Creates a shallow copy of the instance.
+        \item \textbf{Returns:}
+        \begin{itemize}
+            \item Shallow copy of the instance.
+        \end{itemize}
+    \end{itemize}
+    
+    \item \texttt{\_\_deepcopy\_\_(self, memodict=None)}
+    \begin{itemize}
+        \item Creates a deep copy of the instance.
+        \item \textbf{Parameters:}
+        \begin{itemize}
+            \item \texttt{memodict}: Dictionary to keep track of copied objects (optional).
+        \end{itemize}
+        \item \textbf{Returns:}
+        \begin{itemize}
+            \item Deep copy of the instance.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\section*{iRawDictInit Methods}
+
+\begin{itemize}
+    \item Inherits all methods from \texttt{iRawInit}.
+    
+    \item \texttt{raw_process_list(raw, params)}
+    \begin{itemize}
+        \item Raises an exception as the class expects a dictionary, not a list.
+        \item \textbf{Parameters:}
+        \begin{itemize}
+            \item \texttt{raw}: Raw list.
+            \item \texttt{params}: List of parameter names and default values.
+        \end{itemize}
+        \item \textbf{Raises:}
+        \begin{itemize}
+            \item \texttt{Exception}: Always raises an exception.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\section*{iRawListInit Methods}
+
+\begin{itemize}
+    \item Inherits all methods from \texttt{iRawInit}.
+    
+    \item \texttt{raw_process_dict(raw, params)}
+    \begin{itemize}
+        \item Raises an exception as the class expects a list, not a dictionary.
+        \item \textbf{Parameters:}
+        \begin{itemize}
+            \item \texttt{raw}: Raw dictionary.
+            \item \texttt{params}: List of parameter names and default values.
+        \end{itemize}
+        \item \textbf{Raises:}
+        \begin{itemize}
+            \item \texttt{Exception}: Always raises an exception.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\end{document}

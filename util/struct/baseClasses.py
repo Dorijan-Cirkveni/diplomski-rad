@@ -131,7 +131,7 @@ class iRawDictInit(iRawInit):
         Raises an exception as the class expects a dictionary, not a list.
 
         :param raw: Raw list.
-        :param params: 
+        :param params:
         :raise Exception: Always raises an exception.
         """
         raise Exception("Must be dictionary, not list!")
