@@ -112,7 +112,7 @@ class InputGrid(iSplittableInputGroup):
 
 
 class DatasetGenerator:
-    def __init__(self, aspects: dict[str,iSplittableInputGroup], ratio, randomizer:random.Random=None, specialRequests:dict=None):
+    def __init__(self, aspects: dict[str,[iSplittableInputGroup,tuple]], ratio, randomizer:random.Random=None, specialRequests:dict=None):
         if specialRequests is None:
             specialRequests = {}
         self.ratio = ratio

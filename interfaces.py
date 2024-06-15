@@ -1,5 +1,6 @@
 import inspect
 import json
+import random
 from copy import deepcopy
 
 import definitions
@@ -111,7 +112,7 @@ class iEntity(iRawDictInit):
             return
         self.agent.receiveData(data)
 
-    def performAction(self, actions)->int:
+    def performAction(self, actions) -> int:
         return self.agent.performAction(actions)
 
     def getPriority(self):
@@ -187,7 +188,7 @@ class iEnvironment(iRawDictInit):
         self.entityPriority.sort(reverse=True)
         self.runData = dict()
         self.cur_iter = 0
-        self.winStatus=(None,-1)
+        self.winStatus = (None, -1)
 
     def assign_active_agent(self, agent: iAgent):
         """
@@ -300,15 +301,15 @@ class iEnvironment(iRawDictInit):
             entity.receiveEnvironmentData(self.runData)
             # move = self.getMoves(entityID)
             chosenActionID = entity.performAction(definitions.ACTIONS)
-            chosenAction=chosenActionID if isinstance(chosenActionID,tuple) else definitions.ACTIONS[chosenActionID]
+            chosenAction = chosenActionID if isinstance(chosenActionID, tuple) else definitions.ACTIONS[chosenActionID]
             cur_D[entityID] = chosenAction
         D.update(cur_D)
         res = self.step(D)
         self.applyEffects()
         if self.isLoss():
-            self.winStatus = (False,self.cur_iter)
+            self.winStatus = (False, self.cur_iter)
         if self.isWin():
-            self.winStatus = (True,self.cur_iter)
+            self.winStatus = (True, self.cur_iter)
         return res
 
     def isWin(self):
@@ -317,17 +318,17 @@ class iEnvironment(iRawDictInit):
     def isLoss(self):
         raise NotImplementedError
 
-    def run(self, agent: iAgent, cycle_limit: int, timeoutWin: bool = True)->tuple[bool,int]:
-        cycle_limit=self.data.get("Cycle limit", cycle_limit)
+    def run(self, agent: iAgent, cycle_limit: int, timeoutWin: bool = True) -> tuple[bool, int]:
+        cycle_limit = self.data.get("Cycle limit", cycle_limit)
         self.assign_active_agent(agent)
         for i in range(cycle_limit):
             self.runIteration()
             if self.winStatus[0] is not None:
-                self.winStatus:tuple[bool,int]
+                self.winStatus: tuple[bool, int]
                 return self.winStatus
         return timeoutWin, cycle_limit + 1
 
-    def evaluateActiveEntities(self, evalMethod: callable)->float:
+    def evaluateActiveEntities(self, evalMethod: callable) -> float:
         raise NotImplementedError
 
     def GenerateGroup(self, size, learning_aspects, requests: dict):
@@ -348,32 +349,22 @@ class iEnvironment(iRawDictInit):
         raise NotImplementedError
 
     def GenerateSetGroups(self, size, learning_aspects_raw: dict, requests: dict, ratio=None, *args,
-                          prev_manager:dsmngr.DatasetGenerator=None, **kwargs) -> list[
+                          randomizer: random.Random = None, randomseed=42,
+                          prev_manager: dsmngr.DatasetGenerator = None, **kwargs) -> list[
         list['iEnvironment']]:
         """
         Generates multiple groups of entities based on specified learning aspects and requests.
 
-        Args:
-            size: The total size of all groups combined.
-            learning_aspects (dict): A dictionary containing learning aspects for each group.
-            requests (dict): A dictionary of requests.
-            ratio (list[int], optional): A list representing the ratio of sizes for each group.
-                Defaults to None, in which case a default ratio of [60, 20, 20] is used.
-        :param prev_manager:
-
-        Returns:
-            list[list[GridEnvironment]]: A list containing groups of GridEnvironment objects.
-
         """
+        randomizer = util_mngr.FirstNotNull(randomizer, random.Random(randomseed))
         if ratio is None:
             ratio = [60, 20, 20]
 
         ratio = dsmngr.AdjustRatio(size, ratio)
-        generator = dsmngr.DatasetGenerator()
+        generator = dsmngr.DatasetGenerator(learning_aspects_raw, ratio, randomizer, kwargs)
         return []
 
-
-    def GenerateGroupTest(self, groupsize, learning_aspects, requests: dict, eval_summary:callable=sum):
+    def GenerateGroupTest(self, groupsize, learning_aspects, requests: dict, eval_summary: callable = sum):
         group = self.GenerateGroup(groupsize, learning_aspects, requests)
         timelimit, timeoutWin = requests.get("timeMode", (100, True))
 
