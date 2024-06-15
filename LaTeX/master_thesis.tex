@@ -947,11 +947,12 @@ Before testing the agents that could be considered conscious, we need to test th
 \subsubsection{Human input}
 
 \paragraph{Description}
-Before using automated agents on test environments, the environments are tested manually to ensure their functionality as well as to attempt to provide a benchmark for consciousness, given that we are the only type of entity with confirmed consciousness and sentience known to us.
+Before deploying automated agents into test environments, 
+these environments are manually tested to ensure their functionality and to establish benchmarks for intelligence and consciousness. This benchmark is crucial given that humans are one of few entities known to us that possess confirmed consciousness and sentience.
 
 To that end, a graphic user interface has been provided to facilitate interaction between human agents and the test environment.
 \paragraph{Advantages}
-By using a human benchmark, we can at the very least establish a rough idea of what we are expecting our artificial agents to accomplish. Obviou
+By using a human benchmark, we can at the very least establish a rough idea of what we are expecting our artificial agents to accomplish. 
 \paragraph{Disadvantages}
 Obviously, this is not an artificial agent - and relying on human ability as a benchmark for consciousness has its disadvantages.
 
@@ -964,6 +965,12 @@ One of them is that the nature and underlying mechanism of our intelligence and 
 \paragraph{Disadvantages}
 
 \section{Implementation details}
+\subsection{Base classes}
+\paragraph{iRawInit}
+In order to allow initialisation of data structures such as test environments and agents from raw JSON data and saving modified parameters of the aforementioned environments,
+most classes in the prototype codebase inherit the interface class iRawInit.
+
+This class contains the following functions:
 \subsection{Base interfaces}
 \paragraph{iEntity}
 The base interface for a test entity regardless of environment type.
@@ -979,7 +986,9 @@ those being receiveData, performAction
 \paragraph{iEvalMethod}
 \paragraph{iEnvironment}
 \subsection{Grid environment classes}
+\paragraph{GridEnvironment}
 
+This class is the basis for every grid-based test environment in this prototype. 
 \subsection{Environment display and interaction interface}
 
 %-------------------------------------------------------------------------------
