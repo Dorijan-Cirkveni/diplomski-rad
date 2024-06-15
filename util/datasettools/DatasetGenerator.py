@@ -43,6 +43,18 @@ class iSplittableInputGroup:
         raise NotImplementedError
 
 
+class InputInstance(iSplittableInputGroup):
+    def __init__(self, value):
+        self.value = value
+
+    def splitByRatio(self, ratio: list[int], specialRequests: dict) -> list:
+        return [self]*len(ratio)
+
+    def generateRandom(self, randomizer: random.Random):
+        return self.value
+
+
+
 class InputRange(iSplittableInputGroup):
     def __init__(self, start, end):
         self.start = start

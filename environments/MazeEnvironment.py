@@ -3,6 +3,7 @@ import random
 import agents.Agent
 from environments.GridEnvironment import *
 from interfaces import iRawInit
+import util.datasettools.DatasetGenerator as dsmngr
 
 
 class iMazeCreator(iRawInit):
@@ -149,7 +150,9 @@ class MazeEnvironment(GridEnvironment):
     """
     # Parameters
     DEFAULT_PARAM_GROUPS={
-        "scale"
+        "scale":dsmngr.InputInstance((25,25)),
+        "start":dsmngr.InputGrid((0,0),(25,25)),
+        "maze_seed":dsmngr.InputRange(0,1000)
     }
 
     def __init__(self, scale: tuple, start: tuple, maze_creator: iMazeCreator, maze_seed=0, tileTypes=None,
