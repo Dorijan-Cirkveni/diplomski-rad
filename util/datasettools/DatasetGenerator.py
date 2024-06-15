@@ -118,7 +118,14 @@ class DatasetGenerator:
         self.ratio = ratio
         self.randomizer = utilmngr.FirstNotNull(randomizer,random.Random(42))
         self.specialRequests = specialRequests
-        self.aspects = aspects
+        self.aspects = {}
+        for e,v in aspects:
+            if type(v)==tuple:
+                aspectname=v[0]
+                aspectdata=v[1]
+                v=ASPECTS[aspectname](*aspectdata)
+            assert issubclass(v,iSplittableInputGroup)
+            self.aspects[e]=v
 
     def generate_dataset(self, size, **kwargs):
         randomizer=kwargs.get("randomizer",self.randomizer)
@@ -152,11 +159,14 @@ def init_aspects():
         if cls is iSplittableInputGroup:
             continue
         ASPECTS[name]=cls
+init_aspects()
 
 # Make it so for every class in this file (determined dynamically, DON'T JUST LIST THEM),
 # ASPECT has a key-value pair e.g. exampleclass.__name__:exampleclass
 
 def main():
+    for e,v in ASPECTS.items():
+        print(e,"->",v)
     range_aspect = InputRange(0, 100)
     grid_aspect = InputGrid((0, 0), (10, 10))
     aspects = {"range":range_aspect, "grid":grid_aspect}

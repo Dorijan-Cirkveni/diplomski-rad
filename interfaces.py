@@ -368,10 +368,6 @@ class iEnvironment(iRawDictInit):
         if ratio is None:
             ratio = [60, 20, 20]
 
-        learning_aspects = {}
-        for e, aspect in learning_aspects_raw.items():
-            typename,typedata=aspect
-
         ratio = dsmngr.AdjustRatio(size, ratio)
         generator = dsmngr.DatasetGenerator()
         return []
