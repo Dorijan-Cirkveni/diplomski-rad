@@ -373,8 +373,13 @@ class iEnvironment(iRawDictInit):
             ratio = [60, 20, 20]
 
         ratio = dsmngr.AdjustRatio(size, ratio)
-        generator = dsmngr.DatasetGenerator(learning_aspects_raw, ratio, randomizer, kwargs)
-        return []
+        generator:dsmngr.DatasetGenerator
+        if prev_manager is None:
+            generator = dsmngr.DatasetGenerator(learning_aspects_raw, ratio, randomizer, kwargs)
+        else:
+            generator = prev_manager
+        RES = generator.generate_dataset(size)
+        return RES
 
     def GenerateGroupTest(self, groupsize, learning_aspects, requests: dict, eval_summary: callable = sum):
         group = self.GenerateGroup(groupsize, learning_aspects, requests)
