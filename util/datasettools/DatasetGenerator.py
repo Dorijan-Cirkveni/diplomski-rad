@@ -143,6 +143,16 @@ class DatasetGenerator:
         return curset
 
 ASPECTS={}
+def init_aspects():
+    for name,cls in globals().items():
+        if not isinstance(cls, type):
+            continue
+        if not issubclass(cls,iSplittableInputGroup):
+            continue
+        if cls is iSplittableInputGroup:
+            continue
+        ASPECTS[name]=cls
+
 # Make it so for every class in this file (determined dynamically, DON'T JUST LIST THEM),
 # ASPECT has a key-value pair e.g. exampleclass.__name__:exampleclass
 
@@ -152,8 +162,10 @@ def main():
     aspects = {"range":range_aspect, "grid":grid_aspect}
     generator = DatasetGenerator(aspects, ratio=[60, 30, 10])
     dataset = generator.generate_dataset(1000)
-    for data in dataset[:10]:  # print first 10 for brevity
-        print(data)
+    for data in dataset[:10]:
+        for subdata in data[:10]:
+            print(subdata)
+        print()
 
 
 if __name__ == "__main__":

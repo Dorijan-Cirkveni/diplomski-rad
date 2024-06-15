@@ -1,5 +1,6 @@
 from copy import deepcopy
 
+import interfaces as itf
 from agents.AgentInterfaces import iAgent
 from agents import AgentManager
 from util.struct.GridRoutine import GridRoutine
@@ -45,6 +46,11 @@ class GridEnvironment(itf.iEnvironment):
     dir_left = 2
     dir_right = 3
     routineType = GridRoutine
+    # Parameters
+    DEFAULT_PARAM_GROUPS={
+        "ex_a":('InputRange',(0,10)),
+        "ex_A":('InputRange',(0,10))
+    }
 
     def __init__(self, gridRoutines: dict[str, GridRoutine],
                  entities: list[GridEntity], activeEntities: set,
