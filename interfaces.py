@@ -351,12 +351,23 @@ class iEnvironment(iRawDictInit):
     @classmethod
     def GenerateSetGroups(cls, size, learning_aspects_raw: dict, requests: dict, ratio=None, *args,
                           randomizer: random.Random = None, randomseed=42,
-                          prev_manager: dsmngr.DatasetGenerator = None, **kwargs) -> list[
-        list['iEnvironment']]:
+                          prev_manager: dsmngr.DatasetGenerator = None, **kwargs) -> list[list['iEnvironment']]:
         """
         Generates multiple groups of entities based on specified learning aspects and requests.
 
+        :param size: The total size of all groups combined.
+        :param learning_aspects_raw: A dictionary containing learning aspects for each group.
+        :param requests: A dictionary of requests.
+        :param ratio: A list representing the ratio of sizes for each group.
+                      Defaults to None, in which case a default ratio of [60, 20, 20] is used.
+        :param randomizer: A random number generator. Defaults to None.
+        :param randomseed: The seed for the random number generator. Defaults to 42.
+        :param prev_manager: A previous DatasetGenerator instance. Defaults to None.
+        :param args: Additional positional arguments.
+        :param kwargs: Additional keyword arguments.
+        :return: A list containing groups of iEnvironment objects.
         """
+
         randomizer = util_mngr.FirstNotNull(randomizer, random.Random(randomseed))
         if ratio is None:
             ratio = [60, 20, 20]
