@@ -966,8 +966,16 @@ One of them is that the nature and underlying mechanism of our intelligence and 
 \section{Implementation details}
 \subsection{Base interfaces}
 \paragraph{iEntity}
+The base interface for a test entity regardless of environment type.
 
-The 
+This class contains getter and setter functions for various test entity states
+as well as functions that allow the environment to run agent functions:
+\begin{itemize}
+\item{iEntity.receiveEnvironmentData} - calls iAgent.receiveData on its agent, retrieves nothing.
+\item{iEntity.performAction} - calls iAgent.performAction on its agent, retrieves next action the agent is to take.
+\item{iEntity.getMemory} - calls iAgent.submitData on its agent, retrieves a set of available memories. Used for evaluation purposes.
+\end{itemize}
+those being receiveData, performAction
 \paragraph{iEvalMethod}
 \paragraph{iEnvironment}
 \subsection{Grid environment classes}

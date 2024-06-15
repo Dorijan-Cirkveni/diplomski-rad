@@ -128,33 +128,33 @@
 \contentsline {section}{\numberline {3.3}Implementation details}{45}{section.3.3}%
 \contentsline {subsection}{\numberline {3.3.1}Base interfaces}{45}{subsection.3.3.1}%
 \contentsline {paragraph}{iEntity}{45}{section*.75}%
-\contentsline {paragraph}{iEvalMethod}{45}{section*.76}%
-\contentsline {paragraph}{iEnvironment}{45}{section*.77}%
-\contentsline {subsection}{\numberline {3.3.2}Grid environment classes}{45}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}Environment display and interaction interface}{45}{subsection.3.3.3}%
-\contentsline {chapter}{\numberline {4}Results and Discussion}{46}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Instructions for usage of test environment interface}{46}{section.4.1}%
-\contentsline {section}{\numberline {4.2}•}{46}{section.4.2}%
-\contentsline {chapter}{\numberline {5}Further research suggestions and concerns}{47}{chapter.5}%
-\contentsline {paragraph}{Researcher resources requirements}{47}{section*.78}%
-\contentsline {section}{\numberline {5.1}Technical debt management}{47}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Optimisation}{47}{section.5.2}%
-\contentsline {paragraph}{Lower-level implementation}{47}{section*.79}%
-\contentsline {section}{\numberline {5.3}Further research direction}{47}{section.5.3}%
-\contentsline {paragraph}{More complex environments}{47}{section*.80}%
-\contentsline {section}{\numberline {5.4}Future research concerns}{47}{section.5.4}%
-\contentsline {subsection}{\numberline {5.4.1}Gain-of-function AI development risks}{47}{subsection.5.4.1}%
-\contentsline {subsection}{\numberline {5.4.2}Safety versus speed}{47}{subsection.5.4.2}%
-\contentsline {chapter}{\numberline {6}Conclusion}{48}{chapter.6}%
-\contentsline {chapter}{References}{49}{chapter*.81}%
+\contentsline {paragraph}{iEvalMethod}{46}{section*.76}%
+\contentsline {paragraph}{iEnvironment}{46}{section*.77}%
+\contentsline {subsection}{\numberline {3.3.2}Grid environment classes}{46}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Environment display and interaction interface}{46}{subsection.3.3.3}%
+\contentsline {chapter}{\numberline {4}Results and Discussion}{47}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Instructions for usage of test environment interface}{47}{section.4.1}%
+\contentsline {section}{\numberline {4.2}•}{47}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Further research suggestions and concerns}{48}{chapter.5}%
+\contentsline {paragraph}{Researcher resources requirements}{48}{section*.78}%
+\contentsline {section}{\numberline {5.1}Technical debt management}{48}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Optimisation}{48}{section.5.2}%
+\contentsline {paragraph}{Lower-level implementation}{48}{section*.79}%
+\contentsline {section}{\numberline {5.3}Further research direction}{48}{section.5.3}%
+\contentsline {paragraph}{More complex environments}{48}{section*.80}%
+\contentsline {section}{\numberline {5.4}Future research concerns}{48}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Gain-of-function AI development risks}{48}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Safety versus speed}{48}{subsection.5.4.2}%
+\contentsline {chapter}{\numberline {6}Conclusion}{49}{chapter.6}%
+\contentsline {chapter}{References}{50}{chapter*.81}%
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Abstract}{51}{chapter*.82}%
+\contentsline {chapter}{Abstract}{52}{chapter*.82}%
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
-\babel@toc {english}{}\relax 
-\babel@toc {croatian}{}\relax 
-\contentsline {chapter}{Sa\v {z}etak}{52}{chapter*.83}%
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
+\contentsline {chapter}{Sa\v {z}etak}{53}{chapter*.83}%
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{\numberline {A:}The Code}{53}{chapter.1}%
+\babel@toc {croatian}{}\relax 
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {A:}The Code}{54}{chapter.1}%
