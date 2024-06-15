@@ -856,12 +856,7 @@ def testFN():
     test = Grid2DTile(0)
     print(test.default, test.conditions)
 
-
-def main():
-    """
-    Main function to run the simulation and test the environment.
-    """
-    testFN()
+def test_GENV():
     data = ImportManagedJSON('t_base')
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     X = readPlaneEnvironment(data, 0)
@@ -876,6 +871,15 @@ def main():
         print(X.taken)
     print(X.text_display(guide, SOLID))
     print(X.text_display(guide, VIEWED))
+
+
+def main():
+    """
+    Main function to run the simulation and test the environment.
+    """
+    lar=GridEnvironment.DEFAULT_PARAM_GROUPS
+    RES=GridEnvironment.GenerateSetGroups(100,lar,lar)
+    print([(len(E),E[:10]) for E in RES])
     return
 
 

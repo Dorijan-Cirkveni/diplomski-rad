@@ -119,12 +119,12 @@ class DatasetGenerator:
         self.randomizer = utilmngr.FirstNotNull(randomizer,random.Random(42))
         self.specialRequests = specialRequests
         self.aspects = {}
-        for e,v in aspects:
+        for e,v in aspects.items():
             if type(v)==tuple:
                 aspectname=v[0]
                 aspectdata=v[1]
                 v=ASPECTS[aspectname](*aspectdata)
-            assert issubclass(v,iSplittableInputGroup)
+            assert isinstance(v,iSplittableInputGroup)
             self.aspects[e]=v
 
     def generate_dataset(self, size, **kwargs):
