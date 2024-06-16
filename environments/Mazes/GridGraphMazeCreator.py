@@ -13,6 +13,8 @@ class GraphGrid2D(Grid2D):
                  connections: list[tuple[tuple[int, int], int]] = None,
                  wrap=G2Dlib.WRAP_NONE):
         super().__init__(scale, default=0)
+        if connections is None:
+            return
         for E in connections:
             self.add_connection(*E, wrap=wrap)
 
@@ -21,9 +23,9 @@ class GraphGrid2D(Grid2D):
         if RA is None:
             return False
         RB = self.get_neighbour(RA, direction, wrap, check_self=False)
-        self[RA] = self[RA] & (1 << direction)
-        antidirection = (direction + 2) & 4
-        self[RB] = self[RB] & (1 << antidirection)
+        self[RA] = self[RA] | (1 << direction)
+        antidirection = (direction + 2) & 3
+        self[RB] = self[RB] | (1 << antidirection)
         return True
 
 
@@ -107,7 +109,7 @@ class GraphMazeCreatorDFS(iGraphMazeCreator):
         Y = []
         for i in range(4):
             neigh = grid.get_neighbour(cur, i, False)
-            if grid[neigh] != 0:
+            if neigh is None or grid[neigh] != 0:
                 continue
             Y.append((i, neigh))
         if not Y:
@@ -151,8 +153,31 @@ class GraphMazeCreatorDFS(iGraphMazeCreator):
 
 
 def main():
-    return
+    # Initialize the randomizer with a seed for reproducibility
+    rand = random.Random(42)
+
+    # Set up the scale of the grid
+    scale = (10, 10)
+
+    # Create an instance of the GraphMazeCreatorDFS
+    maze_creator = GraphMazeCreatorDFS(scale, rand)
+
+    # Get a random start position
+    start = maze_creator.get_random_start()
+    print(f"Random Start Position: {start}")
+
+    # Create the maze starting from the random start position
+    grid, goal = maze_creator.create_maze(start)
+    print(f"Goal Position: {goal}")
+
+    # Display the grid (optional, depending on how the Grid2D class is implemented)
+    for E in grid.M:
+        rows=["","",""]
+        for x in E:
+            rows[0]+=" {} "
+        print(row)
 
 
 if __name__ == "__main__":
     main()
+
