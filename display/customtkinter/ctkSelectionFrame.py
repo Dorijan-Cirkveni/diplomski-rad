@@ -185,7 +185,7 @@ class EnvCustomFrame(ctk.CTkFrame):
     def save_env_step_1(self):
         frag,ind=self.arch_call
         env_data = frag.root[ind]
-        if env_data is None:
+        if not env_data:
             PopupMessage(self, "Error", "Missing environment data!")
             return
         address=frjson.WriteFragmentAddress(self.catname,ind)

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  15 JUN 2024 17:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  16 JUN 2024 17:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1064,7 +1064,7 @@ e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
 [44] [45] [46]
 Chapter 4.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 990.
+ut line 1000.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1073,16 +1073,16 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 990.
+ne 1000.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 990.
+(Font)              scaled to size 16.0pt on input line 1000.
  [47
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
 .enc}]
 Chapter 5.
 
-Underfull \hbox (badness 10000) in paragraph at lines 994--994
+Underfull \hbox (badness 10000) in paragraph at lines 1004--1004
 []\T1/opensans-TLF/b/n/18 Further re-search sug-ges-tions
  []
 
@@ -1103,7 +1103,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1061 \chapter{The Code}
+l.1071 \chapter{The Code}
                          
 Appendix A.
 [54
@@ -1240,29 +1240,40 @@ master_thesis.bbl
  ***********
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+Package rerunfilecheck Warning: File `master_thesis.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
 
-Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 14AED127E347D34E67236114E20AE212;14611.
+Package rerunfilecheck Info: Checksums for `master_thesis.out':
+(rerunfilecheck)             Before: 14AED127E347D34E67236114E20AE212;14611
+(rerunfilecheck)             After:  9F3DA7171F5984FDD10724F6553C4C01;14736.
  ) 
 Here is how much of TeX's memory you used:
- 18346 strings out of 474586
- 290389 string characters out of 5745681
+ 18351 strings out of 474586
+ 290449 string characters out of 5745681
  1937558 words of memory out of 5000000
  39994 multiletter control sequences out of 15000+600000
  639722 words of font info for 142 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,776b,670s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/opensans/O
-penSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/asce
-nder/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs/MiKTe
-X/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Loc
-al/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/User
-s/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-
-Regular.pfb>
-Output written on master_thesis.pdf (59 pages, 1609836 bytes).
+
+pdfTeX warning (dest): name{chapter*.82} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{chapter*.81} has been referenced but does not exist
+, replaced by a fixed one
+
+<C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/opensans/Ope
+nSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascend
+er/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/
+fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Local
+/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/Users/
+doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Re
+gular.pfb>
+Output written on master_thesis.pdf (59 pages, 1610783 bytes).
 PDF statistics:
- 863 PDF objects out of 1000 (max. 8388607)
- 228 named destinations out of 1000 (max. 500000)
+ 869 PDF objects out of 1000 (max. 8388607)
+ 233 named destinations out of 1000 (max. 500000)
  677 words of extra memory for PDF output out of 10000 (max. 10000000)
 

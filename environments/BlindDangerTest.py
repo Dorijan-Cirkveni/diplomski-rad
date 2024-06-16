@@ -9,24 +9,6 @@ import util.UtilManager as utilmngr
 
 
 class BlindDangerBasicTest(GridEnvironment):
-    @classmethod
-    def from_string(cls, s):
-        """
-
-        :param s:
-        """
-        pass
-
-    @staticmethod
-    def checkScale(roomScale, dangerDensity):
-        if Tmin(roomScale, (10, 10)) != (7, 7):
-            raise Exception("Room too small, must be at least 7 tiles in both dimensions!")
-        minD = 1 / (roomScale[1] - 2)
-        if dangerDensity > 1 - minD:
-            raise Exception("Too dense ({}>{}=1/({}-2))!".format(dangerDensity, 1 - minD, roomScale[1]))
-        if dangerDensity < minD:
-            raise Exception("Too rare ({}<{}=1/({}-2))!".format(dangerDensity, minD, roomScale[1]))
-
     DEFAULT_PARAM_GROUPS = {
         "dangerDensity": dsmngr.FloatInputRange(0.2, 0.8),
         "seed": dsmngr.InputRange(1000)
@@ -66,6 +48,23 @@ class BlindDangerBasicTest(GridEnvironment):
             gen = GridEntity(BoxAgent(), [4], 0, properties={"loc": (i, b)})
             entities.append(gen)
         super().__init__(gridRoutines, entities, {0}, tileTypes, effectTypes, effects, extraData)
+    @classmethod
+    def from_string(cls, s):
+        """
+
+        :param s:
+        """
+        pass
+
+    @staticmethod
+    def checkScale(roomScale, dangerDensity):
+        if Tmin(roomScale, (10, 10)) != (7, 7):
+            raise Exception("Room too small, must be at least 7 tiles in both dimensions!")
+        minD = 1 / (roomScale[1] - 2)
+        if dangerDensity > 1 - minD:
+            raise Exception("Too dense ({}>{}=1/({}-2))!".format(dangerDensity, 1 - minD, roomScale[1]))
+        if dangerDensity < minD:
+            raise Exception("Too rare ({}<{}=1/({}-2))!".format(dangerDensity, minD, roomScale[1]))
 
     @staticmethod
     def raw_process_dict(raw: dict, params: list):
