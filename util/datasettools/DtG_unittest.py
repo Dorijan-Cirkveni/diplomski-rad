@@ -83,8 +83,9 @@ class TestInputGrid(unittest.TestCase):
         self.assertTrue((0 <= random_value[0] < 10) and (0 <= random_value[1] < 10))
 
     def test_to_raw(self):
-        input_grid = InputGrid((0, 0), (10, 10))
-        self.assertEqual(input_grid.to_raw(), ('InputInstance', (0, 0, 10, 10)))
+        X=(0, 0), (10, 10)
+        input_grid = InputGrid(*X)
+        self.assertEqual(input_grid.to_raw(), ('InputInstance', X))
 
 
 class TestDatasetGenerator(unittest.TestCase):
