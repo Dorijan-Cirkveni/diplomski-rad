@@ -5,6 +5,7 @@ from environments.GridEnvironment import *
 import util.struct.Grid2D as G2Dlib
 import environments.Mazes.GridGraphMazeCreator as gmc
 from util.FragmentedJsonProcessor import *
+import util.UtilManager as utilmngr
 
 
 class BlindDangerBasicTest(GridEnvironment):
@@ -128,10 +129,11 @@ class BlindDangerMazeTest(GridEnvironment):
         "No parameters available": ('InputRange', (0, 10))
     }
 
-    def __init__(self, roomScale: tuple[int], mazeScale: tuple[int], maze_creator: gmc.iGraphMazeCreator,
+    def __init__(self, roomScale: tuple[int,int], mazeScale: tuple[int,int], maze_creator: gmc.iGraphMazeCreator,
                  entities: list[GridEntity], activeEntities: set,
                  tileTypes: list[Grid2DTile], effectTypes: list[itf.Effect], effects: list[itf.EffectTime],
                  extraData: dict):
+        maze_creator.reinit(mazeScale)
         gridTypes = extraData.get("gridTypes")
         _WALL = gridTypes.get("wall", 2)
         _FLOOR = gridTypes.get("floor", 0)
@@ -139,18 +141,20 @@ class BlindDangerMazeTest(GridEnvironment):
         _EFFECT = gridTypes.get("effect", 7)
         fullScale = Toper(roomScale, mazeScale, lambda a, b: a * b + 1, True)
         baseGrid = G2Dlib.init_framed_grid(fullScale, _WALL, _FLOOR)
-        for i in range(1, fullScale[0] - 1, roomScale[0]):
+        for i in range(roomScale[0], fullScale[0] - 1, roomScale[0]):
             E = baseGrid[i]
             for j in range(1, fullScale[1]):
                 E[j] = _EFFECT
-        for j in range(1, fullScale[1] - 1, roomScale[1]):
+        for j in range(roomScale[1], fullScale[1] - 1, roomScale[1]):
             for i in range(1, fullScale[0]):
                 v = baseGrid[i][j]
                 nv = [_EFFECT, _WALL][v == _EFFECT]
                 baseGrid[i][j] = nv
         solidGrid = baseGrid.copy()
         start = Tdiv(mazeScale, (2, 2), True)
-        maze: gmc.GraphGrid2D = maze_creator.create_maze(start)
+        maze: gmc.GraphGrid2D
+        mazetup:tuple= maze_creator.create_maze(start)
+        maze=mazetup[0]
         lines = [
             [(i, roomScale[1]) for i in range(1, roomScale[0])],
             [(roomScale[0], i) for i in range(1, roomScale[1])],
@@ -166,8 +170,11 @@ class BlindDangerMazeTest(GridEnvironment):
                     for el in L:
                         absel = Tadd(ref, el, True)
                         solidGrid[absel] = _DANGER
-
-        super().__init__({}, entities, activeEntities, tileTypes, effectTypes, effects, extraData)
+        grids={
+            "solid":GridRoutine(solidGrid),
+            "viewed":GridRoutine(baseGrid)
+        }
+        super().__init__(grids, entities, activeEntities, tileTypes, effectTypes, effects, extraData)
 
     def GenerateGroup(self, size, learning_aspects, requests: dict) -> list['GridEnvironment']:
         """
@@ -196,13 +203,39 @@ def basic():
 
 
 def maze():
-    # Write a simple function that ensures the maze test class works.
-    return
+    room_scale = (4, 4)
+    maze_scale = (8, 8)
+    randomizer = random.Random(42)
+
+    # Create a simple agent
+    agent = agents.Agent.ManualInputAgent((5, 5), ACTIONS, "0123456789X")
+    entities = [GridEntity(agent, [0, 1, 2, 3], 0, properties={"loc": (1, 1)})]
+
+    # Define the tile and effect types (using placeholders if not specified)
+    tile_types = defaultTileTypes
+    effect_types = []
+    effects = []
+
+    # Extra data and grid types
+    extra_data = {"gridTypes": {"wall": 2, "floor": 0, "danger": 4, "effect": 7}}
+
+    # Initialize the maze creator
+    maze_creator = gmc.GraphMazeCreatorDFS(room_scale, randomizer)
+
+    # Create the BlindDangerMazeTest environment
+    environment = BlindDangerMazeTest(room_scale, maze_scale, maze_creator, entities, {0}, tile_types, effect_types,
+                                      effects, extra_data)
+
+    # Display the generated maze
+    print(environment.text_display("0123456789X", "solid"))
+    print()
+    print(environment.text_display("0123456789X", "viewed"))
 
 
 def main():
-    return
+    maze()
 
 
 if __name__ == "__main__":
     main()
+

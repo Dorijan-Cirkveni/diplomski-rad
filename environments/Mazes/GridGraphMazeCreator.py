@@ -29,6 +29,21 @@ class GraphGrid2D(Grid2D):
         self[RB] = self[RB] | (1 << antidirection)
         return True
 
+    def special_display(self):
+        res=[]
+        for E in self.M:
+            row = ""
+            for x in E:
+                row += utilmngr.DisplayAsDirection(x)
+            res.append(row)
+        return "\n".join(res)
+
+
+    def print(self):
+        s=self.special_display()
+        print(s)
+        return
+
 
 class iGraphMazeCreator(iRawInit):
     """
@@ -40,11 +55,11 @@ class iGraphMazeCreator(iRawInit):
         self.rand = random.Random()
         self.rand.setstate(rand.getstate())
 
-    def reinit(self, scale: tuple, rand: random.Random):
+    def reinit(self, scale: tuple, rand: random.Random = None):
         new = self
         new.scale = scale
         new.rand = random.Random()
-        new.rand.setstate(rand.getstate())
+        new.rand.setstate(self.rand.getstate() if rand is None else rand.getstate())
         return new
 
     def get_random_start(self):
@@ -135,22 +150,23 @@ class GraphMazeCreatorDFS(iGraphMazeCreator):
             self.step_create_layout(grid, L, ends)
         v = grid[start]
         if v & (v - 1) == 0:
-            ends[start] = grid.get_neighbour(start,len(bin(v))-2)
+            ends[start] = grid.get_neighbour(start, len(bin(v)) - 2)
         return grid, ends
 
-    def create_maze(self, start: tuple):
+    def create_maze(self, start: tuple)->tuple[GraphGrid2D,tuple]:
         """
 
         :param start:
         :param tiles:
         :return:
         """
-        grid: Grid2D
+        grid: GraphGrid2D
         leaves: dict
         grid, leaves = self.create_layout(start)
         # tree = grid.get_graph({1}, leaves)
         goal = self.rand.choice(list(leaves))
         return grid, goal
+
 
 
 def main():
@@ -173,12 +189,12 @@ def main():
 
     # Display the grid (optional, depending on how the Grid2D class is implemented)
     for E in grid.M:
-        row=""
+        row = ""
         for x in E:
-            row+=utilmngr.DisplayAsDirection(x)
+            row += utilmngr.DisplayAsDirection(x)
         print(row)
+    grid.print()
 
 
 if __name__ == "__main__":
     main()
-
