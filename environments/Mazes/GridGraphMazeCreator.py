@@ -62,19 +62,24 @@ class iGraphMazeCreator(iRawInit):
         raise NotImplementedError
 
     @staticmethod
-    def bestPossibleScore(grid: Grid2D, start: tuple, goal: tuple, passables: set, mark=None):
+    def bestPossibleScore(grid: Grid2D, start: tuple, goal: tuple):
         Q = [(start, 0)]
-        found = {start}
+        found=Grid2D(grid.scale,default=-1)
+        found[start]=1
         while Q:
             E, count = Q.pop()
             if E == goal:
                 return count
-            if mark is not None:
-                grid[E] = mark
-            neigh = set(grid.get_neighbours(E, checkUsable=passables))
-            for F in neigh - found:
-                Q.append((F, count + 1))
-                found.add(F)
+            neigh = []
+            for i,dir in enumerate(V2DIRS):
+                mask=1<<i
+                if grid[E]&mask==0:
+                    continue
+                new=Tadd(E,dir)
+                if found[new]!=-1:
+                    continue
+                Q.append((new,count+1))
+                found[new]=new
         return -1
 
 
