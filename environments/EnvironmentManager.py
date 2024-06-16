@@ -16,6 +16,7 @@ envList = {
     "mazeBasic": maze_env.MazeEnvironment,
     "grid": grid_env.GridEnvironment,
     "blind_danger_basic": blind_danger_env.BlindDangerBasicTest,
+    "blind_danger_maze": blind_danger_env.BlindDangerMazeTest,
     "null": None
 }
 
