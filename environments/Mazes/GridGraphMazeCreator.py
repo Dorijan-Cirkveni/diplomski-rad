@@ -94,7 +94,7 @@ class GraphMazeCreatorDFS(iGraphMazeCreator):
         """
         return Tmul(Trandom((0, 0), self.halfscale, self.rand), (2, 2))
 
-    def step_create_layout(self,grid:Grid2D,L:list,ends:dict):
+    def step_create_layout(self,grid:GraphGrid2D,L:list,ends:dict):
         """
 
         :param grid:
@@ -103,16 +103,19 @@ class GraphMazeCreatorDFS(iGraphMazeCreator):
         :return:
         """
         last, cur = L[-1]
+        Y=[]
         for i in range(4):
-            neigh = grid.get_neighbour(cur,i,)
+            neigh = grid.get_neighbour(cur,i,False)
+            if grid[neigh]!=0:
+                continue
+            Y.append((i,neigh))
         if not Y:
             ends[cur] = last
             L.pop()
             return
-        E, E2 = self.rand.choice(Y)
-        grid[E] = 1
-        grid[E2] = 1
-        L.append((E, E2))
+        ch_ind,neigh = self.rand.choice(Y)
+        grid.add_connection(cur,ch_ind)
+        L.append((cur,neigh))
 
     def create_layout(self, start: tuple) -> tuple[Grid2D, dict]:
         """
