@@ -173,6 +173,33 @@ class DatasetGenerator:
                         D[keys[j]]=new_data[j]
         return curset
 
+def InsToRaw(D:dict):
+    for e,v in D.items():
+        if isinstance(v,iSplittableInputGroup):
+            D[e]=v.to_raw()
+
+def RawToIns(D:dict, throw_bad_data=True):
+    for e,v in D.items():
+        if isinstance(v,iSplittableInputGroup):
+            continue
+        if type(v) not in (list,tuple):
+            if throw_bad_data:
+                raise Exception((e,type(v)))
+            continue
+        v:[list,tuple]
+        iname=v[0]
+        idata=v[1]
+        if iname not in ASPECTS:
+            if throw_bad_data:
+                raise Exception((e,type(v)))
+            continue
+        itype:type=ASPECTS[iname]
+        res=itype(*idata)
+        D[e]=res
+    return
+
+
+
 ASPECTS={}
 def init_aspects():
     for name,cls in globals().items():
