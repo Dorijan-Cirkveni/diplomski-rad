@@ -6,7 +6,7 @@ import agents.AgentManager as agentmngr
 from agents.Agent import GraphicManualInputAgent
 
 from display.customtkinter.base.ctkInputs import *
-from ctkPopups import *
+from display.customtkinter.ctkPopups import *
 from display.customtkinter.ctkDisplayFrame import DisplayFrame
 from display.customtkinter.ctkSelectionFrame import SelectionFrame
 

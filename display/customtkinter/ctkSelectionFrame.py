@@ -10,9 +10,8 @@ import agents.AgentManager as agentmngr
 from agents.Agent import GraphicManualInputAgent
 
 from display.customtkinter.base.ctkInputs import *
-from ctkScrollableFrames import *
-from ctkPopups import *
-from display.customtkinter.ctkDisplayFrame import DisplayFrame
+from display.customtkinter.ctkScrollableFrames import *
+from display.customtkinter.ctkPopups import *
 
 
 class EnvCustomFrame(ctk.CTkFrame):

@@ -3,7 +3,7 @@ import json
 import environments.EnvironmentManager
 import environments.GridEvalMethodManager as GEMM
 from display.customtkinter.base.ctkInputs import *
-from ctkGridFrame import *
+from display.customtkinter.ctkGridFrame import *
 import interfaces as itf
 from agents.Agent import GraphicManualInputAgent
 import test_json.test_json_manager as jsonmngr

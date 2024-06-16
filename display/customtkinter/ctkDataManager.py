@@ -1,5 +1,5 @@
 import util.UtilManager
-from ctkScrollableFrames import *
+from display.customtkinter.ctkScrollableFrames import *
 from display.customtkinter.base.ctkInputs import *
 import display.customtkinter.ctkPopups as ctkp
 from util import FragmentedJSON as frjson

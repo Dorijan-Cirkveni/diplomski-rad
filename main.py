@@ -8,6 +8,7 @@ def main():
     popups.MultiChoiceMessage(ctk,"Main Menu", "Welcome to the Placeholder Software for AI Studies.\n"
                                                "\nHopefully Skynet doesn't kill us all...",
                               functions)
+    ctk.mainloop()
 
 if __name__ == '__main__':
     main()
