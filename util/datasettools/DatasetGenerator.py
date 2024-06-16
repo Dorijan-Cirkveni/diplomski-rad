@@ -42,10 +42,16 @@ class iSplittableInputGroup:
     def generateRandom(self, randomizer: random.Random):
         raise NotImplementedError
 
+    def to_raw(self):
+        raise NotImplementedError
+
 
 class InputInstance(iSplittableInputGroup):
     def __init__(self, value):
         self.value = value
+
+    def to_raw(self):
+        return 'InputInstance',(self.value,)
 
     def splitByRatio(self, ratio: list[int], specialRequests: dict) -> list:
         return [self]*len(ratio)
@@ -59,6 +65,9 @@ class InputRange(iSplittableInputGroup):
     def __init__(self, start, end):
         self.start = start
         self.end = end
+
+    def to_raw(self):
+        return 'InputInstance',(self.start,self.end)
 
     def splitByRatio(self, ratio: list[int], specialRequests: dict) -> list:
         ratio = AdjustRatio(self.end - self.start, ratio)
@@ -79,6 +88,9 @@ class InputGrid(iSplittableInputGroup):
         trueMin, trueMax = Tmin(start, end), Tmax(start, end)
         self.start = trueMin
         self.end = trueMax
+
+    def to_raw(self):
+        return 'InputInstance',(self.start,self.end)
 
     def splitByRatio(self, ratio: list[int], specialRequests: dict) -> list:
         mode = specialRequests.get("mode", "colGroups")

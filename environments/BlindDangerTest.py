@@ -114,6 +114,10 @@ class BlindDangerMazeTest(GridEnvironment):
         :param s:
         """
         pass
+    DEFAULT_PARAM_GROUPS={
+        "roomScale":("InputInstance",(25,)),
+        "No parameters available":('InputRange',(0,10))
+    }
 
     def __init__(self, roomScale: tuple[int], mazeScale: tuple[int], entities: list[GridEntity], activeEntities: set,
                  tileTypes: list[Grid2DTile], effectTypes: list[itf.Effect], effects: list[itf.EffectTime],
