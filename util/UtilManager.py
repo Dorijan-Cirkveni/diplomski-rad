@@ -157,6 +157,17 @@ def FirstNotNull(*args):
             return e
     return None
 
+def DisplayAsDirection(n: int) -> str:
+    # List mapping bit patterns to their corresponding characters
+    bit_to_char = " **┌" "*─┐┬" "*└│├" "┘┴┤┼"
+
+    # Get the last four bits of the integer
+    last_four_bits = n & 15
+
+    # Return the corresponding character
+    return bit_to_char[last_four_bits]
+
+
 
 def main():
     s = "Hello World"

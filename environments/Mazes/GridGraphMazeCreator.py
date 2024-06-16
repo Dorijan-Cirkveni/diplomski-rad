@@ -2,6 +2,7 @@ import random
 
 import agents.Agent
 from definitions import *
+import util.UtilManager as utilmngr
 import util.struct.Grid2D as G2Dlib
 from environments.GridEnvironment import *
 from interfaces import iRawInit
@@ -172,9 +173,9 @@ def main():
 
     # Display the grid (optional, depending on how the Grid2D class is implemented)
     for E in grid.M:
-        rows=["","",""]
+        row=""
         for x in E:
-            rows[0]+=" {} "
+            row+=utilmngr.DisplayAsDirection(x)
         print(row)
 
 
