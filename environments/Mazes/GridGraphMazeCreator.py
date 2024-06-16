@@ -6,43 +6,6 @@ import util.UtilManager as utilmngr
 import util.struct.Grid2D as G2Dlib
 from environments.GridEnvironment import *
 from interfaces import iRawInit
-import util.datasettools.DatasetGenerator as dsmngr
-
-
-class GraphGrid2D(Grid2D):
-    def __init__(self, scale: tuple[int, int],
-                 connections: list[tuple[tuple[int, int], int]] = None,
-                 wrap=G2Dlib.WRAP_NONE):
-        super().__init__(scale, default=0)
-        if connections is None:
-            return
-        for E in connections:
-            self.add_connection(*E, wrap=wrap)
-
-    def add_connection(self, A: tuple[int, int], direction: int, wrap=G2Dlib.WRAP_NONE):
-        RA = self.get_wrapped_location(A)
-        if RA is None:
-            return False
-        RB = self.get_neighbour(RA, direction, wrap, check_self=False)
-        self[RA] = self[RA] | (1 << direction)
-        antidirection = (direction + 2) & 3
-        self[RB] = self[RB] | (1 << antidirection)
-        return True
-
-    def special_display(self):
-        res=[]
-        for E in self.M:
-            row = ""
-            for x in E:
-                row += utilmngr.DisplayAsDirection(x)
-            res.append(row)
-        return "\n".join(res)
-
-
-    def print(self):
-        s=self.special_display()
-        print(s)
-        return
 
 
 class iGraphMazeCreator(iRawInit):

@@ -2,7 +2,7 @@ import json
 
 import util.CommonExceptions
 from definitions import *
-from util.UtilManager import reverseIf
+import util.UtilManager as utilmngr
 from util.struct.Combiner import iCombinable
 from util.struct.baseClasses import *
 from util.struct.TupleDotOperations import *
@@ -166,7 +166,11 @@ class Grid2D(iCombinable):
         if len(scale) != 2:
             raise Exception("Dimensions tuple scale must be 2, not {}".format(len(scale)))
         self.scale = scale
-        self.M = [[default for __ in range(scale[1])] for _ in range(scale[0])]
+        if callable(default):
+            default:callable
+            self.M = [[default(*scale) for __ in range(scale[1])] for _ in range(scale[0])]
+        else:
+            self.M = [[default for __ in range(scale[1])] for _ in range(scale[0])]
         self.fill_init(M)
         self.shapes = shapes
         self.add = add
@@ -689,7 +693,7 @@ class Grid2D(iCombinable):
     def mirror(self, dimension: int = 0, gap: int = 1, gapdefault: int = 2, swapOriginal: bool = False):
         dimension &= 1
         other = self.invert(1 << dimension)
-        A, B = reverseIf((self, other), swapOriginal)
+        A, B = utilmngr.reverseIf((self, other), swapOriginal)
         A: Grid2D
         return A.collage(B, dimension, -1, gap, gapdefault)
 
@@ -720,6 +724,43 @@ class Grid2D(iCombinable):
         for i in range(len(frame)):
             self[frameLocations[i]] = movedFrame[i]
         return
+
+
+class GraphGrid2D(Grid2D):
+    def __init__(self, scale: tuple[int, int],
+                 connections: list[tuple[tuple[int, int], int]] = None,
+                 wrap=WRAP_NONE):
+        super().__init__(scale, default=0)
+        if connections is None:
+            return
+        for E in connections:
+            self.add_connection(*E, wrap=wrap)
+
+    def add_connection(self, A: tuple[int, int], direction: int, wrap=WRAP_NONE):
+        RA = self.get_wrapped_location(A)
+        if RA is None:
+            return False
+        RB = self.get_neighbour(RA, direction, wrap, check_self=False)
+        self[RA] = self[RA] | (1 << direction)
+        antidirection = (direction + 2) & 3
+        self[RB] = self[RB] | (1 << antidirection)
+        return True
+
+    def special_display(self):
+        res=[]
+        for E in self.M:
+            row = ""
+            for x in E:
+                row += utilmngr.DisplayAsDirection(x)
+            res.append(row)
+        return "\n".join(res)
+
+
+    def print(self):
+        s=self.special_display()
+        print(s)
+        return
+
 def isGrid2D(raw):
     try:
         Grid2D.raw_init(raw)
