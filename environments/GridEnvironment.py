@@ -3,6 +3,7 @@ from copy import deepcopy
 import interfaces as itf
 from agents.AgentInterfaces import iAgent
 from agents import AgentManager
+import util.datasettools.DatasetGenerator as dsmngr
 from util.struct.GridRoutine import GridRoutine
 from util.VisionOctant import VisionOctant
 from util.debug.ExceptionCatchers import AssertInputTypes
@@ -48,7 +49,7 @@ class GridEnvironment(itf.iEnvironment):
     routineType = GridRoutine
     # Parameters
     DEFAULT_PARAM_GROUPS={
-        "No parameters available":('InputRange',(0,10))
+        "No parameters available":dsmngr.InputRange(0,10)
     }
 
     def __init__(self, gridRoutines: dict[str, GridRoutine],

@@ -24,11 +24,16 @@ class BlindDangerBasicTest(GridEnvironment):
             raise Exception("Too dense ({}>{}=1/({}-2))!".format(dangerDensity,1-minD,roomScale[1]))
         if dangerDensity < minD:
             raise Exception("Too rare ({}<{}=1/({}-2))!".format(dangerDensity,minD,roomScale[1]))
+    DEFAULT_PARAM_GROUPS={
+        "dangerDensity":dsmngr.FloatInputRange(0.2,0.8),
+        "seed":dsmngr.InputRange(1000)
+    }
 
     def __init__(self, scale: tuple[int,int], agent:iAgent,
                  tileTypes: list[Grid2DTile], effectTypes: list[itf.Effect], effects: list[itf.EffectTime],
-                 extraData: dict, dangerDensity: float, randomizer: random.Random):
-
+                 extraData: dict, dangerDensity: float, randomizer: random.Random=None, seed: int=42):
+        if randomizer is None:
+            randomizer=random.Random(seed)
         gridTypes = extraData.get("gridTypes",{})
         _WALL = gridTypes.get("wall", 2)
         _GOAL = gridTypes.get("goal", 1)
@@ -115,7 +120,8 @@ class BlindDangerMazeTest(GridEnvironment):
         """
         pass
     DEFAULT_PARAM_GROUPS={
-        "roomScale":("InputInstance",(25,)),
+        "roomScale":dsmngr.InputInstance((3,3)),
+        "mazeScale":dsmngr.InputInstance((8,8)),
         "No parameters available":('InputRange',(0,10))
     }
 
