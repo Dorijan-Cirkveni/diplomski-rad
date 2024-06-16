@@ -217,6 +217,7 @@ class EnvCustomFrame(ctk.CTkFrame):
                 ind=len(arch)
                 arch.append(None)
         arch[ind]=env_data
+        frag.save()
         return
 
 
