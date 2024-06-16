@@ -9,10 +9,13 @@ import util.datasettools.DatasetGenerator as dsmngr
 
 
 class GraphGrid2D(Grid2D):
-    def __init__(self,scale:tuple[int,int],connections:list[tuple[tuple[int,int],int]],wrap=G2Dlib.WRAP_NONE):
+    def __init__(self,scale:tuple[int,int],
+                 connections:list[tuple[tuple[int,int],int]] = None,
+                 wrap=G2Dlib.WRAP_NONE):
         super().__init__(scale,default=0)
         for E in connections:
             self.add_connection(*E, wrap = wrap)
+    
     def add_connection(self,A:tuple[int,int],direction:int,wrap=G2Dlib.WRAP_NONE):
         RA=self.get_wrapped_location(A)
         if RA is None:
@@ -36,9 +39,6 @@ class iGraphMazeCreator(iRawInit):
         self.scale = scale
         self.rand = random.Random()
         self.rand.setstate(rand.getstate())
-
-    def copy(self):
-        raise NotImplementedError
 
     def reinit(self,scale:tuple, rand:random.Random):
         new=self
@@ -70,7 +70,6 @@ class iGraphMazeCreator(iRawInit):
             E, count = Q.pop()
             if E == goal:
                 return count
-            neigh = []
             for i,dir in enumerate(V2DIRS):
                 mask=1<<i
                 if grid[E]&mask==0:
@@ -81,6 +80,80 @@ class iGraphMazeCreator(iRawInit):
                 Q.append((new,count+1))
                 found[new]=new
         return -1
+
+
+class GraphMazeCreatorDFS(iGraphMazeCreator):
+    """
+    Creates maze by treating even tiles as cells and others as walls.
+    """
+    def __init__(self, scale: tuple, rand: random.Random):
+        super().__init__(scale, rand)
+        self.halfscale = Tdiv(Tadd(self.scale, (1, 1)), (2, 2), True)
+
+    def get_random_start(self):
+        """
+
+        :return:
+        """
+        return Tmul(Trandom((0, 0), self.halfscale, self.rand), (2, 2))
+
+    def step_create_layout(self,grid:Grid2D,L:list,ends:dict):
+        """
+
+        :param grid:
+        :param L:
+        :param ends:
+        :return:
+        """
+        last, cur = L[-1]
+        X = grid.get_neighbours(cur)
+        Y = []
+        for E in X:
+            E2 = Toper(cur, E, lambda A, B: B * 2 - A,True)
+            if grid[E2] == 1:
+                continue
+            Y.append((E, E2))
+        if not Y:
+            ends[cur] = last
+            L.pop()
+            return
+        E, E2 = self.rand.choice(Y)
+        grid[E] = 1
+        grid[E2] = 1
+        L.append((E, E2))
+
+    def create_layout(self, start: tuple) -> tuple[Grid2D, dict]:
+        """
+
+        :param start:
+        :return:
+        """
+        grid: GraphGrid2D = GraphGrid2D(self.scale)
+        grid[start] = 1
+        L: list[tuple] = [(None, start)]
+        ends = dict()
+        while L:
+            self.step_create_layout(grid,L,ends)
+        X = grid.get_neighbours(start, checkUsable={1})
+        if len(X) == 1:
+            ends[start] = X[0]
+        return grid, ends
+
+    def create_maze(self, start: tuple, tiles: tuple = (2, 0, 1)):
+        """
+
+        :param start:
+        :param tiles:
+        :return:
+        """
+        grid: Grid2D
+        leaves: dict
+        grid, leaves = self.create_layout(start)
+        tree=grid.get_graph({1},leaves)
+        goal = self.rand.choice(list(leaves))
+        grid[goal] = 2
+        grid.apply(lambda e: tiles[e])
+        return grid
 
 
 def main():
