@@ -3,6 +3,7 @@ import random
 import agents.Agent
 from environments.GridEnvironment import *
 import util.struct.Grid2D as G2Dlib
+import environments.Mazes.GridGraphMazeCreator as gmc
 from util.FragmentedJsonProcessor import *
 
 
@@ -125,20 +126,45 @@ class BlindDangerMazeTest(GridEnvironment):
         "No parameters available":('InputRange',(0,10))
     }
 
-    def __init__(self, roomScale: tuple[int], mazeScale: tuple[int], entities: list[GridEntity], activeEntities: set,
+    def __init__(self, roomScale: tuple[int], mazeScale: tuple[int], maze_creator:gmc.iGraphMazeCreator, entities: list[GridEntity], activeEntities: set,
                  tileTypes: list[Grid2DTile], effectTypes: list[itf.Effect], effects: list[itf.EffectTime],
                  extraData: dict):
         gridTypes = extraData.get("gridTypes")
         _WALL = gridTypes.get("wall", 2)
         _FLOOR = gridTypes.get("floor", 0)
         _DANGER = gridTypes.get("danger", 4)
+        _EFFECT = gridTypes.get("effect", 7)
         fullScale = Toper(roomScale, mazeScale, lambda a, b: a * b + 1, True)
         baseGrid = G2Dlib.init_framed_grid(fullScale, _WALL, _FLOOR)
-        for i in range(0, fullScale[0], roomScale[0]):
+        for i in range(1, fullScale[0]-1, roomScale[0]):
             E = baseGrid[i]
-            for j in range(0, fullScale[1], roomScale[1]):
-                E[j] = _WALL
+            for j in range(1,fullScale[1]):
+                E[j]=_EFFECT
+        for j in range(1, fullScale[1]-1, roomScale[1]):
+            for i in range(1,fullScale[0]):
+                v=baseGrid[i][j]
+                nv=[_EFFECT,_WALL][v==_EFFECT]
+                baseGrid[i][j]=nv
         solidGrid = baseGrid.copy()
+        start=Tdiv(mazeScale,(2,2),True)
+        maze:gmc.GraphGrid2D=maze_creator.create_maze(start)
+        lines=[
+            [(i,roomScale[1]) for i in range(1,roomScale[0])],
+            [(roomScale[0],i) for i in range(1,roomScale[1])],
+            [(i,0) for i in range(1,roomScale[0])],
+            [(0,i) for i in range(1,roomScale[1])]
+        ]
+        for i,line in enumerate(maze.M):
+            for j, tileval in enumerate(line):
+                ref=Tmul((i,j),roomScale,True)
+                for dir,L in enumerate(lines):
+                    if tileval & (1<<dir)==0:
+                        continue
+                    for el in L:
+                        absel=Tadd(ref,el,True)
+                        solidGrid[absel]=_DANGER
+
+
         super().__init__({}, entities, activeEntities, tileTypes, effectTypes, effects, extraData)
 
     def GenerateGroup(self, size, learning_aspects, requests: dict) -> list['GridEnvironment']:
