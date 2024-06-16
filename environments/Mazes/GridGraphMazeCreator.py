@@ -15,15 +15,12 @@ class GraphGrid2D(Grid2D):
         super().__init__(scale,default=0)
         for E in connections:
             self.add_connection(*E, wrap = wrap)
-    
+
     def add_connection(self,A:tuple[int,int],direction:int,wrap=G2Dlib.WRAP_NONE):
         RA=self.get_wrapped_location(A)
         if RA is None:
             return False
-        B=ACTIONS[direction]
-        RB=self.get_wrapped_location(B,wrap)
-        if RB is None:
-            return False
+        RB=self.get_neighbour(RA,direction,wrap,check_self=False)
         self[RA]=self[RA]&(1<<direction)
         antidirection=(direction+2)&4
         self[RB]=self[RB]&(1<<antidirection)
@@ -106,13 +103,8 @@ class GraphMazeCreatorDFS(iGraphMazeCreator):
         :return:
         """
         last, cur = L[-1]
-        X = grid.get_neighbours(cur)
-        Y = []
-        for E in X:
-            E2 = Toper(cur, E, lambda A, B: B * 2 - A,True)
-            if grid[E2] == 1:
-                continue
-            Y.append((E, E2))
+        for i in range(4):
+            neigh = grid.get_neighbour(cur,i,)
         if not Y:
             ends[cur] = last
             L.pop()
@@ -139,7 +131,7 @@ class GraphMazeCreatorDFS(iGraphMazeCreator):
             ends[start] = X[0]
         return grid, ends
 
-    def create_maze(self, start: tuple, tiles: tuple = (2, 0, 1)):
+    def create_maze(self, start: tuple):
         """
 
         :param start:
@@ -151,9 +143,7 @@ class GraphMazeCreatorDFS(iGraphMazeCreator):
         grid, leaves = self.create_layout(start)
         tree=grid.get_graph({1},leaves)
         goal = self.rand.choice(list(leaves))
-        grid[goal] = 2
-        grid.apply(lambda e: tiles[e])
-        return grid
+        return grid, goal
 
 
 def main():

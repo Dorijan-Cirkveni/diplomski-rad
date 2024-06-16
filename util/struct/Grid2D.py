@@ -1,6 +1,7 @@
 import json
 
 import util.CommonExceptions
+from definitions import *
 from util.UtilManager import reverseIf
 from util.struct.Combiner import iCombinable
 from util.struct.baseClasses import *
@@ -144,7 +145,7 @@ class Grid2D(iCombinable):
     }
 
     def __init__(self, scale: [tuple, None, list]=None, M: list[list] = None, default=0,
-                 shapes: dict = None, add: list = None):
+                 shapes: dict = None, add: list = None, wrap_around=WRAP_NONE):
         """
         Initialize a 2D grid with given dimensions.
 
@@ -169,6 +170,7 @@ class Grid2D(iCombinable):
         self.fill_init(M)
         self.shapes = shapes
         self.add = add
+        self.wrap_around=wrap_around
         return
 
     def fill_init(self, M):
@@ -341,6 +343,8 @@ class Grid2D(iCombinable):
         return retdict
 
     def get_wrapped_location(self, key: tuple, wrapAround=WRAP_NONE):
+        if wrapAround is None:
+            wrapAround = self.wrap_around
         a,b=key
         if wrapAround&WRAP_FIRST:
             a%=self.scale[0]
@@ -352,9 +356,25 @@ class Grid2D(iCombinable):
             return None
         return (a,b)
 
+    def get_neighbour(self,A:tuple[int,int],direction:int,wrapAround=WRAP_NONE,check_self=True):
+        if wrapAround is None:
+            wrapAround = self.wrap_around
+        if check_self:
+            RA=self.get_wrapped_location(A)
+            if RA is None:
+                return None
+        else:
+            RA=A
+        D=ACTIONS[direction]
+        B=Tadd(RA,D,True)
+        RB=self.get_wrapped_location(B,wrapAround)
+        if RB is None:
+            return None
+        return RB
 
 
-    def get_neighbours(self, key: tuple, wrapAround=WRAP_NONE, checkUsable: set = None):
+
+    def get_neighbours(self, key: tuple, wrapAround=None, checkUsable: set = None):
         """
         Get neighboring indices of a given key.
 
@@ -363,6 +383,8 @@ class Grid2D(iCombinable):
         :param checkUsable: In case neighbours have to be of specific value.
         :return: list: List of neighboring indices.
         """
+        if wrapAround is None:
+            wrapAround = self.wrap_around
         neighbours = Tneighbours(key)
         res = []
         for neigh in neighbours:
