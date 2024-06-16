@@ -12,7 +12,7 @@ class GraphGrid2D(Grid2D):
     def __init__(self,scale:tuple[int,int],connections:list[tuple[tuple[int,int],int]],wrap=G2Dlib.WRAP_NONE):
         super().__init__(scale,default=0)
         for E in connections:
-            self.add_connection()
+            self.add_connection(*E, wrap = wrap)
     def add_connection(self,A:tuple[int,int],direction:int,wrap=G2Dlib.WRAP_NONE):
         RA=self.get_wrapped_location(A)
         if RA is None:
@@ -21,7 +21,10 @@ class GraphGrid2D(Grid2D):
         RB=self.get_wrapped_location(B,wrap)
         if RB is None:
             return False
-        self[]
+        self[RA]=self[RA]&(1<<direction)
+        antidirection=(direction+2)&4
+        self[RB]=self[RB]&(1<<antidirection)
+        return True
 
 
 class iGraphMazeCreator(iRawInit):
