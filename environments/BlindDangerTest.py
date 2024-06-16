@@ -131,7 +131,8 @@ class BlindDangerMazeTest(GridEnvironment):
         gridTypes = extraData.get("gridTypes")
         _WALL = gridTypes.get("wall", 2)
         _FLOOR = gridTypes.get("floor", 0)
-        fullScale = Toper(roomScale, mazeScale, lambda a, b: a * b + 1)
+        _DANGER = gridTypes.get("danger", 4)
+        fullScale = Toper(roomScale, mazeScale, lambda a, b: a * b + 1, True)
         baseGrid = G2Dlib.init_framed_grid(fullScale, _WALL, _FLOOR)
         for i in range(0, fullScale[0], roomScale[0]):
             E = baseGrid[i]

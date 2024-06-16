@@ -18,7 +18,7 @@ class MainFrame(SwapFrame):
 
 
 def testframe(manager:frjson.FragmentedJsonManager):
-    data = manager.get_full("t_base")
+    data = manager.get("t_base")
     guide = {e: 1 if e in default_opaque else 0 for e in range(tile_counter.value)}
     X = readPlaneEnvironment(data, 0)
     Y = X.__copy__()

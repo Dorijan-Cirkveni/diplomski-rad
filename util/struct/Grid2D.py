@@ -340,6 +340,19 @@ class Grid2D(iCombinable):
                 retdict[key]=F
         return retdict
 
+    def get_wrapped_location(self, key: tuple, wrapAround=WRAP_NONE):
+        a,b=key
+        if wrapAround&WRAP_FIRST:
+            a%=self.scale[0]
+        elif a not in range(self.scale[0]):
+            return None
+        if wrapAround&WRAP_SECOND:
+            b%=self.scale[0]
+        elif b not in range(self.scale[1]):
+            return None
+        return (a,b)
+
+
 
     def get_neighbours(self, key: tuple, wrapAround=WRAP_NONE, checkUsable: set = None):
         """
