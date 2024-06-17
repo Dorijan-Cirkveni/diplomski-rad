@@ -33,7 +33,7 @@ class TestClasslessFunctions(unittest.TestCase):
         fragment_list = []
         func = ExternalRetrieverFactory(fragment_list)
         arch = {}
-        position = "pos"
+        position = "loc"
         cur = "<EXT>filename|0|example|1"
         ty = str
         func(arch, position, cur, ty)
@@ -44,7 +44,7 @@ class TestClasslessFunctions(unittest.TestCase):
         depth_dict = {id(arch): 0}
         fragment_list = []
         func = CheckDepthFactory(depth_dict, 1, fragment_list, FragmentDefaultNameRule)
-        position = "pos"
+        position = "loc"
         cur = "<EXT>filename|0|example|1"
         ty = str
         func(arch, position, cur, ty)

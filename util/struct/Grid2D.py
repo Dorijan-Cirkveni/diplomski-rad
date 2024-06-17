@@ -289,6 +289,13 @@ class Grid2D(iCombinable):
     # | Getters                 |
     # |                         |
     # ---------------------------
+    def __contains__(self, item):
+        for E in self.M:
+            if E == item:
+                return True
+            if E in item:
+                return True
+        return False
 
     def unique_values(self):
         S = set()
@@ -404,6 +411,32 @@ class Grid2D(iCombinable):
                 continue
             res.append(trueNeigh)
         return res
+
+    def get_air_distances_to_goal(self, goal: [int, set]):
+        INF = len(self.M) * len(self.M[0])
+        disgrid = Grid2D(self.scale,default=INF)
+        start = set()
+
+        def distance_grid_init(E, elval):
+            if elval in goal:
+                start.add(E)
+            return elval
+
+        disgrid.apply_with_index(distance_grid_init)
+
+        for i in range(INF):
+            newstart = set()
+            if not start:
+                break
+            while start:
+                E = start.pop()
+                if disgrid[E] < INF:
+                    continue
+                disgrid[E] = i
+                L = self.get_neighbours(E)
+                newstart |= set(L)
+            start = newstart
+        return disgrid
 
     def get_distances_to_goal(self, goal: [int, set], usable: [int, set]):
         INF = len(self.M) * len(self.M[0])
