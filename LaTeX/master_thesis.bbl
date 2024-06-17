@@ -42,6 +42,18 @@ H.~Saeidi, J.~D. Opfermann, M.~Kam, S.~Wei, S.~Leonard, M.~H. Hsieh, J.~U.
   \url{https://doi.org/https://doi.org/10.1126/scirobotics.abj2908}
 \BIBentrySTDinterwordspacing
 
+\bibitem{owid-ai-timelines}
+M.~Roser, ``Ai timelines: What do experts in artificial intelligence expect for
+  the future?'' \emph{Our World in Data}, 2023,
+  https://ourworldindata.org/ai-timelines.
+
+\bibitem{stuart_armstrong_2012}
+\BIBentryALTinterwordspacing
+Stuart_Armstrong, ``Ai timeline predictions: Are we getting better?''
+  \emph{www.lesswrong.com}, Aug 2012. [Online]. Available:
+  \url{https://www.lesswrong.com/posts/47ci9ixyEbGKWENwR/ai-timeline-predictions-are-we-getting-better}
+\BIBentrySTDinterwordspacing
+
 \bibitem{bard2023}
 Bard, ``Bard, a large language model from google ai,'' 2023.
 
@@ -84,7 +96,7 @@ J.~Weizenbaum, ``Eliza—a computer program for the study of natural language
 
 \bibitem{Chomsky2023}
 \BIBentryALTinterwordspacing
-N.~Chomsky, ``The false promise of chatgpt,'' \emph{The New York Times}.
+N.~Chomsky, ``The false promise of chatgpt,'' \emph{The New York Times}, 2023.
   [Online]. Available:
   \url{https://www.nytimes.com/2023/12/14/opinion/chatgpt-ai.html}
 \BIBentrySTDinterwordspacing

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  16 JUN 2024 17:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  17 JUN 2024 10:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -614,7 +614,11 @@ tex.def
 File: l3backend-pdftex.def 2023-11-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count317
 \l__pdf_internal_box=\box55
-) (master_thesis.aux)
+) (master_thesis.aux
+
+LaTeX Warning: Label `slk:AI_advances' multiply defined.
+
+)
 \openout1 = `master_thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
@@ -831,7 +835,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {C:/Users/doric/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dori
 c/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_jg4h6q.enc}]
 [2]
-<hr_0036501554_56.pdf, id=320, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=328, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 48.
@@ -840,7 +844,7 @@ File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 48.
 (pdftex.def)             Requested size: 598.23354pt x 845.15544pt.
-<hr_0036501554_56.pdf, id=323, page=1, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=331, page=1, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
 Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 48.
@@ -879,7 +883,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.50 ...ating consciousness}{30}{subsection.1.7.4}
+l.48 ...elf-awareness tests}{29}{subsection.1.7.3}
                                                   % [1
 
 
@@ -888,10 +892,10 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.112 ...3.2}Tested agent choice}{43}{section.3.2}
+l.112 ...ng language choice}{43}{subsection.3.1.1}
                                                   % [2]
 LaTeX Font Info:    Trying to load font information for TS1+stix2 on input line
- 137.
+ 141.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ts1stix2.fd
 File: ts1stix2.fd 2018/04/02 v2.0.0-latex stix2 TS1 font definitions
@@ -914,7 +918,7 @@ e
 e 79.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
 (Font)              scaled to size 16.0pt on input line 79.
-<Figures/AI performance history.png, id=441, 853.1875pt x 383.4325pt>
+<Figures/AI performance history.png, id=451, 853.1875pt x 383.4325pt>
 File: Figures/AI performance history.png Graphic file (type png)
 <use Figures/AI performance history.png>
 Package pdftex.def Info: Figures/AI performance history.png  used on input line
@@ -928,105 +932,113 @@ been already used, duplicate ignored
 l.106     A
            rtificial intelligence systems can now [4
 
-] [5 <./Figures/AI performance history.png>]
+]
+<Figures/wen agi.png, id=459, 3474.38025pt x 1963.93726pt>
+File: Figures/wen agi.png Graphic file (type png)
+<use Figures/wen agi.png>
+Package pdftex.def Info: Figures/wen agi.png  used on input line 120.
+(pdftex.def)             Requested size: 441.01773pt x 249.26743pt.
+ [5 <./Figures/AI performance history.png>]
+
+LaTeX Warning: Citation `stuart_armstrong_2012' on page 6 undefined on input li
+ne 126.
+
+[6 <./Figures/wen agi.png (PNG copy)>]
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <12> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 119.
+e 138.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 12.0pt on input line 119.
+(Font)              scaled to size 12.0pt on input line 138.
 
-Overfull \hbox (5.6914pt too wide) in paragraph at lines 123--149
+Overfull \hbox (5.6914pt too wide) in paragraph at lines 142--168
 \T1/stix2/m/n/12 min-i-mal prompts and sug-ges-tions from the hu-man au-thor of
  this the-sis. These
  []
 
-<Figures/bing image creator prompt 1a.jpeg, id=455, 352.31625pt x 352.31625pt>
+<Figures/bing image creator prompt 1a.jpeg, id=475, 352.31625pt x 352.31625pt>
 File: Figures/bing image creator prompt 1a.jpeg Graphic file (type jpg)
 <use Figures/bing image creator prompt 1a.jpeg>
 Package pdftex.def Info: Figures/bing image creator prompt 1a.jpeg  used on inp
-ut line 161.
+ut line 180.
 (pdftex.def)             Requested size: 167.58888pt x 167.58849pt.
-[6] [7 <./Figures/bing image creator prompt 1a.jpeg>] [8] [9] [10]
-Overfull \hbox (7.0845pt too wide) in paragraph at lines 264--265
+[7] [8 <./Figures/bing image creator prompt 1a.jpeg>] [9] [10]
+Overfull \hbox (7.0845pt too wide) in paragraph at lines 283--284
 []\T1/stix2/m/n/12 This ap-proach is more gen-eral than the pre-vi-ously listed
  "laws-of-thought" ap-proach,
  []
 
-[11] [12] [13] [14] [15]
-Overfull \hbox (2.17796pt too wide) in paragraph at lines 373--374
+[11] [12] [13] [14] [15] [16]
+Overfull \hbox (2.17796pt too wide) in paragraph at lines 392--393
 \T1/stix2/m/n/12 Anthropomorphism is a com-mon hu-man ten-dency to as-cribe hu-
 man traits to non-human
  []
 
-[16] [17]
-<Figures/LaMDA tweet 1.png, id=527, 444.4605pt x 151.767pt>
+[17] [18]
+<Figures/LaMDA tweet 1.png, id=547, 444.4605pt x 151.767pt>
 File: Figures/LaMDA tweet 1.png Graphic file (type png)
 <use Figures/LaMDA tweet 1.png>
-Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 422.
+Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 441.
 (pdftex.def)             Requested size: 441.01773pt x 150.59714pt.
-<Figures/LaMDA tweet 2.png, id=529, 437.83575pt x 258.9675pt>
+<Figures/LaMDA tweet 2.png, id=549, 437.83575pt x 258.9675pt>
 File: Figures/LaMDA tweet 2.png Graphic file (type png)
 <use Figures/LaMDA tweet 2.png>
-Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 428.
+Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 447.
 (pdftex.def)             Requested size: 441.01773pt x 260.85962pt.
- [18 <./Figures/LaMDA tweet 1.png>] [19 <./Figures/LaMDA tweet 2.png>]
-<Figures/DataTNG.jpeg, id=547, 301.125pt x 168.63pt>
+ [19 <./Figures/LaMDA tweet 1.png>] [20 <./Figures/LaMDA tweet 2.png>]
+<Figures/DataTNG.jpeg, id=567, 301.125pt x 168.63pt>
 File: Figures/DataTNG.jpeg Graphic file (type jpg)
 <use Figures/DataTNG.jpeg>
-Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 464.
+Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 483.
 (pdftex.def)             Requested size: 227.62204pt x 127.4731pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<Figures/James_Moriarty_hologram.png, id=548, 1058.95625pt x 1058.95625pt>
+<Figures/James_Moriarty_hologram.png, id=568, 1058.95625pt x 1058.95625pt>
 File: Figures/James_Moriarty_hologram.png Graphic file (type png)
 <use Figures/James_Moriarty_hologram.png>
 Package pdftex.def Info: Figures/James_Moriarty_hologram.png  used on input lin
-e 474.
+e 493.
 (pdftex.def)             Requested size: 227.62204pt x 227.60652pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[20]
-<Figures/VoyagerEMH.png, id=554, 468.75125pt x 531.9875pt>
+[21 <./Figures/DataTNG.jpeg>]
+<Figures/VoyagerEMH.png, id=576, 468.75125pt x 531.9875pt>
 File: Figures/VoyagerEMH.png Graphic file (type png)
 <use Figures/VoyagerEMH.png>
-Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 483.
+Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 502.
 (pdftex.def)             Requested size: 227.62204pt x 258.3221pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[21 <./Figures/DataTNG.jpeg> <./Figures/James_Moriarty_hologram.png>] [22 <./Fi
-gures/VoyagerEMH.png>] [23] [24]
-Overfull \hbox (7.07155pt too wide) in paragraph at lines 545--545
+[22 <./Figures/James_Moriarty_hologram.png>] [23 <./Figures/VoyagerEMH.png>]
+[24] [25]
+Overfull \hbox (7.07155pt too wide) in paragraph at lines 564--564
 []\T1/opensans-TLF/b/n/14 A few no-table at-tempts at sim-u-lat-ing/creating in
 -tel-li-gence 
  []
 
-[25] [26] [27] [28] [29]
-Overfull \hbox (0.49295pt too wide) in paragraph at lines 633--633
+[26] [27] [28] [29]
+Overfull \hbox (0.49295pt too wide) in paragraph at lines 652--652
 []\T1/opensans-TLF/b/n/14 A few no-table projects re-lated to sim-u-lat-ing/cre
 ating con-
  []
 
-
-Overfull \hbox (1.13382pt too wide) in paragraph at lines 640--641
+[30]
+Overfull \hbox (1.13382pt too wide) in paragraph at lines 659--660
 \T1/stix2/m/n/12 Cog was a robotics and ar-ti-fi-cial in-tel-li-gence project d
 e-vel-oped by the Hu-manoid Robotics
  []
 
 
-Overfull \hbox (11.34108pt too wide) in paragraph at lines 648--649
+Overfull \hbox (11.34108pt too wide) in paragraph at lines 667--668
 \T1/stix2/m/n/12 The Blue Brain Project, launched by the École Poly-tech-nique 
 Fédérale de Lau-sanne (EPFL),
  []
 
-[30] [31]
+[31]
 Chapter 2.
 
-Overfull \hbox (12.14853pt too wide) in paragraph at lines 675--677
+Overfull \hbox (12.14853pt too wide) in paragraph at lines 694--696
 []\T1/stix2/m/n/12 Thanks to a few more ad-vanced fea-tures such as dy-namic gr
 ids or property-dependent
  []
@@ -1034,19 +1046,19 @@ ids or property-dependent
 [32
 
 ]
-<Figures/grid/all_tiles.png, id=623, 120.45pt x 132.495pt>
+<Figures/grid/all_tiles.png, id=639, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
-Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 696.
+Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 715.
 (pdftex.def)             Requested size: 220.50887pt x 242.58272pt.
- [33 <./Figures/grid/all_tiles.png>] [34] [35] [36] [37] [38]
-Overfull \hbox (3.06107pt too wide) in paragraph at lines 870--871
+ [33 <./Figures/grid/all_tiles.png>] [34] [35] [36] [37] [38] [39]
+Overfull \hbox (3.06107pt too wide) in paragraph at lines 894--895
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-mi-sa-tion meth-
  []
 
-[39]
-Overfull \hbox (6.15874pt too wide) in paragraph at lines 879--884
+
+Overfull \hbox (6.15874pt too wide) in paragraph at lines 903--908
  []\T1/stix2/b/n/12 Immediate ac-tion knowl-edge[] \T1/stix2/m/n/12 Im-me-di-at
 e ac-tion knowl-edge en-tails know-ing what
  []
@@ -1056,7 +1068,7 @@ Chapter 3.
 [43
 
 ]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 944--945
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 968--969
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
@@ -1064,7 +1076,7 @@ e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
 [44] [45] [46]
 Chapter 4.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 1000.
+ut line 1024.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1073,16 +1085,16 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 1000.
+ne 1024.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 1000.
+(Font)              scaled to size 16.0pt on input line 1024.
  [47
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
 .enc}]
 Chapter 5.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1004--1004
+Underfull \hbox (badness 10000) in paragraph at lines 1028--1028
 []\T1/opensans-TLF/b/n/18 Further re-search sug-ges-tions
  []
 
@@ -1092,9 +1104,577 @@ Underfull \hbox (badness 10000) in paragraph at lines 1004--1004
 Chapter 6.
 (master_thesis.bbl [49
 
-] [50
+]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.52 Stuart_
+            Armstrong, ``Ai timeline predictions: Are we getting better?''
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
 
-]) [51] [52
+
+! LaTeX Error: Command $ invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.54 ...imeline-predictions-are-we-getting-better}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.54 ...imeline-predictions-are-we-getting-better}
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.54 ...imeline-predictions-are-we-getting-better}
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.54 ...imeline-predictions-are-we-getting-better}
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.54 ...imeline-predictions-are-we-getting-better}
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Undefined control sequence.
+\Url@FormatString ...ndafter \UrlLeft \Url@String 
+                                                  \UrlRight \m@th $
+l.54 ...imeline-predictions-are-we-getting-better}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Extra }, or forgotten $.
+<recently read> }
+                 
+l.54 ...imeline-predictions-are-we-getting-better}
+                                                  
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.54 ...imeline-predictions-are-we-getting-better}
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.54 ...imeline-predictions-are-we-getting-better}
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.54 ...imeline-predictions-are-we-getting-better}
+                                                  
+Things are pretty mixed up, but I think the worst is over.
+
+! Undefined control sequence.
+l.55 \BIBentrySTDinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Overfull \hbox (161.68091pt too wide) in paragraph at lines 52--56
+[]\T1/stix2/m/n/12 Stuart$[]\LS1/stix2/m/it/12 rmstrong; \LS1/stix2/m/n/12 ``\L
+S1/stix2/m/it/12 Aitimelinepredictions \LS1/stix2/m/n/12 : \LS1/stix2/m/it/12 A
+rewegettingbetter\LS1/stix2/m/n/12 ?[][]\LS1/stix2/m/it/12 ; Aug\LS1/stix2/m/n/
+12 2012\LS1/stix2/m/it/12 :\LS1/stix2/m/n/12 [\LS1/stix2/m/it/12 Online\LS1/sti
+x2/m/n/12 ]\LS1/stix2/m/it/12 :Available \LS1/stix2/m/n/12 :
+ []
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.57 \bibitem{bard2023}
+                       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 57
+[][]
+ []
+
+! Undefined control sequence.
+<argument> \@listctr 
+                     
+l.57 \bibitem{bard2023}
+                       
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! You can't use `\relax' after \the.
+<recently read> \c@ 
+                    
+l.57 \bibitem{bard2023}
+                       
+I'm forgetting what you said and using zero instead.
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.60 \bibitem{descartes1}
+                         
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 60
+[][]
+ []
+
+! Undefined control sequence.
+<argument> \@listctr 
+                     
+l.60 \bibitem{descartes1}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! You can't use `\relax' after \the.
+<recently read> \c@ 
+                    
+l.60 \bibitem{descartes1}
+                         
+I'm forgetting what you said and using zero instead.
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.65 \bibitem{lemoine2022lamda}
+                               
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 65
+[][]
+ []
+
+! Undefined control sequence.
+<argument> \@listctr 
+                     
+l.65 \bibitem{lemoine2022lamda}
+                               
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! You can't use `\relax' after \the.
+<recently read> \c@ 
+                    
+l.65 \bibitem{lemoine2022lamda}
+                               
+I'm forgetting what you said and using zero instead.
+
+! Undefined control sequence.
+l.66 \BIBentryALTinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 6
+9.
+(C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
+File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+)
+! Undefined control sequence.
+l.70 \BIBentrySTDinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.72 \bibitem{vallance_2022}
+                            
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 72
+[][]
+ []
+
+! Undefined control sequence.
+<argument> \@listctr 
+                     
+l.72 \bibitem{vallance_2022}
+                            
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! You can't use `\relax' after \the.
+<recently read> \c@ 
+                    
+l.72 \bibitem{vallance_2022}
+                            
+I'm forgetting what you said and using zero instead.
+
+! Undefined control sequence.
+l.73 \BIBentryALTinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.77 \BIBentrySTDinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Overfull \hbox (16.23492pt too wide) in paragraph at lines 74--78
+\T1/stix2/m/it/12 News\T1/stix2/m/n/12 , Jun 2022. [On-line]. Avail-able: []$\T
+1/cmtt/m/n/12 https : / / www . bbc . com / news / technology -[] 61784011$[] 
+ []
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.79 \bibitem{turing1}
+                      
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 79
+[][]
+ []
+
+! Undefined control sequence.
+<argument> \@listctr 
+                     
+l.79 \bibitem{turing1}
+                      
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! You can't use `\relax' after \the.
+<recently read> \c@ 
+                    
+l.79 \bibitem{turing1}
+                      
+I'm forgetting what you said and using zero instead.
+
+! Undefined control sequence.
+l.80 \BIBentryALTinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.81 \BIBentryALTinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.85 \BIBentrySTDinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.86 \BIBentrySTDinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[50
+
+{C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/stix2-type1/stix2
+-mathit.enc}{C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/stix2
+-type1/stix2-mathrm.enc}]
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.88 \bibitem{ELIZA}
+                    
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 88
+[][]
+ []
+
+! Undefined control sequence.
+<argument> \@listctr 
+                     
+l.88 \bibitem{ELIZA}
+                    
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! You can't use `\relax' after \the.
+<recently read> \c@ 
+                    
+l.88 \bibitem{ELIZA}
+                    
+I'm forgetting what you said and using zero instead.
+
+! Undefined control sequence.
+l.89 \BIBentryALTinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.90 \BIBentryALTinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.94 \BIBentrySTDinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.95 \BIBentrySTDinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.97 \bibitem{Chomsky2023}
+                          
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 97
+[][]
+ []
+
+! Undefined control sequence.
+<argument> \@listctr 
+                     
+l.97 \bibitem{Chomsky2023}
+                          
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! You can't use `\relax' after \the.
+<recently read> \c@ 
+                    
+l.97 \bibitem{Chomsky2023}
+                          
+I'm forgetting what you said and using zero instead.
+
+! Undefined control sequence.
+l.98 \BIBentryALTinterwordspacing
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.102 \BIBentrySTDinterwordspacing
+                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: \begin{document} ended by \end{thebibitemlist}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.104 \end{thebibliography}
+                           
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.104 \end{thebibliography}
+                           
+Things are pretty mixed up, but I think the worst is over.
+
+
+! LaTeX Error: \begin{document} ended by \end{thebibliography}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.104 \end{thebibliography}
+                           
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.104 \end{thebibliography}
+                           
+Things are pretty mixed up, but I think the worst is over.
+
+)
+! Too many }'s.
+\bibliography ...x \old@bibliography {#1} \egroup 
+                                                  
+l.1059 \bibliography{thesis_references}
+                                       
+You've closed more groups than you opened.
+Such booboos are generally harmless, so keep going.
+
+[51] [52
 
 ] [53
 
@@ -1103,7 +1683,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1071 \chapter{The Code}
+l.1095 \chapter{The Code}
                          
 Appendix A.
 [54
@@ -1228,6 +1808,7 @@ hr_0036501554_56.pdf    Graphic file (type pdf)
 hr_0036501554_56.pdf    Graphic file (type pdf)
 ts1stix2.fd    2018/04/02 v2.0.0-latex stix2 TS1 font definitions
 Figures/AI performance history.png
+Figures/wen agi.png
 Figures/bing image creator prompt 1a.jpeg
 Figures/LaMDA tweet 1.png
 Figures/LaMDA tweet 2.png
@@ -1237,43 +1818,38 @@ Figures/VoyagerEMH.png
 Figures/grid/all_tiles.png
 ts1opensans-tlf.fd
 master_thesis.bbl
+  t1cmtt.fd    2023/04/13 v2.5m Standard LaTeX font definitions
  ***********
 
 
-Package rerunfilecheck Warning: File `master_thesis.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
+LaTeX Warning: There were undefined references.
 
-Package rerunfilecheck Info: Checksums for `master_thesis.out':
-(rerunfilecheck)             Before: 14AED127E347D34E67236114E20AE212;14611
-(rerunfilecheck)             After:  9F3DA7171F5984FDD10724F6553C4C01;14736.
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package rerunfilecheck Info: File `master_thesis.out' has not changed.
+(rerunfilecheck)             Checksum: DBC0CA73FFB1BA6FC688DA0166B2E659;14881.
  ) 
 Here is how much of TeX's memory you used:
- 18351 strings out of 474586
- 290449 string characters out of 5745681
+ 18397 strings out of 474586
+ 291584 string characters out of 5745681
  1937558 words of memory out of 5000000
- 39994 multiletter control sequences out of 15000+600000
- 639722 words of font info for 142 fonts, out of 8000000 for 9000
+ 40030 multiletter control sequences out of 15000+600000
+ 669659 words of font info for 147 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 87i,17n,131p,776b,670s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{chapter*.82} has been referenced but does not exist
-, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{chapter*.81} has been referenced but does not exist
-, replaced by a fixed one
-
-<C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/opensans/Ope
-nSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascend
-er/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/
-fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Local
-/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/Users/
-doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Re
-gular.pfb>
-Output written on master_thesis.pdf (59 pages, 1610783 bytes).
+ 87i,17n,131p,776b,664s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\doric\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt
+1200.pk><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/open
+sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
+1/ascender/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs
+/MiKTeX/fonts/type1/public/stix2-type1/STIX2Math.pfb><C:/Users/doric/AppData/Lo
+cal/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users
+/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-I
+talic.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix
+2-type1/STIX2Text-Regular.pfb>
+Output written on master_thesis.pdf (59 pages, 3066441 bytes).
 PDF statistics:
- 869 PDF objects out of 1000 (max. 8388607)
- 233 named destinations out of 1000 (max. 500000)
- 677 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 936 PDF objects out of 1000 (max. 8388607)
+ 237 named destinations out of 1000 (max. 500000)
+ 698 words of extra memory for PDF output out of 10000 (max. 10000000)
 
