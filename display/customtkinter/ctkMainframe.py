@@ -26,7 +26,7 @@ def testframe(manager:frjson.FragmentedJsonManager):
     return Y
 
 
-def main():
+def main(returnfn:callable=print):
     scale = (800, 600)
     root = DarkCTK.GetMain()
     root.geometry("{}x{}".format(*scale))

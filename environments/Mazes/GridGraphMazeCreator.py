@@ -76,7 +76,7 @@ class GraphMazeCreatorDFS(iGraphMazeCreator):
         """
         return Tmul(Trandom((0, 0), self.halfscale, self.rand), (2, 2))
 
-    def step_create_layout(self, grid: GraphGrid2D, L: list, ends: dict):
+    def step_create_layout(self, grid: G2Dlib.GraphGrid2D, L: list, ends: dict):
         """
 
         :param grid:
@@ -116,14 +116,14 @@ class GraphMazeCreatorDFS(iGraphMazeCreator):
             ends[start] = grid.get_neighbour(start, len(bin(v)) - 2)
         return grid, ends
 
-    def create_maze(self, start: tuple)->tuple[GraphGrid2D,tuple]:
+    def create_maze(self, start: tuple)->tuple[G2Dlib.GraphGrid2D,tuple]:
         """
 
         :param start:
         :param tiles:
         :return:
         """
-        grid: GraphGrid2D
+        grid: G2Dlib.GraphGrid2D
         leaves: dict
         grid, leaves = self.create_layout(start)
         # tree = grid.get_graph({1}, leaves)
