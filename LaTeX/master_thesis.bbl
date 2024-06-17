@@ -49,13 +49,15 @@ M.~Roser, ``Ai timelines: What do experts in artificial intelligence expect for
 
 \bibitem{stuart_armstrong_2012}
 \BIBentryALTinterwordspacing
-Stuart_Armstrong, ``Ai timeline predictions: Are we getting better?''
-  \emph{www.lesswrong.com}, Aug 2012. [Online]. Available:
+Stuart\_Armstrong, ``Ai timeline predictions: Are we getting better?'' Aug
+  2012. [Online]. Available:
   \url{https://www.lesswrong.com/posts/47ci9ixyEbGKWENwR/ai-timeline-predictions-are-we-getting-better}
 \BIBentrySTDinterwordspacing
 
-\bibitem{bard2023}
-Bard, ``Bard, a large language model from google ai,'' 2023.
+\bibitem{chatgpt2024}
+O.~C. 4o~(Omni), ``Discussion on large language models in public use,'' 6 2024,
+  generated in a conversation with the thesis author. Includes mentions of
+  ChatGPT, Bing Copilot, and Gemini.
 
 \bibitem{descartes1}
 R.~Descartes, \emph{Discourse on Method and Meditations on First Philosophy},
@@ -74,6 +76,13 @@ B.~Lemoine, ``Is lamda sentient? — an interview,'' \emph{Medium}, 2022.
 C.~Vallance, ``Google engineer says lamda ai system may have its own
   feelings,'' \emph{BBC News}, Jun 2022. [Online]. Available:
   \url{https://www.bbc.com/news/technology-61784011}
+\BIBentrySTDinterwordspacing
+
+\bibitem{cole_2004}
+\BIBentryALTinterwordspacing
+D.~Cole, ``The chinese room argument (stanford encyclopedia of philosophy),''
+  Mar 2004. [Online]. Available:
+  \url{https://plato.stanford.edu/entries/chinese-room/}
 \BIBentrySTDinterwordspacing
 
 \bibitem{turing1}

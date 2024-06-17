@@ -84,6 +84,7 @@ class ctkDataManager(ctk.CTkToplevel):
         self.make_scroll_generators()
         self.make_edit_frames()
         self.show_cur_keys()
+        self.protocol("WM_DELETE_WINDOW", self.apply_action)
 
     def apply(self, value):
         loaded_value = json.loads(value)
@@ -182,7 +183,7 @@ class ctkDataManager(ctk.CTkToplevel):
 
     def close_fragment(self):
         L = [
-            ("Overwrite existing", lambda:self.save_fragment_to_custom(self.curkey)),
+            ("Overwrite existing", lambda: self.save_fragment_to_custom(self.curkey)),
             ("Append new", self.input_save_fragment_to_custom),
             ("Discard changes", self.finalise_fragment_close),
         ]
@@ -190,38 +191,37 @@ class ctkDataManager(ctk.CTkToplevel):
 
     def input_save_fragment_to_custom(self):
         if self.curkey is None:
-            self.curkey=list(self.cur)[0]
+            self.curkey = list(self.cur)[0]
         ctkp.InputMessage(DarkCTK.GetMain(), "New index", "New index:", self.curkey,
                           func=self.save_fragment_to_custom)
         return
 
-    def save_fragment_to_custom(self, new_address:str):
+    def save_fragment_to_custom(self, new_address: str):
         file, inds = frjson.ReadFragmentAddress(new_address)
         if file not in self.fragment_manager.files:
             raise NotImplementedError
         fragment = self.fragment_manager.files[file]
         data = fragment.root
-        true_arch=[data]
+        true_arch = [data]
         arch, archind = frjson.nestr.NestedStructGetRef(true_arch, 0, inds)
         if archind is None:
             ctkp.PopupMessage(DarkCTK(), "Error", "Structure does not exist in direct subfile!",
                               call_upon_close=self.input_save_fragment_to_custom)
             return
-        if type(archind)==int and archind==-1:
-            archind=len(arch)
+        if type(archind) == int and archind == -1:
+            archind = len(arch)
             arch.append(None)
-            inds[-1]=archind
-            new_address=frjson.WriteFragmentAddress(file,inds)
+            inds[-1] = archind
+            new_address = frjson.WriteFragmentAddress(file, inds)
         arch[archind] = self.cur[self.curkey]
         fragment.save()
-        self.curkey=new_address
+        self.curkey = new_address
         self.finalise_fragment_close()
 
     def finalise_fragment_close(self):
-        self.cur=self.curkey
-        self.stack=self.metastack.pop()
+        self.cur = self.curkey
+        self.stack = self.metastack.pop()
         self.return_action()
-
 
     def return_action(self):
         if not self.stack:
@@ -263,14 +263,15 @@ class ctkDataManager(ctk.CTkToplevel):
         self.hide_cur_value_interface()
 
 
-def manage_all(returnfn:callable=print):
+def manage_all(returnfn: callable = print):
     struct_manager = frjson.FragmentedJsonManager(denied=set())
-    metadict={e:"<EXT>"+e for e in struct_manager.files.keys()}
+    metadict = {e: "<EXT>" + e for e in struct_manager.files.keys()}
     root = DarkCTK.GetMain()
     root.geometry("600x400")
     ctkDataManager(root, metadict, returnfn, struct_manager)
     root.mainloop()
     return
+
 
 def structTest(struct):
     root = DarkCTK.GetMain()
