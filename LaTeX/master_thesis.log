@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  18 JUN 2024 12:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  18 JUN 2024 14:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -831,7 +831,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {C:/Users/doric/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dori
 c/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_jg4h6q.enc}]
 [2]
-<hr_0036501554_56.pdf, id=332, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=336, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 48.
@@ -840,7 +840,7 @@ File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 48.
 (pdftex.def)             Requested size: 598.23354pt x 845.15544pt.
-<hr_0036501554_56.pdf, id=335, page=1, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=339, page=1, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
 Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 48.
@@ -879,7 +879,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.47 ...g for consciousness}{29}{subsection.2.7.2}
+l.43 ...4}Defining consciousness}{29}{section.3.4}
                                                   % [1
 
 
@@ -888,10 +888,10 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.111 ...berline {4}Implementation}{45}{chapter.4}
+l.112 ...berline {5}Implementation}{46}{chapter.5}
                                                   % [2]
 LaTeX Font Info:    Trying to load font information for TS1+stix2 on input line
- 142.
+ 143.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ts1stix2.fd
 File: ts1stix2.fd 2018/04/02 v2.0.0-latex stix2 TS1 font definitions
@@ -913,157 +913,166 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.81 \chapter
-             {Background} [4
+l.88 
+      [4
 
-]
+] [5]
 Chapter 2.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <16> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 82.
+e 100.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 82.
-<Figures/AI performance history.png, id=460, 853.1875pt x 383.4325pt>
+(Font)              scaled to size 16.0pt on input line 100.
+<Figures/AI performance history.png, id=469, 853.1875pt x 383.4325pt>
 File: Figures/AI performance history.png Graphic file (type png)
 <use Figures/AI performance history.png>
 Package pdftex.def Info: Figures/AI performance history.png  used on input line
- 90.
+ 108.
 (pdftex.def)             Requested size: 441.01773pt x 198.20421pt.
-[5
+[6
 
  <./Figures/AI performance history.png>]
-<Figures/wen agi.png, id=469, 3474.38025pt x 1963.93726pt>
+<Figures/wen agi.png, id=478, 3474.38025pt x 1963.93726pt>
 File: Figures/wen agi.png Graphic file (type png)
 <use Figures/wen agi.png>
-Package pdftex.def Info: Figures/wen agi.png  used on input line 132.
+Package pdftex.def Info: Figures/wen agi.png  used on input line 150.
 (pdftex.def)             Requested size: 441.01773pt x 249.26743pt.
- [6]
+ [7]
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <12> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 150.
+e 168.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 12.0pt on input line 150.
- [7 <./Figures/wen agi.png (PNG copy)>] [8]
-<Figures/bing image creator prompt 1a.jpeg, id=491, 352.31625pt x 352.31625pt>
+(Font)              scaled to size 12.0pt on input line 168.
+ [8 <./Figures/wen agi.png (PNG copy)>] [9]
+<Figures/bing image creator prompt 1a.jpeg, id=501, 352.31625pt x 352.31625pt>
 File: Figures/bing image creator prompt 1a.jpeg Graphic file (type jpg)
 <use Figures/bing image creator prompt 1a.jpeg>
 Package pdftex.def Info: Figures/bing image creator prompt 1a.jpeg  used on inp
-ut line 175.
+ut line 193.
 (pdftex.def)             Requested size: 167.58888pt x 167.58849pt.
- [9 <./Figures/bing image creator prompt 1a.jpeg>] [10]
+ [10 <./Figures/bing image creator prompt 1a.jpeg>] [11]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[11] [12]
-Overfull \hbox (7.0845pt too wide) in paragraph at lines 278--279
+[12] [13]
+Overfull \hbox (7.0845pt too wide) in paragraph at lines 296--297
 []\T1/stix2/m/n/12 This ap-proach is more gen-eral than the pre-vi-ously listed
  "laws-of-thought" ap-proach,
  []
 
-[13] [14] [15] [16] [17]
-Overfull \hbox (2.17796pt too wide) in paragraph at lines 387--388
+[14] [15] [16] [17]
+Chapter 3.
+[18
+
+] [19]
+Overfull \hbox (2.17796pt too wide) in paragraph at lines 406--407
 \T1/stix2/m/n/12 Anthropomorphism is a com-mon hu-man ten-dency to as-cribe hu-
 man traits to non-human
  []
 
-[18] [19]
-<Figures/LaMDA tweet 1.png, id=558, 444.4605pt x 151.767pt>
+[20]
+<Figures/LaMDA tweet 1.png, id=567, 444.4605pt x 151.767pt>
 File: Figures/LaMDA tweet 1.png Graphic file (type png)
 <use Figures/LaMDA tweet 1.png>
-Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 436.
+Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 455.
 (pdftex.def)             Requested size: 441.01773pt x 150.59714pt.
-<Figures/LaMDA tweet 2.png, id=560, 437.83575pt x 258.9675pt>
+<Figures/LaMDA tweet 2.png, id=569, 437.83575pt x 258.9675pt>
 File: Figures/LaMDA tweet 2.png Graphic file (type png)
 <use Figures/LaMDA tweet 2.png>
-Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 442.
+Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 461.
 (pdftex.def)             Requested size: 441.01773pt x 260.85962pt.
- [20] [21 <./Figures/LaMDA tweet 1.png>] [22 <./Figures/LaMDA tweet 2.png>]
-<Figures/DataTNG.jpeg, id=584, 301.125pt x 168.63pt>
+ [21] [22 <./Figures/LaMDA tweet 1.png>] [23 <./Figures/LaMDA tweet 2.png>]
+<Figures/DataTNG.jpeg, id=593, 301.125pt x 168.63pt>
 File: Figures/DataTNG.jpeg Graphic file (type jpg)
 <use Figures/DataTNG.jpeg>
-Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 478.
+Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 497.
 (pdftex.def)             Requested size: 227.62204pt x 127.4731pt.
-<Figures/James_Moriarty_hologram.png, id=585, 1058.95625pt x 1058.95625pt>
+<Figures/James_Moriarty_hologram.png, id=594, 1058.95625pt x 1058.95625pt>
 File: Figures/James_Moriarty_hologram.png Graphic file (type png)
 <use Figures/James_Moriarty_hologram.png>
 Package pdftex.def Info: Figures/James_Moriarty_hologram.png  used on input lin
-e 488.
+e 507.
 (pdftex.def)             Requested size: 227.62204pt x 227.60652pt.
- [23 <./Figures/DataTNG.jpeg> <./Figures/James_Moriarty_hologram.png>]
-<Figures/VoyagerEMH.png, id=592, 468.75125pt x 531.9875pt>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<Figures/VoyagerEMH.png, id=595, 468.75125pt x 531.9875pt>
 File: Figures/VoyagerEMH.png Graphic file (type png)
 <use Figures/VoyagerEMH.png>
-Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 497.
+Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 516.
 (pdftex.def)             Requested size: 227.62204pt x 258.3221pt.
 
-[24 <./Figures/VoyagerEMH.png>] [25] [26]
-Overfull \hbox (7.07155pt too wide) in paragraph at lines 559--559
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[24 <./Figures/DataTNG.jpeg>] [25 <./Figures/James_Moriarty_hologram.png> <./Fi
+gures/VoyagerEMH.png>] [26] [27]
+Overfull \hbox (7.07155pt too wide) in paragraph at lines 578--578
 []\T1/opensans-TLF/b/n/14 A few no-table at-tempts at sim-u-lat-ing/creating in
 -tel-li-gence 
  []
 
-[27] [28] [29] [30] [31]
-Overfull \hbox (0.49295pt too wide) in paragraph at lines 650--650
+[28] [29] [30] [31] [32]
+Overfull \hbox (0.49295pt too wide) in paragraph at lines 669--669
 []\T1/opensans-TLF/b/n/14 A few no-table projects re-lated to sim-u-lat-ing/cre
 ating con-
  []
 
 
-Overfull \hbox (1.13382pt too wide) in paragraph at lines 659--660
+Overfull \hbox (1.13382pt too wide) in paragraph at lines 678--679
 \T1/stix2/m/n/12 Cog was a robotics and ar-ti-fi-cial in-tel-li-gence project d
 e-vel-oped by the Hu-manoid Robotics
  []
 
-[32]
-Overfull \hbox (11.34108pt too wide) in paragraph at lines 667--668
+[33]
+Overfull \hbox (11.34108pt too wide) in paragraph at lines 686--687
 \T1/stix2/m/n/12 The Blue Brain Project, launched by the École Poly-tech-nique 
 Fédérale de Lau-sanne (EPFL),
  []
 
-[33]
-Chapter 3.
+[34]
+Chapter 4.
 
-Overfull \hbox (12.14853pt too wide) in paragraph at lines 694--696
+Overfull \hbox (12.14853pt too wide) in paragraph at lines 713--715
 []\T1/stix2/m/n/12 Thanks to a few more ad-vanced fea-tures such as dy-namic gr
 ids or property-dependent
  []
 
-[34
+[35
 
 ]
-<Figures/grid/all_tiles.png, id=658, 120.45pt x 132.495pt>
+<Figures/grid/all_tiles.png, id=667, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
-Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 715.
+Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 734.
 (pdftex.def)             Requested size: 220.50887pt x 242.58272pt.
- [35 <./Figures/grid/all_tiles.png>] [36] [37] [38] [39] [40] [41]
-Overfull \hbox (3.06107pt too wide) in paragraph at lines 894--895
+ [36 <./Figures/grid/all_tiles.png>] [37] [38] [39] [40] [41] [42]
+Overfull \hbox (3.06107pt too wide) in paragraph at lines 913--914
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-mi-sa-tion meth-
  []
 
 
-Overfull \hbox (6.15874pt too wide) in paragraph at lines 903--908
+Overfull \hbox (6.15874pt too wide) in paragraph at lines 922--927
  []\T1/stix2/b/n/12 Immediate ac-tion knowl-edge[] \T1/stix2/m/n/12 Im-me-di-at
 e ac-tion knowl-edge en-tails know-ing what
  []
 
-[42] [43] [44]
-Chapter 4.
-[45
+[43] [44] [45]
+Chapter 5.
+[46
 
 ]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 968--969
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 987--988
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
 
-[46] [47] [48]
-Chapter 5.
+[47] [48] [49]
+Chapter 6.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 1024.
+ut line 1043.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1072,43 +1081,43 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 1024.
+ne 1043.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 1024.
- [49
+(Font)              scaled to size 16.0pt on input line 1043.
+ [50
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
 .enc}]
-Chapter 6.
+Chapter 7.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1028--1028
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
 []\T1/opensans-TLF/b/n/18 Further re-search sug-ges-tions
  []
 
-[50
+[51
 
-] [51]
-Chapter 7.
-(master_thesis.bbl [52
+] [52]
+Chapter 8.
+(master_thesis.bbl [53
 
-] [53
+] [54
 
-]) [54] [55
+]) [55] [56
 
-] [56
+] [57
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1103 \chapter{The Code}
+l.1122 \chapter{The Code}
                          
 Appendix A.
-[57
+[58
 
 
-] [58] (master_thesis.aux)
+] [59] (master_thesis.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
@@ -1240,16 +1249,16 @@ master_thesis.bbl
  ***********
 
 Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: BF107E2366426D7C37E646B380A60D0B;14975.
+(rerunfilecheck)             Checksum: C4811E54D6B74D309298534FB3D4B31E;15137.
  ) 
 Here is how much of TeX's memory you used:
- 18378 strings out of 474586
- 290927 string characters out of 5745681
+ 18381 strings out of 474586
+ 290954 string characters out of 5745681
  1937558 words of memory out of 5000000
- 40011 multiletter control sequences out of 15000+600000
+ 40012 multiletter control sequences out of 15000+600000
  639722 words of font info for 142 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 87i,17n,131p,1668b,673s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 87i,17n,131p,1668b,668s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/opensans/O
 penSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/asce
 nder/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs/MiKTe
@@ -1257,9 +1266,9 @@ X/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/User
 s/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-
 Regular.pfb>
-Output written on master_thesis.pdf (62 pages, 2841395 bytes).
+Output written on master_thesis.pdf (63 pages, 2844335 bytes).
 PDF statistics:
- 915 PDF objects out of 1000 (max. 8388607)
- 243 named destinations out of 1000 (max. 500000)
- 706 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 924 PDF objects out of 1000 (max. 8388607)
+ 245 named destinations out of 1000 (max. 500000)
+ 714 words of extra memory for PDF output out of 10000 (max. 10000000)
 

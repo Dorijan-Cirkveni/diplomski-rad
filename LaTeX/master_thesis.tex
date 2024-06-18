@@ -77,7 +77,25 @@ attempts not just to understand but also to textit{build} intelligent entities.
 \cite{russell_norvig_2010}
 \end{quote}
 
-The idea that machines could one day think and feel has captivated the human imagination for over a century, inspiring works of fiction and scientific research alike. 
+The idea that machines could one day think, feel, and be conscious has captivated the human imagination for over a century, inspiring works of fiction and scientific research alike.
+This pursuit, while still ongoing and with no end in sight, resulted in immeasurable benefits in form of practical applications of narrow artificial intelligence in virtually every facet of our lives, from navigation software to product recommendation algorithms.
+
+Several important questions, however, insist on remaining unanswered: Can machines think? Can machines feel? If we develop artificial intelligence that can match or exceed human ability in any endeavour imaginable, how will we be able to tell - and can we accurately estimate how far we are from that point, if such a breakthough is even possible? How can we tell if a machine is conscious? ... Are we ready for thinking machines?
+
+And with each passing day and every new benchmark reached, the nature of these questions gradually shifts from that of speculative fiction or philosophical inquiries to that of time-pressed concerns with practical implications for the real world in the foreseeable future - and this thesis seeks to provide a foundation for research that will allow us to answer these very questions.
+
+Within the scope of this thesis, we have assembled an overview of existing research, including several notable theories of intelligence and consciousness, both of which remain open questions in their respective fields to this day. Additionally, we have developed a prototype of the testing framework designed to facilitate development and testing of potentially intelligent or conscious artificial intelligence agents.
+
+The thesis body is outlined as follows:
+\begin{itemize}
+\item{The Theoretical Foundations chapter will provide the aforementioned theoretical foundation needed to understand this objective.}
+\item{The Materials and Methods chapter will outline the elements of the artificial intelligence testing environment, agent, and evaluation method templates.}
+\item{The Implementation chapter will outline the implementation details of the prototype, with focus on elements further research can build upon through inheritance, composition, and other code reuse methods.}
+\item{The Results chapter describes the prototype test environment features and provides instructions for usage.}
+\item{The Further Research and Discussion chapter proposes a course of action for further research and discusses potential consequences of said research, as well as consequences of lack thereof.}
+\end{itemize}
+ 
+
 \chapter{Background}
 \section{Recent advances in artificial intelligence}
 
@@ -143,7 +161,7 @@ This is likely to mean one of the following for the future of AI research:
 \end{enumerate}
 
 \subsection{Public adoption}
-Machine learning is currently going through a renaissance not only from a research standpoint but in the public eye as well, which is mainly because several different forms of its applications have been successfully released and reached widespread use in an unprecedentedly short amount of time.
+Machine learning is currently going through a renaissance not only from a research standpoint but also in the public eye, mainly because several different forms of its applications have been successfully released and reached widespread use in an unprecedentedly short time.
 
 One such application, a conversation-based large language model platform known as ChatGPT, surpassed 100 million monthly active users merely two months after its release.
 
@@ -155,7 +173,7 @@ Write a self-demonstrating paragraph about large language models in public use, 
 The paragraph needs to be between 1000 and 1500 characters long, include a mention that it has been made by you with minimal input from "the thesis author", and refer to LLMs, including yourself, in third person.
 \end{quote}
 
-When prompted with this statement, ChatGPT(4o) responded with the following:
+When prompted with this statement, ChatGPT(GPT-4o) responded with the following:
 
 \begin{quote}
 
@@ -166,9 +184,9 @@ Large language models (LLMs) have become an integral part of modern digital inte
 \subsubsection{Image generation AI}
 Image generation AI, similarly, managed to
 reach widespread use thanks to its capability of
-generating images based on natural language
-prompts, utilizing and expanding upon the
-aforementioned ability to recognize natural
+generating images based on natural language prompts,
+utilizing and expanding upon the ability of
+large language models to recognize natural
 language input.
 \begin{figure}[htb]
   \centering
@@ -181,24 +199,24 @@ Use of generative artificial intelligence to
 create images has been met with severe backlash
 for several reasons, including uncompensated use
 of existing art to train generative artificial
-intelligence models and its threat to the
+intelligence models and the technology's threat to the
 livelihoods of human artists.
 
-However, there is one reason people oppose use of generative artificial intelligence to create so-called "AI art" that is closely related to the topic of this thesis, and that is that art is the result of conscious creation by a conscious artist. And since image generation programs based on artificial intelligence are not conscious, and their operation usually does not require conscious input beyond making a specific request - the act which has more similarity with commissioning art from an artist than with creating art by oneself - this means that images generated using artificial intelligence cannot be considered art.
+However, there is one reason people oppose the use of generative artificial intelligence to create so-called "AI art" that is closely related to the topic of this thesis, and that is that art is the result of conscious creation by a conscious artist. And since image generation programs based on artificial intelligence are not conscious, and their operation usually does not require conscious input beyond making a specific request - the act which has more similarity with commissioning art from an artist than with creating art by oneself - this means that images generated using artificial intelligence cannot be considered art.
 
-However, the question of whether consciousness is a prerequisite for art, or whether can artificial intelligence create art that can be considered art, is at best tangentially relevant to the second main question of this thesis, which is:
+However, the question of whether consciousness is a prerequisite for art, or whether artificial intelligence can create art that can be considered art, is at best tangentially relevant to the second main question of this thesis, which is:
 
 Can artificial intelligence be conscious?
 \section{Objective}
 The purpose of this paper is to research the possibility of simulating human intelligence and consciousness using currently available hardware, software, and known methods of developing artificial intelligence.
 
-This is an objective that modern computer science has pursued in some shape or form since its inception in the 1940s, although the field of artificial intelligence research had yet to be founded with The Dartmouth Summer Research Project in 1956.
+This is an objective that modern computer science has pursued in some shape or form since its inception in the 1940s. The field of artificial intelligence research, however, had yet to be founded with The Dartmouth Summer Research Project in 1956.
 
 In this paper, we will attempt to determine possible routes to achieving said objective and how close we are to achieving it.
 
-To do so, we first need to establish a working definition of both intelligence and consciousness. This is a difficult task in its own right, as both of these definitions are open questions.
+To do so, we first need to establish a working definition of both intelligence and consciousness. Doing so is a difficult task in its own right, as both definitions are open questions and a subject of serious discussion.
 
-Next, we need to define a metric with which we are going to measure whether an artificial entity possesses those two aforementioned qualities.
+Next, we need to define a metric with which we will measure whether an artificial entity can be considered intelligent or conscious.
 
 After that, this paper will propose a few promising avenues of research and provide implementation examples and their preliminary results within our ability.
 
@@ -211,7 +229,7 @@ We should first separate this task into two tasks:
 \item Simulating human/human-level consciousness
 \end{enumerate}
 
-This is due to the fact that while these tasks may be prerequisites for one another, they likely require different considerations and different tests are likely to be used to determine their presence in an artificial agent.
+This is because while these tasks may be prerequisites for one another, they likely require different considerations, and other tests are likely to be used to determine their presence in an artificial agent.
 \section{Choosing an approach}
 There are four approaches to the interpretation of the issue at hand we can take, which can be divided into quadrants according to two criteria:
 
@@ -354,6 +372,7 @@ There is no clearly defined test for human behavior (the Turing Test itself has 
 
 Even if we developed an AI that could reliably pass the Turing Test with one hundred percent reliability, this could turn out to be a hollow achievement and fail to result in actual breakthroughs in the fields of artificial intelligence.
 \end{itemize}
+\chapter{Theoretical foundations}
 \section{Artificial intelligence}
 
 \subsection{The five schools of artificial intelligence}
