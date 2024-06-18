@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  18 JUN 2024 14:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  18 JUN 2024 15:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -921,14 +921,14 @@ Chapter 2.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <16> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 102.
+e 99.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 102.
+(Font)              scaled to size 16.0pt on input line 99.
 <Figures/AI performance history.png, id=469, 853.1875pt x 383.4325pt>
 File: Figures/AI performance history.png Graphic file (type png)
 <use Figures/AI performance history.png>
 Package pdftex.def Info: Figures/AI performance history.png  used on input line
- 110.
+ 107.
 (pdftex.def)             Requested size: 441.01773pt x 198.20421pt.
 [6
 
@@ -936,25 +936,25 @@ Package pdftex.def Info: Figures/AI performance history.png  used on input line
 <Figures/wen agi.png, id=478, 3474.38025pt x 1963.93726pt>
 File: Figures/wen agi.png Graphic file (type png)
 <use Figures/wen agi.png>
-Package pdftex.def Info: Figures/wen agi.png  used on input line 152.
+Package pdftex.def Info: Figures/wen agi.png  used on input line 149.
 (pdftex.def)             Requested size: 441.01773pt x 249.26743pt.
  [7]
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <12> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 170.
+e 167.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 12.0pt on input line 170.
+(Font)              scaled to size 12.0pt on input line 167.
  [8 <./Figures/wen agi.png (PNG copy)>] [9]
 <Figures/bing image creator prompt 1a.jpeg, id=501, 352.31625pt x 352.31625pt>
 File: Figures/bing image creator prompt 1a.jpeg Graphic file (type jpg)
 <use Figures/bing image creator prompt 1a.jpeg>
 Package pdftex.def Info: Figures/bing image creator prompt 1a.jpeg  used on inp
-ut line 195.
+ut line 192.
 (pdftex.def)             Requested size: 167.58888pt x 167.58849pt.
  [10 <./Figures/bing image creator prompt 1a.jpeg>] [11] [12]
 [13]
-Overfull \hbox (7.0845pt too wide) in paragraph at lines 300--301
+Overfull \hbox (7.0845pt too wide) in paragraph at lines 297--298
 []\T1/stix2/m/n/12 This ap-proach is more gen-eral than the pre-vi-ously listed
  "laws-of-thought" ap-proach,
  []
@@ -964,13 +964,13 @@ Chapter 3.
 [18
 
 ] [19] [20]
-Overfull \hbox (7.07155pt too wide) in paragraph at lines 433--433
+Overfull \hbox (7.07155pt too wide) in paragraph at lines 430--430
 []\T1/opensans-TLF/b/n/14 A few no-table at-tempts at sim-u-lat-ing/creating in
 -tel-li-gence 
  []
 
 [21]
-Overfull \hbox (2.17796pt too wide) in paragraph at lines 457--458
+Overfull \hbox (2.17796pt too wide) in paragraph at lines 454--455
 \T1/stix2/m/n/12 Anthropomorphism is a com-mon hu-man ten-dency to as-cribe hu-
 man traits to non-human
  []
@@ -979,25 +979,25 @@ man traits to non-human
 <Figures/LaMDA tweet 1.png, id=583, 444.4605pt x 151.767pt>
 File: Figures/LaMDA tweet 1.png Graphic file (type png)
 <use Figures/LaMDA tweet 1.png>
-Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 506.
+Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 503.
 (pdftex.def)             Requested size: 441.01773pt x 150.59714pt.
 <Figures/LaMDA tweet 2.png, id=585, 437.83575pt x 258.9675pt>
 File: Figures/LaMDA tweet 2.png Graphic file (type png)
 <use Figures/LaMDA tweet 2.png>
-Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 512.
+Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 509.
 (pdftex.def)             Requested size: 441.01773pt x 260.85962pt.
  [24 <./Figures/LaMDA tweet 1.png> <./Figures/LaMDA tweet 2.png>]
 [25]
 <Figures/DataTNG.jpeg, id=603, 301.125pt x 168.63pt>
 File: Figures/DataTNG.jpeg Graphic file (type jpg)
 <use Figures/DataTNG.jpeg>
-Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 548.
+Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 545.
 (pdftex.def)             Requested size: 227.62204pt x 127.4731pt.
 <Figures/James_Moriarty_hologram.png, id=604, 1058.95625pt x 1058.95625pt>
 File: Figures/James_Moriarty_hologram.png Graphic file (type png)
 <use Figures/James_Moriarty_hologram.png>
 Package pdftex.def Info: Figures/James_Moriarty_hologram.png  used on input lin
-e 558.
+e 555.
 (pdftex.def)             Requested size: 227.62204pt x 227.60652pt.
 
 
@@ -1007,23 +1007,23 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 <Figures/VoyagerEMH.png, id=611, 468.75125pt x 531.9875pt>
 File: Figures/VoyagerEMH.png Graphic file (type png)
 <use Figures/VoyagerEMH.png>
-Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 567.
+Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 564.
 (pdftex.def)             Requested size: 227.62204pt x 258.3221pt.
  [27 <./Figures/James_Moriarty_hologram.png> <./Figures/VoyagerEMH.png>] [28] [
 29] [30] [31] [32]
-Overfull \hbox (0.49295pt too wide) in paragraph at lines 675--675
+Overfull \hbox (0.49295pt too wide) in paragraph at lines 672--672
 []\T1/opensans-TLF/b/n/14 A few no-table projects re-lated to sim-u-lat-ing/cre
 ating con-
  []
 
 
-Overfull \hbox (1.13382pt too wide) in paragraph at lines 684--685
+Overfull \hbox (1.13382pt too wide) in paragraph at lines 681--682
 \T1/stix2/m/n/12 Cog was a robotics and ar-ti-fi-cial in-tel-li-gence project d
 e-vel-oped by the Hu-manoid Robotics
  []
 
 [33]
-Overfull \hbox (11.34108pt too wide) in paragraph at lines 692--693
+Overfull \hbox (11.34108pt too wide) in paragraph at lines 689--690
 \T1/stix2/m/n/12 The Blue Brain Project, launched by the École Poly-tech-nique 
 Fédérale de Lau-sanne (EPFL),
  []
@@ -1031,7 +1031,7 @@ Fédérale de Lau-sanne (EPFL),
 [34]
 Chapter 4.
 
-Overfull \hbox (12.14853pt too wide) in paragraph at lines 719--721
+Overfull \hbox (12.14853pt too wide) in paragraph at lines 716--718
 []\T1/stix2/m/n/12 Thanks to a few more ad-vanced fea-tures such as dy-namic gr
 ids or property-dependent
  []
@@ -1042,16 +1042,16 @@ ids or property-dependent
 <Figures/grid/all_tiles.png, id=667, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
-Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 740.
+Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 737.
 (pdftex.def)             Requested size: 220.50887pt x 242.58272pt.
  [36 <./Figures/grid/all_tiles.png>] [37] [38] [39] [40] [41] [42]
-Overfull \hbox (3.06107pt too wide) in paragraph at lines 919--920
+Overfull \hbox (3.06107pt too wide) in paragraph at lines 916--917
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-mi-sa-tion meth-
  []
 
 
-Overfull \hbox (6.15874pt too wide) in paragraph at lines 928--933
+Overfull \hbox (6.15874pt too wide) in paragraph at lines 925--930
  []\T1/stix2/b/n/12 Immediate ac-tion knowl-edge[] \T1/stix2/m/n/12 Im-me-di-at
 e ac-tion knowl-edge en-tails know-ing what
  []
@@ -1061,7 +1061,7 @@ Chapter 5.
 [46
 
 ]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 993--994
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 990--991
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
@@ -1069,7 +1069,7 @@ e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
 [47] [48] [49]
 Chapter 6.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 1049.
+ut line 1046.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1078,16 +1078,16 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 1049.
+ne 1046.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 1049.
+(Font)              scaled to size 16.0pt on input line 1046.
  [50
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
 .enc}]
 Chapter 7.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1053--1053
+Underfull \hbox (badness 10000) in paragraph at lines 1050--1050
 []\T1/opensans-TLF/b/n/18 Further re-search sug-ges-tions
  []
 
@@ -1108,7 +1108,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1128 \chapter{The Code}
+l.1122 \chapter{The Code}
                          
 Appendix A.
 [58
@@ -1263,7 +1263,7 @@ X/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/User
 s/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-
 Regular.pfb>
-Output written on master_thesis.pdf (63 pages, 2845049 bytes).
+Output written on master_thesis.pdf (63 pages, 2846605 bytes).
 PDF statistics:
  924 PDF objects out of 1000 (max. 8388607)
  245 named destinations out of 1000 (max. 500000)
