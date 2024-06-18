@@ -919,45 +919,55 @@ It is highly unlikely this form of knowledge can be considered a sign of intelli
 \paragraph{Live learning knowledge}
 And finally, live learning knowledge is the surest sign of intelligence of the three as it pertains to knowledge acquired and inferred by agents in action.
 \subsection{Knowledge by level}
-
 \paragraph{Immediate situation knowledge}
 
 These levels of knowledge relate to the knowledge related to the agent's immediate situation.
 \begin{itemize}
+
 \item{Immediate action knowledge}
 
-Immediate action knowledge entails knowing what action needs to be taken in a given moment.
-This is the lowest level of knowledge,
-and agents that merely infer this level of knowledge
-from hardcoded information can hardly be considered intelligent,
-even though methods such as the A-star algorithm are considered part of the AI field.
+Immediate action knowledge entails knowing what action needs to be taken in a given moment. This is the lowest level of knowledge, and agents that merely infer this level of knowledge from hardcoded information can hardly be considered intelligent, even though methods such as the A-star algorithm are considered part of the AI field.
 
 \item{End goal knowledge}
 
-Knowing what goal to pursue is a step up, and some level of intelligence may be required to determine the location and/or nature of the end goal in a given environment.
-
-Depending on the environment, this step may be further divided into immediate end goal knowledge and final end goal knowledge.
+Knowing what goal to pursue is a step up, and some level of intelligence may be required to determine the location and/or nature of the end goal in a given environment. Depending on the environment, this step may be further divided into immediate end goal knowledge and final end goal knowledge.
 
 \item{Immediate environment knowledge}
 
 This step of knowledge involves knowledge of the current state of the environment.
+
 \end{itemize}
 
 \paragraph{Environment-related knowledge}
+
 This step of knowledge involves knowledge of the current environment beyond the immediate situation.
+
 \begin{itemize}
+
+\item{Historical environment knowledge}
+
+Knowledge of the environment's past states or events that have shaped the current situation.
+
+\item{Predictive environment knowledge}
+
+Ability to predict future states of the environment based on current and past information.
+
+\item{Interaction knowledge}
+
+Understanding how various elements within the environment interact with each other and with the agent.
+
 \end{itemize}
 
 \paragraph{General knowledge}
+
 \begin{itemize}
+
 \item{General context knowledge}
-
 This level of knowledge involves the physical rules common to the test setting all environments share, such as "walls are impassable" or "red floors are lethal".
-\item{First principles knowledge}
 
-First principles knowledge consists of fundamental axioms all knowledge relies upon.
-This is the highest level of knowledge, and an artificial agent capable of inferring this knowledge from observation alone without prior learning would, without doubt, be a form of artificial superintelligence and rival not only individual humans, but humanity as a whole.
-TODO
+\item{First principles knowledge}
+First principles knowledge consists of fundamental axioms all knowledge relies upon. This is the highest level of knowledge, and an artificial agent capable of inferring this knowledge from observation alone without prior learning would, without doubt, be a form of artificial superintelligence and rival not only individual humans, but humanity as a whole.
+
 \end{itemize}
 
 \section{Agent aspect considerations}
@@ -970,6 +980,7 @@ Given enough time, even a brute-force algorithm may be capable of providing the 
 Similarly, an intelligent agent may be capable of providing an answer to a given problem more efficiently in terms of storage space used.
 \subsection{Learning data size}
 It would also be far-fetched to call a simple search function intelligent, and we should take care not to declare machine learning models with more data than inference intelligent, let alone conscious:
+
 \begin{quote}
 The human mind is not, like ChatGPT and its ilk, a lumbering statistical engine for pattern matching, gorging on hundreds of terabytes of data and extrapolating the most likely conversational response or most probable answer to a scientific question. On the contrary, the human mind is a surprisingly efficient and even elegant system that operates with small amounts of information; it seeks not to infer brute correlations among data points but to create explanations. 
 \cite{Chomsky2023}
@@ -979,7 +990,7 @@ Therefore, agents that infer information from a smaller learning dataset should 
 \subsection{Learning data level}
 However, we also need to consider the type of knowledge available to the agent, as well as its source.
 
-
+As noted above in the proposed classification of intelligence, the higher the level of knowledge an agent can infer from observation, the more intelligent the agent can be considered.
 
 \chapter{Implementation}
 
