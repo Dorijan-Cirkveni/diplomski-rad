@@ -695,7 +695,7 @@ This project was launched in 2005 and is ongoing to this day (2024).
 \chapter{Materials and Methods}
 \label{sec:materialsandmethods}
 \section{Virtual testing environment}
-In order to test AI agents for intelligence and consciousness, this thesis proposes utilizing a series of different tests and test environments.
+To test AI agents for intelligence and consciousness, this thesis proposes utilizing a series of different tests and test environments.
 
 However, the prototype will only rely on a single type of test environment.
 
@@ -998,17 +998,19 @@ these environments are manually tested to ensure their functionality and to esta
 
 To that end, a graphic user interface has been provided to facilitate interaction between human agents and the test environment.
 \paragraph{Advantages}
-By using a human benchmark, we can at the very least establish a rough idea of what we are expecting our artificial agents to accomplish. 
+Using a human benchmark allows us to establish a baseline expectation for the performance and behavior of artificial agents.
 \paragraph{Disadvantages}
 Obviously, this is not an artificial agent - and relying on human ability as a benchmark for consciousness has its disadvantages.
 
 One of them is that the nature and underlying mechanism of our intelligence and consciousness remain as open questions to this day,
 \subsubsection{Pre-determined sets of actions}
 
-\subsubsection{Large language model}
+\paragraph{Description}
+Instead of manually inputting actions in real time, this method allows us to pre-record a set of actions for the agent to follow.
 \paragraph{Advantages}
-\subparagraph{Generality}
+Along with the aforementioned advantages of human input, using a pre-recorded sequence of input values allows us to easily and reliably test and debug deterministic test environments.
 \paragraph{Disadvantages}
+In case of stochastic environments, 
 
 \section{Implementation details}
 \subsection{Base classes}
@@ -1022,7 +1024,7 @@ This class contains the following functions:
 \paragraph{iEntity}
 The base interface for a test entity regardless of environment type.
 
-This class contains getter and setter functions for various test entity states
+This interface contains getter and setter functions for various test entity states
 as well as functions that allow the environment to run agent functions:
 \begin{itemize}
 \item{iEntity.receiveEnvironmentData} - calls iAgent.receiveData on its agent, retrieves nothing.
@@ -1031,6 +1033,14 @@ as well as functions that allow the environment to run agent functions:
 \end{itemize}
 those being receiveData, performAction
 \paragraph{iEvalMethod}
+The base interface for an evaluation method.
+
+This interface contains one function:
+\begin{itemize}
+\item{evaluate()}
+
+An unimplemented function that receives infomation about the environment and converts it into a numeric score.
+\end{itemize} 
 \paragraph{iEnvironment}
 \subsection{Grid environment classes}
 \paragraph{GridEnvironment}
@@ -1077,7 +1087,9 @@ the risk of ignoring speed in favor of safety is seeing another, less safety-ori
 \chapter{Conclusion}
 \label{chp:conclusion}
 
-\blindtext
+Artificial
+
+TODO
 
 
 %--- REFERENCES / LITERATURA ---------------------------------------------------

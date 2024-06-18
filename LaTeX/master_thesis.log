@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  18 JUN 2024 15:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  18 JUN 2024 17:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -891,7 +891,7 @@ been already used, duplicate ignored
 l.112 ...berline {5}Implementation}{46}{chapter.5}
                                                   % [2]
 LaTeX Font Info:    Trying to load font information for TS1+stix2 on input line
- 143.
+ 142.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ts1stix2.fd
 File: ts1stix2.fd 2018/04/02 v2.0.0-latex stix2 TS1 font definitions
@@ -1069,7 +1069,7 @@ e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
 [47] [48] [49]
 Chapter 6.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 1046.
+ut line 1055.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1078,16 +1078,16 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 1046.
+ne 1055.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 1046.
+(Font)              scaled to size 16.0pt on input line 1055.
  [50
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
 .enc}]
 Chapter 7.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1050--1050
+Underfull \hbox (badness 10000) in paragraph at lines 1059--1059
 []\T1/opensans-TLF/b/n/18 Further re-search sug-ges-tions
  []
 
@@ -1108,7 +1108,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1122 \chapter{The Code}
+l.1131 \chapter{The Code}
                          
 Appendix A.
 [58
@@ -1246,11 +1246,11 @@ master_thesis.bbl
  ***********
 
 Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 944F6FDE27713562B44A6E5461DA6DF0;15137.
+(rerunfilecheck)             Checksum: 2552A97A362F47BA6753864F60F2BBC7;15137.
  ) 
 Here is how much of TeX's memory you used:
- 18381 strings out of 474586
- 290954 string characters out of 5745681
+ 18380 strings out of 474586
+ 290943 string characters out of 5745681
  1937558 words of memory out of 5000000
  40012 multiletter control sequences out of 15000+600000
  639722 words of font info for 142 fonts, out of 8000000 for 9000
@@ -1263,9 +1263,9 @@ X/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/User
 s/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-
 Regular.pfb>
-Output written on master_thesis.pdf (63 pages, 2846605 bytes).
+Output written on master_thesis.pdf (63 pages, 2846886 bytes).
 PDF statistics:
- 924 PDF objects out of 1000 (max. 8388607)
- 245 named destinations out of 1000 (max. 500000)
+ 923 PDF objects out of 1000 (max. 8388607)
+ 244 named destinations out of 1000 (max. 500000)
  714 words of extra memory for PDF output out of 10000 (max. 10000000)
 
