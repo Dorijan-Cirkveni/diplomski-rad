@@ -25,21 +25,21 @@
 \contentsline {subsubsection}{Evolutionism}{19}{section*.10}%
 \contentsline {subsubsection}{Bayesian approach}{19}{section*.11}%
 \contentsline {subsubsection}{Analogizing}{19}{section*.12}%
-\contentsline {section}{\numberline {3.2}Artificial consciousness}{19}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Anthropomorphism and AI}{20}{subsection.3.2.1}%
-\contentsline {subsubsection}{LaMDA}{20}{section*.13}%
-\contentsline {subsubsection}{ELIZA}{22}{section*.16}%
-\contentsline {subsubsection}{Ramifications}{22}{section*.17}%
-\contentsline {subsection}{\numberline {3.2.2}The Chinese Room Argument}{23}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Popular media depictions of AI as artificial consciousness}{24}{subsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}Why should we care about artificial consciousness?}{26}{subsection.3.2.4}%
-\contentsline {section}{\numberline {3.3}Defining intelligence}{27}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Types of intelligence}{27}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Testing for intelligence}{28}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}A few notable attempts at simulating/creating intelligence}{28}{subsection.3.3.3}%
-\contentsline {subsubsection}{The Logic Theorist (1956)}{28}{section*.21}%
-\contentsline {subsubsection}{SHRDLU (1968)}{29}{section*.22}%
-\contentsline {subsubsection}{Scalable Instructable Multiworld Agent (2024)}{29}{section*.23}%
+\contentsline {section}{\numberline {3.2}Defining intelligence}{19}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Types of intelligence}{20}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Testing for intelligence}{20}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}A few notable attempts at simulating/creating intelligence}{21}{subsection.3.2.3}%
+\contentsline {subsubsection}{The Logic Theorist (1956)}{21}{section*.13}%
+\contentsline {subsubsection}{SHRDLU (1968)}{21}{section*.14}%
+\contentsline {subsubsection}{Scalable Instructable Multiworld Agent (2024)}{21}{section*.15}%
+\contentsline {section}{\numberline {3.3}Artificial consciousness}{21}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Anthropomorphism and AI}{22}{subsection.3.3.1}%
+\contentsline {subsubsection}{LaMDA}{22}{section*.16}%
+\contentsline {subsubsection}{ELIZA}{25}{section*.19}%
+\contentsline {subsubsection}{Ramifications}{25}{section*.20}%
+\contentsline {subsection}{\numberline {3.3.2}The Chinese Room Argument}{25}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Popular media depictions of AI as artificial consciousness}{26}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Why should we care about artificial consciousness?}{28}{subsection.3.3.4}%
 \contentsline {section}{\numberline {3.4}Defining consciousness}{29}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}Existing theories}{29}{subsection.3.4.1}%
 \contentsline {subsubsection}{Integrated Information Theory}{29}{section*.24}%
