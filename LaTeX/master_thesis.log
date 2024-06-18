@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  17 JUN 2024 21:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  18 JUN 2024 08:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -879,7 +879,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.48 ...elf-awareness tests}{29}{subsection.1.7.3}
+l.48 ...elf-awareness tests}{30}{subsection.1.7.3}
                                                   % [1
 
 
@@ -1002,27 +1002,30 @@ Overfull \hbox (7.07155pt too wide) in paragraph at lines 547--547
  []
 
 [26] [27] [28] [29] [30]
-Overfull \hbox (0.49295pt too wide) in paragraph at lines 635--635
+Overfull \hbox (0.49295pt too wide) in paragraph at lines 638--638
 []\T1/opensans-TLF/b/n/14 A few no-table projects re-lated to sim-u-lat-ing/cre
 ating con-
  []
 
 
-Overfull \hbox (1.13382pt too wide) in paragraph at lines 642--643
+LaTeX Warning: Citation `Turing1952' on page 31 undefined on input line 644.
+
+
+Overfull \hbox (1.13382pt too wide) in paragraph at lines 647--648
 \T1/stix2/m/n/12 Cog was a robotics and ar-ti-fi-cial in-tel-li-gence project d
 e-vel-oped by the Hu-manoid Robotics
  []
 
-
-Overfull \hbox (11.34108pt too wide) in paragraph at lines 650--651
+[31]
+Overfull \hbox (11.34108pt too wide) in paragraph at lines 655--656
 \T1/stix2/m/n/12 The Blue Brain Project, launched by the École Poly-tech-nique 
 Fédérale de Lau-sanne (EPFL),
  []
 
-[31] [32]
+[32]
 Chapter 2.
 
-Overfull \hbox (12.14853pt too wide) in paragraph at lines 677--679
+Overfull \hbox (12.14853pt too wide) in paragraph at lines 682--684
 []\T1/stix2/m/n/12 Thanks to a few more ad-vanced fea-tures such as dy-namic gr
 ids or property-dependent
  []
@@ -1033,16 +1036,16 @@ ids or property-dependent
 <Figures/grid/all_tiles.png, id=647, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
-Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 698.
+Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 703.
 (pdftex.def)             Requested size: 220.50887pt x 242.58272pt.
  [34 <./Figures/grid/all_tiles.png>] [35] [36] [37] [38] [39] [40]
-Overfull \hbox (3.06107pt too wide) in paragraph at lines 877--878
+Overfull \hbox (3.06107pt too wide) in paragraph at lines 882--883
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-mi-sa-tion meth-
  []
 
 
-Overfull \hbox (6.15874pt too wide) in paragraph at lines 886--891
+Overfull \hbox (6.15874pt too wide) in paragraph at lines 891--896
  []\T1/stix2/b/n/12 Immediate ac-tion knowl-edge[] \T1/stix2/m/n/12 Im-me-di-at
 e ac-tion knowl-edge en-tails know-ing what
  []
@@ -1052,7 +1055,7 @@ Chapter 3.
 [44
 
 ]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 951--952
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 956--957
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
@@ -1060,7 +1063,7 @@ e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
 [45] [46] [47]
 Chapter 4.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 1007.
+ut line 1012.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1069,16 +1072,16 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 1007.
+ne 1012.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 1007.
+(Font)              scaled to size 16.0pt on input line 1012.
  [48
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
 .enc}]
 Chapter 5.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1011--1011
+Underfull \hbox (badness 10000) in paragraph at lines 1016--1016
 []\T1/opensans-TLF/b/n/18 Further re-search sug-ges-tions
  []
 
@@ -1099,7 +1102,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1078 \chapter{The Code}
+l.1083 \chapter{The Code}
                          
 Appendix A.
 [55
@@ -1236,14 +1239,20 @@ ts1opensans-tlf.fd
 master_thesis.bbl
  ***********
 
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `master_thesis.out' has not changed.
 (rerunfilecheck)             Checksum: DBC0CA73FFB1BA6FC688DA0166B2E659;14881.
  ) 
 Here is how much of TeX's memory you used:
- 18372 strings out of 474586
- 290866 string characters out of 5745681
+ 18374 strings out of 474586
+ 290893 string characters out of 5745681
  1937558 words of memory out of 5000000
- 40009 multiletter control sequences out of 15000+600000
+ 40010 multiletter control sequences out of 15000+600000
  639722 words of font info for 142 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,1668b,668s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1254,9 +1263,9 @@ X/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/User
 s/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-
 Regular.pfb>
-Output written on master_thesis.pdf (60 pages, 2837316 bytes).
+Output written on master_thesis.pdf (60 pages, 2838474 bytes).
 PDF statistics:
- 897 PDF objects out of 1000 (max. 8388607)
- 239 named destinations out of 1000 (max. 500000)
+ 899 PDF objects out of 1000 (max. 8388607)
+ 240 named destinations out of 1000 (max. 500000)
  698 words of extra memory for PDF output out of 10000 (max. 10000000)
 

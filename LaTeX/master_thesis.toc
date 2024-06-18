@@ -45,7 +45,7 @@
 \contentsline {subsubsection}{Attention Schema Theory}{28}{section*.26}%
 \contentsline {subsection}{\numberline {1.7.2}Testing for consciousness}{28}{subsection.1.7.2}%
 \contentsline {subsubsection}{The Turing Test}{28}{section*.27}%
-\contentsline {subsection}{\numberline {1.7.3}Self-awareness tests}{29}{subsection.1.7.3}%
+\contentsline {subsection}{\numberline {1.7.3}Self-awareness tests}{30}{subsection.1.7.3}%
 \contentsline {subsubsection}{Mirror test analogy}{30}{section*.28}%
 \contentsline {subsubsection}{Theory-of-mind tests}{31}{section*.29}%
 \contentsline {subsection}{\numberline {1.7.4}A few notable projects related to simulating/creating consciousness}{31}{subsection.1.7.4}%

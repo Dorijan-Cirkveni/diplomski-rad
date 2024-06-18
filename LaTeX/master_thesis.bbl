@@ -103,6 +103,15 @@ J.~Weizenbaum, ``Eliza—a computer program for the study of natural language
 \BIBentrySTDinterwordspacing
 \BIBentrySTDinterwordspacing
 
+\bibitem{Turing1952}
+\BIBentryALTinterwordspacing
+\BIBentryALTinterwordspacing
+A.~M. Turing, ``The chemical basis of morphogenesis,'' \emph{Philosophical
+  Transactions of the Royal Society of London. Series B, Biological Sciences},
+  vol. 237, pp. 37--72, 1952. \url{https://doi.org/10.1098/rstb.1952.0012}
+\BIBentrySTDinterwordspacing
+\BIBentrySTDinterwordspacing
+
 \bibitem{Chomsky2023}
 \BIBentryALTinterwordspacing
 N.~Chomsky, ``The false promise of chatgpt,'' \emph{The New York Times}, 2023.
