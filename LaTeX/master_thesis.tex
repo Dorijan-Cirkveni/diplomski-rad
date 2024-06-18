@@ -893,7 +893,7 @@ Depending on the setting, this may be:
 \end{itemize}
  
 \section{Tested agent types}
-The following agents have been implemented
+The following agents can be used as active entity agents, whether it is to test the environment functionality and suitability or the environment is used to test the agents themselves.
 \subsection{Hard-coded instruction agents}
 Hard-coded instruction agents are used to test individual environment functionality, as well as to determine whether a simple brute-force answer exist for a given set or category of environments.
 
@@ -920,24 +920,45 @@ It is highly unlikely this form of knowledge can be considered a sign of intelli
 And finally, live learning knowledge is the surest sign of intelligence of the three as it pertains to knowledge acquired and inferred by agents in action.
 \subsection{Knowledge by level}
 
-\paragraph{Immediate environment knowledge}
-\subparagraph{Immediate action knowledge}
+\paragraph{Immediate situation knowledge}
+
+These levels of knowledge relate to the knowledge related to the agent's immediate situation.
+\begin{itemize}
+\item{Immediate action knowledge}
+
 Immediate action knowledge entails knowing what action needs to be taken in a given moment.
 This is the lowest level of knowledge,
 and agents that merely infer this level of knowledge
 from hardcoded information can hardly be considered intelligent,
 even though methods such as the A-star algorithm are considered part of the AI field.
 
-Programs that don't even infer this level of knowledge, only fo
-\subparagraph{Immediate end goal knowledge}
-Knowing what goal to pursue is a step up, and some level of intelligence may be required to determine the location and/or nature of the end goal in a given 
-\subparagraph{Immediate environment knowledge}
-\paragraph{Environment type knowledge}
-\subparagraph{Immediate context knowledge}
-\paragraph{General context knowledge}
-\subparagraph{Current general context knowledge}
-\subparagraph{First principles knowledge}
+\item{End goal knowledge}
 
+Knowing what goal to pursue is a step up, and some level of intelligence may be required to determine the location and/or nature of the end goal in a given environment.
+
+Depending on the environment, this step may be further divided into immediate end goal knowledge and final end goal knowledge.
+
+\item{Immediate environment knowledge}
+
+This step of knowledge involves knowledge of the current state of the environment.
+\end{itemize}
+
+\paragraph{Environment-related knowledge}
+This step of knowledge involves knowledge of the current environment beyond the immediate situation.
+\begin{itemize}
+\end{itemize}
+
+\paragraph{General knowledge}
+\begin{itemize}
+\item{General context knowledge}
+
+This level of knowledge involves the physical rules common to the test setting all environments share, such as "walls are impassable" or "red floors are lethal".
+\item{First principles knowledge}
+
+First principles knowledge consists of fundamental axioms all knowledge relies upon.
+This is the highest level of knowledge, and an artificial agent capable of inferring this knowledge from observation alone without prior learning would, without doubt, be a form of artificial superintelligence and rival not only individual humans, but humanity as a whole.
+TODO
+\end{itemize}
 
 \section{Agent aspect considerations}
 In order to determine whether an agent could be intelligent and/or conscious, we need to determine certain characteristics of the agent, as well as its learning/training process:

@@ -89,76 +89,70 @@
 \contentsline {subsection}{\numberline {4.6.2}Simple agents}{42}{subsection.4.6.2}%
 \contentsline {subsection}{\numberline {4.6.3}Potential AI agents}{42}{subsection.4.6.3}%
 \contentsline {section}{\numberline {4.7}A suggestion for a knowledge-based classification of intelligence}{42}{section.4.7}%
-\contentsline {subsection}{\numberline {4.7.1}Knowledge by source}{42}{subsection.4.7.1}%
+\contentsline {subsection}{\numberline {4.7.1}Knowledge by source}{43}{subsection.4.7.1}%
 \contentsline {paragraph}{Explicitly coded knowledge}{43}{section*.50}%
 \contentsline {paragraph}{Learning phase knowledge}{43}{section*.51}%
 \contentsline {paragraph}{Live learning knowledge}{43}{section*.52}%
 \contentsline {subsection}{\numberline {4.7.2}Knowledge by level}{43}{subsection.4.7.2}%
-\contentsline {paragraph}{Immediate environment knowledge}{43}{section*.53}%
-\contentsline {subparagraph}{Immediate action knowledge}{43}{section*.54}%
-\contentsline {subparagraph}{Immediate end goal knowledge}{43}{section*.55}%
-\contentsline {subparagraph}{Immediate environment knowledge}{44}{section*.56}%
-\contentsline {paragraph}{Environment type knowledge}{44}{section*.57}%
-\contentsline {subparagraph}{Immediate context knowledge}{44}{section*.58}%
-\contentsline {paragraph}{General context knowledge}{44}{section*.59}%
-\contentsline {subparagraph}{Current general context knowledge}{44}{section*.60}%
-\contentsline {subparagraph}{First principles knowledge}{44}{section*.61}%
+\contentsline {paragraph}{Immediate situation knowledge}{43}{section*.53}%
+\contentsline {paragraph}{Environment-related knowledge}{44}{section*.54}%
+\contentsline {paragraph}{General knowledge}{44}{section*.55}%
 \contentsline {section}{\numberline {4.8}Agent aspect considerations}{44}{section.4.8}%
-\contentsline {subsection}{\numberline {4.8.1}Steps taken}{44}{subsection.4.8.1}%
-\contentsline {subsection}{\numberline {4.8.2}Processing time}{44}{subsection.4.8.2}%
-\contentsline {subsection}{\numberline {4.8.3}Processing space}{44}{subsection.4.8.3}%
+\contentsline {subsection}{\numberline {4.8.1}Steps taken}{45}{subsection.4.8.1}%
+\contentsline {subsection}{\numberline {4.8.2}Processing time}{45}{subsection.4.8.2}%
+\contentsline {subsection}{\numberline {4.8.3}Processing space}{45}{subsection.4.8.3}%
 \contentsline {subsection}{\numberline {4.8.4}Learning data size}{45}{subsection.4.8.4}%
 \contentsline {subsection}{\numberline {4.8.5}Learning data level}{45}{subsection.4.8.5}%
 \contentsline {chapter}{\numberline {5}Implementation}{46}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Implementation choices}{46}{section.5.1}%
 \contentsline {subsection}{\numberline {5.1.1}Programming language choice}{46}{subsection.5.1.1}%
 \contentsline {section}{\numberline {5.2}Tested agent choice}{46}{section.5.2}%
-\contentsline {subsubsection}{Template}{47}{section*.62}%
-\contentsline {paragraph}{Description}{47}{section*.63}%
-\contentsline {paragraph}{Interface}{47}{section*.64}%
-\contentsline {paragraph}{Advantages}{47}{section*.65}%
-\contentsline {paragraph}{Disadvantages}{47}{section*.66}%
+\contentsline {subsubsection}{Template}{47}{section*.56}%
+\contentsline {paragraph}{Description}{47}{section*.57}%
+\contentsline {paragraph}{Interface}{47}{section*.58}%
+\contentsline {paragraph}{Advantages}{47}{section*.59}%
+\contentsline {paragraph}{Disadvantages}{47}{section*.60}%
 \contentsline {subsection}{\numberline {5.2.1}Reference agents}{47}{subsection.5.2.1}%
-\contentsline {subsubsection}{Human input}{47}{section*.67}%
-\contentsline {paragraph}{Description}{47}{section*.68}%
-\contentsline {paragraph}{Advantages}{48}{section*.69}%
-\contentsline {paragraph}{Disadvantages}{48}{section*.70}%
-\contentsline {subsubsection}{Pre-determined sets of actions}{48}{section*.71}%
-\contentsline {paragraph}{Description}{48}{section*.72}%
-\contentsline {paragraph}{Advantages}{48}{section*.73}%
-\contentsline {paragraph}{Disadvantages}{48}{section*.74}%
+\contentsline {subsubsection}{Human input}{47}{section*.61}%
+\contentsline {paragraph}{Description}{47}{section*.62}%
+\contentsline {paragraph}{Advantages}{48}{section*.63}%
+\contentsline {paragraph}{Disadvantages}{48}{section*.64}%
+\contentsline {subsubsection}{Pre-determined sets of actions}{48}{section*.65}%
+\contentsline {paragraph}{Description}{48}{section*.66}%
+\contentsline {paragraph}{Advantages}{48}{section*.67}%
+\contentsline {paragraph}{Disadvantages}{48}{section*.68}%
 \contentsline {section}{\numberline {5.3}Implementation details}{48}{section.5.3}%
 \contentsline {subsection}{\numberline {5.3.1}Base classes}{48}{subsection.5.3.1}%
-\contentsline {paragraph}{iRawInit}{48}{section*.75}%
+\contentsline {paragraph}{iRawInit}{48}{section*.69}%
 \contentsline {subsection}{\numberline {5.3.2}Base interfaces}{48}{subsection.5.3.2}%
-\contentsline {paragraph}{iEntity}{48}{section*.76}%
-\contentsline {paragraph}{iEvalMethod}{49}{section*.77}%
-\contentsline {paragraph}{iEnvironment}{49}{section*.78}%
+\contentsline {paragraph}{iEntity}{48}{section*.70}%
+\contentsline {paragraph}{iEvalMethod}{49}{section*.71}%
+\contentsline {paragraph}{iEnvironment}{49}{section*.72}%
 \contentsline {subsection}{\numberline {5.3.3}Grid environment classes}{49}{subsection.5.3.3}%
-\contentsline {paragraph}{GridEnvironment}{49}{section*.79}%
+\contentsline {paragraph}{GridEnvironment}{49}{section*.73}%
 \contentsline {subsection}{\numberline {5.3.4}Environment display and interaction interface}{49}{subsection.5.3.4}%
 \contentsline {chapter}{\numberline {6}Results and Discussion}{50}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Instructions for usage of test environment interface}{50}{section.6.1}%
 \contentsline {section}{\numberline {6.2}•}{50}{section.6.2}%
 \contentsline {chapter}{\numberline {7}Further research suggestions and concerns}{51}{chapter.7}%
-\contentsline {paragraph}{Researcher resources requirements}{51}{section*.80}%
+\contentsline {paragraph}{Researcher resources requirements}{51}{section*.74}%
 \contentsline {section}{\numberline {7.1}Technical debt management}{51}{section.7.1}%
 \contentsline {section}{\numberline {7.2}Optimisation}{51}{section.7.2}%
-\contentsline {paragraph}{Lower-level implementation}{51}{section*.81}%
+\contentsline {paragraph}{Lower-level implementation}{51}{section*.75}%
 \contentsline {section}{\numberline {7.3}Further research direction}{51}{section.7.3}%
-\contentsline {paragraph}{More complex environments}{51}{section*.82}%
+\contentsline {paragraph}{More complex environments}{51}{section*.76}%
 \contentsline {section}{\numberline {7.4}Future research concerns}{52}{section.7.4}%
 \contentsline {subsection}{\numberline {7.4.1}Gain-of-function AI development risks}{52}{subsection.7.4.1}%
 \contentsline {subsection}{\numberline {7.4.2}Safety versus speed}{52}{subsection.7.4.2}%
 \contentsline {chapter}{\numberline {8}Conclusion}{53}{chapter.8}%
-\contentsline {chapter}{References}{54}{chapter*.83}%
+\contentsline {chapter}{References}{54}{chapter*.77}%
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Abstract}{56}{chapter*.84}%
+\contentsline {chapter}{Abstract}{56}{chapter*.78}%
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
-\contentsline {chapter}{Sa\v {z}etak}{57}{chapter*.85}%
+\contentsline {chapter}{Sa\v {z}etak}{57}{chapter*.79}%
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
 \babel@toc {english}{}\relax 
