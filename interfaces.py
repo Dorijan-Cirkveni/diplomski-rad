@@ -296,10 +296,11 @@ class iEnvironment(iRawDictInit):
         D.update(cur_D)
         res = self.step(D)
         self.applyEffects()
-        if self.isLoss():
-            self.winStatus = (False, self.cur_iter)
-        if self.isWin():
-            self.winStatus = (True, self.cur_iter)
+        if self.winStatus[0] is None:
+            if self.isLoss():
+                self.winStatus = (False, self.cur_iter)
+            if self.isWin():
+                self.winStatus = (True, self.cur_iter)
         return res
 
     def isWin(self):
