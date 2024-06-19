@@ -16,12 +16,13 @@ def run_mcm(var=None,*data):
         widget.destroy()
     if type(var)==str:
         return
-    return popups.MultiChoiceMessage(ctk,"Main Menu", "Prototype",functions)
+    popup=popups.MultiChoiceMessage(ctk,"Main Menu", "Prototype",functions)
+    popup.protocol("WM_DELETE_WINDOW", sys.exit)
+    return popup
 
 def main():
-    mcm=run_mcm()
+    run_mcm()
 
-    mcm.protocol("WM_DELETE_WINDOW", sys.exit)
     ctk.mainloop()
 def lamain(data,*args):
     if type(data) is str:
