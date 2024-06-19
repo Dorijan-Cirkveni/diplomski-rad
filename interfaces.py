@@ -257,9 +257,6 @@ class iEnvironment(iRawDictInit):
             for entity in entities:
                 entity.set(*value)
 
-    def setEffects(self, effects):
-        return
-
     def applyEffects(self):
         dueEffects: list[tuple[object, list[Effect]]]
         dueEffects = self.scheduledEffects.popLowerThan(self.cur_iter)
