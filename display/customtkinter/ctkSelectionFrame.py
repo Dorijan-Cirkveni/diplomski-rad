@@ -17,6 +17,7 @@ from display.customtkinter.ctkPopups import *
 class EnvCustomFrame(ctk.CTkFrame):
     def __init__(self, master, run_command, precheck_command, json_manager: frjson.FragmentedJsonManager, **kwargs):
         super().__init__(master, **kwargs)
+        self.master:SelectionFrame
         self.run_command = run_command
         self.precheck_command = precheck_command
 
@@ -53,6 +54,8 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.edit_button.pack(padx=10, pady=10)
         self.copy_button = ctk.CTkButton(edit_square, text="Copy environment to other location", command=self.save_env_step_1)
         self.copy_button.pack(padx=10, pady=10)
+        self.save_preset_button = ctk.CTkButton(edit_square, text="Copy environment to other location", command=self.save_env_step_1)
+        self.save_preset_buttonn.pack(padx=10, pady=10)
         self.save_button = ctk.CTkButton(edit_square, text="Save environment", command=self.save_env)
         self.save_button.pack(padx=10, pady=10)
 
@@ -230,6 +233,28 @@ class EnvCustomFrame(ctk.CTkFrame):
         raise NotImplementedError
 
 
+
+    def save_agent_step_1(self):
+        if not self.agentclass:
+            PopupMessage(self, "Error", "Agent class not chosen!")
+            return
+        self.master:SelectionFrame
+        if self.agentclass not in self.master.preset_dict:
+            PopupMessage(self, "Error", "Agent class doesn't have active preset storage!")
+            return
+        if not self.agent_data:
+            PopupMessage(self, "Error", "Missing agent data!")
+            return
+        address=frjson.WriteFragmentAddress(self.catname,'Custom')
+        InputMessage(DarkCTK.GetMain(), "New index", "New index:", address,
+                          func=self.save_agent_step_2)
+
+    def save_agent_step_2(self,s):
+        self.agentclass:agentmngr.iActiveAgent
+        self.agentclass.set_active_presets(self.frjsonmngr,[(s,self.agent_data)])
+        return
+
+
 class SelectionFrame(iTkFrame):
     def __init__(self, master: SwapFrame, dimensions: tuple[int, int], **kwargs):
         self.preset_dict = dict()
@@ -315,6 +340,7 @@ class SelectionFrame(iTkFrame):
         active_presets=agclass.get_active_presets(self.env_mngr)
         self.preset_dict:dict
         self.preset_dict[agname]=active_presets
+        self.preset_dict[agclass]=active_presets
         for name, data in active_presets:
             legible_text = util.UtilManager.ProcessClassName(name)
             elements.append(ButtonData(legible_text, self.factory_agent(agname, data), 1))
