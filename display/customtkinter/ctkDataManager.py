@@ -40,6 +40,7 @@ class ctkDataManager(ctk.CTkToplevel):
                  *args, **kwargs):
         super().__init__(root, *args, **kwargs)
 
+        self.recurse_apply = False
         self.root = root
         self.root_struct = root_struct
         self.cur = root_struct
@@ -75,7 +76,7 @@ class ctkDataManager(ctk.CTkToplevel):
         self.cur_edit_frame = None
 
         # Create apply button
-        self.apply_button = ctk.CTkButton(self, text="Apply", command=self.apply_action)
+        self.apply_button = ctk.CTkButton(self, text="Apply and close", command=self.apply_action)
         self.apply_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
 
         self.grid_columnconfigure('all', weight=1)
@@ -84,7 +85,7 @@ class ctkDataManager(ctk.CTkToplevel):
         self.make_scroll_generators()
         self.make_edit_frames()
         self.show_cur_keys()
-        self.protocol("WM_DELETE_WINDOW", self.apply_action)
+        self.protocol("WM_DELETE_WINDOW", self.close_action)
 
     def apply(self, value):
         loaded_value = json.loads(value)
@@ -187,7 +188,13 @@ class ctkDataManager(ctk.CTkToplevel):
             ("Append new", self.input_save_fragment_to_custom),
             ("Discard changes", self.finalise_fragment_close),
         ]
-        ctkp.MultiChoiceMessage(DarkCTK.GetMain(), "Save fragment?", "Save fragment?", L)
+        wind=ctkp.MultiChoiceMessage(DarkCTK.GetMain(), "Save fragment?", "Save fragment?", L)
+        wind.protocol("WM_DELETE_WINDOW", lambda:self.abort_close_fragment(wind))
+
+    def abort_close_fragment(self, wind):
+        self.recurse_apply=False
+        wind.destroy()
+        return
 
     def input_save_fragment_to_custom(self):
         if self.curkey is None:
@@ -222,11 +229,18 @@ class ctkDataManager(ctk.CTkToplevel):
         self.cur = self.curkey
         self.stack = self.metastack.pop()
         self.return_action()
+        if self.recurse_apply:
+            self.apply_action()
+
+    def apply_action(self):
+        self.recurse_apply=True
+        self.return_action()
+
 
     def return_action(self):
         if not self.stack:
             if not self.metastack:
-                self.apply_action()
+                self.close_action()
             else:
                 self.close_fragment()
             return
@@ -237,7 +251,7 @@ class ctkDataManager(ctk.CTkToplevel):
         self.show_cur_keys()
         self.show_cur_value_interface(last[lastkey])
 
-    def apply_action(self):
+    def close_action(self):
         self.return_command(self.root_struct)
         self.destroy()
 
