@@ -4,6 +4,7 @@ from copy import deepcopy
 
 from definitions import *
 import interfaces as itf
+from util import FragmentedJSON
 from util.struct.Grid2D import Grid2D
 import agents.GridAgentUtils as GAU
 import agents.AgentUtils.AgentDataPreprocessor as ADP
@@ -372,8 +373,6 @@ class RulesetManager(itf.iRawListInit):
         self.rules.append(rule)
         X = rule.get_keys()
         for cat in X:
-            if type(cat)==list:
-                cat=tuple(cat)
             self.byElement[cat].add(ruleID)
 
     def make_instance(self):
@@ -532,6 +531,7 @@ def SimpleLabyrinthAgentRaw():
         all_rules.append(rule)
     RES: list[list] = []
     for rule in all_rules:
+        print(rule)
         E: list[object] = [False]
         E.extend(rule.to_JSON())
         RES.append(E)

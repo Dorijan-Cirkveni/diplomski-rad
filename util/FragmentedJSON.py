@@ -337,6 +337,14 @@ class FragmentedJsonManager:
         print(arch[0])
         return arch[0]
 
+def tuplify(L):
+    if type(L) not in {list,tuple}:
+        if type(L) == dict:
+            return {e:tuplify(v) for e,v in L.items()}
+        return L
+    return tuple([tuplify(e) for e in L])
+
+
 
 def main():
     RPM = fisys.RootPathManager.GetMain()
@@ -352,4 +360,5 @@ def main():
 
 
 if __name__ == "__main__":
+    print(tuplify([1,[2,[3,4]]]))
     main()
