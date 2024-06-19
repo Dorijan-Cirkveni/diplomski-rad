@@ -75,9 +75,9 @@ class iActiveAgent(iAgent):
     DEFAULT_STR_INPUT = None
     DEFAULT_RAW_INPUT = None
     INPUT_PRESETS = {}
-    INPUT_PRESET_FILE=""
+    INPUT_PRESET_FILE="<EXT>agent_presets|unnamed"
 
-    def __init__(self, preprocessor: ADP.AgentDataPreprocessor):
+    def __init__(self, preprocessor=ADP.AgentDataPreprocessor([])):
         super().__init__()
         self.preprocessor = preprocessor
 
@@ -103,7 +103,7 @@ class iActiveAgent(iAgent):
     @classmethod
     def set_active_presets(cls, frjson_manager: frjson.FragmentedJsonManager, presetlist:list[tuple[object,object]]):
         if not cls.INPUT_PRESET_FILE:
-            return False
+            raise Exception(f"Agent {cls} missing preset file!")
         filename, address=frjson.ReadFragmentAddress(cls.INPUT_PRESET_FILE)
         frag=frjson_manager.files[filename]
         arch, archind=[frag.root],0

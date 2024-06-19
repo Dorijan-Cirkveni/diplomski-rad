@@ -537,6 +537,7 @@ def SimpleLabyrinthAgentRaw():
 
 
 RuleBasedAgent.INPUT_PRESETS['Maze'] = SimpleLabyrinthAgentRaw()
+print(json.dumps(SimpleLabyrinthAgentRaw()))
 
 
 def ruleTest():

@@ -78,9 +78,9 @@ class iTkFrame(iTkFrameDef):
             """
             Swaps to other frame.
             """
-            controller.show_frame(nextframe)
             the_frame: iTkFrame = controller.frames[nextframe]
             the_frame.receiveData(data)
+            controller.show_frame(nextframe)
 
         return swapFrame
 

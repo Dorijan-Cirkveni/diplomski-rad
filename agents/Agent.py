@@ -2,6 +2,7 @@ import json
 
 import definitions
 import interfaces as itf
+import agents.AgentInterfaces as agitf
 from util.struct.Grid2D import Grid2D
 
 
@@ -14,7 +15,7 @@ class BoxAgent(itf.iAgent):
     DEFAULT_RAW_INPUT = {}
 
     @classmethod
-    def from_string(cls,s):
+    def from_string(cls, s):
         """
 
         :param s:
@@ -58,7 +59,7 @@ class MirrorAgent(itf.iAgent):
     """
 
     DEFAULT_STR_INPUT = "0 O"
-    DEFAULT_RAW_INPUT = [0,None]
+    DEFAULT_RAW_INPUT = [0, None]
 
     def __init__(self, mirroredAgent, actionMirrors: list = None):
         """
@@ -73,7 +74,7 @@ class MirrorAgent(itf.iAgent):
         self.agent_action = 0
 
     @classmethod
-    def from_string(cls,s):
+    def from_string(cls, s):
         """
         Creates agent from string.
         :param s: The string, in "<int> <character/list of integers>
@@ -107,7 +108,7 @@ class MirrorAgent(itf.iAgent):
         curdata = data.get("agent_current_action", dict())
         MAdata = curdata.get(self.mirroredAgent, None)
         if MAdata is None:
-            raise Exception(json.dumps(curdata,indent=4))
+            raise Exception(json.dumps(curdata, indent=4))
         self.agent_action = MAdata
         return
 
@@ -118,20 +119,23 @@ class MirrorAgent(itf.iAgent):
         :param actions: Available actions.
         :return: object: Action to be performed.
         """
-        print(self.agent_action,self.actionMirrors)
-        if type(self.actionMirrors)==dict:
-            return self.actionMirrors.get(self.agent_action,self.agent_action)
-        if self.actionMirrors and self.agent_action<len(self.actionMirrors):
+        print(self.agent_action, self.actionMirrors)
+        if type(self.actionMirrors) == dict:
+            return self.actionMirrors.get(self.agent_action, self.agent_action)
+        if self.actionMirrors and self.agent_action < len(self.actionMirrors):
             return self.actionMirrors[self.agent_action]
         return self.agent_action
 
-class RecordedActionsAgent(itf.iAgent):
+
+class RecordedActionsAgent(agitf.iActiveAgent):
     """
     Represents an agent that plays predefined actions in a loop.
     """
 
     DEFAULT_STR_INPUT = "0011223344"
     DEFAULT_RAW_INPUT = [DEFAULT_STR_INPUT]
+    INPUT_PRESETS = {}
+    INPUT_PRESET_FILE="<EXT>agent_presets|RAA"
 
     def __init__(self, actions):
         """
@@ -144,13 +148,13 @@ class RecordedActionsAgent(itf.iAgent):
         self.actions = actions
 
     @classmethod
-    def from_string(cls,s):
+    def from_string(cls, s):
         """
         Creates agent from string.
         :param s: The string.
         :return: The agent.
         """
-        s2="".join([e for e in s if e.isdigit()])
+        s2 = "".join([e for e in s if e.isdigit()])
         return RecordedActionsAgent(s2)
 
     def receiveEnvironmentData(self, data):
@@ -173,8 +177,8 @@ class RecordedActionsAgent(itf.iAgent):
         self.i += 1
         if self.i == len(self.actions):
             self.i = 0
-        if type(cur)==str:
-            cur=int(cur)
+        if type(cur) == str:
+            cur = int(cur)
         return cur
 
 
@@ -206,7 +210,7 @@ class ManualInputAgent(itf.iAgent):
         self.guide = guide
 
     @classmethod
-    def from_string(cls,s):
+    def from_string(cls, s):
         """
         Creates agent from string.
         :param s: The string.
@@ -292,7 +296,7 @@ class GraphicManualInputAgent(itf.iAgent):
         self.cur = -1
 
     @classmethod
-    def from_string(cls,s):
+    def from_string(cls, s):
         """
         Creates agent from string.
         :param s: The string.
@@ -319,7 +323,7 @@ class GraphicManualInputAgent(itf.iAgent):
         :param actions: Available actions.
         :return: object: Action to be performed.
         """
-        print("------------------------",self.cur)
+        print("------------------------", self.cur)
         return self.cur
 
 

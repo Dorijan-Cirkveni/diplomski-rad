@@ -54,7 +54,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.edit_button.pack(padx=10, pady=10)
         self.copy_button = ctk.CTkButton(edit_square, text="Copy environment to other location", command=self.save_env_step_1)
         self.copy_button.pack(padx=10, pady=10)
-        self.save_preset_button = ctk.CTkButton(edit_square, text="Copy environment to other location", command=self.save_agent_step_1)
+        self.save_preset_button = ctk.CTkButton(edit_square, text="Save agent data", command=self.save_agent_step_1)
         self.save_preset_button.pack(padx=10, pady=10)
         self.save_button = ctk.CTkButton(edit_square, text="Save environment", command=self.save_env)
         self.save_button.pack(padx=10, pady=10)
@@ -359,7 +359,7 @@ class SelectionFrame(iTkFrame):
     def get_agent_presets(self):
         cats = []
         for agname, agclass in agentmngr.TEST_AGENTS.items():
-            dec=isinstance(agclass,agentmngr.iActiveAgent)
+            dec=issubclass(agclass,agentmngr.iActiveAgent)
             if dec:
                 self.get_active_agent_pre(agname,agclass,cats)
             else:
