@@ -33,7 +33,7 @@ def main(returnfn:callable=print):
     root.minsize(*scale)
     root.title("AI Agent Grid Test Interface")
 
-    frame = SwapFrame(root, "Test", print, scale)
+    frame = SwapFrame(root, "Test", returnfn, scale)
     frame.pack()
 
     grid_display_frame = DisplayFrame(frame, scale)

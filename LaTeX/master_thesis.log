@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  19 JUN 2024 15:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  19 JUN 2024 16:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -856,7 +856,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {C:/Users/doric/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dori
 c/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_jg4h6q.enc}]
 [2]
-<hr_0036501554_56.pdf, id=356, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=364, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 71.
@@ -865,7 +865,7 @@ File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 71.
 (pdftex.def)             Requested size: 598.23354pt x 845.15544pt.
-<hr_0036501554_56.pdf, id=359, page=1, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=367, page=1, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
 Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 71.
@@ -916,7 +916,7 @@ been already used, duplicate ignored
 l.106 ...berline {5}Implementation}{48}{chapter.5}
                                                   % [2]
 LaTeX Font Info:    Trying to load font information for TS1+stix2 on input line
- 147.
+ 149.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ts1stix2.fd
 File: ts1stix2.fd 2018/04/02 v2.0.0-latex stix2 TS1 font definitions
@@ -925,7 +925,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.166 ... {chapter}{Sa\v {z}etak}{62}{chapter*.85}
+l.164 ...line {chapter}{Abstract}{62}{chapter*.86}
                                                   % [3{C:/Users/doric/AppData/L
 ocal/Programs/MiKTeX/fonts/enc/dvips/stix2-type1/stix2-ts1.enc}])
 \tf@toc=\write4
@@ -949,7 +949,7 @@ e
 e 122.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
 (Font)              scaled to size 16.0pt on input line 122.
-<Figures/AI performance history.png, id=498, 853.1875pt x 383.4325pt>
+<Figures/AI performance history.png, id=508, 853.1875pt x 383.4325pt>
 File: Figures/AI performance history.png Graphic file (type png)
 <use Figures/AI performance history.png>
 Package pdftex.def Info: Figures/AI performance history.png  used on input line
@@ -958,7 +958,7 @@ Package pdftex.def Info: Figures/AI performance history.png  used on input line
 [7
 
  <./Figures/AI performance history.png>]
-<Figures/wen agi.png, id=507, 3474.38025pt x 1963.93726pt>
+<Figures/wen agi.png, id=517, 3474.38025pt x 1963.93726pt>
 File: Figures/wen agi.png Graphic file (type png)
 <use Figures/wen agi.png>
 Package pdftex.def Info: Figures/wen agi.png  used on input line 172.
@@ -971,7 +971,7 @@ e 190.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
 (Font)              scaled to size 12.0pt on input line 190.
  [9 <./Figures/wen agi.png (PNG copy)>] [10]
-<Figures/bing image creator prompt 1a.jpeg, id=530, 352.31625pt x 352.31625pt>
+<Figures/bing image creator prompt 1a.jpeg, id=540, 352.31625pt x 352.31625pt>
 File: Figures/bing image creator prompt 1a.jpeg Graphic file (type jpg)
 <use Figures/bing image creator prompt 1a.jpeg>
 Package pdftex.def Info: Figures/bing image creator prompt 1a.jpeg  used on inp
@@ -1001,30 +1001,30 @@ man traits to non-human
  []
 
 [23] [24]
-<Figures/LaMDA tweet 1.png, id=612, 444.4605pt x 151.767pt>
+<Figures/LaMDA tweet 1.png, id=622, 444.4605pt x 151.767pt>
 File: Figures/LaMDA tweet 1.png Graphic file (type png)
 <use Figures/LaMDA tweet 1.png>
 Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 528.
 (pdftex.def)             Requested size: 441.01773pt x 150.59714pt.
-<Figures/LaMDA tweet 2.png, id=614, 437.83575pt x 258.9675pt>
+<Figures/LaMDA tweet 2.png, id=624, 437.83575pt x 258.9675pt>
 File: Figures/LaMDA tweet 2.png Graphic file (type png)
 <use Figures/LaMDA tweet 2.png>
 Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 534.
 (pdftex.def)             Requested size: 441.01773pt x 260.85962pt.
  [25 <./Figures/LaMDA tweet 1.png>] [26 <./Figures/LaMDA tweet 2.png>]
-<Figures/DataTNG.jpeg, id=632, 301.125pt x 168.63pt>
+<Figures/DataTNG.jpeg, id=642, 301.125pt x 168.63pt>
 File: Figures/DataTNG.jpeg Graphic file (type jpg)
 <use Figures/DataTNG.jpeg>
 Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 570.
 (pdftex.def)             Requested size: 227.62204pt x 127.4731pt.
 [27 <./Figures/DataTNG.jpeg>]
-<Figures/James_Moriarty_hologram.png, id=640, 1058.95625pt x 1058.95625pt>
+<Figures/James_Moriarty_hologram.png, id=650, 1058.95625pt x 1058.95625pt>
 File: Figures/James_Moriarty_hologram.png Graphic file (type png)
 <use Figures/James_Moriarty_hologram.png>
 Package pdftex.def Info: Figures/James_Moriarty_hologram.png  used on input lin
 e 580.
 (pdftex.def)             Requested size: 227.62204pt x 227.60652pt.
-<Figures/VoyagerEMH.png, id=641, 468.75125pt x 531.9875pt>
+<Figures/VoyagerEMH.png, id=651, 468.75125pt x 531.9875pt>
 File: Figures/VoyagerEMH.png Graphic file (type png)
 <use Figures/VoyagerEMH.png>
 Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 589.
@@ -1063,7 +1063,7 @@ ids or property-dependent
 [36
 
 ]
-<Figures/grid/all_tiles.png, id=696, 120.45pt x 132.495pt>
+<Figures/grid/all_tiles.png, id=706, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
 Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 762.
@@ -1107,8 +1107,14 @@ d re-sult in a sig-nif-i-cant amount
 
 [54]
 Chapter 6.
+<Figures/thesis main menu.png, id=864, 244.5135pt x 268.6035pt>
+File: Figures/thesis main menu.png Graphic file (type png)
+<use Figures/thesis main menu.png>
+Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1218.
+
+(pdftex.def)             Requested size: 220.50887pt x 242.24504pt.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 1211.
+ut line 1223.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1117,43 +1123,43 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 1211.
+ne 1223.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 1211.
+(Font)              scaled to size 16.0pt on input line 1223.
  [55
 
-{C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
-.enc}]
+] [56{C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_n
+vvucy.enc} <./Figures/thesis main menu.png>]
 Chapter 7.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1215--1215
-[]\T1/opensans-TLF/b/n/18 Further re-search sug-ges-tions
+Underfull \hbox (badness 3189) in paragraph at lines 1227--1227
+[]\T1/opensans-TLF/b/n/18 Further Re-search and Dis-cus-
  []
 
-[56
+[57
 
-] [57]
+] [58]
 Chapter 8.
-(master_thesis.bbl [58
+(master_thesis.bbl [59
 
-] [59
+] [60
 
-]) [60] [61
+]) [61] [62
 
-] [62
+] [63
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1289 \chapter{The Code}
+l.1302 \chapter{The Code}
                          
 Appendix A.
-[63
+[64
 
 
-] [64] (master_thesis.aux)
+] [65] (master_thesis.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
@@ -1285,18 +1291,25 @@ Figures/VoyagerEMH.png
 Figures/grid/all_tiles.png
 lstlang1.sty    2023/02/27 1.9 listings language file
   t1cmtt.fd    2023/04/13 v2.5m Standard LaTeX font definitions
+Figures/thesis main menu.png
 ts1opensans-tlf.fd
 master_thesis.bbl
  ***********
 
-Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 4F011EF60678A78BB4D31BFF83B551ED;16044.
+
+Package rerunfilecheck Warning: File `master_thesis.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `master_thesis.out':
+(rerunfilecheck)             Before: 8C2414F5A3A47F2AD91FBF5E1506FCF3;16051
+(rerunfilecheck)             After:  C5AE1730B69DC1C5EF29146B19362590;16137.
  ) 
 Here is how much of TeX's memory you used:
- 20270 strings out of 474586
- 316447 string characters out of 5745681
+ 20287 strings out of 474586
+ 316865 string characters out of 5745681
  2053558 words of memory out of 5000000
- 41846 multiletter control sequences out of 15000+600000
+ 41858 multiletter control sequences out of 15000+600000
  647460 words of font info for 145 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,1668b,2137s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1308,9 +1321,9 @@ sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
 ta/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C
 :/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX
 2Text-Regular.pfb>
-Output written on master_thesis.pdf (68 pages, 2883770 bytes).
+Output written on master_thesis.pdf (69 pages, 2891113 bytes).
 PDF statistics:
- 1065 PDF objects out of 1200 (max. 8388607)
- 283 named destinations out of 1000 (max. 500000)
- 754 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1084 PDF objects out of 1200 (max. 8388607)
+ 288 named destinations out of 1000 (max. 500000)
+ 775 words of extra memory for PDF output out of 10000 (max. 10000000)
 
