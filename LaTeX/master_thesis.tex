@@ -4,6 +4,29 @@
 
 
 \usepackage{blindtext}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green},
+  stringstyle=\color{red},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{white},
+  frame=single,
+  tabsize=4,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  literate={*}{*}1
+}
 
 
 %--- THESIS INFORMATION / PODACI O RADU ----------------------------------------
@@ -523,7 +546,7 @@ This phenomenon is important to note for several reasons:
 \begin{itemize}
 \item This tendency makes correctly identifying sentience - and, more frequently, lack thereof - in artificial intelligence agents significantly more difficult as it introduces the potential for both false-positive identification initially, as well as false-negative identification as a result of overcorrection.
 \item Falsely identifying an artificial intelligence agent as conscious may lead to significant unintended harm, as well as intentional exploitation against unwitting human targets.
-\item Falsely identifying an artificial intelligence agent as unconscious, on the other hand, may lead to significant unintended harm, as well as intentional exploitation of the agent itself.
+\item Falsely identifying an artificial intelligence agent as unconscious, on the other hand, may lead to significant unintended harm, as well as intentional exploitation of the agent itself. It may also cause us to overlook an existential threat to humanity.
 \end{itemize}
 
 \subsection{The Chinese Room Argument}
@@ -587,7 +610,7 @@ An unchecked self-conscious program may be able to adapt itself,
 becoming an advanced version of a polymorphic virus and causing unprecedented damage to global infrastructure.
 \item{Existential risk concern}
 
-While artificial general intelligence would pose an existential risk to humanity regardless of its consciousness, a conscious artificial intelligence with intrinsic goals of its own is more likely to become misaligned with human goals and values, resulting in potential existential harm to humanity in the process of pursuing said goals.
+While artificial general intelligence would pose an existential risk to humanity regardless of its consciousness, a conscious artificial intelligence with potentially evolving intrinsic goals of its own is more likely to become misaligned with human goals and values, resulting in potential existential harm to humanity in the process of pursuing said goals.
 \end{itemize}
 
 
@@ -1074,6 +1097,50 @@ This interface contains one function:
 An unimplemented function that receives infomation about the environment and converts it into a numeric score.
 \end{itemize} 
 \paragraph{iEnvironment}
+The base interface for a test environment.
+
+This interface encapsulates information about the environment, the agents contained, and other information required to run an AI test.
+
+This interface fully implements the following functions:
+\begin{itemize}
+\item{The initialization function, which is expanded upon by child classes}
+\begin{lstlisting}[language=Python]
+def __init__(self, entities: list, activeEntities: set, effectTypes: list[Effect], effects: list[EffectTime],
+             extraData: dict = None):
+\end{lstlisting}
+\item{Active agent assignment functions}
+\begin{lstlisting}[language=Python]
+assign_active_agent(self, agent: iAgent)
+changeActiveEntityAgents(self, newAgents: list[iAgent])
+\end{lstlisting}
+ 
+\item{Effect scheduler}
+
+\begin{lstlisting}[language=Python]
+scheduleEffect(self, time, effect: Effect, schedule=0)
+\end{lstlisting}
+
+\item{Agent data getters}
+
+\item{TODO}
+
+\begin{lstlisting}[language=Python]
+TODO
+\end{lstlisting}
+
+\item{TODO}
+
+\begin{lstlisting}[language=Python]
+TODO
+\end{lstlisting}
+
+\item{TODO}
+
+\begin{lstlisting}[language=Python]
+TODO
+\end{lstlisting}
+
+\end{itemize}
 \subsection{Grid environment classes}
 \paragraph{GridEnvironment}
 

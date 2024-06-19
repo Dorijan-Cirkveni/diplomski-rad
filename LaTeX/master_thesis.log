@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  18 JUN 2024 22:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  19 JUN 2024 10:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -603,56 +603,79 @@ Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 \c@blind@pangramcount=\count315
 \c@blind@pangrammax=\count316
 )
-LaTeX Font Info:    Trying to load font information for T1+stix2 on input line 
-37.
+(C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.sty
+\lst@mode=\count317
+\lst@gtempboxa=\box55
+\lst@token=\toks31
+\lst@length=\count318
+\lst@currlwidth=\dimen180
+\lst@column=\count319
+\lst@pos=\count320
+\lst@lostspace=\dimen181
+\lst@width=\dimen182
+\lst@newlines=\count321
+\lst@lineno=\count322
+\lst@maxwidth=\dimen183
 
+(C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
+File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
+\c@lstnumber=\count323
+\lst@skipnumbers=\count324
+\lst@framebox=\box56
+)
+(C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.cfg
+File: listings.cfg 2023/02/27 1.9 listings configuration
+))
+Package: listings 2023/02/27 1.9 (Carsten Heinz)
+LaTeX Font Info:    Trying to load font information for T1+stix2 on input line 
+60.
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\t1stix2.fd
 File: t1stix2.fd 2018/04/02 v2.0.0-latex stix2 T1 font definitions
 )
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
 tex.def
 File: l3backend-pdftex.def 2023-11-09 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count317
-\l__pdf_internal_box=\box55
+\l__color_backend_stack_int=\count325
+\l__pdf_internal_box=\box57
 ) (master_thesis.aux)
 \openout1 = `master_thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for LS1/stix2/m/n on input line 37.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for LS1/stix2/m/n on input line 60.
 LaTeX Font Info:    Trying to load font information for LS1+stix2 on input line
- 37.
+ 60.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ls1stix2.fd
 File: ls1stix2.fd 2018/04/02 v2.0.0-latex stix2 LS1 font definitions
 )
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for LS2/stix2/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for LS2/stix2/m/n on input line 60.
 LaTeX Font Info:    Trying to load font information for LS2+stix2 on input line
- 37.
+ 60.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ls2stix2.fd
 File: ls2stix2.fd 2018/04/02 v2.0.0-latex stix2 LS2 font definitions
 )
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-\c@mv@tabular=\count318
-\c@mv@boldtabular=\count319
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+\c@mv@tabular=\count326
+\c@mv@boldtabular=\count327
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -692,17 +715,17 @@ LaTeX Font Info:    ... okay on input line 37.
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count320
-\scratchdimen=\dimen180
-\scratchbox=\box56
-\nofMPsegments=\count321
-\nofMParguments=\count322
-\everyMPshowfont=\toks31
-\MPscratchCnt=\count323
-\MPscratchDim=\dimen181
-\MPnumerator=\count324
-\makeMPintoPDFobject=\count325
-\everyMPtoPDFconversion=\toks32
+\scratchcounter=\count328
+\scratchdimen=\dimen184
+\scratchbox=\box58
+\nofMPsegments=\count329
+\nofMParguments=\count330
+\everyMPshowfont=\toks32
+\MPscratchCnt=\count331
+\MPscratchDim=\dimen185
+\MPnumerator=\count332
+\makeMPintoPDFobject=\count333
+\everyMPtoPDFconversion=\toks33
 )
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
 ase.sty
@@ -729,46 +752,48 @@ Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Info: Command `\dddot' is already robust on input line 37.
-LaTeX Info: Command `\ddddot' is already robust on input line 37.
-Package hyperref Info: Link coloring OFF on input line 37.
+LaTeX Info: Command `\dddot' is already robust on input line 60.
+LaTeX Info: Command `\ddddot' is already robust on input line 60.
+Package hyperref Info: Link coloring OFF on input line 60.
 
 (master_thesis.out) (master_thesis.out)
 \@outlinefile=\write3
 \openout3 = `master_thesis.out'.
 
+\c@lstlisting=\count334
 LaTeX Font Info:    Trying to load font information for T1+opensans-TLF on inpu
-t line 41.
+t line 64.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\t1opensans-tlf
 .fd
 File: T1opensans-TLF.fd 2019/06/24 Font definitions for T1/opensans-TLF.
 )
 LaTeX Font Info:    Font shape `T1/opensans-TLF/m/n' will be
-(Font)              scaled to size 14.0pt on input line 41.
+(Font)              scaled to size 14.0pt on input line 64.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <14> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 41.
+e 64.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 14.0pt on input line 41.
+(Font)              scaled to size 14.0pt on input line 64.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <20> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 41.
+e 64.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 20.0pt on input line 41.
-LaTeX Font Info:    Calculating math sizes for size <14> on input line 41.
+(Font)              scaled to size 20.0pt on input line 64.
+LaTeX Font Info:    Calculating math sizes for size <14> on input line 64.
 LaTeX Font Info:    Trying to load font information for LS1+stix2scr on input l
-ine 41.
+ine 64.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ls1stix2scr
 .fd
 File: ls1stix2scr.fd 2018/04/02 v2.0.0-latex stix2 script LS1 font definitions
 )
 LaTeX Font Info:    Trying to load font information for LS2+stix2ex on input li
-ne 41.
+ne 64.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ls2stix2ex.
 fd
@@ -776,7 +801,7 @@ File: ls2stix2ex.fd 2018/04/02 v2.0.0-latex stix2 extentions LS2 font definitio
 ns
 )
 LaTeX Font Info:    Trying to load font information for LS1+stix2frak on input 
-line 41.
+line 64.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ls1stix2fra
 k.fd
@@ -784,7 +809,7 @@ File: ls1stix2frak.fd 2018/04/02 v2.0.0-latex stix2 fraktur LS1 font definition
 s
 )
 LaTeX Font Info:    Trying to load font information for LS1+stix2bb on input li
-ne 41.
+ne 64.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ls1stix2bb.
 fd
@@ -792,7 +817,7 @@ File: ls1stix2bb.fd 2018/04/02 v2.0.0-latex stix2 blackboard LS1 font definitio
 ns
 )
 LaTeX Font Info:    Trying to load font information for LS2+stix2cal on input l
-ine 41.
+ine 64.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ls2stix2cal
 .fd
@@ -800,7 +825,7 @@ File: ls2stix2cal.fd 2018/04/02 v2.0.0-latex stix2 calligraphic LS2 font defini
 tions
 )
 LaTeX Font Info:    Trying to load font information for LS1+stix2sf on input li
-ne 41.
+ne 64.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ls1stix2sf.
 fd
@@ -808,19 +833,19 @@ File: ls1stix2sf.fd 2018/04/02 v2.0.0-latex stix2 sans-serif LS1 font definitio
 ns
 )
 LaTeX Font Info:    Trying to load font information for LS2+stix2tt on input li
-ne 41.
+ne 64.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ls2stix2tt.
 fd
 File: ls2stix2tt.fd 2018/04/02 v2.0.0-latex stix2 typewriter LS2 font definitio
 ns
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 41.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 64.
 
  (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 41.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 64.
 
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
@@ -834,36 +859,36 @@ c/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_jg4h6q.enc}]
 <hr_0036501554_56.pdf, id=336, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
-Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 48.
+Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 71.
 (pdftex.def)             Requested size: 598.23354pt x 845.15544pt.
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
-Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 48.
+Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 71.
 (pdftex.def)             Requested size: 598.23354pt x 845.15544pt.
 <hr_0036501554_56.pdf, id=339, page=1, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
-Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 48.
+Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 71.
 (pdftex.def)             Requested size: 598.23354pt x 845.15544pt.
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
-Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 48.
+Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 71.
 (pdftex.def)             Requested size: 597.7406pt x 844.45905pt.
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
-Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 48.
+Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 71.
 (pdftex.def)             Requested size: 597.7406pt x 844.45905pt.
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
-Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 48.
+Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 71.
 (pdftex.def)             Requested size: 597.7406pt x 844.45905pt.
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
-Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 48.
+Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 71.
 (pdftex.def)             Requested size: 597.7406pt x 844.45905pt.
  [3 <./hr_0036501554_56.pdf>]
 LaTeX Font Info:    Font shape `T1/stix2/m/sl' in size <12> not available
-(Font)              Font shape `T1/stix2/m/it' tried instead on input line 53.
+(Font)              Font shape `T1/stix2/m/it' tried instead on input line 76.
  [4
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/stix2-type1/stix2
@@ -871,9 +896,9 @@ LaTeX Font Info:    Font shape `T1/stix2/m/sl' in size <12> not available
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <18> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 64.
+e 87.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 18.0pt on input line 64.
+(Font)              scaled to size 18.0pt on input line 87.
  (master_thesis.toc
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
@@ -888,7 +913,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.106 ...berline {5}Implementation}{46}{chapter.5}
+l.106 ...berline {5}Implementation}{47}{chapter.5}
                                                   % [2]
 LaTeX Font Info:    Trying to load font information for TS1+stix2 on input line
  136.
@@ -904,7 +929,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.68 \chapter
+l.91 \chapter
              {Introduction} [3{C:/Users/doric/AppData/Local/Programs/MiKTeX/fon
 ts/enc/dvips/stix2-type1/stix2-ts1.enc}]
 Chapter 1.
@@ -913,22 +938,22 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.88 
-      [4
+l.111 
+       [4
 
 ] [5]
 Chapter 2.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <16> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 99.
+e 122.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 99.
+(Font)              scaled to size 16.0pt on input line 122.
 <Figures/AI performance history.png, id=469, 853.1875pt x 383.4325pt>
 File: Figures/AI performance history.png Graphic file (type png)
 <use Figures/AI performance history.png>
 Package pdftex.def Info: Figures/AI performance history.png  used on input line
- 107.
+ 130.
 (pdftex.def)             Requested size: 441.01773pt x 198.20421pt.
 [6
 
@@ -936,25 +961,25 @@ Package pdftex.def Info: Figures/AI performance history.png  used on input line
 <Figures/wen agi.png, id=478, 3474.38025pt x 1963.93726pt>
 File: Figures/wen agi.png Graphic file (type png)
 <use Figures/wen agi.png>
-Package pdftex.def Info: Figures/wen agi.png  used on input line 149.
+Package pdftex.def Info: Figures/wen agi.png  used on input line 172.
 (pdftex.def)             Requested size: 441.01773pt x 249.26743pt.
  [7]
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <12> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
-e 167.
+e 190.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
-(Font)              scaled to size 12.0pt on input line 167.
+(Font)              scaled to size 12.0pt on input line 190.
  [8 <./Figures/wen agi.png (PNG copy)>] [9]
 <Figures/bing image creator prompt 1a.jpeg, id=501, 352.31625pt x 352.31625pt>
 File: Figures/bing image creator prompt 1a.jpeg Graphic file (type jpg)
 <use Figures/bing image creator prompt 1a.jpeg>
 Package pdftex.def Info: Figures/bing image creator prompt 1a.jpeg  used on inp
-ut line 192.
+ut line 215.
 (pdftex.def)             Requested size: 167.58888pt x 167.58849pt.
  [10 <./Figures/bing image creator prompt 1a.jpeg>] [11] [12]
 [13]
-Overfull \hbox (7.0845pt too wide) in paragraph at lines 297--298
+Overfull \hbox (7.0845pt too wide) in paragraph at lines 320--321
 []\T1/stix2/m/n/12 This ap-proach is more gen-eral than the pre-vi-ously listed
  "laws-of-thought" ap-proach,
  []
@@ -964,13 +989,13 @@ Chapter 3.
 [18
 
 ] [19] [20]
-Overfull \hbox (7.07155pt too wide) in paragraph at lines 430--430
-[]\T1/opensans-TLF/b/n/14 A few no-table at-tempts at sim-u-lat-ing/creating in
--tel-li-gence 
+Overfull \hbox (7.07155pt too wide) in paragraph at lines 453--453
+[]\T1/opensans-TLF/b/n/14 A few no-table at-tempts at sim-u-lat-ing/cre-at-ing 
+in-tel-li-gence 
  []
 
 [21]
-Overfull \hbox (2.17796pt too wide) in paragraph at lines 454--455
+Overfull \hbox (2.17796pt too wide) in paragraph at lines 477--478
 \T1/stix2/m/n/12 Anthropomorphism is a com-mon hu-man ten-dency to as-cribe hu-
 man traits to non-human
  []
@@ -979,25 +1004,25 @@ man traits to non-human
 <Figures/LaMDA tweet 1.png, id=583, 444.4605pt x 151.767pt>
 File: Figures/LaMDA tweet 1.png Graphic file (type png)
 <use Figures/LaMDA tweet 1.png>
-Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 503.
+Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 526.
 (pdftex.def)             Requested size: 441.01773pt x 150.59714pt.
 <Figures/LaMDA tweet 2.png, id=585, 437.83575pt x 258.9675pt>
 File: Figures/LaMDA tweet 2.png Graphic file (type png)
 <use Figures/LaMDA tweet 2.png>
-Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 509.
+Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 532.
 (pdftex.def)             Requested size: 441.01773pt x 260.85962pt.
  [24 <./Figures/LaMDA tweet 1.png> <./Figures/LaMDA tweet 2.png>]
 [25]
 <Figures/DataTNG.jpeg, id=603, 301.125pt x 168.63pt>
 File: Figures/DataTNG.jpeg Graphic file (type jpg)
 <use Figures/DataTNG.jpeg>
-Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 545.
+Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 568.
 (pdftex.def)             Requested size: 227.62204pt x 127.4731pt.
 <Figures/James_Moriarty_hologram.png, id=604, 1058.95625pt x 1058.95625pt>
 File: Figures/James_Moriarty_hologram.png Graphic file (type png)
 <use Figures/James_Moriarty_hologram.png>
 Package pdftex.def Info: Figures/James_Moriarty_hologram.png  used on input lin
-e 555.
+e 578.
 (pdftex.def)             Requested size: 227.62204pt x 227.60652pt.
 
 
@@ -1007,23 +1032,27 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 <Figures/VoyagerEMH.png, id=611, 468.75125pt x 531.9875pt>
 File: Figures/VoyagerEMH.png Graphic file (type png)
 <use Figures/VoyagerEMH.png>
-Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 564.
+Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 587.
 (pdftex.def)             Requested size: 227.62204pt x 258.3221pt.
- [27 <./Figures/James_Moriarty_hologram.png> <./Figures/VoyagerEMH.png>] [28] [
-29] [30] [31] [32]
-Overfull \hbox (0.49295pt too wide) in paragraph at lines 672--672
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[27 <./Figures/James_Moriarty_hologram.png>] [28 <./Figures/VoyagerEMH.png>]
+[29] [30] [31] [32]
+Overfull \hbox (0.49295pt too wide) in paragraph at lines 695--695
 []\T1/opensans-TLF/b/n/14 A few no-table projects re-lated to sim-u-lat-ing/cre
-ating con-
+-at-ing con-
  []
 
 
-Overfull \hbox (1.13382pt too wide) in paragraph at lines 681--682
+Overfull \hbox (1.13382pt too wide) in paragraph at lines 704--705
 \T1/stix2/m/n/12 Cog was a robotics and ar-ti-fi-cial in-tel-li-gence project d
 e-vel-oped by the Hu-manoid Robotics
  []
 
 [33]
-Overfull \hbox (11.34108pt too wide) in paragraph at lines 689--690
+Overfull \hbox (11.34108pt too wide) in paragraph at lines 712--713
 \T1/stix2/m/n/12 The Blue Brain Project, launched by the École Poly-tech-nique 
 Fédérale de Lau-sanne (EPFL),
  []
@@ -1031,7 +1060,7 @@ Fédérale de Lau-sanne (EPFL),
 [34]
 Chapter 4.
 
-Overfull \hbox (12.14853pt too wide) in paragraph at lines 716--718
+Overfull \hbox (12.14853pt too wide) in paragraph at lines 739--741
 []\T1/stix2/m/n/12 Thanks to a few more ad-vanced fea-tures such as dy-namic gr
 ids or property-dependent
  []
@@ -1042,10 +1071,10 @@ ids or property-dependent
 <Figures/grid/all_tiles.png, id=667, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
-Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 737.
+Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 760.
 (pdftex.def)             Requested size: 220.50887pt x 242.58272pt.
  [36 <./Figures/grid/all_tiles.png>] [37] [38] [39] [40] [41] [42]
-Overfull \hbox (3.06107pt too wide) in paragraph at lines 916--917
+Overfull \hbox (3.06107pt too wide) in paragraph at lines 939--940
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-mi-sa-tion meth-
  []
@@ -1055,15 +1084,30 @@ Chapter 5.
 [47
 
 ]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 1022--1023
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 1045--1046
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
 
-[48] [49] [50]
+[48] [49]
+Overfull \hbox (2.1459pt too wide) in paragraph at lines 1102--1103
+[]\T1/stix2/m/n/12 This in-ter-face en-cap-su-lates in-for-ma-tion about the en
+-vi-ron-ment, the agents con-tained,
+ []
+
+(C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+File: lstlang1.sty 2023/02/27 1.9 listings language file
+)
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 1
+107.
+
+(C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
+File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+)
+[50] [51]
 Chapter 6.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 1088.
+ut line 1135.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1072,43 +1116,43 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 1088.
+ne 1135.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 1088.
- [51
+(Font)              scaled to size 16.0pt on input line 1135.
+ [52
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
 .enc}]
 Chapter 7.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1092--1092
+Underfull \hbox (badness 10000) in paragraph at lines 1139--1139
 []\T1/opensans-TLF/b/n/18 Further re-search sug-ges-tions
  []
 
-[52
+[53
 
-] [53]
+] [54]
 Chapter 8.
-(master_thesis.bbl [54
+(master_thesis.bbl [55
 
-] [55
+] [56
 
-]) [56] [57
+]) [57] [58
 
-] [58
+] [59
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1166 \chapter{The Code}
+l.1213 \chapter{The Code}
                          
 Appendix A.
-[59
+[60
 
 
-] [60] (master_thesis.aux)
+] [61] (master_thesis.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
@@ -1197,6 +1241,9 @@ rerunfilecheck.sty    2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
 uniquecounter.sty    2019/12/15 v1.4 Provide unlimited unique counter (HO)
 blindtext.sty    2012/01/06 V2.0 blindtext-Package
   xspace.sty    2014/10/28 v1.13 Space after command names (DPC,MH)
+listings.sty    2023/02/27 1.9 (Carsten Heinz)
+ lstmisc.sty    2023/02/27 1.9 (Carsten Heinz)
+listings.cfg    2023/02/27 1.9 listings configuration
  t1stix2.fd    2018/04/02 v2.0.0-latex stix2 T1 font definitions
 l3backend-pdftex.def    2023-11-09 L3 backend support: PDF output (pdfTeX)
 ls1stix2.fd    2018/04/02 v2.0.0-latex stix2 LS1 font definitions
@@ -1235,34 +1282,34 @@ Figures/DataTNG.jpeg
 Figures/James_Moriarty_hologram.png
 Figures/VoyagerEMH.png
 Figures/grid/all_tiles.png
+lstlang1.sty    2023/02/27 1.9 listings language file
+  t1cmtt.fd    2023/04/13 v2.5m Standard LaTeX font definitions
 ts1opensans-tlf.fd
 master_thesis.bbl
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package rerunfilecheck Info: File `master_thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 1AC756BCE51DA6608E85F49F25D91ABD;15137.
  ) 
 Here is how much of TeX's memory you used:
- 18375 strings out of 474586
- 290884 string characters out of 5745681
- 1937558 words of memory out of 5000000
- 40012 multiletter control sequences out of 15000+600000
- 639722 words of font info for 142 fonts, out of 8000000 for 9000
+ 20198 strings out of 474586
+ 315467 string characters out of 5745681
+ 1976558 words of memory out of 5000000
+ 41809 multiletter control sequences out of 15000+600000
+ 647460 words of font info for 145 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 87i,17n,131p,1668b,664s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/opensans/O
-penSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/asce
-nder/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs/MiKTe
-X/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData/Loc
-al/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/User
-s/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-
-Regular.pfb>
-Output written on master_thesis.pdf (64 pages, 2847324 bytes).
+ 87i,17n,131p,1668b,1428s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\doric\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt
+1095.pk><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/open
+sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
+1/ascender/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs
+/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppDa
+ta/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C
+:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX
+2Text-Regular.pfb>
+Output written on master_thesis.pdf (65 pages, 2862313 bytes).
 PDF statistics:
- 920 PDF objects out of 1000 (max. 8388607)
- 239 named destinations out of 1000 (max. 500000)
+ 973 PDF objects out of 1000 (max. 8388607)
+ 248 named destinations out of 1000 (max. 500000)
  714 words of extra memory for PDF output out of 10000 (max. 10000000)
 
