@@ -19,6 +19,7 @@ class DarkCTK(ctk.CTk):
     def __init__(self, **kwargs):
         ctk.set_appearance_mode("dark")
         super().__init__(**kwargs)
+        self.title("AI Agent Grid Test Interface")
 
     @classmethod
     def GetMain(cls):
@@ -44,7 +45,10 @@ def getLoc(master, size, topLimit=None, bottomLimit=None):
     loc=Tadd(rootloc,Tdiv(rootsize,(2,)*2,True))
     sizeloc=Tsub(loc,Tdiv(size,(2,)*2, True))
     final_loc=Tmax(Tnum(0),sizeloc)
-    final_loc=Tmax(topLimit,final_loc)
+    if topLimit:
+        final_loc=Tmax(topLimit,final_loc)
+    if bottomLimit:
+        final_loc=Tmin(bottomLimit,final_loc)
     print(rootloc,rootsize,final_loc)
 
     a,b,c,d=size+final_loc
