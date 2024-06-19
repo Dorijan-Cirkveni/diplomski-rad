@@ -231,9 +231,6 @@ class iEnvironment(iRawDictInit):
     def getMoves(self, agentID=None):
         raise NotImplementedError
 
-    def runChanges(self, moves):
-        raise NotImplementedError
-
     def step(self, moves):
         raise NotImplementedError
 
