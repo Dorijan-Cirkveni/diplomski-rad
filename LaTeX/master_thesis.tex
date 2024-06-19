@@ -1146,13 +1146,23 @@ GenerateSetGroups(cls, size, learning_aspects_raw: dict, requests: dict, ratio=N
                           prev_manager: dsmngr.DatasetGenerator = None, **kwargs) -> list[list['iEnvironment']]
 \end{lstlisting}
 
-\item{TODO}
+\end{itemize}
 
+as well as the following abstract methods:
 \begin{lstlisting}[language=Python]
-TODO
+    def getEnvData(self, agentID=None):
+        raise NotImplementedError
+
+    def getMoves(self, agentID=None):
+        raise NotImplementedError
+
+    def runChanges(self, moves):
+        raise NotImplementedError
+
+    def step(self, moves):
+        raise NotImplementedError
 \end{lstlisting}
 
-\end{itemize}
 \subsection{Grid environment classes}
 \begin{itemize}
 \item{TODO}
