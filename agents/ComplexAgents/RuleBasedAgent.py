@@ -372,6 +372,8 @@ class RulesetManager(itf.iRawListInit):
         self.rules.append(rule)
         X = rule.get_keys()
         for cat in X:
+            if type(cat)==list:
+                cat=tuple(cat)
             self.byElement[cat].add(ruleID)
 
     def make_instance(self):
