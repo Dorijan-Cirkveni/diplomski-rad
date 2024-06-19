@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  19 JUN 2024 10:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  19 JUN 2024 15:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -856,7 +856,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {C:/Users/doric/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dori
 c/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_jg4h6q.enc}]
 [2]
-<hr_0036501554_56.pdf, id=336, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=356, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 71.
@@ -865,7 +865,7 @@ File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 71.
 (pdftex.def)             Requested size: 598.23354pt x 845.15544pt.
-<hr_0036501554_56.pdf, id=339, page=1, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=359, page=1, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
 Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 71.
@@ -904,7 +904,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.43 ...4}Defining consciousness}{29}{section.3.4}
+l.43 ...4}Defining consciousness}{30}{section.3.4}
                                                   % [1
 
 
@@ -913,35 +913,35 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.106 ...berline {5}Implementation}{47}{chapter.5}
+l.106 ...berline {5}Implementation}{48}{chapter.5}
                                                   % [2]
 LaTeX Font Info:    Trying to load font information for TS1+stix2 on input line
- 136.
+ 147.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ts1stix2.fd
 File: ts1stix2.fd 2018/04/02 v2.0.0-latex stix2 TS1 font definitions
-))
-\tf@toc=\write4
-\openout4 = `master_thesis.toc'.
-
-
+)
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.91 \chapter
-             {Introduction} [3{C:/Users/doric/AppData/Local/Programs/MiKTeX/fon
-ts/enc/dvips/stix2-type1/stix2-ts1.enc}]
-Chapter 1.
+l.166 ... {chapter}{Sa\v {z}etak}{62}{chapter*.85}
+                                                  % [3{C:/Users/doric/AppData/L
+ocal/Programs/MiKTeX/fonts/enc/dvips/stix2-type1/stix2-ts1.enc}])
+\tf@toc=\write4
+\openout4 = `master_thesis.toc'.
+
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.111 
-       [4
+l.91 \chapter
+             {Introduction} [4]
+Chapter 1.
+[5
 
-] [5]
+] [6]
 Chapter 2.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <16> not availabl
 e
@@ -949,148 +949,143 @@ e
 e 122.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
 (Font)              scaled to size 16.0pt on input line 122.
-<Figures/AI performance history.png, id=469, 853.1875pt x 383.4325pt>
+<Figures/AI performance history.png, id=498, 853.1875pt x 383.4325pt>
 File: Figures/AI performance history.png Graphic file (type png)
 <use Figures/AI performance history.png>
 Package pdftex.def Info: Figures/AI performance history.png  used on input line
  130.
 (pdftex.def)             Requested size: 441.01773pt x 198.20421pt.
-[6
+[7
 
  <./Figures/AI performance history.png>]
-<Figures/wen agi.png, id=478, 3474.38025pt x 1963.93726pt>
+<Figures/wen agi.png, id=507, 3474.38025pt x 1963.93726pt>
 File: Figures/wen agi.png Graphic file (type png)
 <use Figures/wen agi.png>
 Package pdftex.def Info: Figures/wen agi.png  used on input line 172.
 (pdftex.def)             Requested size: 441.01773pt x 249.26743pt.
- [7]
+ [8]
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <12> not availabl
 e
 (Font)              Font shape `T1/opensans-TLF/b/n' tried instead on input lin
 e 190.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
 (Font)              scaled to size 12.0pt on input line 190.
- [8 <./Figures/wen agi.png (PNG copy)>] [9]
-<Figures/bing image creator prompt 1a.jpeg, id=501, 352.31625pt x 352.31625pt>
+ [9 <./Figures/wen agi.png (PNG copy)>] [10]
+<Figures/bing image creator prompt 1a.jpeg, id=530, 352.31625pt x 352.31625pt>
 File: Figures/bing image creator prompt 1a.jpeg Graphic file (type jpg)
 <use Figures/bing image creator prompt 1a.jpeg>
 Package pdftex.def Info: Figures/bing image creator prompt 1a.jpeg  used on inp
 ut line 215.
 (pdftex.def)             Requested size: 167.58888pt x 167.58849pt.
- [10 <./Figures/bing image creator prompt 1a.jpeg>] [11] [12]
-[13]
+ [11 <./Figures/bing image creator prompt 1a.jpeg>] [12] [13]
+[14]
 Overfull \hbox (7.0845pt too wide) in paragraph at lines 320--321
 []\T1/stix2/m/n/12 This ap-proach is more gen-eral than the pre-vi-ously listed
  "laws-of-thought" ap-proach,
  []
 
-[14] [15] [16] [17]
+[15] [16] [17] [18]
 Chapter 3.
-[18
+[19
 
-] [19] [20]
+] [20] [21]
 Overfull \hbox (7.07155pt too wide) in paragraph at lines 453--453
 []\T1/opensans-TLF/b/n/14 A few no-table at-tempts at sim-u-lat-ing/cre-at-ing 
 in-tel-li-gence 
  []
 
-[21]
-Overfull \hbox (2.17796pt too wide) in paragraph at lines 477--478
+[22]
+Overfull \hbox (2.17796pt too wide) in paragraph at lines 479--480
 \T1/stix2/m/n/12 Anthropomorphism is a com-mon hu-man ten-dency to as-cribe hu-
 man traits to non-human
  []
 
-[22] [23]
-<Figures/LaMDA tweet 1.png, id=583, 444.4605pt x 151.767pt>
+[23] [24]
+<Figures/LaMDA tweet 1.png, id=612, 444.4605pt x 151.767pt>
 File: Figures/LaMDA tweet 1.png Graphic file (type png)
 <use Figures/LaMDA tweet 1.png>
-Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 526.
+Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 528.
 (pdftex.def)             Requested size: 441.01773pt x 150.59714pt.
-<Figures/LaMDA tweet 2.png, id=585, 437.83575pt x 258.9675pt>
+<Figures/LaMDA tweet 2.png, id=614, 437.83575pt x 258.9675pt>
 File: Figures/LaMDA tweet 2.png Graphic file (type png)
 <use Figures/LaMDA tweet 2.png>
-Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 532.
+Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 534.
 (pdftex.def)             Requested size: 441.01773pt x 260.85962pt.
- [24 <./Figures/LaMDA tweet 1.png> <./Figures/LaMDA tweet 2.png>]
-[25]
-<Figures/DataTNG.jpeg, id=603, 301.125pt x 168.63pt>
+ [25 <./Figures/LaMDA tweet 1.png>] [26 <./Figures/LaMDA tweet 2.png>]
+<Figures/DataTNG.jpeg, id=632, 301.125pt x 168.63pt>
 File: Figures/DataTNG.jpeg Graphic file (type jpg)
 <use Figures/DataTNG.jpeg>
-Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 568.
+Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 570.
 (pdftex.def)             Requested size: 227.62204pt x 127.4731pt.
-<Figures/James_Moriarty_hologram.png, id=604, 1058.95625pt x 1058.95625pt>
+[27 <./Figures/DataTNG.jpeg>]
+<Figures/James_Moriarty_hologram.png, id=640, 1058.95625pt x 1058.95625pt>
 File: Figures/James_Moriarty_hologram.png Graphic file (type png)
 <use Figures/James_Moriarty_hologram.png>
 Package pdftex.def Info: Figures/James_Moriarty_hologram.png  used on input lin
-e 578.
+e 580.
 (pdftex.def)             Requested size: 227.62204pt x 227.60652pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[26 <./Figures/DataTNG.jpeg>]
-<Figures/VoyagerEMH.png, id=611, 468.75125pt x 531.9875pt>
+<Figures/VoyagerEMH.png, id=641, 468.75125pt x 531.9875pt>
 File: Figures/VoyagerEMH.png Graphic file (type png)
 <use Figures/VoyagerEMH.png>
-Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 587.
+Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 589.
 (pdftex.def)             Requested size: 227.62204pt x 258.3221pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[27 <./Figures/James_Moriarty_hologram.png>] [28 <./Figures/VoyagerEMH.png>]
-[29] [30] [31] [32]
-Overfull \hbox (0.49295pt too wide) in paragraph at lines 695--695
+[28 <./Figures/James_Moriarty_hologram.png>] [29 <./Figures/VoyagerEMH.png>]
+[30] [31] [32] [33]
+Overfull \hbox (0.49295pt too wide) in paragraph at lines 697--697
 []\T1/opensans-TLF/b/n/14 A few no-table projects re-lated to sim-u-lat-ing/cre
 -at-ing con-
  []
 
 
-Overfull \hbox (1.13382pt too wide) in paragraph at lines 704--705
+Overfull \hbox (1.13382pt too wide) in paragraph at lines 706--707
 \T1/stix2/m/n/12 Cog was a robotics and ar-ti-fi-cial in-tel-li-gence project d
 e-vel-oped by the Hu-manoid Robotics
  []
 
-[33]
-Overfull \hbox (11.34108pt too wide) in paragraph at lines 712--713
+[34]
+Overfull \hbox (11.34108pt too wide) in paragraph at lines 714--715
 \T1/stix2/m/n/12 The Blue Brain Project, launched by the École Poly-tech-nique 
 Fédérale de Lau-sanne (EPFL),
  []
 
-[34]
+[35]
 Chapter 4.
 
-Overfull \hbox (12.14853pt too wide) in paragraph at lines 739--741
+Overfull \hbox (12.14853pt too wide) in paragraph at lines 741--743
 []\T1/stix2/m/n/12 Thanks to a few more ad-vanced fea-tures such as dy-namic gr
 ids or property-dependent
  []
 
-[35
+[36
 
 ]
-<Figures/grid/all_tiles.png, id=667, 120.45pt x 132.495pt>
+<Figures/grid/all_tiles.png, id=696, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
-Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 760.
+Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 762.
 (pdftex.def)             Requested size: 220.50887pt x 242.58272pt.
- [36 <./Figures/grid/all_tiles.png>] [37] [38] [39] [40] [41] [42]
-Overfull \hbox (3.06107pt too wide) in paragraph at lines 939--940
+ [37 <./Figures/grid/all_tiles.png>] [38] [39] [40] [41] [42] [43]
+Overfull \hbox (3.06107pt too wide) in paragraph at lines 942--943
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-mi-sa-tion meth-
  []
 
-[43] [44] [45] [46]
+[44] [45] [46] [47]
 Chapter 5.
-[47
+[48
 
 ]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 1045--1046
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 1048--1049
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
 
-[48] [49]
-Overfull \hbox (2.1459pt too wide) in paragraph at lines 1102--1103
+[49] [50]
+Overfull \hbox (2.1459pt too wide) in paragraph at lines 1105--1106
 []\T1/stix2/m/n/12 This in-ter-face en-cap-su-lates in-for-ma-tion about the en
 -vi-ron-ment, the agents con-tained,
  []
@@ -1099,15 +1094,272 @@ Overfull \hbox (2.1459pt too wide) in paragraph at lines 1102--1103
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 1
-107.
+110.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
 File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-[50] [51] [52]
+[51] [52]
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1181 \subsection
+                  {Selection user interface}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1181 \subsection
+                  {Selection user interface}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1185 \subsection
+                  {Data management interface}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1185 \subsection
+                  {Data management interface}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1187 \subsection
+                  {Support functionalities}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1187 \subsection
+                  {Support functionalities}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1190 \subsubsection
+                     {Fragmented JSON}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1190 \subsubsection
+                     {Fragmented JSON}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (0.46053pt too wide) in paragraph at lines 1189--1190
+\T1/stix2/m/n/12 JSON-formatted data due to an inheritance-based sys-tem with i
+Raw-Init as the main
+ []
+
+! Improper \prevdepth.
+\newpage ...everypar {}\fi \par \ifdim \prevdepth 
+                                                  >\z@ \vskip -\ifdim \prevd...
+l.1194 \chapter
+               {Results}
+You can refer to \spacefactor only in horizontal mode;
+you can refer to \prevdepth only in vertical mode; and
+neither of these is meaningful inside \write. So
+I'm forgetting what you said and using zero instead.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1194 \chapter
+               {Results}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[53] [54]
 Chapter 6.
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1194 \chapter{Results}
+                        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1196 \section
+               {Preliminary research conclusions}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1196 \section{Preliminary research conclusions}
+                                                 
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1198 
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1200 
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1202 \section
+               {Developed infrastructure}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1202 \section{Developed infrastructure}
+                                         
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1203 
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1204 \section
+               {Instructions for usage of test environment interface}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1204 ...for usage of test environment interface}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1206 \section
+               {â€¢}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 1183.
+ut line 1206.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1116,43 +1368,328 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 1183.
+ne 1206.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 1183.
- [53
+(Font)              scaled to size 16.0pt on input line 1206.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1206 \section{â€¢}
+                    
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1207 
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1208 
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1210 \chapter
+               {Further research suggestions and concerns}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[55
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
 .enc}]
 Chapter 7.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1187--1187
+Underfull \hbox (badness 10000) in paragraph at lines 1210--1210
 []\T1/opensans-TLF/b/n/18 Further re-search sug-ges-tions
  []
 
-[54
 
-] [55]
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1210 ...rther research suggestions and concerns}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1211 
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1213 \paragraph
+                 {Researcher resources requirements}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1214 \section
+               {Technical debt management}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1214 \section{Technical debt management}
+                                          
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1217 
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (7.25497pt too wide) in paragraph at lines 1215--1217
+\T1/stix2/m/n/12 While we made an ef-fort to make the code as func-tional, clea
+n, and well-documented
+ []
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1219 \section
+               {Optimisation}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1219 \section{Optimisation}
+                             
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1220 \paragraph
+                 {Lower-level implementation}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1223 \section
+               {Further research direction}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1223 \section{Further research direction}
+                                           
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1224 \paragraph
+                 {More complex environments}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1225 \section
+               {Future research concerns}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1225 \section{Future research concerns}
+                                         
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1226 \subsection
+                  {Gain-of-function AI development risks}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1226 ...n{Gain-of-function AI development risks}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1227 \begin{quote}
+                    
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[56
+
+] [57]
 Chapter 8.
-(master_thesis.bbl [56
+(master_thesis.bbl [58
 
-] [57
+]
+Underfull \hbox (badness 3098) in paragraph at lines 33--36
+[]\T1/stix2/m/n/12 M. Roser, ``The brief his-tory of ar-ti-fi-cial in-tel-li-ge
+nce: the world has
+ []
 
-]) [58] [59
 
-] [60
+Underfull \hbox (badness 4713) in paragraph at lines 33--36
+\T1/stix2/m/n/12 changed fast ^^V what might be next?'' \T1/stix2/m/it/12 Our W
+orld in Data\T1/stix2/m/n/12 , 2022,
+ []
+
+[59
+
+]) [60] [61
+
+] [62
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1261 \chapter{The Code}
+l.1284 \chapter{The Code}
                          
 Appendix A.
-[61
+[63
 
 
-] [62] (master_thesis.aux)
+]
+
+! LaTeX Error: \begin{itemize} on input line 1178 ended by \end{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1289 \end{document}
+                     
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[64] (master_thesis.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
@@ -1289,27 +1826,31 @@ master_thesis.bbl
  ***********
 
 Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 1AC756BCE51DA6608E85F49F25D91ABD;15137.
- ) 
+(rerunfilecheck)             Checksum: 4F011EF60678A78BB4D31BFF83B551ED;16044.
+ )
+(\end occurred inside a group at level 1)
+
+### semi simple group (level 1) entered at line 1178 (\begingroup)
+### bottom level 
 Here is how much of TeX's memory you used:
- 20254 strings out of 474586
- 316234 string characters out of 5745681
+ 20270 strings out of 474586
+ 316447 string characters out of 5745681
  2053558 words of memory out of 5000000
- 41841 multiletter control sequences out of 15000+600000
+ 41846 multiletter control sequences out of 15000+600000
  647460 words of font info for 145 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,1668b,2137s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\doric\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt
-1095.pk><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/open
-sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
-1/ascender/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs
-/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C
-:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX
-2Text-Regular.pfb>
-Output written on master_thesis.pdf (66 pages, 2875550 bytes).
+ <C:\Users\doric\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/
+ec/dpi600\ectt1095.pk><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1
+/ascender/opensans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiK
+TeX/fonts/type1/ascender/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/
+Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Use
+rs/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text
+-Italic.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/st
+ix2-type1/STIX2Text-Regular.pfb>
+Output written on master_thesis.pdf (68 pages, 2883282 bytes).
 PDF statistics:
- 1025 PDF objects out of 1200 (max. 8388607)
- 272 named destinations out of 1000 (max. 500000)
- 714 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1064 PDF objects out of 1200 (max. 8388607)
+ 283 named destinations out of 1000 (max. 500000)
+ 754 words of extra memory for PDF output out of 10000 (max. 10000000)
 

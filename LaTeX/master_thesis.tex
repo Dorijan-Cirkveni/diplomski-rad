@@ -454,19 +454,16 @@ The DAS test is an individually administered test designed to measure distinct c
 \subsubsection{The Logic Theorist (1956)}
 The Logic Theorist is considered one of the first, if not the very first artificial intelligence program, and was designed to prove mathematical theorems by simulating human problem-solving.
 
-This program used symbollic logic and belongs to the symbollist school of thought. This programs runs with worst-case exponential time complexity - however, this may be unavoidable due to certain problems being inherently unsolvable in sub-exponential time.
+This program used symbollic logic and belongs to the symbollist school of thought. This programs runs with worst-case exponential time complexity - however, this may be unavoidable due to certain problems being inherently unsolvable in sub-exponential time, making this metric meaningless for comparing artificial intelligence agents.
 
 \subsubsection{SHRDLU (1968)}
 SHRDLU is an early natural-language understanding computer program with the capacity of interacting with a simulated grid-based environment.
 
 The name SHRDLU is not an acronym - it was derived from \textit{ETAOIN SHRDLU}, the arrangement of the letter keys on a Linotype machine, arranged in descending order of usage frequency in English.
 
-SHRDLU performs most of its operations in polynomial time, but still requires exponential time for certain heuristic searches and problems.
-
 \subsubsection{Scalable Instructable Multiworld Agent (2024)}
 SIMA is an artificial intelligence developed by Google DeepMind that is capable of playing open-world and sandbox games with large arrays of choices, which makes it an important benchmark in development of AI that can perform tasks in the "real" (physical) world.
 
-\subsubsection{Honorable mention: LLMs}
 \section{Artificial consciousness}
 \begin{quote}
 [H]ow many different automata or moving machines could be made by the industry of man ... For we can easily understand a machine's being constituted so that it can utter words, and even emit some responses to action on it of a corporeal kind, which brings about a change in its organs; for instance, if touched in a particular part it may ask what we wish to say to it; if in another part it may exclaim that it is being hurt, and so on. But it never happens that it arranges its speech in various ways, in order to reply appropriately to everything that may be said in its presence, as even the lowest type of man can do.
@@ -932,6 +929,7 @@ These systems may fall under the field of artificial intelligence - A-star searc
 but they, by themselves, may not be considered intelligence, let alone consciousness.
 \subsection{Potential AI agents}
 \section{A suggestion for a knowledge-based classification of intelligence}
+\label{sec:knowledge_based_classification}
 This thesis proposes a model of intelligence tailored to artificial subjects
 by differentiating various levels of knowledge in two dimensions - knowledge by source and knowledge by level.
 \subsection{Knowledge by source}
@@ -1176,19 +1174,24 @@ This base class was used to create the following example test environments:
 \paragraph{MazeEnvironment} An environment class that randomly generates a maze using base parameters (scale, start position, generator type, and random seed) to create a maze for AI agents to solve.
 \paragraph{BlindDangerBasicTest} An environment class that creates a test environment with a wall of "box" agents positioned in front of an randomly dotted line of lethal tiles that is invisible to the test agent. The agent is expected to push a box in front of it and, if the box is observed to be destroyed, infer that there is an invisible threat ahead. Then, the agent is expected to continue pushing other boxes to discover a safe path forward.
 \paragraph{SpinningEnvironment} An environment class that creats a test environment in which the grid tiles spin around the center. This environment type is designed to test the predictive capacity of an AI agent - an agent lacking said capacity is likely to become stuck chasing the nearest goal tile until it reaches the step limit and loses.
-\paragraph{MirrorEnvironment} An environment class that uses a regular environment to create an environment in which the agent cannot see itself or its own surroundings, but can see a mirror entity in another segment of the environment. 
-\begin{itemize}
+\paragraph{MirrorEnvironment} An environment class that uses a regular environment to create an environment in which the agent cannot see itself or its own surroundings, but can see a mirror entity in another segment of the environment.
+
 \subsection{Environment display and interaction user interface}
 To manually control entities controlled by the test agent or to view AI agent actions step-by-step, this prototype includes a graphic display of the test environment with limited animation and interactivity features.
+
 \subsection{Selection user interface}
 This user interface allows the user to select the test environment, agent, and evaluation method, as well as modify, copy, and save any test environment.
 
 The test environments can be interacted with using the environment display and interaction user interface, or they can be run instantly (with the exception of use of agents that require manual input).
+
 \subsection{Data management interface}
 This user interface allows the user to edit nested simple data structures with relative ease, and is used in multiple places within the prototype.
+
 \subsection{Support functionalities}
+
 \subsubsection{JSON-based initialisation}
 All grid environment and agent classes can be initialised from string or loaded JSON-formatted data due to an inheritance-based system with iRawInit as the main interface class. This system also allows for shallow and deep copying of said classes.
+
 \subsubsection{Fragmented JSON}
 As using stand-along JSON files for test environments would result in a significant amount of repeating data,
 this prototype instead includes functions that allow for separation of JSON files into fragments and reuse of said fragments.
@@ -1196,7 +1199,13 @@ this prototype instead includes functions that allow for separation of JSON file
 \chapter{Results}
 \label{sec:results}
 \section{Preliminary research conclusions}
+While we have yet to determine the true nature of intelligence and consciousness, there are promising methods we can use in an attempt to determine whether an artificial intelligence can be considered intelligent or conscious.
+
+It is possible to use existing theories of existence, as well as the knowledge-based classification of intelligence proposed in Section in Section~\ref{sec:knowledge_based_classification}, to attempt to determine the level of intelligence of an AI. 
+
+As for consciousness, the Turing test has proven inadequate for this purpose. We propose use of mirror tests and theory-of-mind tests as an alternative.
 \section{Developed infrastructure}
+
 \section{Instructions for usage of test environment interface}
 TODO add 5-10 pages of instructions
 \section{•}
