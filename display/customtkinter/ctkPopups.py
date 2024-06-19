@@ -33,7 +33,7 @@ class MultiChoiceMessage(ctk.CTkToplevel):
 
         self.title(title)
         size=(300,300)
-        self.geometry(getLoc(master,size))
+        self.geometry(getLoc(master,size,(300,300)))
         self.wm_attributes("-topmost", 1)
 
         self.message_label = ctk.CTkLabel(self, text=message, wraplength=250)

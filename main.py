@@ -1,18 +1,28 @@
 import display.customtkinter.ctkMainframe as disp_main
 import display.customtkinter.ctkPopups as popups
 import display.customtkinter.ctkDataManager as daman
+
+ctk = popups.DarkCTK.GetMain()
+functions = [
+    ("Run tests", lambda: disp_main.main(run_mcm)),
+    ("Manage data", lambda: daman.manage_all(lamain))
+]
+def run_mcm(var=None,*data):
+    ctk.geometry("{}x{}".format(800,600))
+    for widget in ctk.winfo_children():
+        widget.destroy()
+    if type(var)==str:
+        return
+    return popups.MultiChoiceMessage(ctk,"Main Menu", "Prototype",functions)
+
 def main():
-    ctk=popups.DarkCTK.GetMain()
-    functions=[
-        ("Run tests",lambda: disp_main.main(lamain)),
-        ("Manage data",lambda: daman.manage_all(lamain))
-    ]
-    mcm=popups.MultiChoiceMessage(ctk,"Main Menu", "Prototype",
-                              functions)
+    mcm=run_mcm()
 
     mcm.protocol("WM_DELETE_WINDOW", ctk.quit)
     ctk.mainloop()
-def lamain():
+def lamain(data,*args):
+    if type(data) is str:
+        return
     return main()
 
 if __name__ == '__main__':

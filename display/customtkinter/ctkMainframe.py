@@ -12,9 +12,10 @@ from display.customtkinter.ctkSelectionFrame import SelectionFrame
 
 
 class MainFrame(SwapFrame):
-    def __init__(self, master: DarkCTK, return_lambda: callable, screen_size: tuple[int, int]):
+    def __init__(self, master: DarkCTK, close_lambda:callable, return_lambda: callable, screen_size: tuple[int, int]):
         super().__init__(master, "MainFrame", return_lambda, screen_size)
         master.geometry("{}x{}".format(*screen_size))
+        master.protocol("WM_DELETE_WINDOW", close_lambda)
 
 
 def testframe(manager:frjson.FragmentedJsonManager):
@@ -33,7 +34,7 @@ def main(returnfn:callable=print):
     root.minsize(*scale)
     root.title("AI Agent Grid Test Interface")
 
-    frame = SwapFrame(root, "Test", returnfn, scale)
+    frame = MainFrame(root, returnfn, print, scale)
     frame.pack()
 
     grid_display_frame = DisplayFrame(frame, scale)

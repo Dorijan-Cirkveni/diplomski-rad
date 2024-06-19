@@ -44,7 +44,8 @@ def getLoc(master, size, topLimit=None, bottomLimit=None):
     loc=Tadd(rootloc,Tdiv(rootsize,(2,)*2,True))
     sizeloc=Tsub(loc,Tdiv(size,(2,)*2, True))
     final_loc=Tmax(Tnum(0),sizeloc)
-    print(rootsize)
+    final_loc=Tmax(topLimit,final_loc)
+    print(rootloc,rootsize,final_loc)
 
     a,b,c,d=size+final_loc
     s="%dx%d+%d+%d" % (a,b,c,d)

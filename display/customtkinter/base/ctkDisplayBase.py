@@ -50,6 +50,10 @@ class SwapFrame(iTkFrameDef):
         frame.tkraise()
         self.return_lambda("title." + frame.getname())
 
+    def close(self):
+        self.return_lambda(None)
+
+
     def run(self, first_screen: str):
         self.show_frame(first_screen)
         self.mainloop()
