@@ -252,8 +252,8 @@ class ctkDataManager(ctk.CTkToplevel):
         self.show_cur_value_interface(last[lastkey])
 
     def close_action(self):
-        self.return_command(self.root_struct)
         self.destroy()
+        self.return_command(self.root_struct)
 
     def stack_action(self):
         last, lastkey = self.cur, self.curkey

@@ -5,7 +5,7 @@ def main():
     ctk=popups.DarkCTK.GetMain()
     functions=[
         ("Run tests",disp_main.main),
-        ("Manage data",lambda: daman.manage_all(lambda _:main))
+        ("Manage data",lambda: daman.manage_all(lambda _:main()))
     ]
     popups.MultiChoiceMessage(ctk,"Main Menu", "Prototype",
                               functions)
