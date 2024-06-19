@@ -1195,6 +1195,11 @@ All grid environment and agent classes can be initialised from string or loaded 
 \subsubsection{Fragmented JSON}
 As using stand-along JSON files for test environments would result in a significant amount of repeating data,
 this prototype instead includes functions that allow for separation of JSON files into fragments and reuse of said fragments.
+
+\subsubsection{Grid system}
+The grid system mainly consists of two important classes: Grid2D and GridRoutine.
+The former is an encapsulation of a twodimensional array with useful functions such as adjacent tile finding, tuple-based indexing, and grid overlapping.
+The latter involves further encapsulation in order to allow dynamic grid environment such as CycleGridRoutine.
 %-------------------------------------------------------------------------------
 \chapter{Results}
 \label{sec:results}
@@ -1219,6 +1224,32 @@ It is recommended to use an IDE such as PyCharm to run the prototype framework.
   \caption{The initial main menu}
   \label{slk:thesis_main_menu}
 \end{figure}
+The main menu consists of a pop-up window with three buttons: "Run tests", "Manage data" (which closes the pop-up window and opens a data management pop-up window with a dictionary of all JSON files available in Fragmented JSON extension format), and "Close", which closes the program (as does closing the pop-up window).
+
+\subsection{Data management menu}
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.5\linewidth]{Figures/thesis data management.png} 
+  \caption{The data management pop-up window}
+  \label{slk:thesis_data_management}
+\end{figure}
+The data management menu allows for management of nested data structures in Fragmented JSON format.
+
+The dropdown menu on the left allows for selection and addition of keys (in case the current structure is a dictionary) or indices (in case of a list).
+
+The right part of the interface changes its layout depending on the value paired with the chosen key/index, but always contains a textbox allowing the user to directly change the entry's raw JSON value directly and save it using the "Apply" button.
+
+In case the value is a list or a dictionary, the "Edit elements" button is shown, allowing the user to open the value and edit its elements the same way, placing the outer structure on a stack.
+
+In case the value is a valid fragment name, the "Edit fragment" button is shown and allowing the user to open, edit, and save the referenced fragment. The current structure stack is placed on the metastack.
+
+The "Return" button at the top left of the screen allows the user to close the current structure/fragment and return to the structure on top of the stack.
+
+If the current stack is empty, the user is given an option to save the current fragment to its file, create a new fragment, or discard the changes, after which the metastack is popped into the current stack.
+
+If both stacks are empty, the pop-up window is closed and the user returned to the part of the program that called the data manager (whether it's the main menu or the test selection menu).
+
+The bottom "Apply and close" button repeats the "Return" button's function until stopped or until the pop-up window is closed.
 
 \section{•}
 
