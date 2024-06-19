@@ -147,28 +147,29 @@
 \contentsline {section}{\numberline {6.3}Instructions}{56}{section.6.3}%
 \contentsline {subsection}{\numberline {6.3.1}Downloading and running the software}{56}{subsection.6.3.1}%
 \contentsline {subsection}{\numberline {6.3.2}Main menu}{57}{subsection.6.3.2}%
-\contentsline {section}{\numberline {6.4}•}{57}{section.6.4}%
-\contentsline {chapter}{\numberline {7}Further Research and Discussion}{58}{chapter.7}%
-\contentsline {paragraph}{Further prototype development}{58}{section*.82}%
-\contentsline {paragraph}{Researcher resources requirements}{58}{section*.83}%
-\contentsline {section}{\numberline {7.1}Technical debt management}{58}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Optimisation}{58}{section.7.2}%
-\contentsline {paragraph}{Lower-level implementation}{58}{section*.84}%
-\contentsline {section}{\numberline {7.3}Further research direction}{58}{section.7.3}%
-\contentsline {paragraph}{More complex environments}{58}{section*.85}%
-\contentsline {section}{\numberline {7.4}Future research concerns}{59}{section.7.4}%
-\contentsline {subsection}{\numberline {7.4.1}Gain-of-function AI development risks}{59}{subsection.7.4.1}%
-\contentsline {subsection}{\numberline {7.4.2}Safety versus speed}{59}{subsection.7.4.2}%
-\contentsline {chapter}{\numberline {8}Conclusion}{60}{chapter.8}%
-\contentsline {chapter}{References}{61}{chapter*.86}%
+\contentsline {subsection}{\numberline {6.3.3}Data management menu}{57}{subsection.6.3.3}%
+\contentsline {section}{\numberline {6.4}•}{58}{section.6.4}%
+\contentsline {chapter}{\numberline {7}Further Research and Discussion}{59}{chapter.7}%
+\contentsline {paragraph}{Further prototype development}{59}{section*.83}%
+\contentsline {paragraph}{Researcher resources requirements}{59}{section*.84}%
+\contentsline {section}{\numberline {7.1}Technical debt management}{59}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Optimisation}{59}{section.7.2}%
+\contentsline {paragraph}{Lower-level implementation}{59}{section*.85}%
+\contentsline {section}{\numberline {7.3}Further research direction}{59}{section.7.3}%
+\contentsline {paragraph}{More complex environments}{59}{section*.86}%
+\contentsline {section}{\numberline {7.4}Future research concerns}{60}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Gain-of-function AI development risks}{60}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Safety versus speed}{60}{subsection.7.4.2}%
+\contentsline {chapter}{\numberline {8}Conclusion}{61}{chapter.8}%
+\contentsline {chapter}{References}{62}{chapter*.87}%
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Abstract}{63}{chapter*.87}%
+\contentsline {chapter}{Abstract}{64}{chapter*.88}%
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
-\babel@toc {english}{}\relax 
-\babel@toc {croatian}{}\relax 
-\contentsline {chapter}{Sa\v {z}etak}{64}{chapter*.88}%
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
+\contentsline {chapter}{Sa\v {z}etak}{65}{chapter*.89}%
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{\numberline {A:}The Code}{65}{chapter.1}%
+\babel@toc {croatian}{}\relax 
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {A:}The Code}{66}{chapter.1}%

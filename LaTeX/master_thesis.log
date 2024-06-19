@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  19 JUN 2024 18:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  19 JUN 2024 20:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -916,7 +916,7 @@ been already used, duplicate ignored
 l.106 ...berline {5}Implementation}{48}{chapter.5}
                                                   % [2]
 LaTeX Font Info:    Trying to load font information for TS1+stix2 on input line
- 149.
+ 150.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ts1stix2.fd
 File: ts1stix2.fd 2018/04/02 v2.0.0-latex stix2 TS1 font definitions
@@ -925,7 +925,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.164 ...line {chapter}{Abstract}{62}{chapter*.86}
+l.165 ...line {chapter}{Abstract}{63}{chapter*.87}
                                                   % [3{C:/Users/doric/AppData/L
 ocal/Programs/MiKTeX/fonts/enc/dvips/stix2-type1/stix2-ts1.enc}])
 \tf@toc=\write4
@@ -1107,14 +1107,24 @@ d re-sult in a sig-nif-i-cant amount
 
 [54] [55]
 Chapter 6.
-<Figures/thesis main menu.png, id=869, 597.432pt x 465.53925pt>
+<Figures/thesis main menu.png, id=869, 359.54324pt x 368.577pt>
 File: Figures/thesis main menu.png Graphic file (type png)
 <use Figures/thesis main menu.png>
 Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1223.
 
-(pdftex.def)             Requested size: 220.50887pt x 171.82771pt.
+(pdftex.def)             Requested size: 220.50887pt x 226.05203pt.
+[56
+
+]
+<Figures/thesis data management.png, id=874, 476.37975pt x 387.24675pt>
+File: Figures/thesis data management.png Graphic file (type png)
+<use Figures/thesis data management.png>
+Package pdftex.def Info: Figures/thesis data management.png  used on input line
+ 1232.
+(pdftex.def)             Requested size: 220.50887pt x 179.24652pt.
+ [57 <./Figures/thesis main menu.png> <./Figures/thesis data management.png>]
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 1228.
+ut line 1254.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1123,43 +1133,41 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 1228.
+ne 1254.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 1228.
- [56
-
-] [57{C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_n
-vvucy.enc} <./Figures/thesis main menu.png>]
+(Font)              scaled to size 16.0pt on input line 1254.
+ [58{C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nv
+vucy.enc}]
 Chapter 7.
 
-Underfull \hbox (badness 3189) in paragraph at lines 1232--1232
+Underfull \hbox (badness 3189) in paragraph at lines 1258--1258
 []\T1/opensans-TLF/b/n/18 Further Re-search and Dis-cus-
  []
 
-[58
+[59
 
-] [59]
+] [60]
 Chapter 8.
-(master_thesis.bbl [60
+(master_thesis.bbl [61
 
-] [61
+] [62
 
-]) [62] [63
+]) [63] [64
 
-] [64
+] [65
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1307 \chapter{The Code}
+l.1333 \chapter{The Code}
                          
 Appendix A.
-[65
+[66
 
 
-] [66] (master_thesis.aux)
+] [67] (master_thesis.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
@@ -1292,6 +1300,7 @@ Figures/grid/all_tiles.png
 lstlang1.sty    2023/02/27 1.9 listings language file
   t1cmtt.fd    2023/04/13 v2.5m Standard LaTeX font definitions
 Figures/thesis main menu.png
+Figures/thesis data management.png
 ts1opensans-tlf.fd
 master_thesis.bbl
  ***********
@@ -1305,19 +1314,19 @@ Package rerunfilecheck Warning: File `master_thesis.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `master_thesis.out':
-(rerunfilecheck)             Before: C5AE1730B69DC1C5EF29146B19362590;16137
-(rerunfilecheck)             After:  CEE37CC929C0F80FC797F658409A8CCE;16137.
+(rerunfilecheck)             Before: CEE37CC929C0F80FC797F658409A8CCE;16137
+(rerunfilecheck)             After:  04C7F9879B82DB162C754B749A215B13;16305.
  ) 
 Here is how much of TeX's memory you used:
- 20290 strings out of 474586
- 316894 string characters out of 5745681
+ 20303 strings out of 474586
+ 317309 string characters out of 5745681
  2053558 words of memory out of 5000000
- 41858 multiletter control sequences out of 15000+600000
+ 41868 multiletter control sequences out of 15000+600000
  647460 words of font info for 145 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,1668b,2137s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-pdfTeX warning (dest): name{chapter*.85} has been referenced but does not exist
+pdfTeX warning (dest): name{chapter*.86} has been referenced but does not exist
 , replaced by a fixed one
 
  <C:\Users\doric\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt10
@@ -1328,9 +1337,9 @@ iKTeX/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData
 /Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/
 Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2T
 ext-Regular.pfb>
-Output written on master_thesis.pdf (70 pages, 2896866 bytes).
+Output written on master_thesis.pdf (71 pages, 2911955 bytes).
 PDF statistics:
- 1092 PDF objects out of 1200 (max. 8388607)
- 291 named destinations out of 1000 (max. 500000)
- 775 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1100 PDF objects out of 1200 (max. 8388607)
+ 294 named destinations out of 1000 (max. 500000)
+ 780 words of extra memory for PDF output out of 10000 (max. 10000000)
 
