@@ -1174,8 +1174,17 @@ This base class was used to create the following example test environments:
 \paragraph{MirrorEnvironment} An environment class that uses a regular environment to create an environment in which the agent cannot see itself or its own surroundings, but can see a mirror entity in another segment of the environment. 
 \begin{itemize}
 \subsection{Environment display and interaction interface}
+To manually control entities controlled by the test agent or to view AI agent actions step-by-step, this prototype includes a graphic display of the test environment with limited animation and interactivity features.
+\subsection{Environment and agent selection and editing interface }
+
+\subsection{Data management interface}
+
 \subsection{Support functionalities}
 \subsubsection{Fragmented JSON}
+As using stand-along JSON files for test environments would result in a significant amount of repeating data,
+this prototype instead includes functions that allow for separation of JSON files into fragments and reuse of said fragments.
+
+Combined with the aforementioned 
 %-------------------------------------------------------------------------------
 \chapter{Results and Discussion}
 \label{sec:results_and_discussion}
