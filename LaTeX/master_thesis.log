@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  19 JUN 2024 10:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  19 JUN 2024 10:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1107,7 +1107,7 @@ File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 [50] [51]
 Chapter 6.
 LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 1135.
+ut line 1165.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
 f.fd
@@ -1116,16 +1116,16 @@ File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
 le
 (Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 1135.
+ne 1165.
 LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 1135.
+(Font)              scaled to size 16.0pt on input line 1165.
  [52
 
 {C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nvvucy
 .enc}]
 Chapter 7.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1139--1139
+Underfull \hbox (badness 10000) in paragraph at lines 1169--1169
 []\T1/opensans-TLF/b/n/18 Further re-search sug-ges-tions
  []
 
@@ -1146,7 +1146,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1213 \chapter{The Code}
+l.1243 \chapter{The Code}
                          
 Appendix A.
 [60
@@ -1292,10 +1292,10 @@ Package rerunfilecheck Info: File `master_thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 1AC756BCE51DA6608E85F49F25D91ABD;15137.
  ) 
 Here is how much of TeX's memory you used:
- 20198 strings out of 474586
- 315467 string characters out of 5745681
- 1976558 words of memory out of 5000000
- 41809 multiletter control sequences out of 15000+600000
+ 20216 strings out of 474586
+ 315716 string characters out of 5745681
+ 1985558 words of memory out of 5000000
+ 41817 multiletter control sequences out of 15000+600000
  647460 words of font info for 145 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,1668b,1428s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1307,9 +1307,9 @@ sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
 ta/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C
 :/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX
 2Text-Regular.pfb>
-Output written on master_thesis.pdf (65 pages, 2862313 bytes).
+Output written on master_thesis.pdf (65 pages, 2866482 bytes).
 PDF statistics:
- 973 PDF objects out of 1000 (max. 8388607)
- 248 named destinations out of 1000 (max. 500000)
+ 991 PDF objects out of 1000 (max. 8388607)
+ 258 named destinations out of 1000 (max. 500000)
  714 words of extra memory for PDF output out of 10000 (max. 10000000)
 

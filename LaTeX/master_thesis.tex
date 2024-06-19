@@ -1082,9 +1082,9 @@ The base interface for a test entity regardless of environment type.
 This interface contains getter and setter functions for various test entity states
 as well as functions that allow the environment to run agent functions:
 \begin{itemize}
-\item{iEntity.receiveEnvironmentData} - calls iAgent.receiveData on its agent, retrieves nothing.
+\item{iEntity.receiveEnvironmentData(data)} - calls iAgent.receiveData on its agent, retrieves nothing.
 \item{iEntity.performAction} - calls iAgent.performAction on its agent, retrieves next action the agent is to take.
-\item{iEntity.getMemory} - calls iAgent.submitData on its agent, retrieves a set of available memories. Used for evaluation purposes.
+\item{iEntity.getMemory} - special getter that calls iAgent.submitData on its agent, retrieves a set of available memories. Used for evaluation purposes.
 \end{itemize}
 those being receiveData, performAction
 \paragraph{iEvalMethod}
@@ -1120,18 +1120,30 @@ changeActiveEntityAgents(self, newAgents: list[iAgent])
 scheduleEffect(self, time, effect: Effect, schedule=0)
 \end{lstlisting}
 
-\item{Agent data getters}
-
-\item{TODO}
+\item{Effect handler}
 
 \begin{lstlisting}[language=Python]
-TODO
+handleEffect(self, effect: Effect)
 \end{lstlisting}
 
-\item{TODO}
+\item{A function that runs one time cycle of the testing process}
 
 \begin{lstlisting}[language=Python]
-TODO
+runIteration(self, cur_iter=None)
+\end{lstlisting}
+
+\item{A function that runs the simulation until a win condition, a loss condition, or a timeout condition is met}
+
+\begin{lstlisting}[language=Python]
+run(self, agent: iAgent, cycle_limit: int, timeoutWin: bool = True) -> tuple[bool, int]
+\end{lstlisting}
+
+\item{A function that generates a list of test environment lists intended for use with machine learning methods that require separate learning/validation/testing datasets}
+
+\begin{lstlisting}[language=Python]
+GenerateSetGroups(cls, size, learning_aspects_raw: dict, requests: dict, ratio=None, *args,
+                          randomizer: random.Random = None, randomseed=42,
+                          prev_manager: dsmngr.DatasetGenerator = None, **kwargs) -> list[list['iEnvironment']]
 \end{lstlisting}
 
 \item{TODO}
@@ -1142,6 +1154,13 @@ TODO
 
 \end{itemize}
 \subsection{Grid environment classes}
+\begin{itemize}
+\item{TODO}
+
+\begin{lstlisting}[language=Python]
+TODO
+\end{lstlisting}
+\end{itemize}
 \paragraph{GridEnvironment}
 
 This class is the basis for every grid-based test environment in this prototype. 
