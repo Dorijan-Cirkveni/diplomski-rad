@@ -1150,32 +1150,32 @@ GenerateSetGroups(cls, size, learning_aspects_raw: dict, requests: dict, ratio=N
 
 as well as the following abstract methods:
 \begin{lstlisting}[language=Python]
-    def getEnvData(self, agentID=None):
-        raise NotImplementedError
+    getEnvData(self, agentID=None)
 
-    def getMoves(self, agentID=None):
-        raise NotImplementedError
+    getMoves(self, agentID=None)
 
-    def runChanges(self, moves):
-        raise NotImplementedError
+    step(self, moves) # called by runIteration
 
-    def step(self, moves):
-        raise NotImplementedError
+    isWin(self) and isLoss(self)
+
+    GenerateGroup(self, size, learning_aspects, requests: dict)
+    # called by GenerateSetGroups
 \end{lstlisting}
 
 \subsection{Grid environment classes}
-\begin{itemize}
-\item{TODO}
-
-\begin{lstlisting}[language=Python]
-TODO
-\end{lstlisting}
-\end{itemize}
 \paragraph{GridEnvironment}
+The base grid environment class implements all abstract functions from iEnvironment except for GenerateGroup (as this abstract function is intended for generating test batches)
+and is used to generate and run grid-based test environments.
 
-This class is the basis for every grid-based test environment in this prototype. 
+This base class was used to create the following example test environments:
+\paragraph{MazeEnvironment} An environment class that randomly generates a maze using base parameters (scale, start position, generator type, and random seed) to create a maze for AI agents to solve.
+\paragraph{BlindDangerBasicTest} An environment class that creates a test environment with a wall of "box" agents positioned in front of an randomly dotted line of lethal tiles that is invisible to the test agent. The agent is expected to push a box in front of it and, if the box is observed to be destroyed, infer that there is an invisible threat ahead. Then, the agent is expected to continue pushing other boxes to discover a safe path forward.
+\paragraph{SpinningEnvironment} An environment class that creats a test environment in which the grid tiles spin around the center. This environment type is designed to test the predictive capacity of an AI agent - an agent lacking said capacity is likely to become stuck chasing the nearest goal tile until it reaches the step limit and loses.
+\paragraph{MirrorEnvironment} An environment class that uses a regular environment to create an environment in which the agent cannot see itself or its own surroundings, but can see a mirror entity in another segment of the environment. 
+\begin{itemize}
 \subsection{Environment display and interaction interface}
-
+\subsection{Support functionalities}
+\subsubsection{Fragmented JSON}
 %-------------------------------------------------------------------------------
 \chapter{Results and Discussion}
 \label{sec:results_and_discussion}
