@@ -54,8 +54,8 @@ class EnvCustomFrame(ctk.CTkFrame):
         self.edit_button.pack(padx=10, pady=10)
         self.copy_button = ctk.CTkButton(edit_square, text="Copy environment to other location", command=self.save_env_step_1)
         self.copy_button.pack(padx=10, pady=10)
-        self.save_preset_button = ctk.CTkButton(edit_square, text="Copy environment to other location", command=self.save_env_step_1)
-        self.save_preset_buttonn.pack(padx=10, pady=10)
+        self.save_preset_button = ctk.CTkButton(edit_square, text="Copy environment to other location", command=self.save_agent_step_1)
+        self.save_preset_button.pack(padx=10, pady=10)
         self.save_button = ctk.CTkButton(edit_square, text="Save environment", command=self.save_env)
         self.save_button.pack(padx=10, pady=10)
 
@@ -369,6 +369,8 @@ class SelectionFrame(iTkFrame):
     def precheck_env(self, data):
         catname = data["Category name"]
         _, ind = data["Env meta"]
+        if catname is None:
+            return False
         fragdata = self.env_mngr.get(catname, [ind])
         data["Environment data"] = fragdata
         if not data.get("auto",False):
