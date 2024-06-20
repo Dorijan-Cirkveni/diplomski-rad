@@ -755,7 +755,7 @@ The test environment grid elements can be divided into two groups: basic and com
 
 Basic grid elements only have one type of appearance and behavior regardless of the properties of the entity interacting with them.
 
-The prototype frameworks provides the following default basic grid elements, as seen on the image below:
+The prototype framework provides the following default basic grid elements, as seen in the image below:
 
 \begin{figure}[htb]
   \centering
@@ -820,11 +820,11 @@ For example, a grid element may be configured to act like a blank tile when inte
 
 \subsection{Visible and solid grid modes}
 
-In order to allow environment variants with limited visibility (such as a mirror test where the active agent is unable to view its immediate environment), the environment design is to allow for separate grids for vision and physical interactions.
+To allow environment variants with limited visibility (such as a mirror test where the active agent is unable to view its immediate environment), the environment design allows for separate grids for vision and physical interactions.
 
 \subsection{Grid routines}
 
-In order to allow more dynamic environment variants where the state of the grid may vary from iteration to iteration, the grid data is formatted in the form of a grid routine which may return different grids depending on the current iteration.
+To allow more dynamic environment variants where the state of the grid may vary from iteration to iteration, the grid data is formatted in the form of a grid routine which may return different grids depending on the current iteration.
 
 A grid routine consists of a set of grids that may loop or stay on the last grid shown when all grids have been used. 
 
@@ -833,7 +833,7 @@ A grid routine consists of a set of grids that may loop or stay on the last grid
 The most important part of a test environment are the test entities, the means through which the artificial intelligence will interact with the environment, both receiving information limited and/or altered by the properties of the entities and influencing the actions of the entities through instruction decided upon based on a combination of input data, learned information, and rational deduction.
 
 \subsection{Entity/Agent duality}
-In order to allow agents to be affected by attributes and status effects that require knowledge of self to detect and/or manage, as well as to design more complex tests, an entity object class has been created to contain the agent and contrast against the agent class.
+To allow agents to be affected by attributes and status effects that require knowledge of self to detect and/or manage, as well as to design more complex tests, an entity object class has been created to contain the agent and contrast against the agent class.
 
 \subsection{Entity properties}
 
@@ -846,7 +846,7 @@ However, in combination with entity vision and property-dependent grid interacti
 
 \subsubsection{Entity vision properties}
 
-In case of entities controlled by agents that consider environment data
+In the case of entities controlled by agents that consider environment data
 when deciding which action they will take, it's important to determine what parts of the environment will be visible to them at any given moment.
 
 There are several variants of entity vision available in the prototype:
