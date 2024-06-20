@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  20 JUN 2024 10:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  20 JUN 2024 11:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -919,7 +919,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.172 ...line {chapter}{Abstract}{67}{chapter*.97}
+l.171 ...line {chapter}{Abstract}{67}{chapter*.96}
                                                   % [3])
 \tf@toc=\write4
 \openout4 = `master_thesis.toc'.
@@ -1079,13 +1079,13 @@ Chapter 5.
 [48
 
 ]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 1048--1049
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 1046--1047
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
 
 [49] [50]
-Overfull \hbox (2.1459pt too wide) in paragraph at lines 1105--1106
+Overfull \hbox (2.1459pt too wide) in paragraph at lines 1103--1104
 []\T1/stix2/m/n/12 This in-ter-face en-cap-su-lates in-for-ma-tion about the en
 -vi-ron-ment, the agents con-tained,
  []
@@ -1094,20 +1094,20 @@ Overfull \hbox (2.1459pt too wide) in paragraph at lines 1105--1106
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 1
-110.
+108.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
 File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
 [51] [52] [53]
-Overfull \hbox (5.27303pt too wide) in paragraph at lines 1196--1198
+Overfull \hbox (5.27303pt too wide) in paragraph at lines 1194--1196
 \T1/stix2/m/n/12 As us-ing stand-along JSON files for test en-vi-ron-ments woul
 d re-sult in a sig-nif-i-cant amount
  []
 
 [54] [55]
 Chapter 6.
-<Figures/thesis main menu.png, id=869, 359.54324pt x 368.577pt>
+<Figures/thesis main menu.png, id=868, 359.54324pt x 368.577pt>
 File: Figures/thesis main menu.png Graphic file (type png)
 <use Figures/thesis main menu.png>
 Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1223.
@@ -1116,20 +1116,20 @@ Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1223.
 [56
 
 ]
-<Figures/thesis data management.png, id=874, 476.37975pt x 387.24675pt>
+<Figures/thesis data management.png, id=873, 476.37975pt x 387.24675pt>
 File: Figures/thesis data management.png Graphic file (type png)
 <use Figures/thesis data management.png>
 Package pdftex.def Info: Figures/thesis data management.png  used on input line
  1232.
 (pdftex.def)             Requested size: 220.50887pt x 179.24652pt.
  [57 <./Figures/thesis main menu.png> <./Figures/thesis data management.png>]
-<Figures/thesis selection menu.png, id=884, 590.205pt x 473.97075pt>
+<Figures/thesis selection menu.png, id=883, 590.205pt x 473.97075pt>
 File: Figures/thesis selection menu.png Graphic file (type png)
 <use Figures/thesis selection menu.png>
 Package pdftex.def Info: Figures/thesis selection menu.png  used on input line 
 1257.
 (pdftex.def)             Requested size: 220.50887pt x 177.08046pt.
-<Figures/thesis run.png, id=885, 609.477pt x 481.8pt>
+<Figures/thesis run.png, id=884, 609.477pt x 481.8pt>
 File: Figures/thesis run.png Graphic file (type png)
 <use Figures/thesis run.png>
 Package pdftex.def Info: Figures/thesis run.png  used on input line 1269.
@@ -1311,11 +1311,11 @@ master_thesis.bbl
  ***********
 
 Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: E057EC2C45CA39D96AFD19AD3D2B69EC;16205.
+(rerunfilecheck)             Checksum: AE5BCB81F8A528DDC2B7F1B39978E8A3;16205.
  ) 
 Here is how much of TeX's memory you used:
- 20282 strings out of 474586
- 316654 string characters out of 5745681
+ 20281 strings out of 474586
+ 316643 string characters out of 5745681
  2053558 words of memory out of 5000000
  41844 multiletter control sequences out of 15000+600000
  646795 words of font info for 143 fonts, out of 8000000 for 9000
@@ -1329,9 +1329,9 @@ sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
 ta/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C
 :/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX
 2Text-Regular.pfb>
-Output written on master_thesis.pdf (73 pages, 2971385 bytes).
+Output written on master_thesis.pdf (73 pages, 2971421 bytes).
 PDF statistics:
- 1120 PDF objects out of 1200 (max. 8388607)
- 303 named destinations out of 1000 (max. 500000)
+ 1119 PDF objects out of 1200 (max. 8388607)
+ 302 named destinations out of 1000 (max. 500000)
  790 words of extra memory for PDF output out of 10000 (max. 10000000)
 

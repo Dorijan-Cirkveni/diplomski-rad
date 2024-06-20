@@ -1040,14 +1040,12 @@ In the process of this test, we will test a variety of artificial intelligence a
 Artificial intelligence agents will be described in the following manner:
 \paragraph{Description}
 This segment will include a short description of what principle an artificial agent is based on, as well as how it interacts with the test environment.
-\paragraph{Interface}
-This segment will briefly describe the type of inter
 \paragraph{Advantages}
 This segment will include the advantages of using an artificial agent in the intelligence and consciousness testing procedure, as well as other elements when applicable - such as functionality transparency (which allows for a white-box approach to testing), computational complexity (both time and space complexity - after all, no matter how much computational resources one has at their disposal, there is always a solid limit. And the less resources it takes to implement a given agent type, the more it can be accomplished with the same amount of computational resources), as well as 
 \paragraph{Disadvantages}
 This segment will include the disadvantages of using an artificial agent in the intelligence and consciousness testing procedure, as well as other elements when applicable - including those mentioned above, although as drawbacks rather than advantages. One such drawback, ironically, is low complexity - while simple agents, such as one that solves mazes by sticking to the left wall, can be convenient for easy problem-solving, this very same trait means they can hardly be considered conscious.
 \subsection{Reference agents}
-Before testing the agents that could be considered conscious, we need to test the tests themselves against reference agents in order to determine whether they are 
+Before testing the agents that could be considered conscious, we need to test the tests themselves against reference agents to determine whether they are sufficiently difficult for their intended purpose.
 \subsubsection{Human input}
 
 \paragraph{Description}
@@ -1058,9 +1056,9 @@ To that end, a graphic user interface has been provided to facilitate interactio
 \paragraph{Advantages}
 Using a human benchmark allows us to establish a baseline expectation for the performance and behavior of artificial agents.
 \paragraph{Disadvantages}
-Obviously, this is not an artificial agent - and relying on human ability as a benchmark for consciousness has its disadvantages.
+Relying on human ability as a benchmark for consciousness has its disadvantages.
 
-One of them is that the nature and underlying mechanism of our intelligence and consciousness remain as open questions to this day,
+One of them is that the nature and underlying mechanism of our intelligence and consciousness remain open questions to this day,
 \subsubsection{Pre-determined sets of actions}
 
 \paragraph{Description}
@@ -1068,12 +1066,12 @@ Instead of manually inputting actions in real time, this method allows us to pre
 \paragraph{Advantages}
 Along with the aforementioned advantages of human input, using a pre-recorded sequence of input values allows us to easily and reliably test and debug deterministic test environments.
 \paragraph{Disadvantages}
-In case of stochastic environments, 
+In the case of stochastic environments, this method does not allow for adaptive testing, and direct input is required.
 
 \section{Implementation details}
 \subsection{Base classes}
 \paragraph{iRawInit}
-In order to allow initialisation of data structures such as test environments and agents from raw JSON data and saving modified parameters of the aforementioned environments,
+To allow the initialization of data structures such as test environments and agents from raw JSON data and saving modified parameters of said environments,
 most classes in the prototype codebase inherit the interface class iRawInit.
 
 This class contains the following functions:
@@ -1215,7 +1213,8 @@ The developed prototype framework for artificial intelligence and consciousness 
 \section{Instructions}
 \subsection{Downloading and running the software}
 The prototype framework software is freely available for dowload on GitHub at
-\href{https://github.com/Dorijan-Cirkveni/diplomski-rad} .
+
+\href{https://github.com/Dorijan-Cirkveni/diplomski-rad}{https://github.com/Dorijan-Cirkveni/diplomski-rad}.
 
 It is recommended to use an IDE such as PyCharm to run the prototype framework.
 \subsection{Main menu}
@@ -1418,7 +1417,8 @@ The research has resulted in a functional prototype of the testing framework, wh
 \chapter{The Code}
 
 The prototype framework software is freely available on Github at
-\href{https://github.com/Dorijan-Cirkveni/diplomski-rad}.
+
+\href{https://github.com/Dorijan-Cirkveni/diplomski-rad}{https://github.com/Dorijan-Cirkveni/diplomski-rad}.
 If you wish to contribute to this codebase, you may contact the author on Github.
 
 
