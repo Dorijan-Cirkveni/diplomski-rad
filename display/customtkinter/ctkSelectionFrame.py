@@ -245,8 +245,7 @@ class EnvCustomFrame(ctk.CTkFrame):
         if not self.agent_data:
             PopupMessage(self, "Error", "Missing agent data!")
             return
-        address=frjson.WriteFragmentAddress(self.catname,'Custom')
-        InputMessage(DarkCTK.GetMain(), "New index", "New index:", address,
+        InputMessage(DarkCTK.GetMain(), "New index", "New index:", 'Custom',
                           func=self.save_agent_step_2)
 
     def save_agent_step_2(self,s):

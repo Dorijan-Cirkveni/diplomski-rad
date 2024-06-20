@@ -101,7 +101,8 @@ class iActiveAgent(iAgent):
         return X
 
     @classmethod
-    def set_active_presets(cls, frjson_manager: frjson.FragmentedJsonManager, presetlist:list[tuple[object,object]]):
+    def set_active_presets(cls, frjson_manager: frjson.FragmentedJsonManager, presetlist:list[tuple[object,object]],
+                           keep_existing=True):
         if not cls.INPUT_PRESET_FILE:
             raise Exception(f"Agent {cls} missing preset file!")
         filename, address=frjson.ReadFragmentAddress(cls.INPUT_PRESET_FILE)
@@ -110,7 +111,7 @@ class iActiveAgent(iAgent):
         arch, archind=frjson.nestr.NestedStructGetRef(arch,archind,address)
         if arch is None:
             raise Exception("Called preset file cannot be fragmented!")
-        XDICT:dict={}
+        XDICT:dict=arch[archind] if keep_existing else {}
         for e,v in presetlist:
             XDICT[e]=v
         if "Default" in XDICT:
