@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  19 JUN 2024 20:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  20 JUN 2024 08:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -856,7 +856,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {C:/Users/doric/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dori
 c/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_jg4h6q.enc}]
 [2]
-<hr_0036501554_56.pdf, id=364, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=372, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 71.
@@ -865,7 +865,7 @@ File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 71.
 (pdftex.def)             Requested size: 598.23354pt x 845.15544pt.
-<hr_0036501554_56.pdf, id=367, page=1, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=375, page=1, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
 Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 71.
@@ -915,19 +915,12 @@ been already used, duplicate ignored
                    \relax 
 l.106 ...berline {5}Implementation}{48}{chapter.5}
                                                   % [2]
-LaTeX Font Info:    Trying to load font information for TS1+stix2 on input line
- 150.
-
-(C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ts1stix2.fd
-File: ts1stix2.fd 2018/04/02 v2.0.0-latex stix2 TS1 font definitions
-)
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.165 ...line {chapter}{Abstract}{63}{chapter*.87}
-                                                  % [3{C:/Users/doric/AppData/L
-ocal/Programs/MiKTeX/fonts/enc/dvips/stix2-type1/stix2-ts1.enc}])
+l.164 ...\numberline {8}Conclusion}{63}{chapter.8}
+                                                  % [3])
 \tf@toc=\write4
 \openout4 = `master_thesis.toc'.
 
@@ -941,7 +934,14 @@ l.91 \chapter
 Chapter 1.
 [5
 
-] [6]
+]
+LaTeX Font Info:    Trying to load font information for TS1+stix2 on input line
+ 114.
+
+(C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/fonts/stix2-type1\ts1stix2.fd
+File: ts1stix2.fd 2018/04/02 v2.0.0-latex stix2 TS1 font definitions
+) [6{C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/stix2-type1/s
+tix2-ts1.enc}]
 Chapter 2.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/bx/n' in size <16> not availabl
 e
@@ -949,7 +949,7 @@ e
 e 122.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
 (Font)              scaled to size 16.0pt on input line 122.
-<Figures/AI performance history.png, id=508, 853.1875pt x 383.4325pt>
+<Figures/AI performance history.png, id=518, 853.1875pt x 383.4325pt>
 File: Figures/AI performance history.png Graphic file (type png)
 <use Figures/AI performance history.png>
 Package pdftex.def Info: Figures/AI performance history.png  used on input line
@@ -958,7 +958,7 @@ Package pdftex.def Info: Figures/AI performance history.png  used on input line
 [7
 
  <./Figures/AI performance history.png>]
-<Figures/wen agi.png, id=517, 3474.38025pt x 1963.93726pt>
+<Figures/wen agi.png, id=527, 3474.38025pt x 1963.93726pt>
 File: Figures/wen agi.png Graphic file (type png)
 <use Figures/wen agi.png>
 Package pdftex.def Info: Figures/wen agi.png  used on input line 172.
@@ -971,7 +971,7 @@ e 190.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
 (Font)              scaled to size 12.0pt on input line 190.
  [9 <./Figures/wen agi.png (PNG copy)>] [10]
-<Figures/bing image creator prompt 1a.jpeg, id=540, 352.31625pt x 352.31625pt>
+<Figures/bing image creator prompt 1a.jpeg, id=550, 352.31625pt x 352.31625pt>
 File: Figures/bing image creator prompt 1a.jpeg Graphic file (type jpg)
 <use Figures/bing image creator prompt 1a.jpeg>
 Package pdftex.def Info: Figures/bing image creator prompt 1a.jpeg  used on inp
@@ -1001,30 +1001,30 @@ man traits to non-human
  []
 
 [23] [24]
-<Figures/LaMDA tweet 1.png, id=622, 444.4605pt x 151.767pt>
+<Figures/LaMDA tweet 1.png, id=632, 444.4605pt x 151.767pt>
 File: Figures/LaMDA tweet 1.png Graphic file (type png)
 <use Figures/LaMDA tweet 1.png>
 Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 528.
 (pdftex.def)             Requested size: 441.01773pt x 150.59714pt.
-<Figures/LaMDA tweet 2.png, id=624, 437.83575pt x 258.9675pt>
+<Figures/LaMDA tweet 2.png, id=634, 437.83575pt x 258.9675pt>
 File: Figures/LaMDA tweet 2.png Graphic file (type png)
 <use Figures/LaMDA tweet 2.png>
 Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 534.
 (pdftex.def)             Requested size: 441.01773pt x 260.85962pt.
  [25 <./Figures/LaMDA tweet 1.png>] [26 <./Figures/LaMDA tweet 2.png>]
-<Figures/DataTNG.jpeg, id=642, 301.125pt x 168.63pt>
+<Figures/DataTNG.jpeg, id=652, 301.125pt x 168.63pt>
 File: Figures/DataTNG.jpeg Graphic file (type jpg)
 <use Figures/DataTNG.jpeg>
 Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 570.
 (pdftex.def)             Requested size: 227.62204pt x 127.4731pt.
 [27 <./Figures/DataTNG.jpeg>]
-<Figures/James_Moriarty_hologram.png, id=650, 1058.95625pt x 1058.95625pt>
+<Figures/James_Moriarty_hologram.png, id=660, 1058.95625pt x 1058.95625pt>
 File: Figures/James_Moriarty_hologram.png Graphic file (type png)
 <use Figures/James_Moriarty_hologram.png>
 Package pdftex.def Info: Figures/James_Moriarty_hologram.png  used on input lin
 e 580.
 (pdftex.def)             Requested size: 227.62204pt x 227.60652pt.
-<Figures/VoyagerEMH.png, id=651, 468.75125pt x 531.9875pt>
+<Figures/VoyagerEMH.png, id=661, 468.75125pt x 531.9875pt>
 File: Figures/VoyagerEMH.png Graphic file (type png)
 <use Figures/VoyagerEMH.png>
 Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 589.
@@ -1063,7 +1063,7 @@ ids or property-dependent
 [36
 
 ]
-<Figures/grid/all_tiles.png, id=706, 120.45pt x 132.495pt>
+<Figures/grid/all_tiles.png, id=716, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
 Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 762.
@@ -1107,7 +1107,7 @@ d re-sult in a sig-nif-i-cant amount
 
 [54] [55]
 Chapter 6.
-<Figures/thesis main menu.png, id=869, 359.54324pt x 368.577pt>
+<Figures/thesis main menu.png, id=879, 359.54324pt x 368.577pt>
 File: Figures/thesis main menu.png Graphic file (type png)
 <use Figures/thesis main menu.png>
 Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1223.
@@ -1116,58 +1116,56 @@ Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1223.
 [56
 
 ]
-<Figures/thesis data management.png, id=874, 476.37975pt x 387.24675pt>
+<Figures/thesis data management.png, id=884, 476.37975pt x 387.24675pt>
 File: Figures/thesis data management.png Graphic file (type png)
 <use Figures/thesis data management.png>
 Package pdftex.def Info: Figures/thesis data management.png  used on input line
  1232.
 (pdftex.def)             Requested size: 220.50887pt x 179.24652pt.
  [57 <./Figures/thesis main menu.png> <./Figures/thesis data management.png>]
-LaTeX Font Info:    Trying to load font information for TS1+opensans-TLF on inp
-ut line 1254.
-
-(C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/opensans\ts1opensans-tl
-f.fd
-File: TS1opensans-TLF.fd 2019/06/24 Font definitions for TS1/opensans-TLF.
-)
-LaTeX Font Info:    Font shape `TS1/opensans-TLF/bx/n' in size <16> not availab
-le
-(Font)              Font shape `TS1/opensans-TLF/b/n' tried instead on input li
-ne 1254.
-LaTeX Font Info:    Font shape `TS1/opensans-TLF/b/n' will be
-(Font)              scaled to size 16.0pt on input line 1254.
- [58{C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_nv
-vucy.enc}]
+<Figures/thesis selection menu.png, id=894, 590.205pt x 473.97075pt>
+File: Figures/thesis selection menu.png Graphic file (type png)
+<use Figures/thesis selection menu.png>
+Package pdftex.def Info: Figures/thesis selection menu.png  used on input line 
+1257.
+(pdftex.def)             Requested size: 220.50887pt x 177.08046pt.
+<Figures/thesis run.png, id=895, 609.477pt x 481.8pt>
+File: Figures/thesis run.png Graphic file (type png)
+<use Figures/thesis run.png>
+Package pdftex.def Info: Figures/thesis run.png  used on input line 1269.
+(pdftex.def)             Requested size: 220.50887pt x 174.31535pt.
+ [58] [59 <./Figures/thesis selection menu.png> <./Figures/thesis run.png>]
+[60]
 Chapter 7.
 
-Underfull \hbox (badness 3189) in paragraph at lines 1258--1258
+Underfull \hbox (badness 3189) in paragraph at lines 1308--1308
 []\T1/opensans-TLF/b/n/18 Further Re-search and Dis-cus-
  []
 
-[59
+[61
 
-] [60]
+] [62]
 Chapter 8.
-(master_thesis.bbl [61
+(master_thesis.bbl [63
 
-] [62
+] [64
 
-]) [63] [64
+]) [65] [66
 
-] [65
+] [67
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1333 \chapter{The Code}
+l.1383 \chapter{The Code}
                          
 Appendix A.
-[66
+[68
 
 
-] [67] (master_thesis.aux)
+] [69] (master_thesis.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
@@ -1301,45 +1299,33 @@ lstlang1.sty    2023/02/27 1.9 listings language file
   t1cmtt.fd    2023/04/13 v2.5m Standard LaTeX font definitions
 Figures/thesis main menu.png
 Figures/thesis data management.png
-ts1opensans-tlf.fd
+Figures/thesis selection menu.png
+Figures/thesis run.png
 master_thesis.bbl
  ***********
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `master_thesis.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `master_thesis.out':
-(rerunfilecheck)             Before: CEE37CC929C0F80FC797F658409A8CCE;16137
-(rerunfilecheck)             After:  04C7F9879B82DB162C754B749A215B13;16305.
+Package rerunfilecheck Info: File `master_thesis.out' has not changed.
+(rerunfilecheck)             Checksum: FB780ABAF2BDD958A7E7CC3F663D36FC;16650.
  ) 
 Here is how much of TeX's memory you used:
- 20303 strings out of 474586
- 317309 string characters out of 5745681
+ 20279 strings out of 474586
+ 316632 string characters out of 5745681
  2053558 words of memory out of 5000000
- 41868 multiletter control sequences out of 15000+600000
- 647460 words of font info for 145 fonts, out of 8000000 for 9000
+ 41846 multiletter control sequences out of 15000+600000
+ 646795 words of font info for 143 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,1668b,2137s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{chapter*.86} has been referenced but does not exist
-, replaced by a fixed one
-
- <C:\Users\doric\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt10
-95.pk><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/opensa
-ns/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/
-ascender/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs/M
-iKTeX/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData
-/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/
-Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2T
-ext-Regular.pfb>
-Output written on master_thesis.pdf (71 pages, 2911955 bytes).
+ <C:\Users\doric\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt
+1095.pk><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/open
+sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
+1/ascender/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs
+/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppDa
+ta/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C
+:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX
+2Text-Regular.pfb>
+Output written on master_thesis.pdf (73 pages, 2970748 bytes).
 PDF statistics:
- 1100 PDF objects out of 1200 (max. 8388607)
- 294 named destinations out of 1000 (max. 500000)
- 780 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1121 PDF objects out of 1200 (max. 8388607)
+ 298 named destinations out of 1000 (max. 500000)
+ 806 words of extra memory for PDF output out of 10000 (max. 10000000)
 
