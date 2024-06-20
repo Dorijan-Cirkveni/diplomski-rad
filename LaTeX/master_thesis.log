@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  20 JUN 2024 11:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  20 JUN 2024 12:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1079,13 +1079,13 @@ Chapter 5.
 [48
 
 ]
-Overfull \hbox (0.49788pt too wide) in paragraph at lines 1046--1047
+Overfull \hbox (0.49788pt too wide) in paragraph at lines 1047--1048
  []\T1/stix2/b/n/12 Disadvantages[] \T1/stix2/m/n/12 This seg-ment will in-clud
 e the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
 
 [49] [50]
-Overfull \hbox (2.1459pt too wide) in paragraph at lines 1103--1104
+Overfull \hbox (2.1459pt too wide) in paragraph at lines 1104--1105
 []\T1/stix2/m/n/12 This in-ter-face en-cap-su-lates in-for-ma-tion about the en
 -vi-ron-ment, the agents con-tained,
  []
@@ -1094,13 +1094,13 @@ Overfull \hbox (2.1459pt too wide) in paragraph at lines 1103--1104
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 1
-108.
+109.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
 File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
 [51] [52] [53]
-Overfull \hbox (5.27303pt too wide) in paragraph at lines 1194--1196
+Overfull \hbox (5.27303pt too wide) in paragraph at lines 1195--1197
 \T1/stix2/m/n/12 As us-ing stand-along JSON files for test en-vi-ron-ments woul
 d re-sult in a sig-nif-i-cant amount
  []
@@ -1110,7 +1110,7 @@ Chapter 6.
 <Figures/thesis main menu.png, id=868, 359.54324pt x 368.577pt>
 File: Figures/thesis main menu.png Graphic file (type png)
 <use Figures/thesis main menu.png>
-Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1223.
+Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1224.
 
 (pdftex.def)             Requested size: 220.50887pt x 226.05203pt.
 [56
@@ -1120,32 +1120,32 @@ Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1223.
 File: Figures/thesis data management.png Graphic file (type png)
 <use Figures/thesis data management.png>
 Package pdftex.def Info: Figures/thesis data management.png  used on input line
- 1232.
+ 1233.
 (pdftex.def)             Requested size: 220.50887pt x 179.24652pt.
  [57 <./Figures/thesis main menu.png> <./Figures/thesis data management.png>]
 <Figures/thesis selection menu.png, id=883, 590.205pt x 473.97075pt>
 File: Figures/thesis selection menu.png Graphic file (type png)
 <use Figures/thesis selection menu.png>
 Package pdftex.def Info: Figures/thesis selection menu.png  used on input line 
-1257.
+1258.
 (pdftex.def)             Requested size: 220.50887pt x 177.08046pt.
 <Figures/thesis run.png, id=884, 609.477pt x 481.8pt>
 File: Figures/thesis run.png Graphic file (type png)
 <use Figures/thesis run.png>
-Package pdftex.def Info: Figures/thesis run.png  used on input line 1269.
+Package pdftex.def Info: Figures/thesis run.png  used on input line 1270.
 (pdftex.def)             Requested size: 220.50887pt x 174.31535pt.
  [58] [59 <./Figures/thesis selection menu.png> <./Figures/thesis run.png>]
 [60]
 Chapter 7.
 
-Underfull \hbox (badness 3189) in paragraph at lines 1308--1308
+Underfull \hbox (badness 3189) in paragraph at lines 1309--1309
 []\T1/opensans-TLF/b/n/18 Further Re-search and Dis-cus-
  []
 
 [61
 
 ]
-Overfull \hbox (4.1282pt too wide) in paragraph at lines 1336--1337
+Overfull \hbox (4.1282pt too wide) in paragraph at lines 1337--1338
  []\T1/stix2/b/n/12 More com-plex en-vi-ron-ment de-vel-op-ment[] \T1/stix2/m/n
 /12 A sim-ple grid en-vi-ron-ment sys-tem, while
  []
@@ -1165,7 +1165,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1417 \chapter{The Code}
+l.1418 \chapter{The Code}
                          
 Appendix A.
 [69
@@ -1329,7 +1329,7 @@ sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
 ta/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C
 :/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX
 2Text-Regular.pfb>
-Output written on master_thesis.pdf (73 pages, 2971421 bytes).
+Output written on master_thesis.pdf (73 pages, 2971402 bytes).
 PDF statistics:
  1119 PDF objects out of 1200 (max. 8388607)
  302 named destinations out of 1000 (max. 500000)
