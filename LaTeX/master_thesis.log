@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  20 JUN 2024 08:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  20 JUN 2024 08:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -919,7 +919,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.164 ...\numberline {8}Conclusion}{63}{chapter.8}
+l.165 ...\numberline {8}Conclusion}{63}{chapter.8}
                                                   % [3])
 \tf@toc=\write4
 \openout4 = `master_thesis.toc'.
@@ -1159,7 +1159,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1383 \chapter{The Code}
+l.1385 \chapter{The Code}
                          
 Appendix A.
 [68
@@ -1305,11 +1305,11 @@ master_thesis.bbl
  ***********
 
 Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: FB780ABAF2BDD958A7E7CC3F663D36FC;16650.
+(rerunfilecheck)             Checksum: 6D04AEDA0F7E1739EE873FABCBD61003;16678.
  ) 
 Here is how much of TeX's memory you used:
- 20279 strings out of 474586
- 316632 string characters out of 5745681
+ 20280 strings out of 474586
+ 316646 string characters out of 5745681
  2053558 words of memory out of 5000000
  41846 multiletter control sequences out of 15000+600000
  646795 words of font info for 143 fonts, out of 8000000 for 9000
@@ -1323,9 +1323,9 @@ sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
 ta/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C
 :/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX
 2Text-Regular.pfb>
-Output written on master_thesis.pdf (73 pages, 2970748 bytes).
+Output written on master_thesis.pdf (73 pages, 2971056 bytes).
 PDF statistics:
- 1121 PDF objects out of 1200 (max. 8388607)
- 298 named destinations out of 1000 (max. 500000)
+ 1122 PDF objects out of 1200 (max. 8388607)
+ 299 named destinations out of 1000 (max. 500000)
  806 words of extra memory for PDF output out of 10000 (max. 10000000)
 
