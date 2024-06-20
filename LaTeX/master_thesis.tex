@@ -1204,16 +1204,17 @@ The latter involves further encapsulation in order to allow dynamic grid environ
 \chapter{Results}
 \label{sec:results}
 \section{Preliminary research conclusions}
-While we have yet to determine the true nature of intelligence and consciousness, there are promising methods we can use in an attempt to determine whether an artificial intelligence can be considered intelligent or conscious.
+While we have yet to determine the true nature of intelligence and consciousness, there are promising methods we can use in an attempt to determine whether an artificial intelligence instance can be considered intelligent or conscious.
 
 It is possible to use existing theories of existence, as well as the knowledge-based classification of intelligence proposed in Section in Section~\ref{sec:knowledge_based_classification}, to attempt to determine the level of intelligence of an AI. 
 
-As for consciousness, the Turing test has proven inadequate for this purpose. We propose use of mirror tests and theory-of-mind tests as an alternative.
+As for consciousness, the Turing test has proven inadequate for this purpose. We propose the use of mirror tests and theory-of-mind tests as an alternative.
+
 \section{Developed infrastructure}
-The developed prototype framework for artificial intelligence and consciousness testing provides future AI researchers and developers with tools that facilitate development of AI test environments and development and testing of AI agents. 
+The developed prototype framework for artificial intelligence and consciousness testing provides future AI researchers and developers with tools that facilitate the development of AI test environments and the development and testing of AI agents. 
 \section{Instructions}
 \subsection{Downloading and running the software}
-The prototype framework software is freely available on Github at
+The prototype framework software is freely available for dowload on GitHub at
 \href{https://github.com/Dorijan-Cirkveni/diplomski-rad} .
 
 It is recommended to use an IDE such as PyCharm to run the prototype framework.
@@ -1233,21 +1234,21 @@ The main menu consists of a pop-up window with three buttons: "Run tests", "Mana
   \caption{The data management pop-up window}
   \label{slk:thesis_data_management}
 \end{figure}
-The data management menu allows for management of nested data structures in Fragmented JSON format.
+The data management menu allows for the management of nested data structures in Fragmented JSON format.
 
-The dropdown menu on the left allows for selection and addition of keys (in case the current structure is a dictionary) or indices (in case of a list).
+The dropdown menu on the left allows for the selection and addition of keys (in case the current structure is a dictionary) or indices (in case of a list).
 
-The right part of the interface changes its layout depending on the value paired with the chosen key/index, but always contains a textbox allowing the user to directly change the entry's raw JSON value directly and save it using the "Apply" button.
+The right part of the interface changes its layout depending on the value paired with the chosen key or index but always contains a textbox allowing the user to change the entry's raw JSON value directly and save it using the "Apply" button.
 
 In case the value is a list or a dictionary, the "Edit elements" button is shown, allowing the user to open the value and edit its elements the same way, placing the outer structure on a stack.
 
-In case the value is a valid fragment name, the "Edit fragment" button is shown and allowing the user to open, edit, and save the referenced fragment. The current structure stack is placed on the metastack.
+In case the value is a valid fragment name, the "Edit fragment" button is shown, allowing the user to open, edit, and save the referenced fragment. The current structure stack is placed on the metastack.
 
 The "Return" button at the top left of the screen allows the user to close the current structure/fragment and return to the structure on top of the stack.
 
-If the current stack is empty, the user is given an option to save the current fragment to its file, create a new fragment, or discard the changes, after which the metastack is popped into the current stack.
+If the current stack is empty, the user is given the option to save the current fragment to its file, create a new fragment, or discard the changes, after which the metastack is popped into the current stack.
 
-If both stacks are empty, the pop-up window is closed and the user returned to the part of the program that called the data manager (whether it's the main menu or the test selection menu).
+If both stacks are empty, the pop-up window closes and the program reopens the menu that the pop-up window was open from, whether it's the main menu or the test selection menu.
 
 The bottom "Apply and close" button repeats the "Return" button's function until stopped or until the pop-up window is closed.
 
