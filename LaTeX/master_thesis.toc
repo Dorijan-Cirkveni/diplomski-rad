@@ -156,22 +156,24 @@
 \contentsline {paragraph}{Technical debt management}{61}{section*.86}%
 \contentsline {paragraph}{Optimisation}{61}{section*.87}%
 \contentsline {subparagraph}{Lower-level implementation}{61}{section*.88}%
-\contentsline {section}{\numberline {7.2}Agent testing}{61}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Further research direction}{61}{section.7.3}%
-\contentsline {paragraph}{More complex environments}{61}{section*.89}%
-\contentsline {section}{\numberline {7.4}Future research concerns}{62}{section.7.4}%
-\contentsline {subsection}{\numberline {7.4.1}Gain-of-function AI development risks}{62}{subsection.7.4.1}%
-\contentsline {subsection}{\numberline {7.4.2}Safety versus speed}{62}{subsection.7.4.2}%
-\contentsline {chapter}{\numberline {8}Conclusion}{63}{chapter.8}%
-\contentsline {chapter}{References}{64}{chapter*.90}%
+\contentsline {section}{\numberline {7.2}Further research direction}{61}{section.7.2}%
+\contentsline {paragraph}{Agent testing}{61}{section*.89}%
+\contentsline {paragraph}{More complex grid environments}{62}{section*.90}%
+\contentsline {paragraph}{More complex environment development}{62}{section*.91}%
+\contentsline {section}{\numberline {7.3}Discussion}{62}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Ethical concerns}{62}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Gain-of-function AI development risks}{62}{subsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.3.3}Safety versus speed}{63}{subsection.7.3.3}%
+\contentsline {chapter}{\numberline {8}Conclusion}{64}{chapter.8}%
+\contentsline {chapter}{References}{65}{chapter*.92}%
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Abstract}{66}{chapter*.91}%
+\contentsline {chapter}{Abstract}{67}{chapter*.93}%
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
-\contentsline {chapter}{Sa\v {z}etak}{67}{chapter*.92}%
+\contentsline {chapter}{Sa\v {z}etak}{68}{chapter*.94}%
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{\numberline {A:}The Code}{68}{chapter.1}%
+\contentsline {chapter}{\numberline {A:}The Code}{69}{chapter.1}%
