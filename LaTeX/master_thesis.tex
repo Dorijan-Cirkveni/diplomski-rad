@@ -1271,15 +1271,15 @@ The run buttons are red in the initial state, as their criteria have not been fu
   \label{slk:thesis_run}
 \end{figure}
 
-This menu allows the user to interact with the environment, whether by directly controlling the GraphicManualInputAgent or by running the simulation with an AI agent.
+This menu allows the user to interact with the environment, whether by directly controlling the GraphicManualInputAgent or by viewing an AI agent interact with the simulation.
 
 The grid on the top left displays the current state of the environment,
-and the text below it shows additional information such as the current step number and estimated agent score.
-The interaction options on the right function as follows:
+and the text below shows additional information such as the current step number and estimated agent score.
+The interaction options on the right function are as follows:
 \begin{itemize}
 \item{Multi-step run and animation settings}
 
-The first three input boxes and button allow the user to run multiple steps at once (decided by the "Iterations:" input box) as well as decide if they only want ever K-th step to show (decided by the "Animated iterations:" input box or they want every step to be animated in K steps (decided by the "Animation steps:" input box, unless the "Iterations:" input box value is greater than 1).
+The first three input boxes and button allow the user to run multiple steps at once (decided by the "Iterations:" input box) as well as decide if they only want every K-th step to show (decided by the "Animated iterations:" input box or they want every step to be animated in K steps (decided by the "Animation steps:" input box unless the "Iterations:" input box value is greater than 1).
 
 Additionally, setting "Iterations:" to 0 allows the user to set animation speed which will persist when attempting to control the agent manually.
 
@@ -1289,7 +1289,7 @@ The manual control interface, in the shape of a D-pad, is used to manually contr
 
 \item{Observer setting}
 
-Changes the point of view from which the environment is displayed, with all entities as well as an omniscient viewpont (default) as options.
+Changes the point of view from which the environment is displayed, with all entities as well as an omniscient viewpoint (default) as options.
 
 \item{Grid type choice}
 
@@ -1297,7 +1297,7 @@ Changes the grid type that is shown (with "solid", "viewed", and an experimental
 
 \item(Grid and entity toggles)
 
-Allow hiding and re-showing the grid and the entities.
+Used to show and hide the grid and the entities respectively.
 
 \item{The return button}
 
@@ -1319,7 +1319,7 @@ Alternatively, the prototype could merely be used as a guideline while rewriting
 \paragraph{Optimisation}
 \subparagraph{Lower-level implementation}
 Several elements of the codebase, such as grid implementation, environment display, and environment animation,
-may function more efficiently if implemented at a lower level rather than in pure Python.
+may function more efficiently if implemented at a lower level instead of pure Python.
 \section{Further research direction}
 \paragraph{Agent testing} The following agents are suggested for further development and research:
 \begin{itemize}
@@ -1331,19 +1331,19 @@ Deep learning agents in general, however, can be more directly connected to the 
 While deep learning is a powerful tool, it is unlikely that any of the five schools of artificial intelligence alone
 \end{itemize}
 \paragraph{More complex grid environments}
-The developed prototype allows simple implementation of more complex grid environment, such as one that requires an agent to solve a Raven Progressive Matrix test in order to navigate the environment safely by hiding a pattern of hazards and requiring the agent to deduce it from available information in RPM form.
+The developed prototype allows simple implementation of more complex grid environments, such as one that requires an agent to solve a Raven Progressive Matrix test to navigate the environment safely by hiding a pattern of hazards and requiring the agent to deduce it from available information in RPM form.
 \paragraph{More complex environment development}
-A simple grid environment system, while capable of supporting simplified versions of most conceivable AI tests, cannot be considered state-of-the-art due to existence of more complex test environments, whether purpose-built for AI testing or repurposed such as the open-world games used to test SIMA.
+A simple grid environment system, while capable of supporting simplified versions of most conceivable AI tests, cannot be considered state-of-the-art due to the existence of more complex test environments, whether purpose-built for AI testing or repurposed such as the open-world games used to test SIMA. Future research should involve the development of more complex environments  to more closely approximate real-world scenarios
 \section{Discussion}
 \subsection{Ethical concerns}
 
-As research progresses, it is possible artificial intelligence reaches the point where its instances could qualify for ethical protection levels granted to certain animal test subjects, which may make some research methods unethical and require additional caution in early stages of AI agent development to reduce unnecessary artificial suffering.
+As research progresses, it is possible artificial intelligence reaches the point where its instances could qualify for ethical protection levels granted to certain animal test subjects, which may make some research methods unethical and require additional caution in the early stages of AI agent development to reduce unnecessary artificial suffering.
 \paragraph{Gain-of-function AI development risks}
 
 \begin{quote}
 "The only way of discovering the limits of the possible is to venture a little way past them into the impossible." - Isaac Clarke
 \end{quote}
-In order to develop a method to effectively test for artificial general intelligence or consciousness, it may be necessary to develop increasingly complex artificial agents. This process, similar to that of gain-of-function research in virology, could pose relatively minor but significant safety risks if safety is ignored or mismanaged.
+To develop a method to effectively test for artificial general intelligence or consciousness, it may be necessary to create increasingly complex artificial agents. This process, similar to gain-of-function research in virology, could pose relatively minor but significant safety risks if safety is ignored or mismanaged.
 
 \paragraph{Interpretability as safety}
 
