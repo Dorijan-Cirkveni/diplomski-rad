@@ -8,6 +8,7 @@ import interfaces as itf
 from agents.Agent import GraphicManualInputAgent
 import test_json.test_json_manager as jsonmngr
 from display.customtkinter.base.ctkDefinitions import *
+import display.customtkinter.ctkPopups as popups
 
 from util.struct.TupleDotOperations import *
 
@@ -279,7 +280,8 @@ class DisplayFrame(iTkFrame):
 
     def process_input(self, raw: str):
         if self.running:
-            print("Still running, please wait!")
+            ctk=DarkCTK.GetMain()
+            popups.PopupMessage(ctk,"Warning","Still running, please try again!")
             return
         if raw == "Return":
             self.swapFrameFactory(GRIDSELECT)()

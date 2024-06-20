@@ -1263,6 +1263,26 @@ This menu allows the user to select the test environment and agent to test in sa
 
 The run buttons are red in the initial state, as their criteria have not been fulfilled.
 
+\section{Environment run menu}
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.5\linewidth]{Figures/thesis run.png} 
+  \caption{The environment display and interaction menu}
+  \label{slk:thesis_run}
+\end{figure}
+
+This menu allows the user to interact with the environment, whether by directly controlling the GraphicManualInputAgent or by running the simulation with an AI agent.
+
+The grid on the top left displays the current state of the environment,
+and the text below it shows additional information such as the current step number and estimated agent score.
+The interaction options on the right function as follows:
+\begin{itemize}
+\item{Multi-step run and animation settings}
+
+The first three input boxes and button allow the user to run multiple steps at once (decided by the "Iterations:" input box) as well as decide if they only want ever K-th step to show (decided by the "Animated iterations:" input box or they want every step to be animated in K steps (decided by the "Animation steps:" input box, unless the "Iterations:" input box value is greater than 1).
+
+Additionally, setting "Iterations:" to 0 allows the user to 
+\end{itemize}
 
 %-------------------------------------------------------------------------------
 \chapter{Further Research and Discussion}
