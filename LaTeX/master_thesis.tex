@@ -1320,15 +1320,21 @@ Alternatively, the prototype could merely be used as a guideline while rewriting
 \subparagraph{Lower-level implementation}
 Several elements of the codebase, such as grid implementation, environment display, and environment animation,
 may function more efficiently if implemented at a lower level rather than in pure Python.
-\paragraph{Agent testing} The following agents are suggested for further development and research
+\section{Further research direction}
+\paragraph{Agent testing} The following agents are suggested for further development and research:
 \begin{itemize}
 \item{LLM-based agents}
-While large language models have not been designed with grid-based input in mind,
-\item{}
+While large language models such as ChatGPT have not been designed with grid-based input and output in mind, it is possible to prompt them in a way that allows them to interact with the prototype.
+\item{General deep learning agents}
+Deep learning agents in general, however, can be more directly connected to the environment.
+\item{Combined approach agents}
+While deep learning is a powerful tool, it is unlikely that any of the five schools of artificial intelligence alone
 \end{itemize}
-\section{Further research direction}
-\paragraph{More complex environments}
-\section{Future research concerns}
+\paragraph{More complex grid environments}
+The developed prototype allows simple implementation of more complex grid environment, such as one that requires an agent to solve a Raven Progressive Matrix test in order to navigate the environment safely by hiding a pattern of hazards and requiring the agent to deduce it from available information in RPM form.
+\paragraph{More complex environment development}
+A simple grid environment system, while capable of 
+\section{Discussion}
 \subsection{Gain-of-function AI development risks}
 \begin{quote}
 "The only way of discovering the limits of the possible is to venture a little way past them into the impossible." - Isaac Clarke
