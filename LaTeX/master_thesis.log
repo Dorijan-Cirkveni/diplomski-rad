@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  21 JUN 2024 21:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  21 JUN 2024 22:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1010,11 +1010,7 @@ Overfull \hbox (7.0845pt too wide) in paragraph at lines 323--324
 Chapter 3.
 [19
 
-] [20]
-
-LaTeX Warning: Citation `wikipedia1' on page 21 undefined on input line 448.
-
-[21]
+] [20] [21]
 Overfull \hbox (7.07155pt too wide) in paragraph at lines 457--457
 []\T1/opensans-TLF/b/n/14 A few no-table at-tempts at sim-u-lat-ing/cre-at-ing 
 in-tel-li-gence 
@@ -1207,11 +1203,13 @@ Overfull \hbox (4.1282pt too wide) in paragraph at lines 1345--1346
 
 [62] [63]
 Chapter 8.
-(master_thesis.bbl) [64
+(master_thesis.bbl [64
 
 ] [65
 
-] [66
+]) [66] [67
+
+] [68
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
@@ -1221,7 +1219,7 @@ as been already used, duplicate ignored
 l.1426 \chapter{The Code}
                          
 Appendix A.
-[67
+[69
 
 
 ] (master_thesis.aux)
@@ -1366,14 +1364,23 @@ master_thesis.bbl
 
 LaTeX Warning: There were undefined references.
 
-Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: A57D04C29E411E74717956943F6632FE;15603.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `master_thesis.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `master_thesis.out':
+(rerunfilecheck)             Before: A57D04C29E411E74717956943F6632FE;15603
+(rerunfilecheck)             After:  694D167C025556B2DCBCD928CD6B302F;15700.
  ) 
 Here is how much of TeX's memory you used:
- 20235 strings out of 474586
- 315682 string characters out of 5745681
+ 20277 strings out of 474586
+ 316562 string characters out of 5745681
  2053558 words of memory out of 5000000
- 41815 multiletter control sequences out of 15000+600000
+ 41840 multiletter control sequences out of 15000+600000
  646795 words of font info for 143 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,1668b,2137s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1385,9 +1392,9 @@ sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
 ta/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C
 :/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX
 2Text-Regular.pfb>
-Output written on master_thesis.pdf (71 pages, 2956158 bytes).
+Output written on master_thesis.pdf (73 pages, 2967616 bytes).
 PDF statistics:
- 1044 PDF objects out of 1200 (max. 8388607)
- 285 named destinations out of 1000 (max. 500000)
+ 1089 PDF objects out of 1200 (max. 8388607)
+ 302 named destinations out of 1000 (max. 500000)
  758 words of extra memory for PDF output out of 10000 (max. 10000000)
 
