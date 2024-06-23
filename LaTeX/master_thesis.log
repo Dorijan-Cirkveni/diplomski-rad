@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  23 JUN 2024 15:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  23 JUN 2024 15:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1046,20 +1046,12 @@ e-at-ing con-
  []
 
 
-LaTeX Warning: Citation `Kohonen2007' on page 34 undefined on input line 724.
-
-
 Overfull \hbox (1.13382pt too wide) in paragraph at lines 728--729
 \T1/stix2/m/n/12 Cog was a robotics and ar-ti-fi-cial in-tel-li-gence project d
 e-vel-oped by the Hu-manoid Robotics
  []
 
 [34]
-
-LaTeX Warning: Citation `enwiki:1219708630' on page 35 undefined on input line 
-732.
-
-
 Overfull \hbox (11.34108pt too wide) in paragraph at lines 737--738
 \T1/stix2/m/n/12 The Blue Brain Project, launched by the École Poly-tech-nique 
 Fédérale de Lau-sanne (EPFL),
@@ -1076,7 +1068,7 @@ ids or property-dependent
 [36
 
 ]
-<Figures/grid/all_tiles.png, id=673, 120.45pt x 132.495pt>
+<Figures/grid/all_tiles.png, id=675, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
 Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 785.
@@ -1123,27 +1115,27 @@ Chapter 6.
 [56
 
 ]
-<Figures/thesis main menu.png, id=793, 359.54324pt x 368.577pt>
+<Figures/thesis main menu.png, id=795, 359.54324pt x 368.577pt>
 File: Figures/thesis main menu.png Graphic file (type png)
 <use Figures/thesis main menu.png>
 Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1248.
 
 (pdftex.def)             Requested size: 220.50887pt x 226.05203pt.
-<Figures/thesis data management.png, id=794, 476.37975pt x 387.24675pt>
+<Figures/thesis data management.png, id=796, 476.37975pt x 387.24675pt>
 File: Figures/thesis data management.png Graphic file (type png)
 <use Figures/thesis data management.png>
 Package pdftex.def Info: Figures/thesis data management.png  used on input line
  1257.
 (pdftex.def)             Requested size: 220.50887pt x 179.24652pt.
  [57 <./Figures/thesis main menu.png>]
-<Figures/thesis selection menu.png, id=802, 590.205pt x 473.97075pt>
+<Figures/thesis selection menu.png, id=804, 590.205pt x 473.97075pt>
 File: Figures/thesis selection menu.png Graphic file (type png)
 <use Figures/thesis selection menu.png>
 Package pdftex.def Info: Figures/thesis selection menu.png  used on input line 
 1282.
 (pdftex.def)             Requested size: 220.50887pt x 177.08046pt.
  [58 <./Figures/thesis data management.png>]
-<Figures/thesis run.png, id=809, 609.477pt x 481.8pt>
+<Figures/thesis run.png, id=811, 609.477pt x 481.8pt>
 File: Figures/thesis run.png Graphic file (type png)
 <use Figures/thesis run.png>
 Package pdftex.def Info: Figures/thesis run.png  used on input line 1294.
@@ -1161,11 +1153,13 @@ Overfull \hbox (3.99535pt too wide) in paragraph at lines 1361--1362
 
 [62] [63]
 Chapter 8.
-(master_thesis.bbl) [64
+(master_thesis.bbl [64
 
 ] [65
 
-] [66
+]) [66] [67
+
+] [68
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
@@ -1175,7 +1169,7 @@ as been already used, duplicate ignored
 l.1442 \chapter{The Code}
                          
 Appendix A.
-[67
+[69
 
 
 ] (master_thesis.aux)
@@ -1318,105 +1312,28 @@ Figures/thesis run.png
 master_thesis.bbl
  ***********
 
-
-LaTeX Warning: There were undefined references.
-
-
-Package rerunfilecheck Warning: File `master_thesis.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `master_thesis.out':
-(rerunfilecheck)             Before: 458145289C8E15C3200ABC2B321BBC06;15699
-(rerunfilecheck)             After:  3823933A83AA951D41CC061EC96C0C7E;15603.
+Package rerunfilecheck Info: File `master_thesis.out' has not changed.
+(rerunfilecheck)             Checksum: 458145289C8E15C3200ABC2B321BBC06;15699.
  ) 
 Here is how much of TeX's memory you used:
- 20482 strings out of 474586
- 319425 string characters out of 5745681
+ 20497 strings out of 474586
+ 319766 string characters out of 5745681
  2074558 words of memory out of 5000000
- 42124 multiletter control sequences out of 15000+600000
+ 42136 multiletter control sequences out of 15000+600000
  667317 words of font info for 144 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,1668b,2319s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{cite.Chomsky2023} has been referenced but does not 
-exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.enwikicog} has been referenced but does not ex
-ist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.Turing1952} has been referenced but does not e
-xist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.ELIZA} has been referenced but does not exist,
- replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.turing1} has been referenced but does not exis
-t, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.cole_2004} has been referenced but does not ex
-ist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.vallance_2022} has been referenced but does no
-t exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.lemoine2022lamda} has been referenced but does
- not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.descartes1} has been referenced but does not e
-xist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.enwikishrdlu} has been referenced but does not
- exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.chatgpt2024} has been referenced but does not 
-exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.stuart_armstrong_2012} has been referenced but
- does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.owid-ai-timelines} has been referenced but doe
-s not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.saeidi_opfermann_kam_wei_leonard_hsieh_kang_kr
-ieger_2022} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.owid-brief-history-of-ai} has been referenced 
-but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.russell_norvig_2010} has been referenced but d
-oes not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{chapter*.18} has been referenced but does not exist
-, replaced by a fixed one
-
- <C:\Users\doric\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt10
-95.pk><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/opensa
-ns/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/
-ascender/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs/M
-iKTeX/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppData
-/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C:/
-Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2T
-ext-Regular.pfb>
-Output written on master_thesis.pdf (71 pages, 2951476 bytes).
+ <C:\Users\doric\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt
+1095.pk><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/ascender/open
+sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
+1/ascender/opensans/OpenSans-Regular.pfb><C:/Users/doric/AppData/Local/Programs
+/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><C:/Users/doric/AppDa
+ta/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C
+:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX
+2Text-Regular.pfb>
+Output written on master_thesis.pdf (73 pages, 2962914 bytes).
 PDF statistics:
- 987 PDF objects out of 1000 (max. 8388607)
- 220 named destinations out of 1000 (max. 500000)
+ 1017 PDF objects out of 1200 (max. 8388607)
+ 223 named destinations out of 1000 (max. 500000)
  766 words of extra memory for PDF output out of 10000 (max. 10000000)
 
