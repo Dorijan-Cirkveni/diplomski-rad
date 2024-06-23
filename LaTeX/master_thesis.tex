@@ -2,10 +2,23 @@
 % Add the option upload to generate the final version which is uploaded to FERWeb
 % Dodaj opciju upload za generiranje konačne verzije koja se učitava na FERWeb
 
+\usepackage{titlesec}
 \usepackage{hyperref}
 \usepackage{blindtext}
 \usepackage{listings}
 \usepackage{xcolor}
+
+% Customize the chapter title format and spacing
+\titleformat{\chapter}[display]
+  {\normalfont\LARGE\bfseries} % Format: normal font, large size, bold series
+  {\chaptername\ \thechapter} % Chapter name and number
+  {20pt} % Space between chapter number and title
+  {\Huge} % Chapter title format
+
+\titlespacing*{\chapter}
+  {0pt} % Left margin
+  {50pt} % Space before chapter title
+  {40pt} % Space after chapter title
 
 \lstset{
   basicstyle=\ttfamily\small,
@@ -445,10 +458,11 @@ While defining intelligence is no easy task, one of its definitions (the ability
 \begin{itemize}
 \item{Raven's Progressive Matrices}
 
-"RPM is a non-verbal test typically used to measure general human intelligence and abstract reasoning and is regarded as a non-verbal estimate of fluid intelligence. It is one of the most common tests administered to both groups and individuals ranging from 5-year-olds to the elderly."
+Given their use in measuring general human intelligence and abstract reasoning and regard as a non-verbal estimate of fluid intelligence, Raven's Progressive Matrices are the best candidate for testing machine intelligence.
 \item{The Wechsler Adult Intelligence Scale}
 
-The WAIS is designed to measure cognitive ability in several areas, such as vocabulary, comprehension, arithmetic, and reasoning skills, These subtests assess an individual's ability to process information and their speed of processing.
+The WAIS is designed to measure cognitive ability in several areas, such as vocabulary, comprehension, arithmetic, and reasoning skills.
+Assessing an individual's ability to process information and their speed of processing, this test also serves the purpose of testing intelligence of artificial agents well.
 \item{The Differential Ability Scales test}
 
 The DAS test is an individually administered test designed to measure distinct cognitive abilities.
@@ -712,10 +726,11 @@ and while not explicitly stated as such, it can be considered a precursor to fut
 \subsubsection{COG}
 Cog was a robotics and artificial intelligence project developed by the Humanoid Robotics Group at the Massachusetts Institute of Technology, developed from the 1990s until 2003.
 
-It was based on the hypothesis that achieving human-level intelligence requires gaining experience through interaction with humans, similar to how human infants learn. This necessitated extensive interactions with humans over an extended period.
-Cog's behavior was designed to respond to environmental stimuli that humans would find appropriate and socially significant, thereby making the robot act more human-like. This behavior provided the robot with a better context for understanding and imitating human behavior, allowing it to learn socially as humans do.
+It was based on the hypothesis that "achieving human-level intelligence requires gaining experience through interaction with humans, like human infants do. This in turn required many interactions with humans over a long period.
 
-This makes this project not only a notable example of an attempt at machine intelligence but also one of machine consciousness, whether apparent or genuine.
+Because Cog's behavior responded to what humans would consider appropriate and socially salient environmental stimuli, the robot was expected to act more human. This behavior also provided the robot with a better context for deciphering and imitating human behavior. This was intended to allow the robot to learn socially, as humans do."\cite{enwiki:1219708630}
+
+This makes this project not only a notable example of an attempt at machine intelligence but also one of machine consciousness, seemingly only apparent but arguably genuine as well.
 
 \subsubsection{Blue Brain Project}
 The Blue Brain Project, launched by the École Polytechnique Fédérale de Lausanne (EPFL), is not focused on artificial consciousness as a goal. Instead, its goal is to establish simulation neuroscience as a complementary approach to understanding the brain alongside experimental, theoretical, and clinical neuroscience.

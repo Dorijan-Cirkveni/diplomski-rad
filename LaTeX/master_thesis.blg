@@ -11,46 +11,44 @@ Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'wiz_functions' (item size: 4) to 6000 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Database file #1: thesis_references.bib
-Warning--I didn't find a database entry for "wikipedia1"
-You've used 14 entries,
+You've used 15 entries,
             4269 wiz_defined-function locations,
-            947 strings with 10293 characters,
-and the built_in function-call counts, 7192 in all, are:
-= -- 601
-> -- 112
+            951 strings with 10482 characters,
+and the built_in function-call counts, 7615 in all, are:
+= -- 637
+> -- 116
 < -- 23
-+ -- 57
-- -- 24
-* -- 306
-:= -- 1298
-add.period$ -- 28
-call.type$ -- 14
-change.case$ -- 17
++ -- 59
+- -- 25
+* -- 322
+:= -- 1378
+add.period$ -- 30
+call.type$ -- 15
+change.case$ -- 19
 chr.to.int$ -- 39
-cite$ -- 14
-duplicate$ -- 555
-empty$ -- 641
-format.name$ -- 27
-if$ -- 1665
+cite$ -- 15
+duplicate$ -- 588
+empty$ -- 681
+format.name$ -- 28
+if$ -- 1762
 int.to.chr$ -- 0
-int.to.str$ -- 14
-missing$ -- 99
-newline$ -- 91
-num.names$ -- 16
-pop$ -- 225
+int.to.str$ -- 15
+missing$ -- 107
+newline$ -- 96
+num.names$ -- 17
+pop$ -- 247
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 578
+skip$ -- 612
 stack$ -- 0
-substring$ -- 123
-swap$ -- 383
+substring$ -- 126
+swap$ -- 402
 text.length$ -- 10
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 14
+type$ -- 15
 warning$ -- 0
-while$ -- 23
-width$ -- 16
-write$ -- 178
-(There was 1 warning)
+while$ -- 24
+width$ -- 17
+write$ -- 189
