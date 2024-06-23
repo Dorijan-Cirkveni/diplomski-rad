@@ -59,6 +59,13 @@ O.~C. 4o~(Omni), ``Discussion on large language models in public use,'' 6 2024,
   generated in a conversation with the thesis author. Includes mentions of
   ChatGPT, Bing Copilot, and Gemini.
 
+\bibitem{enwikishrdlu}
+\BIBentryALTinterwordspacing
+{Wikipedia contributors}, ``Cog (project) --- {Wikipedia}{,} the free
+  encyclopedia,'' 2024, [Online; accessed 22-June-2024]. [Online]. Available:
+  \url{https://en.wikipedia.org/w/index.php?title=Cog_(project)&oldid=1219708630}
+\BIBentrySTDinterwordspacing
+
 \bibitem{descartes1}
 R.~Descartes, \emph{Discourse on Method and Meditations on First Philosophy},
   D.~Weissman and W.~T. Bluhm, Eds.\hskip 1em plus 0.5em minus 0.4em\relax
@@ -110,13 +117,6 @@ A.~M. Turing, ``The chemical basis of morphogenesis,'' \emph{Philosophical
   Transactions of the Royal Society of London. Series B, Biological Sciences},
   vol. 237, pp. 37--72, 1952. \url{https://doi.org/10.1098/rstb.1952.0012}
 \BIBentrySTDinterwordspacing
-\BIBentrySTDinterwordspacing
-
-\bibitem{enwiki:1219708630}
-\BIBentryALTinterwordspacing
-{Wikipedia contributors}, ``Cog (project) --- {Wikipedia}{,} the free
-  encyclopedia,'' 2024, [Online; accessed 22-June-2024]. [Online]. Available:
-  \url{https://en.wikipedia.org/w/index.php?title=Cog_(project)&oldid=1219708630}
 \BIBentrySTDinterwordspacing
 
 \bibitem{Chomsky2023}
