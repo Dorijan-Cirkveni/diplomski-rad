@@ -89,7 +89,7 @@
 \contentsline {paragraph}{Simple agents}{43}{section.4.6}%
 \contentsline {paragraph}{Potential AI agents}{43}{section.4.6}%
 \contentsline {section}{\numberline {4.7}A suggestion for a knowledge-based classification of intelligence}{43}{section.4.7}%
-\contentsline {subsection}{\numberline {4.7.1}Knowledge by source}{43}{subsection.4.7.1}%
+\contentsline {subsection}{\numberline {4.7.1}Knowledge by source}{44}{subsection.4.7.1}%
 \contentsline {paragraph}{Explicitly coded knowledge}{44}{subsection.4.7.1}%
 \contentsline {paragraph}{Learning phase knowledge}{44}{subsection.4.7.1}%
 \contentsline {paragraph}{Live learning knowledge}{44}{subsection.4.7.1}%
@@ -168,13 +168,13 @@
 \contentsline {chapter}{\numberline {8}Conclusion}{64}{chapter.8}%
 \contentsline {chapter}{References}{65}{chapter*.16}%
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Abstract}{67}{chapter*.17}%
+\contentsline {chapter}{Abstract}{68}{chapter*.17}%
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
-\contentsline {chapter}{Sa\v {z}etak}{68}{chapter*.18}%
+\contentsline {chapter}{Sa\v {z}etak}{69}{chapter*.18}%
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{\numberline {A:}The Code}{69}{chapter.1}%
+\contentsline {chapter}{\numberline {A:}The Code}{70}{chapter.1}%

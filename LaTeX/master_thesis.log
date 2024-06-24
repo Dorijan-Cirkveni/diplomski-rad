@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  23 JUN 2024 22:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  24 JUN 2024 11:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -924,7 +924,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.176 ... {chapter}{Sa\v {z}etak}{68}{chapter*.18}
+l.176 ... {chapter}{Sa\v {z}etak}{69}{chapter*.18}
                                                   % [3])
 \tf@toc=\write4
 \openout4 = `master_thesis.toc'.
@@ -1040,19 +1040,19 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [28 <./Figures/James_Moriarty_hologram.png>] [29 <./Figures/VoyagerEMH.png>]
 [30] [31] [32] [33]
-Overfull \hbox (0.49295pt too wide) in paragraph at lines 718--718
+Overfull \hbox (0.49295pt too wide) in paragraph at lines 719--719
 |[]\T1/opensans-TLF/b/n/14 A few no-table projects re-lated to sim-u-lat-ing/cr
 e-at-ing con-
  []
 
 
-Overfull \hbox (1.13382pt too wide) in paragraph at lines 728--729
+Overfull \hbox (1.13382pt too wide) in paragraph at lines 729--730
 \T1/stix2/m/n/12 Cog was a robotics and ar-ti-fi-cial in-tel-li-gence project d
 e-vel-oped by the Hu-manoid Robotics
  []
 
 [34]
-Overfull \hbox (11.34108pt too wide) in paragraph at lines 737--738
+Overfull \hbox (11.34108pt too wide) in paragraph at lines 738--739
 \T1/stix2/m/n/12 The Blue Brain Project, launched by the École Poly-tech-nique 
 Fédérale de Lau-sanne (EPFL),
  []
@@ -1060,7 +1060,7 @@ Fédérale de Lau-sanne (EPFL),
 [35]
 Chapter 4.
 
-Overfull \hbox (12.14853pt too wide) in paragraph at lines 764--766
+Overfull \hbox (12.14853pt too wide) in paragraph at lines 765--767
 []\T1/stix2/m/n/12 Thanks to a few more ad-vanced fea-tures such as dy-namic gr
 ids or property-dependent
  []
@@ -1068,13 +1068,13 @@ ids or property-dependent
 [36
 
 ]
-<Figures/grid/all_tiles.png, id=677, 120.45pt x 132.495pt>
+<Figures/grid/all_tiles.png, id=683, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
-Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 785.
+Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 786.
 (pdftex.def)             Requested size: 220.50887pt x 242.58272pt.
  [37] [38 <./Figures/grid/all_tiles.png>] [39] [40] [41] [42] [43]
-Overfull \hbox (3.81706pt too wide) in paragraph at lines 966--967
+Overfull \hbox (3.81706pt too wide) in paragraph at lines 968--969
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-miza-tion meth-
  []
@@ -1084,13 +1084,13 @@ Chapter 5.
 [48
 
 ]
-Overfull \hbox (0.36502pt too wide) in paragraph at lines 1071--1072
+Overfull \hbox (0.36502pt too wide) in paragraph at lines 1073--1074
 [] []\T1/stix2/b/n/12 Dis-ad-van-tages[] \T1/stix2/m/n/12 This seg-ment will in
 -clude the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
 
 [49] [50]
-Overfull \hbox (2.1459pt too wide) in paragraph at lines 1128--1129
+Overfull \hbox (2.1459pt too wide) in paragraph at lines 1130--1131
 []\T1/stix2/m/n/12 This in-ter-face en-cap-su-lates in-for-ma-tion about the en
 -vi-ron-ment, the agents con-tained,
  []
@@ -1099,13 +1099,13 @@ Overfull \hbox (2.1459pt too wide) in paragraph at lines 1128--1129
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 1
-133.
+135.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
 File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
 [51] [52] [53]
-Overfull \hbox (5.27303pt too wide) in paragraph at lines 1219--1221
+Overfull \hbox (5.27303pt too wide) in paragraph at lines 1221--1223
 \T1/stix2/m/n/12 As us-ing stand-along JSON files for test en-vi-ron-ments woul
 d re-sult in a sig-nif-i-cant amount
  []
@@ -1115,30 +1115,30 @@ Chapter 6.
 [56
 
 ]
-<Figures/thesis main menu.png, id=797, 359.54324pt x 368.577pt>
+<Figures/thesis main menu.png, id=803, 359.54324pt x 368.577pt>
 File: Figures/thesis main menu.png Graphic file (type png)
 <use Figures/thesis main menu.png>
-Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1248.
+Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1250.
 
 (pdftex.def)             Requested size: 220.50887pt x 226.05203pt.
-<Figures/thesis data management.png, id=798, 476.37975pt x 387.24675pt>
+<Figures/thesis data management.png, id=804, 476.37975pt x 387.24675pt>
 File: Figures/thesis data management.png Graphic file (type png)
 <use Figures/thesis data management.png>
 Package pdftex.def Info: Figures/thesis data management.png  used on input line
- 1257.
+ 1259.
 (pdftex.def)             Requested size: 220.50887pt x 179.24652pt.
  [57 <./Figures/thesis main menu.png>]
-<Figures/thesis selection menu.png, id=806, 590.205pt x 473.97075pt>
+<Figures/thesis selection menu.png, id=812, 590.205pt x 473.97075pt>
 File: Figures/thesis selection menu.png Graphic file (type png)
 <use Figures/thesis selection menu.png>
 Package pdftex.def Info: Figures/thesis selection menu.png  used on input line 
-1282.
+1284.
 (pdftex.def)             Requested size: 220.50887pt x 177.08046pt.
  [58 <./Figures/thesis data management.png>]
-<Figures/thesis run.png, id=813, 609.477pt x 481.8pt>
+<Figures/thesis run.png, id=819, 609.477pt x 481.8pt>
 File: Figures/thesis run.png Graphic file (type png)
 <use Figures/thesis run.png>
-Package pdftex.def Info: Figures/thesis run.png  used on input line 1294.
+Package pdftex.def Info: Figures/thesis run.png  used on input line 1296.
 (pdftex.def)             Requested size: 220.50887pt x 174.31535pt.
  [59 <./Figures/thesis selection menu.png> <./Figures/thesis run.png>]
 [60]
@@ -1146,7 +1146,7 @@ Chapter 7.
 [61
 
 ]
-Overfull \hbox (3.99535pt too wide) in paragraph at lines 1361--1362
+Overfull \hbox (3.99535pt too wide) in paragraph at lines 1363--1364
 [] []\T1/stix2/b/n/12 More com-plex en-vi-ron-ment de-vel-op-ment[] \T1/stix2/m
 /n/12 A sim-ple grid en-vi-ron-ment sys-tem, while
  []
@@ -1157,19 +1157,19 @@ Chapter 8.
 
 ] [65
 
-]) [66] [67
+] [66]) [67] [68
 
-] [68
+] [69
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1442 \chapter{The Code}
+l.1444 \chapter{The Code}
                          
 Appendix A.
-[69
+[70
 
 
 ] (master_thesis.aux)
@@ -1316,10 +1316,10 @@ Package rerunfilecheck Info: File `master_thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 458145289C8E15C3200ABC2B321BBC06;15699.
  ) 
 Here is how much of TeX's memory you used:
- 20499 strings out of 474586
- 319789 string characters out of 5745681
+ 20506 strings out of 474586
+ 319891 string characters out of 5745681
  2074558 words of memory out of 5000000
- 42137 multiletter control sequences out of 15000+600000
+ 42140 multiletter control sequences out of 15000+600000
  667317 words of font info for 144 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  87i,17n,131p,1668b,2319s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1331,9 +1331,9 @@ sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
 ta/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C
 :/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX
 2Text-Regular.pfb>
-Output written on master_thesis.pdf (73 pages, 2963578 bytes).
+Output written on master_thesis.pdf (74 pages, 2967486 bytes).
 PDF statistics:
- 1020 PDF objects out of 1200 (max. 8388607)
- 224 named destinations out of 1000 (max. 500000)
+ 1036 PDF objects out of 1200 (max. 8388607)
+ 228 named destinations out of 1000 (max. 500000)
  766 words of extra memory for PDF output out of 10000 (max. 10000000)
 
