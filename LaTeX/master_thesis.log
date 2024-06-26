@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  24 JUN 2024 11:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.4)  26 JUN 2024 12:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -868,7 +868,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {C:/Users/doric/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dori
 c/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/opensans/a_jg4h6q.enc}]
 [2]
-<hr_0036501554_56.pdf, id=352, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=348, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 84.
@@ -877,7 +877,7 @@ File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf>
 Package pdftex.def Info: hr_0036501554_56.pdf  used on input line 84.
 (pdftex.def)             Requested size: 598.23354pt x 845.15544pt.
-<hr_0036501554_56.pdf, id=355, page=1, 598.235pt x 845.1575pt>
+<hr_0036501554_56.pdf, id=351, page=1, 598.235pt x 845.1575pt>
 File: hr_0036501554_56.pdf Graphic file (type pdf)
 <use hr_0036501554_56.pdf, page 1>
 Package pdftex.def Info: hr_0036501554_56.pdf , page1 used on input line 84.
@@ -918,13 +918,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.106 ...berline {5}Implementation}{48}{chapter.5}
+l.106 ...berline {5}Implementation}{49}{chapter.5}
                                                   % [2]
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.176 ... {chapter}{Sa\v {z}etak}{69}{chapter*.18}
+l.176 ... {chapter}{Sa\v {z}etak}{70}{chapter*.18}
                                                   % [3])
 \tf@toc=\write4
 \openout4 = `master_thesis.toc'.
@@ -954,7 +954,7 @@ e
 e 138.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
 (Font)              scaled to size 16.0pt on input line 138.
-<Figures/AI performance history.png, id=493, 853.1875pt x 383.4325pt>
+<Figures/AI performance history.png, id=488, 853.1875pt x 383.4325pt>
 File: Figures/AI performance history.png Graphic file (type png)
 <use Figures/AI performance history.png>
 Package pdftex.def Info: Figures/AI performance history.png  used on input line
@@ -963,7 +963,7 @@ Package pdftex.def Info: Figures/AI performance history.png  used on input line
 [7
 
  <./Figures/AI performance history.png>]
-<Figures/wen agi.png, id=502, 3474.38025pt x 1963.93726pt>
+<Figures/wen agi.png, id=497, 3474.38025pt x 1963.93726pt>
 File: Figures/wen agi.png Graphic file (type png)
 <use Figures/wen agi.png>
 Package pdftex.def Info: Figures/wen agi.png  used on input line 188.
@@ -976,7 +976,7 @@ e 206.
 LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
 (Font)              scaled to size 12.0pt on input line 206.
  [10]
-<Figures/bing image creator prompt 1a.jpeg, id=524, 352.31625pt x 352.31625pt>
+<Figures/bing image creator prompt 1a.jpeg, id=519, 352.31625pt x 352.31625pt>
 File: Figures/bing image creator prompt 1a.jpeg Graphic file (type jpg)
 <use Figures/bing image creator prompt 1a.jpeg>
 Package pdftex.def Info: Figures/bing image creator prompt 1a.jpeg  used on inp
@@ -994,103 +994,106 @@ Chapter 3.
 [19
 
 ] [20] [21]
-Overfull \hbox (7.07155pt too wide) in paragraph at lines 471--471
+Overfull \hbox (7.07155pt too wide) in paragraph at lines 474--474
 |[]\T1/opensans-TLF/b/n/14 A few no-table at-tempts at sim-u-lat-ing/cre-at-ing
  in-tel-li-gence| 
  []
 
 [22]
-Overfull \hbox (2.17796pt too wide) in paragraph at lines 497--498
+Overfull \hbox (2.17796pt too wide) in paragraph at lines 500--501
 \T1/stix2/m/n/12 Anthropomorphism is a com-mon hu-man ten-dency to as-cribe hu-
 man traits to non-human
  []
 
 [23] [24]
-<Figures/LaMDA tweet 1.png, id=598, 444.4605pt x 151.767pt>
+<Figures/LaMDA tweet 1.png, id=595, 444.4605pt x 151.767pt>
 File: Figures/LaMDA tweet 1.png Graphic file (type png)
 <use Figures/LaMDA tweet 1.png>
-Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 546.
+Package pdftex.def Info: Figures/LaMDA tweet 1.png  used on input line 549.
 (pdftex.def)             Requested size: 441.01773pt x 150.59714pt.
-<Figures/LaMDA tweet 2.png, id=600, 437.83575pt x 258.9675pt>
+<Figures/LaMDA tweet 2.png, id=597, 437.83575pt x 258.9675pt>
 File: Figures/LaMDA tweet 2.png Graphic file (type png)
 <use Figures/LaMDA tweet 2.png>
-Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 552.
+Package pdftex.def Info: Figures/LaMDA tweet 2.png  used on input line 555.
 (pdftex.def)             Requested size: 441.01773pt x 260.85962pt.
  [25 <./Figures/LaMDA tweet 1.png>] [26 <./Figures/LaMDA tweet 2.png>]
-<Figures/DataTNG.jpeg, id=616, 301.125pt x 168.63pt>
+<Figures/DataTNG.jpeg, id=613, 301.125pt x 168.63pt>
 File: Figures/DataTNG.jpeg Graphic file (type jpg)
 <use Figures/DataTNG.jpeg>
-Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 589.
+Package pdftex.def Info: Figures/DataTNG.jpeg  used on input line 592.
 (pdftex.def)             Requested size: 227.62204pt x 127.4731pt.
-[27 <./Figures/DataTNG.jpeg>]
-<Figures/James_Moriarty_hologram.png, id=624, 1058.95625pt x 1058.95625pt>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[27]
+<Figures/James_Moriarty_hologram.png, id=620, 1058.95625pt x 1058.95625pt>
 File: Figures/James_Moriarty_hologram.png Graphic file (type png)
 <use Figures/James_Moriarty_hologram.png>
 Package pdftex.def Info: Figures/James_Moriarty_hologram.png  used on input lin
-e 599.
+e 602.
 (pdftex.def)             Requested size: 227.62204pt x 227.60652pt.
-<Figures/VoyagerEMH.png, id=625, 468.75125pt x 531.9875pt>
+<Figures/VoyagerEMH.png, id=621, 468.75125pt x 531.9875pt>
 File: Figures/VoyagerEMH.png Graphic file (type png)
 <use Figures/VoyagerEMH.png>
-Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 608.
+Package pdftex.def Info: Figures/VoyagerEMH.png  used on input line 611.
 (pdftex.def)             Requested size: 227.62204pt x 258.3221pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[28 <./Figures/James_Moriarty_hologram.png>] [29 <./Figures/VoyagerEMH.png>]
-[30] [31] [32] [33]
-Overfull \hbox (0.49295pt too wide) in paragraph at lines 719--719
+[28 <./Figures/DataTNG.jpeg> <./Figures/James_Moriarty_hologram.png>] [29 <./Fi
+gures/VoyagerEMH.png>] [30] [31] [32] [33]
+Overfull \hbox (0.49295pt too wide) in paragraph at lines 722--722
 |[]\T1/opensans-TLF/b/n/14 A few no-table projects re-lated to sim-u-lat-ing/cr
 e-at-ing con-
  []
 
-
-Overfull \hbox (1.13382pt too wide) in paragraph at lines 729--730
+[34]
+Overfull \hbox (1.13382pt too wide) in paragraph at lines 732--733
 \T1/stix2/m/n/12 Cog was a robotics and ar-ti-fi-cial in-tel-li-gence project d
 e-vel-oped by the Hu-manoid Robotics
  []
 
-[34]
-Overfull \hbox (11.34108pt too wide) in paragraph at lines 738--739
+
+Overfull \hbox (11.34108pt too wide) in paragraph at lines 741--742
 \T1/stix2/m/n/12 The Blue Brain Project, launched by the École Poly-tech-nique 
 Fédérale de Lau-sanne (EPFL),
  []
 
-[35]
+[35] [36]
 Chapter 4.
 
-Overfull \hbox (12.14853pt too wide) in paragraph at lines 765--767
+Overfull \hbox (12.14853pt too wide) in paragraph at lines 768--770
 []\T1/stix2/m/n/12 Thanks to a few more ad-vanced fea-tures such as dy-namic gr
 ids or property-dependent
  []
 
-[36
+[37
 
 ]
-<Figures/grid/all_tiles.png, id=683, 120.45pt x 132.495pt>
+<Figures/grid/all_tiles.png, id=684, 120.45pt x 132.495pt>
 File: Figures/grid/all_tiles.png Graphic file (type png)
 <use Figures/grid/all_tiles.png>
-Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 786.
+Package pdftex.def Info: Figures/grid/all_tiles.png  used on input line 789.
 (pdftex.def)             Requested size: 220.50887pt x 242.58272pt.
- [37] [38 <./Figures/grid/all_tiles.png>] [39] [40] [41] [42] [43]
-Overfull \hbox (3.81706pt too wide) in paragraph at lines 968--969
+ [38] [39 <./Figures/grid/all_tiles.png>] [40] [41] [42] [43] [44]
+Overfull \hbox (3.81706pt too wide) in paragraph at lines 971--972
 \T1/stix2/m/n/12 (scraped data, neu-ral net-work con-fig-u-ra-tions learned thr
 ough var-i-ous op-ti-miza-tion meth-
  []
 
-[44] [45] [46] [47]
+[45] [46] [47] [48]
 Chapter 5.
-[48
+[49
 
 ]
-Overfull \hbox (0.36502pt too wide) in paragraph at lines 1073--1074
+Overfull \hbox (0.36502pt too wide) in paragraph at lines 1076--1077
 [] []\T1/stix2/b/n/12 Dis-ad-van-tages[] \T1/stix2/m/n/12 This seg-ment will in
 -clude the dis-ad-van-tages of us-ing an ar-ti-fi-cial agent
  []
 
-[49] [50]
-Overfull \hbox (2.1459pt too wide) in paragraph at lines 1130--1131
+[50] [51]
+Overfull \hbox (2.1459pt too wide) in paragraph at lines 1133--1134
 []\T1/stix2/m/n/12 This in-ter-face en-cap-su-lates in-for-ma-tion about the en
 -vi-ron-ment, the agents con-tained,
  []
@@ -1099,77 +1102,77 @@ Overfull \hbox (2.1459pt too wide) in paragraph at lines 1130--1131
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 1
-135.
+138.
 
 (C:\Users\doric\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
 File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-[51] [52] [53]
-Overfull \hbox (5.27303pt too wide) in paragraph at lines 1221--1223
+[52] [53] [54]
+Overfull \hbox (5.27303pt too wide) in paragraph at lines 1224--1226
 \T1/stix2/m/n/12 As us-ing stand-along JSON files for test en-vi-ron-ments woul
 d re-sult in a sig-nif-i-cant amount
  []
 
-[54] [55]
+[55] [56]
 Chapter 6.
-[56
+[57
 
 ]
-<Figures/thesis main menu.png, id=803, 359.54324pt x 368.577pt>
+<Figures/thesis main menu.png, id=805, 359.54324pt x 368.577pt>
 File: Figures/thesis main menu.png Graphic file (type png)
 <use Figures/thesis main menu.png>
-Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1250.
+Package pdftex.def Info: Figures/thesis main menu.png  used on input line 1253.
 
 (pdftex.def)             Requested size: 220.50887pt x 226.05203pt.
-<Figures/thesis data management.png, id=804, 476.37975pt x 387.24675pt>
+<Figures/thesis data management.png, id=806, 476.37975pt x 387.24675pt>
 File: Figures/thesis data management.png Graphic file (type png)
 <use Figures/thesis data management.png>
 Package pdftex.def Info: Figures/thesis data management.png  used on input line
- 1259.
+ 1262.
 (pdftex.def)             Requested size: 220.50887pt x 179.24652pt.
- [57 <./Figures/thesis main menu.png>]
-<Figures/thesis selection menu.png, id=812, 590.205pt x 473.97075pt>
+ [58 <./Figures/thesis main menu.png>]
+<Figures/thesis selection menu.png, id=813, 590.205pt x 473.97075pt>
 File: Figures/thesis selection menu.png Graphic file (type png)
 <use Figures/thesis selection menu.png>
 Package pdftex.def Info: Figures/thesis selection menu.png  used on input line 
-1284.
+1287.
 (pdftex.def)             Requested size: 220.50887pt x 177.08046pt.
- [58 <./Figures/thesis data management.png>]
-<Figures/thesis run.png, id=819, 609.477pt x 481.8pt>
+ [59 <./Figures/thesis data management.png>]
+<Figures/thesis run.png, id=820, 604.659pt x 475.17525pt>
 File: Figures/thesis run.png Graphic file (type png)
 <use Figures/thesis run.png>
-Package pdftex.def Info: Figures/thesis run.png  used on input line 1296.
-(pdftex.def)             Requested size: 220.50887pt x 174.31535pt.
- [59 <./Figures/thesis selection menu.png> <./Figures/thesis run.png>]
-[60]
+Package pdftex.def Info: Figures/thesis run.png  used on input line 1299.
+(pdftex.def)             Requested size: 220.50887pt x 173.28163pt.
+ [60 <./Figures/thesis selection menu.png> <./Figures/thesis run.png>]
+[61]
 Chapter 7.
-[61
+[62
 
 ]
-Overfull \hbox (3.99535pt too wide) in paragraph at lines 1363--1364
+Overfull \hbox (3.99535pt too wide) in paragraph at lines 1366--1367
 [] []\T1/stix2/b/n/12 More com-plex en-vi-ron-ment de-vel-op-ment[] \T1/stix2/m
 /n/12 A sim-ple grid en-vi-ron-ment sys-tem, while
  []
 
-[62] [63]
+[63] [64]
 Chapter 8.
-(master_thesis.bbl [64
+(master_thesis.bbl [65
 
-] [65
+] [66
 
-] [66]) [67] [68
+] [67]) [68] [69
 
-] [69
+] [70
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{chapter.1}) h
 as been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1444 \chapter{The Code}
+l.1447 \chapter{The Code}
                          
 Appendix A.
-[70
+[71
 
 
 ] (master_thesis.aux)
@@ -1313,11 +1316,11 @@ master_thesis.bbl
  ***********
 
 Package rerunfilecheck Info: File `master_thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 458145289C8E15C3200ABC2B321BBC06;15699.
+(rerunfilecheck)             Checksum: 936980C8FD97FFA597541710B3F8A816;15554.
  ) 
 Here is how much of TeX's memory you used:
- 20506 strings out of 474586
- 319891 string characters out of 5745681
+ 20507 strings out of 474586
+ 319903 string characters out of 5745681
  2074558 words of memory out of 5000000
  42140 multiletter control sequences out of 15000+600000
  667317 words of font info for 144 fonts, out of 8000000 for 9000
@@ -1331,9 +1334,9 @@ sans/OpenSans-Bold.pfb><C:/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type
 ta/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><C
 :/Users/doric/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix2-type1/STIX
 2Text-Regular.pfb>
-Output written on master_thesis.pdf (74 pages, 2967486 bytes).
+Output written on master_thesis.pdf (75 pages, 2970111 bytes).
 PDF statistics:
- 1036 PDF objects out of 1200 (max. 8388607)
- 228 named destinations out of 1000 (max. 500000)
- 766 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1040 PDF objects out of 1200 (max. 8388607)
+ 229 named destinations out of 1000 (max. 500000)
+ 758 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -162,9 +162,9 @@ class RunFrame(MultipleInputFrame):
         isPosDigit=lambda s: str.isdigit(s) and int(s)>0
         isPZDigit=lambda s: str.isdigit(s) and int(s)>=0
         inputs=[
-            (isPZDigit,'1','Iterations:'),
-            (isPosDigit,'1','Animated iterations:'),
-            (isPosDigit,'1','Animation steps:')
+            (isPZDigit,'1','Cycles'),
+            (isPosDigit,'1','Animation frames per cycle'),
+            (isPosDigit,'1','Cycles per animation frame')
         ]
         super().__init__(master, return_lambda, screen_size, inputs)
 

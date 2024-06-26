@@ -31,150 +31,150 @@
 \contentsline {subsection}{\numberline {3.2.3}A few notable attempts at simulating/creating intelligence}{22}{subsection.3.2.3}%
 \contentsline {subsubsection}{The Logic Theorist (1956)}{22}{subsection.3.2.3}%
 \contentsline {subsubsection}{SHRDLU (1968)}{22}{subsection.3.2.3}%
-\contentsline {subsubsection}{Scalable Instructable Multiworld Agent (2024)}{22}{subsection.3.2.3}%
+\contentsline {subsubsection}{Scalable Instructable Multiworld Agent (2024)}{23}{subsection.3.2.3}%
 \contentsline {section}{\numberline {3.3}Artificial consciousness}{23}{section.3.3}%
 \contentsline {subsection}{\numberline {3.3.1}Anthropomorphism and AI}{23}{subsection.3.3.1}%
 \contentsline {subsubsection}{LaMDA}{24}{subsection.3.3.1}%
 \contentsline {subsubsection}{ELIZA}{25}{figure.caption.7}%
-\contentsline {subsubsection}{Ramifications}{25}{figure.caption.7}%
-\contentsline {subsection}{\numberline {3.3.2}The Chinese Room Argument}{26}{subsection.3.3.2}%
+\contentsline {subsubsection}{Ramifications}{26}{figure.caption.7}%
+\contentsline {subsection}{\numberline {3.3.2}The Chinese Room Argument}{27}{subsection.3.3.2}%
 \contentsline {subsection}{\numberline {3.3.3}Popular media depictions of AI as artificial consciousness}{27}{subsection.3.3.3}%
 \contentsline {subsection}{\numberline {3.3.4}Why should we care about artificial consciousness?}{29}{subsection.3.3.4}%
 \contentsline {section}{\numberline {3.4}Defining consciousness}{30}{section.3.4}%
-\contentsline {subsection}{\numberline {3.4.1}Existing theories}{30}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.1}Existing theories}{31}{subsection.3.4.1}%
 \contentsline {subsubsection}{Integrated Information Theory}{31}{subsection.3.4.1}%
 \contentsline {subsubsection}{Global Workspace Theory}{31}{subsection.3.4.1}%
 \contentsline {subsubsection}{Attention Schema Theory}{31}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Testing for consciousness}{31}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.2}Testing for consciousness}{32}{subsection.3.4.2}%
 \contentsline {subsubsection}{The Turing Test}{32}{subsection.3.4.2}%
 \contentsline {subsection}{\numberline {3.4.3}Self-awareness tests}{33}{subsection.3.4.3}%
 \contentsline {subsubsection}{Mirror test analogy}{33}{subsection.3.4.3}%
 \contentsline {subsubsection}{Theory-of-mind tests}{34}{subsection.3.4.3}%
-\contentsline {subsection}{\numberline {3.4.4}A few notable projects related to simulating/creating consciousness}{34}{subsection.3.4.4}%
-\contentsline {subsubsection}{The Self-Organizing Map}{34}{subsection.3.4.4}%
+\contentsline {subsection}{\numberline {3.4.4}A few notable projects related to simulating/creating consciousness}{35}{subsection.3.4.4}%
+\contentsline {subsubsection}{The Self-Organizing Map}{35}{subsection.3.4.4}%
 \contentsline {subsubsection}{COG}{35}{subsection.3.4.4}%
 \contentsline {subsubsection}{Blue Brain Project}{35}{subsection.3.4.4}%
-\contentsline {chapter}{\numberline {4}Materials and Methods}{36}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Virtual testing environment}{36}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Grid elements}{37}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Basic grid elements}{37}{subsection.4.2.1}%
-\contentsline {paragraph}{Clear tile}{37}{figure.caption.11}%
-\contentsline {paragraph}{Goal tile}{37}{figure.caption.11}%
-\contentsline {paragraph}{Wall tile}{38}{figure.caption.11}%
-\contentsline {paragraph}{Curtain tile}{38}{figure.caption.11}%
-\contentsline {paragraph}{Lethal tile}{38}{figure.caption.11}%
-\contentsline {paragraph}{Lethal Wall tile}{39}{figure.caption.11}%
-\contentsline {paragraph}{Glass tile}{39}{figure.caption.11}%
-\contentsline {paragraph}{Effects tile}{39}{figure.caption.11}%
-\contentsline {paragraph}{Null tile}{39}{figure.caption.11}%
-\contentsline {subsection}{\numberline {4.2.2}Composite grid elements}{39}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Visible and solid grid modes}{39}{subsection.4.2.3}%
-\contentsline {subsection}{\numberline {4.2.4}Grid routines}{40}{subsection.4.2.4}%
-\contentsline {section}{\numberline {4.3}Test entity design}{40}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Entity/Agent duality}{40}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Entity properties}{40}{subsection.4.3.2}%
-\contentsline {subsubsection}{Entity appearance properties}{40}{subsection.4.3.2}%
-\contentsline {subsubsection}{Entity vision properties}{40}{subsection.4.3.2}%
-\contentsline {paragraph}{Entity motion properties}{41}{subsection.4.3.2}%
-\contentsline {section}{\numberline {4.4}Test environment design}{41}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Reference test environments}{42}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Mirror test environments}{42}{subsection.4.4.2}%
-\contentsline {section}{\numberline {4.5}Agent behavior types}{42}{section.4.5}%
-\contentsline {subsubsection}{Basic entity behavior types}{42}{section.4.5}%
-\contentsline {paragraph}{Box}{42}{section.4.5}%
-\contentsline {paragraph}{Actions loop}{42}{section.4.5}%
-\contentsline {paragraph}{Mirror}{42}{section.4.5}%
-\contentsline {section}{\numberline {4.6}Tested agent types}{43}{section.4.6}%
-\contentsline {paragraph}{Hard-coded instruction agents}{43}{section.4.6}%
-\contentsline {paragraph}{Simple agents}{43}{section.4.6}%
-\contentsline {paragraph}{Potential AI agents}{43}{section.4.6}%
-\contentsline {section}{\numberline {4.7}A suggestion for a knowledge-based classification of intelligence}{43}{section.4.7}%
-\contentsline {subsection}{\numberline {4.7.1}Knowledge by source}{44}{subsection.4.7.1}%
-\contentsline {paragraph}{Explicitly coded knowledge}{44}{subsection.4.7.1}%
-\contentsline {paragraph}{Learning phase knowledge}{44}{subsection.4.7.1}%
-\contentsline {paragraph}{Live learning knowledge}{44}{subsection.4.7.1}%
-\contentsline {subsection}{\numberline {4.7.2}Knowledge by level}{44}{subsection.4.7.2}%
-\contentsline {paragraph}{Immediate situation knowledge}{44}{subsection.4.7.2}%
-\contentsline {paragraph}{Environment-related knowledge}{45}{subsection.4.7.2}%
-\contentsline {paragraph}{General knowledge}{45}{subsection.4.7.2}%
-\contentsline {section}{\numberline {4.8}Agent aspect considerations}{46}{section.4.8}%
-\contentsline {subsection}{\numberline {4.8.1}Steps taken}{46}{subsection.4.8.1}%
-\contentsline {subsection}{\numberline {4.8.2}Processing time}{46}{subsection.4.8.2}%
-\contentsline {subsection}{\numberline {4.8.3}Processing space}{46}{subsection.4.8.3}%
-\contentsline {subsection}{\numberline {4.8.4}Learning data size}{46}{subsection.4.8.4}%
-\contentsline {subsection}{\numberline {4.8.5}Learning data level}{47}{subsection.4.8.5}%
-\contentsline {chapter}{\numberline {5}Implementation}{48}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Implementation choices}{48}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Programming language choice}{48}{subsection.5.1.1}%
-\contentsline {section}{\numberline {5.2}Tested agent choice}{49}{section.5.2}%
-\contentsline {subsubsection}{Template}{49}{section.5.2}%
-\contentsline {paragraph}{Description}{49}{section.5.2}%
-\contentsline {paragraph}{Advantages}{49}{section.5.2}%
-\contentsline {paragraph}{Disadvantages}{49}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Reference agents}{49}{subsection.5.2.1}%
-\contentsline {subsubsection}{Human input}{50}{subsection.5.2.1}%
-\contentsline {paragraph}{Description}{50}{subsection.5.2.1}%
-\contentsline {paragraph}{Advantages}{50}{subsection.5.2.1}%
-\contentsline {paragraph}{Disadvantages}{50}{subsection.5.2.1}%
-\contentsline {subsubsection}{Pre-determined sets of actions}{50}{subsection.5.2.1}%
-\contentsline {paragraph}{Description}{50}{subsection.5.2.1}%
-\contentsline {paragraph}{Advantages}{50}{subsection.5.2.1}%
-\contentsline {paragraph}{Disadvantages}{50}{subsection.5.2.1}%
-\contentsline {section}{\numberline {5.3}Implementation details}{50}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Base classes}{50}{subsection.5.3.1}%
-\contentsline {paragraph}{iRawInit}{50}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Base interfaces}{51}{subsection.5.3.2}%
-\contentsline {paragraph}{iEntity}{51}{subsection.5.3.2}%
-\contentsline {paragraph}{iEvalMethod}{51}{subsection.5.3.2}%
-\contentsline {paragraph}{iEnvironment}{51}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Grid environment classes}{53}{subsection.5.3.3}%
-\contentsline {paragraph}{GridEnvironment}{53}{subsection.5.3.3}%
-\contentsline {paragraph}{MazeEnvironment}{53}{subsection.5.3.3}%
-\contentsline {paragraph}{BlindDangerBasicTest}{53}{subsection.5.3.3}%
-\contentsline {paragraph}{SpinningEnvironment}{53}{subsection.5.3.3}%
-\contentsline {paragraph}{MirrorEnvironment}{54}{subsection.5.3.3}%
-\contentsline {subsection}{\numberline {5.3.4}Environment display and interaction user interface}{54}{subsection.5.3.4}%
-\contentsline {subsection}{\numberline {5.3.5}Selection user interface}{54}{subsection.5.3.5}%
-\contentsline {subsection}{\numberline {5.3.6}Data management interface}{54}{subsection.5.3.6}%
-\contentsline {subsection}{\numberline {5.3.7}Support functionalities}{54}{subsection.5.3.7}%
-\contentsline {subsubsection}{JSON-based initialisation}{54}{subsection.5.3.7}%
-\contentsline {subsubsection}{Fragmented JSON}{54}{subsection.5.3.7}%
-\contentsline {subsubsection}{Grid system}{55}{subsection.5.3.7}%
-\contentsline {chapter}{\numberline {6}Results}{56}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Preliminary research conclusions}{56}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Developed infrastructure}{56}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Instructions}{57}{section.6.3}%
-\contentsline {subsection}{\numberline {6.3.1}Downloading and running the software}{57}{subsection.6.3.1}%
-\contentsline {subsection}{\numberline {6.3.2}Main menu}{57}{subsection.6.3.2}%
-\contentsline {subsection}{\numberline {6.3.3}Data management menu}{57}{subsection.6.3.3}%
-\contentsline {section}{\numberline {6.4}Environment and agent selection menu}{59}{section.6.4}%
-\contentsline {section}{\numberline {6.5}Environment run menu}{59}{section.6.5}%
-\contentsline {chapter}{\numberline {7}Further Research and Discussion}{61}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Further prototype development}{61}{section.7.1}%
-\contentsline {paragraph}{Developer requirements}{61}{section.7.1}%
-\contentsline {paragraph}{Technical debt management}{61}{section.7.1}%
-\contentsline {paragraph}{Optimisation}{61}{section.7.1}%
-\contentsline {subparagraph}{Lower-level implementation}{61}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Further research direction}{62}{section.7.2}%
-\contentsline {paragraph}{Agent testing}{62}{section.7.2}%
-\contentsline {paragraph}{More complex grid environments}{62}{section.7.2}%
-\contentsline {paragraph}{More complex environment development}{62}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Discussion}{62}{section.7.3}%
-\contentsline {subsection}{\numberline {7.3.1}Ethical concerns}{62}{subsection.7.3.1}%
-\contentsline {paragraph}{Gain-of-function AI development risks}{63}{subsection.7.3.1}%
-\contentsline {paragraph}{Interpretability as safety}{63}{subsection.7.3.1}%
-\contentsline {paragraph}{Safety versus speed}{63}{subsection.7.3.1}%
-\contentsline {paragraph}{Necessary limitations}{63}{subsection.7.3.1}%
-\contentsline {chapter}{\numberline {8}Conclusion}{64}{chapter.8}%
-\contentsline {chapter}{References}{65}{chapter*.16}%
+\contentsline {chapter}{\numberline {4}Materials and Methods}{37}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Virtual testing environment}{37}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Grid elements}{38}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Basic grid elements}{38}{subsection.4.2.1}%
+\contentsline {paragraph}{Clear tile}{38}{figure.caption.11}%
+\contentsline {paragraph}{Goal tile}{38}{figure.caption.11}%
+\contentsline {paragraph}{Wall tile}{39}{figure.caption.11}%
+\contentsline {paragraph}{Curtain tile}{39}{figure.caption.11}%
+\contentsline {paragraph}{Lethal tile}{39}{figure.caption.11}%
+\contentsline {paragraph}{Lethal Wall tile}{40}{figure.caption.11}%
+\contentsline {paragraph}{Glass tile}{40}{figure.caption.11}%
+\contentsline {paragraph}{Effects tile}{40}{figure.caption.11}%
+\contentsline {paragraph}{Null tile}{40}{figure.caption.11}%
+\contentsline {subsection}{\numberline {4.2.2}Composite grid elements}{40}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Visible and solid grid modes}{40}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}Grid routines}{41}{subsection.4.2.4}%
+\contentsline {section}{\numberline {4.3}Test entity design}{41}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Entity/Agent duality}{41}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Entity properties}{41}{subsection.4.3.2}%
+\contentsline {subsubsection}{Entity appearance properties}{41}{subsection.4.3.2}%
+\contentsline {subsubsection}{Entity vision properties}{41}{subsection.4.3.2}%
+\contentsline {paragraph}{Entity motion properties}{42}{subsection.4.3.2}%
+\contentsline {section}{\numberline {4.4}Test environment design}{42}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Reference test environments}{43}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Mirror test environments}{43}{subsection.4.4.2}%
+\contentsline {section}{\numberline {4.5}Agent behavior types}{43}{section.4.5}%
+\contentsline {subsubsection}{Basic entity behavior types}{43}{section.4.5}%
+\contentsline {paragraph}{Box}{43}{section.4.5}%
+\contentsline {paragraph}{Actions loop}{43}{section.4.5}%
+\contentsline {paragraph}{Mirror}{43}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Tested agent types}{44}{section.4.6}%
+\contentsline {paragraph}{Hard-coded instruction agents}{44}{section.4.6}%
+\contentsline {paragraph}{Simple agents}{44}{section.4.6}%
+\contentsline {paragraph}{Potential AI agents}{44}{section.4.6}%
+\contentsline {section}{\numberline {4.7}A suggestion for a knowledge-based classification of intelligence}{44}{section.4.7}%
+\contentsline {subsection}{\numberline {4.7.1}Knowledge by source}{45}{subsection.4.7.1}%
+\contentsline {paragraph}{Explicitly coded knowledge}{45}{subsection.4.7.1}%
+\contentsline {paragraph}{Learning phase knowledge}{45}{subsection.4.7.1}%
+\contentsline {paragraph}{Live learning knowledge}{45}{subsection.4.7.1}%
+\contentsline {subsection}{\numberline {4.7.2}Knowledge by level}{45}{subsection.4.7.2}%
+\contentsline {paragraph}{Immediate situation knowledge}{45}{subsection.4.7.2}%
+\contentsline {paragraph}{Environment-related knowledge}{46}{subsection.4.7.2}%
+\contentsline {paragraph}{General knowledge}{46}{subsection.4.7.2}%
+\contentsline {section}{\numberline {4.8}Agent aspect considerations}{47}{section.4.8}%
+\contentsline {subsection}{\numberline {4.8.1}Steps taken}{47}{subsection.4.8.1}%
+\contentsline {subsection}{\numberline {4.8.2}Processing time}{47}{subsection.4.8.2}%
+\contentsline {subsection}{\numberline {4.8.3}Processing space}{47}{subsection.4.8.3}%
+\contentsline {subsection}{\numberline {4.8.4}Learning data size}{47}{subsection.4.8.4}%
+\contentsline {subsection}{\numberline {4.8.5}Learning data level}{48}{subsection.4.8.5}%
+\contentsline {chapter}{\numberline {5}Implementation}{49}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Implementation choices}{49}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Programming language choice}{49}{subsection.5.1.1}%
+\contentsline {section}{\numberline {5.2}Tested agent choice}{50}{section.5.2}%
+\contentsline {subsubsection}{Template}{50}{section.5.2}%
+\contentsline {paragraph}{Description}{50}{section.5.2}%
+\contentsline {paragraph}{Advantages}{50}{section.5.2}%
+\contentsline {paragraph}{Disadvantages}{50}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Reference agents}{50}{subsection.5.2.1}%
+\contentsline {subsubsection}{Human input}{51}{subsection.5.2.1}%
+\contentsline {paragraph}{Description}{51}{subsection.5.2.1}%
+\contentsline {paragraph}{Advantages}{51}{subsection.5.2.1}%
+\contentsline {paragraph}{Disadvantages}{51}{subsection.5.2.1}%
+\contentsline {subsubsection}{Pre-determined sets of actions}{51}{subsection.5.2.1}%
+\contentsline {paragraph}{Description}{51}{subsection.5.2.1}%
+\contentsline {paragraph}{Advantages}{51}{subsection.5.2.1}%
+\contentsline {paragraph}{Disadvantages}{51}{subsection.5.2.1}%
+\contentsline {section}{\numberline {5.3}Implementation details}{51}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Base classes}{51}{subsection.5.3.1}%
+\contentsline {paragraph}{iRawInit}{51}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Base interfaces}{52}{subsection.5.3.2}%
+\contentsline {paragraph}{iEntity}{52}{subsection.5.3.2}%
+\contentsline {paragraph}{iEvalMethod}{52}{subsection.5.3.2}%
+\contentsline {paragraph}{iEnvironment}{52}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Grid environment classes}{54}{subsection.5.3.3}%
+\contentsline {paragraph}{GridEnvironment}{54}{subsection.5.3.3}%
+\contentsline {paragraph}{MazeEnvironment}{54}{subsection.5.3.3}%
+\contentsline {paragraph}{BlindDangerBasicTest}{54}{subsection.5.3.3}%
+\contentsline {paragraph}{SpinningEnvironment}{54}{subsection.5.3.3}%
+\contentsline {paragraph}{MirrorEnvironment}{55}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Environment display and interaction user interface}{55}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}Selection user interface}{55}{subsection.5.3.5}%
+\contentsline {subsection}{\numberline {5.3.6}Data management interface}{55}{subsection.5.3.6}%
+\contentsline {subsection}{\numberline {5.3.7}Support functionalities}{55}{subsection.5.3.7}%
+\contentsline {subsubsection}{JSON-based initialisation}{55}{subsection.5.3.7}%
+\contentsline {subsubsection}{Fragmented JSON}{55}{subsection.5.3.7}%
+\contentsline {subsubsection}{Grid system}{56}{subsection.5.3.7}%
+\contentsline {chapter}{\numberline {6}Results}{57}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Preliminary research conclusions}{57}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Developed infrastructure}{57}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Instructions}{58}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Downloading and running the software}{58}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Main menu}{58}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}Data management menu}{58}{subsection.6.3.3}%
+\contentsline {section}{\numberline {6.4}Environment and agent selection menu}{60}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Environment run menu}{60}{section.6.5}%
+\contentsline {chapter}{\numberline {7}Further Research and Discussion}{62}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Further prototype development}{62}{section.7.1}%
+\contentsline {paragraph}{Developer requirements}{62}{section.7.1}%
+\contentsline {paragraph}{Technical debt management}{62}{section.7.1}%
+\contentsline {paragraph}{Optimisation}{62}{section.7.1}%
+\contentsline {subparagraph}{Lower-level implementation}{62}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Further research direction}{63}{section.7.2}%
+\contentsline {paragraph}{Agent testing}{63}{section.7.2}%
+\contentsline {paragraph}{More complex grid environments}{63}{section.7.2}%
+\contentsline {paragraph}{More complex environment development}{63}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Discussion}{63}{section.7.3}%
+\contentsline {paragraph}{Ethical concerns}{63}{section.7.3}%
+\contentsline {paragraph}{Gain-of-function AI development risks}{64}{section.7.3}%
+\contentsline {paragraph}{Interpretability as safety}{64}{section.7.3}%
+\contentsline {paragraph}{Safety versus speed}{64}{section.7.3}%
+\contentsline {paragraph}{Necessary limitations}{64}{section.7.3}%
+\contentsline {chapter}{\numberline {8}Conclusion}{65}{chapter.8}%
+\contentsline {chapter}{References}{66}{chapter*.16}%
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Abstract}{68}{chapter*.17}%
+\contentsline {chapter}{Abstract}{69}{chapter*.17}%
 \babel@toc {english}{}\relax 
 \babel@toc {english}{}\relax 
-\babel@toc {english}{}\relax 
-\babel@toc {croatian}{}\relax 
-\contentsline {chapter}{Sa\v {z}etak}{69}{chapter*.18}%
 \babel@toc {english}{}\relax 
 \babel@toc {croatian}{}\relax 
+\contentsline {chapter}{Sa\v {z}etak}{70}{chapter*.18}%
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{\numberline {A:}The Code}{70}{chapter.1}%
+\babel@toc {croatian}{}\relax 
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {A:}The Code}{71}{chapter.1}%

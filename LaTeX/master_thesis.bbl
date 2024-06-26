@@ -59,10 +59,16 @@ O.~C. 4o~(Omni), ``Discussion on large language models in public use,'' 6 2024,
   generated in a conversation with the thesis author. Includes mentions of
   ChatGPT, Bing Copilot, and Gemini.
 
+\bibitem{enwikiINTgardner}
+{Wikipedia contributors}, ``Theory of multiple intelligences --- {Wikipedia}{,}
+  the free encyclopedia,''
+  \url{https://en.wikipedia.org/w/index.php?title=Theory_of_multiple_intelligences&oldid=1230486408},
+  2024, [Online; accessed 25-June-2024].
+
 \bibitem{enwikishrdlu}
 \BIBentryALTinterwordspacing
-{Wikipedia contributors}, ``Shrdlu --- {Wikipedia}{,} the free encyclopedia,''
-  2023, [Online; accessed 23-June-2024]. [Online]. Available:
+------, ``Shrdlu --- {Wikipedia}{,} the free encyclopedia,'' 2023, [Online;
+  accessed 23-June-2024]. [Online]. Available:
   \url{https://en.wikipedia.org/w/index.php?title=SHRDLU&oldid=1186413547}
 \BIBentrySTDinterwordspacing
 

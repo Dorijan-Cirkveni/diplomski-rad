@@ -156,7 +156,7 @@ class MazeEnvironment(GridEnvironment):
     }
 
     def __init__(self, scale: tuple, start: tuple, maze_creator: iMazeCreator, maze_seed=0, tileTypes=None,
-                 extraData: dict = None):
+                 extraData=None):
         """
         Initialize the MazeEnvironment.
 
@@ -169,13 +169,13 @@ class MazeEnvironment(GridEnvironment):
             tileTypes (list, optional): The types of tiles in the environment. Defaults to None.
             extraData (dict, optional): Extra data for the environment. Defaults to None.
         """
-        entity = agents.Agent.BoxAgent()
+        if extraData is None:
+            extraData = {}
         tiles: set = extraData.get("tiles", (0, 2, 1))
         rand = random.Random(maze_seed)
         self.start = start
         self.mazeCreator = maze_creator.reinit(scale, rand)
-        if entity is None:
-            entity = GridEntity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
+        entity = GridEntity(agents.Agent.BoxAgent(), [0, 1, 2, 3], 0)
         entity.set(entity.LOCATION, start)
         grid = self.mazeCreator.create_maze(start, (2, 0, 1))
         gro = GridRoutine([grid], [])
